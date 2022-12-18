@@ -1,56 +1,65 @@
 import { makeAutoObservable } from "mobx";
-import Addition from "./Addition";
-import AdditionType from "./AdditionType";
-import GearPropType, { asGearPropType } from "./GearPropType";
+import GearPropType from "./GearPropType";
 import GearType from "./GearType";
+import { IGearReq } from "./interfaces/IGearData";
 import Potential from "./Potential";
 import PotentialGrade from "./PotentialGrade";
 import { getGearDataNode } from "./resource";
 import Soul from "./Soul";
+import { asEnum } from "./util";
 
-export class ImageOrigin {
-  /** 아이콘 장비 ID */
-  icon: number;
-  /** 아이콘의 origin 벡터 */
-  origin: [number, number];
+export class GearReq {
+  /** 착용 가능 레벨 */
+  level = 0;
+  /** REQ STR */
+  str = 0;
+  /** REQ LUK */
+  luk = 0;
+  /** REQ DEX */
+  dex = 0;
+  /** REQ INT */
+  int = 0;
+  /** 착용 가능 직업 분류 */
+  job = 0;
+  /** 착용 가능 직업 */
+  specJob = 0;
 
-  constructor();
-  constructor(icon: number, origin: [number, number]);
-  constructor(imageOrigin: { icon: number, origin: [number, number] });
-  constructor(imageOrigin: ImageOrigin);
-  constructor(icon: number | ImageOrigin | { icon: number, origin: [number, number] } = 0, origin: [number, number] = [0, 0]) {
-    if(typeof icon === "number") {
-      this.icon = icon;
-      this.origin = [...origin];
-    }
-    else if(icon) {
-      this.icon = icon.icon;
-      this.origin = [...icon.origin];
-    }
-    else {
-      this.icon = icon;
-      this.origin = [...origin];
-    }
-  }
-
-  static createFromID(gearID: number): ImageOrigin | undefined {
-    const data = getGearDataNode(gearID);
-    if(!data) {
-      return undefined;
-    }
-    return new ImageOrigin(data.icon, data.origin);
+  static createFromNode(node: IGearReq): GearReq {
+    const req = new GearReq();
+    req.level = node.level;
+    req.str = node.str;
+    req.luk = node.luk;
+    req.dex = node.dex;
+    req.int = node.int;
+    req.job = node.job;
+    req.specJob = node.specJob;
+    return req;
   }
 }
 
 export class GearOption {
   /** 기본 수치 */
-  base: number;
+  base = 0;
   /** 추가옵션 수치 */
-  bonus: number;
+  bonus = 0;
   /** 주문서 강화 수치 */
-  upgrade: number;
+  upgrade = 0;
   /** 장비 강화 수치 */
-  enchant: number;
+  enchant = 0;
+
+  constructor() {
+    makeAutoObservable(this, {}, { autoBind: true });
+  }
+
+  /** 모든 수치가 0일 경우 `true`; 아닐 경우 `false` */
+  get empty(): boolean {
+    return this.base === 0 && this.bonus === 0 && this.upgrade === 0 && this.enchant === 0;
+  }
+
+  /** 모든 수치의 합; 합이 음수일 경우 `0` */
+  get sum(): number {
+    return Math.max(0, this.base + this.bonus + this.upgrade + this.enchant);
+  }
 
   /** 기본 수치 대비 변화량 */
   get diff(): number {
@@ -66,14 +75,16 @@ export default class Gear {
   /** 설명 */
   desc = "";
   /** 아이콘 */
-  icon: ImageOrigin;
+  icon = 0;
+  /** 아이콘 오프셋 */
+  origin: [number, number] = [0, 0];
   /** 장비 분류 */
   type: GearType = 0;
-  /** 캐시 아이템 여부 */
-  cash = false;
+  /** 장비 착용 제한 */
+  req: GearReq = new GearReq();
 
-  /** addition */
-  additions: Addition[];
+  // /** addition */
+  // additions: Addition[] = [];
   /** 장비 속성 */
   props: Map<GearPropType, number> = new Map();
 
@@ -88,11 +99,15 @@ export default class Gear {
   failCount = 0;
   /** 황금망치 횟수 */
   hammerCount = 0;
+  // /** 이그드라실 주문서 */
+  // yggdrasil = 0;
 
   /** 최대 장비 강화 수치 */
   maxStar = 0;
   /** 장비 강화 수치 */
   star = 0;
+  /** 놀라운 장비 강화 적용 여부 */
+  amazing = false;
 
   /** 잠재능력 설정 가능 여부 */
   canPotential = false;
@@ -114,26 +129,39 @@ export default class Gear {
   }
 
   /**
-     * 속성의 값을 반환합니다.
-     * @param propType 장비 속성
-     * @returns 속성의 값; 존재하지 않을 경우 `0`
-     */
-  getPropValue(propType: GearPropType): number {
-    return this.props.get(propType) ?? 0;
+   * 장비 옵션을 반환합니다. 존재하지 않는 옵션은 장비에 추가된 후 반환합니다.
+   * @param type 장비 옵션 종류
+   * @returns 장비 옵션 객체
+   */
+  getOption(type: GearPropType): GearOption {
+    if(!this.options.has(type)) {
+      this.options.set(type, new GearOption());
+    }
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.options.get(type)!;
   }
 
   /**
-   * 속성의 값을 `boolean`으로 반환합니다.
-   * @param propType 장비 속성
-   * @returns 속성이 존재하고 값이 `0`이 아닐 경우 `true`; 이 외의 경우 `false`
+   * 장비 속성의 값을 반환합니다.
+   * @param type 장비 속성
+   * @returns 속성의 값; 존재하지 않을 경우 `0`
    */
-  getBooleanValue(propType: GearPropType): boolean {
-    return Boolean(this.props.get(propType));
+  getPropValue(type: GearPropType): number {
+    return this.props.get(type) ?? 0;
+  }
+
+  /**
+   * 장비 속성의 값을 `boolean` 형식으로 반환합니다.
+   * @param type 장비 속성
+   * @returns 속성이 존재하고 값이 `0` 이상일 경우 `true`; 아닐 경우 `false`
+   */
+  getBooleanValue(type: GearPropType): boolean {
+    return Boolean(this.props.get(type));
   }
 
   /**
    * 장비의 최대 강화 수치를 계산합니다.
-   * @returns 장비의 최대 강화 수치
+   * @returns 최대 장비 강화 수치
    */
   getMaxStar(): number {
     if(this.totalUpgradeCount <= 0) {
@@ -183,21 +211,6 @@ export default class Gear {
   }
 
   /**
-   * 장비의 아이콘을 입력한 장비 ID의 아이콘으로 설정합니다.
-   * @param gearID 아이콘 장비 ID
-   * @returns 입력한 장비 ID가 존재할 경우 `true`; 아닐 경우 `false`
-   */
-  setIconOrigin(gearID: number): boolean {
-    const iconOrigin = ImageOrigin.createFromID(gearID);
-    if(!iconOrigin) {
-      return false;
-    }
-    this.icon = iconOrigin;
-
-    return true;
-  }
-
-  /**
    * 장비 ID로부터 장비를 생성합니다.
    * @param gearID 장비 ID
    * @returns 장비; 존재하지 않을 경우 `undefined`
@@ -211,35 +224,32 @@ export default class Gear {
     const gear: Gear = new Gear();
     gear.itemID = gearID;
     gear.type = Gear.getGearType(gearID);
-    gear.name = data.name ?? "(장비 이름 없음)";
+    gear.name = data.name;
     gear.desc = data.desc ?? "";
-    gear.setIconOrigin(gearID);
-    if(data.info) {
-      for(const [key, subNode] of Object.entries(data.info)) {
-        const type = asGearPropType(key);
-        gear.props.set(type, subNode);
+    gear.icon = data.icon;
+    gear.origin = data.origin;
+    gear.totalUpgradeCount = data.tuc ?? 0;
+    if(data.req) {
+      gear.req = GearReq.createFromNode(data.req);
+    }
+    if(data.options) {
+      for(const [key, value] of Object.entries(data.options)) {
+        const type = asEnum(key, GearPropType);
+        gear.options.set(type, value);
       }
     }
-    if(data.addition) {
-      for(const [typeStr, addiNode] of Object.entries(data.addition)) {
-        gear.additions.push(Addition.createFromNode(AdditionType[typeStr as keyof typeof AdditionType], addiNode));
+    if(data.props) {
+      for(const [key, value] of Object.entries(data.props)) {
+        const type = asEnum(key, GearPropType);
+        gear.props.set(type, value);
       }
     }
-    if(data.option) {
-      for(let i = 0; i < Object.keys(data.option).length; i++) {
-        const opt = data.option[i as 0 | 1 | 2];
-        if(!opt) {
-          break;
-        }
-        const pot = Potential.createFromID(opt.option, opt.level);
-        if(!pot) {
-          break;
-        }
-        gear.potentials.push(pot);
-      }
+    if(data.pots) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      gear.potentials = data.pots.map(ol => Potential.createFromID(ol.option, ol.level)!);
     }
 
-    if(gear.getPropValue(GearPropType.tuc) > 0) {
+    if(gear.totalUpgradeCount > 0) {
       gear.canPotential = true;
     }
     else if(Gear.specialCanPotential(gear.type) ||
@@ -262,15 +272,15 @@ export default class Gear {
         default: gear.grade = value - 1; break;
       }
     }
-
     if(gear.potentials.some(opt => opt !== undefined) && gear.grade === PotentialGrade.normal) {
       gear.grade = PotentialGrade.rare;
     }
 
     if(gear.type === GearType.demonShield) {
-      if((value = gear.getPropValue(GearPropType.incMMP))) {
-        gear.props.delete(GearPropType.incMMP);
-        gear.props.set(GearPropType.incMDF, value);
+      value = gear.getOption(GearPropType.incMMP).base;
+      if(value > 0) {
+        gear.getOption(GearPropType.incMDF).base = value;
+        gear.getOption(GearPropType.incMMP).base = 0;
       }
     }
 
@@ -284,48 +294,48 @@ export default class Gear {
 
   /**
    * 장비가 주무기인지 여부를 나타내는 `boolean`값을 반환합니다. 블레이드(katara)는 포함되지 않습니다.
-   * @param gearType 장비 분류
+   * @param type 장비 분류
    * @returns 주무기일 경우 `true`; 아닐 경우 `false`
    */
-  static isWeapon(gearType: GearType): boolean {
-    return this.isLeftWeapon(gearType) || this.isDoubleHandWeapon(gearType);
+  static isWeapon(type: GearType): boolean {
+    return this.isLeftWeapon(type) || this.isDoubleHandWeapon(type);
   }
 
   /**
    * 장비가 한손무기인지 여부를 나타내는 `boolean`값을 반환합니다. 블레이드(katara)는 포함되지 않습니다.
-   * @param gearType 장비 분류
+   * @param type 장비 분류
    * @returns 한손무기일 경우 `true`; 아닐 경우 `false`
    */
-  static isLeftWeapon(gearType: GearType): boolean {
-    return gearType >= 121 && gearType <= 139 && gearType !== GearType.katara ||
-        Math.floor(gearType / 10) === 121;
+  static isLeftWeapon(type: GearType): boolean {
+    return (type >= 121 && type <= 139 && type !== GearType.katara) ||
+      (Math.floor(type / 10) === 121);
   }
 
   /**
    * 장비가 두손무기인지 여부를 나타내는 `boolean`값을 반환합니다.
-   * @param gearType 장비 분류
+   * @param type 장비 분류
    * @returns 두손무기일 경우 `true`; 아닐 경우 `false`
    */
-  static isDoubleHandWeapon(gearType: GearType): boolean {
-    return (gearType >= 140 && gearType <= 149) ||
-        (gearType >= 152 && gearType <= 159);
+  static isDoubleHandWeapon(type: GearType): boolean {
+    return (type >= 140 && type <= 149) ||
+      (type >= 152 && type <= 159) ||
+      (Math.floor(type / 10) === 140);
   }
 
   /**
    * 장비가 보조무기인지 여부를 나타내는 `boolean`값을 반환합니다. 블레이드(katara), 방패류가 포함됩니다.
-   * @param gearType 장비 분류
+   * @param type 장비 분류
    * @returns 보조무기일 경우 `true`; 아닐 경우 `false`
    */
-  static isSubWeapon(gearType: GearType): boolean {
-    switch(gearType) {
+  static isSubWeapon(type: GearType): boolean {
+    switch(type) {
       case GearType.katara:
       case GearType.shield:
       case GearType.demonShield:
       case GearType.soulShield:
         return true;
-
       default:
-        if(Math.floor(gearType / 1000) === 135) {
+        if(Math.floor(type / 1000) === 135) {
           return true;
         }
         return false;
@@ -334,11 +344,11 @@ export default class Gear {
 
   /**
    * 장비가 방패인지 여부를 나타내는 `boolean`값을 반환합니다.
-   * @param gearType 장비 분류
+   * @param type 장비 분류
    * @returns 방패일 경우 `true`; 아닐 경우 `false`
    */
-  static isShield(gearType: GearType): boolean {
-    switch(gearType) {
+  static isShield(type: GearType): boolean {
+    switch(type) {
       case GearType.shield:
       case GearType.demonShield:
       case GearType.soulShield:
@@ -350,45 +360,44 @@ export default class Gear {
 
   /**
    * 장비가 방어구인지 여부를 나타내는 `boolean`값을 반환합니다. 방패가 포함됩니다.
-   * @param gearType 장비 분류
+   * @param type 장비 분류
    * @returns 방어구일 경우 `true`; 아닐 경우 `false`
    */
-  static isArmor(gearType: GearType): boolean {
-    return (gearType === 100) ||
-        (gearType >= 104 && gearType <= 110);
+  static isArmor(type: GearType): boolean {
+    return (type === 100) || (type >= 104 && type <= 110);
   }
 
   /**
    * 장비가 장신구인지 여부를 나타내는 `boolean`값을 반환합니다.
-   * @param gearType 장비 분류
+   * @param type 장비 분류
    * @returns 장신구일 경우 `true`; 아닐 경우 `false`
    */
-  static isAccessory(gearType: GearType): boolean {
-    return (gearType >= 101 && gearType <= 103) ||
-        (gearType >= 111 && gearType <= 113) ||
-        (gearType === 115);
+  static isAccessory(type: GearType): boolean {
+    return (type >= 101 && type <= 103) ||
+      (type >= 111 && type <= 113) ||
+      (type === 115);
   }
 
   /**
    * 장비가 메카닉 장비인지 여부를 나타내는 `boolean`값을 반환합니다.
-   * @param gearType 장비 분류
+   * @param type 장비 분류
    * @returns 메카닉 장비일 경우 `true`; 아닐 경우 `false`
    */
-  static isMechanicGear(gearType: GearType): boolean {
-    return gearType >= 161 && gearType <= 165;
+  static isMechanicGear(type: GearType): boolean {
+    return type >= 161 && type <= 165;
   }
 
   /**
    * 장비가 에반 드래곤 장비인지 여부를 나타내는 `boolean`값을 반환합니다.
-   * @param gearType 장비 분류
+   * @param type 장비 분류
    * @returns 에반 드래곤 장비일 경우 `true`; 아닐 경우 `false`
    */
-  static isDragonGear(gearType: GearType): boolean {
-    return gearType >= 194 && gearType <= 197;
+  static isDragonGear(type: GearType): boolean {
+    return type >= 194 && type <= 197;
   }
 
-  static specialCanPotential(gearType: GearType): boolean {
-    switch(gearType) {
+  static specialCanPotential(type: GearType): boolean {
+    switch(type) {
       case GearType.soulShield:
       case GearType.demonShield:
       case GearType.katara:
@@ -422,6 +431,10 @@ export default class Gear {
         return GearType.tuner;
       case 1214:
         return GearType.breathShooter;
+      // case 1403:
+      //   return GearType.boxingCannon;
+      case 1404:
+        return GearType.chakram;
     }
     if(Math.floor(gearID / 10000) === 135) {
       switch(Math.floor(gearID / 100)) {
@@ -434,8 +447,11 @@ export default class Gear {
           return Math.floor(gearID / 100) * 10;
       }
     }
-    if(Math.floor(gearID / 100) === 11902) {
-      return Math.floor(gearID / 10);
+    if(Math.floor(gearID / 10000) === 119) {
+      switch(Math.floor(gearID / 100)){
+        case 11902:
+          return Math.floor(gearID / 10);
+      }
     }
     return Math.floor(gearID / 10000);
   }
@@ -477,6 +493,6 @@ export default class Gear {
           return 200;
       }
     }
-    return Number.MAX_SAFE_INTEGER;
+    return Number.MAX_VALUE;
   }
 }
