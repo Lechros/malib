@@ -61,6 +61,7 @@
                 }
             }
         ],
+        "prefer-const": "warn",
         "no-trailing-spaces": "error",
         "no-console": "error",
         "no-warning-comments": "warn",

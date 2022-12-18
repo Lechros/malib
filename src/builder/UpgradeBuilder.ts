@@ -65,7 +65,7 @@ export default class UpgradeBuilder {
     // }
     this.gear.upgradeCount += 1;
     for(const [type, value] of scroll.stat) {
-      this.gear.getOption(type).upgrade += value;
+      this.gear.option(type).upgrade += value;
     }
     return true;
   }

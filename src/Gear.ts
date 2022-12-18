@@ -26,13 +26,13 @@ export class GearReq {
 
   static createFromNode(node: IGearReq): GearReq {
     const req = new GearReq();
-    req.level = node.level;
-    req.str = node.str;
-    req.luk = node.luk;
-    req.dex = node.dex;
-    req.int = node.int;
-    req.job = node.job;
-    req.specJob = node.specJob;
+    req.level = node.level ?? 0;
+    req.str = node.str ?? 0;
+    req.luk = node.luk ?? 0;
+    req.dex = node.dex ?? 0;
+    req.int = node.int ?? 0;
+    req.job = node.job ?? 0;
+    req.specJob = node.specJob ?? 0;
     return req;
   }
 }
@@ -129,11 +129,11 @@ export default class Gear {
   }
 
   /**
-   * 장비 옵션을 반환합니다. 존재하지 않는 옵션은 장비에 추가된 후 반환합니다.
+   * 장비 옵션을 반환합니다. 존재하지 않는 옵션은 장비에 추가됩니다.
    * @param type 장비 옵션 종류
    * @returns 장비 옵션 객체
    */
-  getOption(type: GearPropType): GearOption {
+  option(type: GearPropType): GearOption {
     if(!this.options.has(type)) {
       this.options.set(type, new GearOption());
     }
@@ -174,17 +174,9 @@ export default class Gear {
       return 0;
     }
 
-    const starData = [
-      [0, 5, 3],
-      [95, 8, 5],
-      [110, 10, 8],
-      [120, 15, 10],
-      [130, 20, 12],
-      [140, 25, 15],
-    ];
-    let data!: number[];
-    const reqLevel: number = this.getPropValue(GearPropType.reqLevel);
-    for(const item of starData) {
+    let data: number[] | undefined;
+    const reqLevel: number = this.req.level;
+    for(const item of Gear.starData) {
       if(reqLevel >= item[0]) {
         data = item;
       }
@@ -192,15 +184,24 @@ export default class Gear {
         break;
       }
     }
-    if(data.length === 0) {
+    if(data === undefined) {
       return 0;
     }
-    return data[this.getBooleanValue(GearPropType.superiorEqp) ? 2 : 1];
+    return this.getBooleanValue(GearPropType.superiorEqp) ? data[2] : data[1];
   }
 
+  private static readonly starData = [
+    [0, 5, 3],
+    [95, 8, 5],
+    [110, 10, 8],
+    [120, 15, 10],
+    [130, 20, 12],
+    [140, 25, 15],
+  ];
+
   /**
-   * 현재 속성과 기본 속성의 차이를 계산합니다.
-   * @returns 스탯 별 가중치가 적용된 차이
+   * 현재 옵션과 기본 옵션의 차이를 가중치를 포함하여 계산합니다.
+   * @returns 가중치가 적용된 옵션 차이의 합
    */
   get diff(): number {
     let diff = 0;
@@ -235,7 +236,7 @@ export default class Gear {
     if(data.options) {
       for(const [key, value] of Object.entries(data.options)) {
         const type = asEnum(key, GearPropType);
-        gear.options.set(type, value);
+        gear.option(type).base = value;
       }
     }
     if(data.props) {
@@ -277,10 +278,10 @@ export default class Gear {
     }
 
     if(gear.type === GearType.demonShield) {
-      value = gear.getOption(GearPropType.incMMP).base;
+      value = gear.option(GearPropType.incMMP).base;
       if(value > 0) {
-        gear.getOption(GearPropType.incMDF).base = value;
-        gear.getOption(GearPropType.incMMP).base = 0;
+        gear.option(GearPropType.incMDF).base = value;
+        gear.option(GearPropType.incMMP).base = 0;
       }
     }
 

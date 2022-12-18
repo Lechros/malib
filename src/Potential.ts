@@ -66,6 +66,7 @@ export default class Potential {
       potential.option.delete(GearPropType.incDAMr);
       potential.option.delete(GearPropType.boss);
       potential.option.set(GearPropType.incBDR, incDAMr);
+      potential.summary = potential.summary.replace("#incDAMr", "#incBDR");
     }
     return potential;
   }

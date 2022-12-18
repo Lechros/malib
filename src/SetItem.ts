@@ -138,7 +138,7 @@ export default class SetItem {
    */
   private static jokerGearSortKey(gear: Gear): number {
     const basis = 1000;
-    const reqLevel = gear.getPropValue(GearPropType.reqLevel);
+    const reqLevel = gear.req.level;
     switch(gear.type) {
       case GearType.cap:
         return 1 * basis - reqLevel;

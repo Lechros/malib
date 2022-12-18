@@ -38,7 +38,7 @@ enum BonusStatType {
   /** 보스 데미지 % */
   bdR,
   /** 올스탯 % */
-  statR,
+  allStatR,
   /** 착용 레벨 감소 */
   reduceReq,
 }

@@ -176,6 +176,7 @@ enum GearPropType {
   // noPetEquipStatMoveItem,
   // BTSLabel,
   // android,
+  noLookChange,
   tucIgnoreForPotential,
 }
 

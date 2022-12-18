@@ -71,53 +71,53 @@ export default class EnhancementBuilder {
     }
     for(const type of statType) {
       if(statSet.has(type)) {
-        this.gear.getOption(type).enchant += statData[star];
+        this.gear.option(type).enchant += statData[star];
       }
-      else if(star > 15 && (this.gear.getOption(type).base > 0 || this.gear.getOption(type).upgrade > 0)) {
-        this.gear.getOption(type).enchant += statData[star];
+      else if(star > 15 && (this.gear.option(type).base > 0 || this.gear.option(type).upgrade > 0)) {
+        this.gear.option(type).enchant += statData[star];
       }
     }
     // attack
     if(isWeaponEnhance) {
       const useMad = reqJob === 0 ||
                 Math.floor(reqJob / 2) % 2 === 1 ||
-                this.gear.getOption(GearPropType.incMAD).upgrade > 0;
+                this.gear.option(GearPropType.incMAD).upgrade > 0;
       if(star > 15) {
-        this.gear.getOption(GearPropType.incPAD).enchant += attData[star];
+        this.gear.option(GearPropType.incPAD).enchant += attData[star];
         if(useMad) {
-          this.gear.getOption(GearPropType.incMAD).enchant += attData[star];
+          this.gear.option(GearPropType.incMAD).enchant += attData[star];
         }
       }
       else {
-        const pad = this.gear.getOption(GearPropType.incPAD).base;
-        this.gear.getOption(GearPropType.incPAD).enchant += Math.floor(pad / 50) + 1;
+        const pad = this.gear.option(GearPropType.incPAD).base;
+        this.gear.option(GearPropType.incPAD).enchant += Math.floor(pad / 50) + 1;
         if(useMad) {
-          const mad = this.gear.getOption(GearPropType.incMAD).base;
-          this.gear.getOption(GearPropType.incMAD).enchant += Math.floor(mad / 50) + 1;
+          const mad = this.gear.option(GearPropType.incMAD).base;
+          this.gear.option(GearPropType.incMAD).enchant += Math.floor(mad / 50) + 1;
         }
       }
     }
     else {
-      this.gear.getOption(GearPropType.incPAD).enchant += attData[star];
-      this.gear.getOption(GearPropType.incMAD).enchant += attData[star];
+      this.gear.option(GearPropType.incPAD).enchant += attData[star];
+      this.gear.option(GearPropType.incMAD).enchant += attData[star];
 
       if(this.gear.type === GearType.glove) {
         if(reqJob === 0) {
-          this.gear.getOption(GearPropType.incPAD).enchant += EnhancementBuilder.starforceGloveBonusAttData[star];
-          this.gear.getOption(GearPropType.incMAD).enchant += EnhancementBuilder.starforceGloveBonusAttData[star];
+          this.gear.option(GearPropType.incPAD).enchant += EnhancementBuilder.starforceGloveBonusAttData[star];
+          this.gear.option(GearPropType.incMAD).enchant += EnhancementBuilder.starforceGloveBonusAttData[star];
         }
         else if(Math.floor(reqJob / 2) % 2 === 1) {
-          this.gear.getOption(GearPropType.incMAD).enchant += EnhancementBuilder.starforceGloveBonusAttData[star];
+          this.gear.option(GearPropType.incMAD).enchant += EnhancementBuilder.starforceGloveBonusAttData[star];
         }
         else {
-          this.gear.getOption(GearPropType.incPAD).enchant += EnhancementBuilder.starforceGloveBonusAttData[star];
+          this.gear.option(GearPropType.incPAD).enchant += EnhancementBuilder.starforceGloveBonusAttData[star];
         }
       }
     }
     // pdd
     if(!isWeaponEnhance && this.gear.type !== GearType.machineHeart) {
-      const pdd = this.gear.getOption(GearPropType.incPDD).base;
-      this.gear.getOption(GearPropType.incPDD).enchant += Math.floor(pdd / 20) + 1;
+      const pdd = this.gear.option(GearPropType.incPDD).base;
+      this.gear.option(GearPropType.incPDD).enchant += Math.floor(pdd / 20) + 1;
     }
     // hp, mp
     const mhpTypes = [
@@ -133,16 +133,16 @@ export default class EnhancementBuilder {
       GearType.shield
     ];
     if(isWeaponEnhance) {
-      this.gear.getOption(GearPropType.incMHP).enchant += EnhancementBuilder.starforceMhpData[star];
-      this.gear.getOption(GearPropType.incMMP).enchant += EnhancementBuilder.starforceMhpData[star];
+      this.gear.option(GearPropType.incMHP).enchant += EnhancementBuilder.starforceMhpData[star];
+      this.gear.option(GearPropType.incMMP).enchant += EnhancementBuilder.starforceMhpData[star];
     }
     else if(mhpTypes.includes(this.gear.type)) {
-      this.gear.getOption(GearPropType.incMHP).enchant += EnhancementBuilder.starforceMhpData[star];
+      this.gear.option(GearPropType.incMHP).enchant += EnhancementBuilder.starforceMhpData[star];
     }
     // speed, jump
     if(this.gear.type === GearType.shoes) {
-      this.gear.getOption(GearPropType.incSpeed).enchant += EnhancementBuilder.starforceSpeedJumpData[star];
-      this.gear.getOption(GearPropType.incJump).enchant += EnhancementBuilder.starforceSpeedJumpData[star];
+      this.gear.option(GearPropType.incSpeed).enchant += EnhancementBuilder.starforceSpeedJumpData[star];
+      this.gear.option(GearPropType.incJump).enchant += EnhancementBuilder.starforceSpeedJumpData[star];
     }
 
     return true;
@@ -168,20 +168,20 @@ export default class EnhancementBuilder {
     // stat
     const statType = [GearPropType.incSTR, GearPropType.incDEX, GearPropType.incINT, GearPropType.incLUK];
     for(const type of statType) {
-      if(this.gear.getOption(type).base > 0) {
-        this.gear.getOption(type).enchant += statData[star];
+      if(this.gear.option(type).base > 0) {
+        this.gear.option(type).enchant += statData[star];
       }
     }
     // 공격력, 마력
     const attType = [GearPropType.incPAD, GearPropType.incMAD];
     for(const type of attType) {
-      if(this.gear.getOption(type).base > 0) {
-        this.gear.getOption(type).enchant += attData[star];
+      if(this.gear.option(type).base > 0) {
+        this.gear.option(type).enchant += attData[star];
       }
     }
     // 방어력
-    const pdd = this.gear.getOption(GearPropType.incPDD).base;
-    this.gear.getOption(GearPropType.incPDD).enchant += Math.floor(pdd / 20) + 1;
+    const pdd = this.gear.option(GearPropType.incPDD).base;
+    this.gear.option(GearPropType.incPDD).enchant += Math.floor(pdd / 20) + 1;
 
     return true;
   }
@@ -220,37 +220,37 @@ export default class EnhancementBuilder {
     // stat
     const statType = [GearPropType.incSTR, GearPropType.incDEX, GearPropType.incINT, GearPropType.incLUK];
     for(const type of statType) {
-      const hasType = this.gear.getOption(type).sum > 0;
+      const hasType = this.gear.option(type).sum > 0;
       if(hasType) {
         let statValue = statData[star];
         if(bonus && Gear.isAccessory(this.gear.type)) {
           statValue += (star > 5) ? 2 : 1;
         }
-        this.gear.getOption(type).enchant += statValue;
+        this.gear.option(type).enchant += statValue;
       }
     }
     // attack
     const attType = [GearPropType.incPAD, GearPropType.incMAD];
     for(const type of attType) {
-      const att = this.gear.getOption(type).sum;
+      const att = this.gear.option(type).sum;
       if(att > 0) {
         if(isWeaponEnhance) {
-          this.gear.getOption(type).enchant += Math.floor(att / 50) + 1;
+          this.gear.option(type).enchant += Math.floor(att / 50) + 1;
         }
         let attValue = attData[star];
         if(bonus && (isWeaponEnhance || this.gear.type === GearType.shield)) {
           attValue += 1;
         }
-        this.gear.getOption(type).enchant += attValue;
+        this.gear.option(type).enchant += attValue;
       }
     }
     // hp
     if(bonus && Gear.isArmor(this.gear.type)) {
-      this.gear.getOption(GearPropType.incMHP).enchant += 50;
+      this.gear.option(GearPropType.incMHP).enchant += 50;
     }
     // pdd
-    const pdd = this.gear.getOption(GearPropType.incPDD).sum;
-    this.gear.getOption(GearPropType.incPDD).enchant += Math.floor(pdd / 20) + 1;
+    const pdd = this.gear.option(GearPropType.incPDD).sum;
+    this.gear.option(GearPropType.incPDD).enchant += Math.floor(pdd / 20) + 1;
 
     return true;
   }
