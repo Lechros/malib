@@ -6,8 +6,9 @@ import ItemOptionsJson from "./resources/item-option.json";
 // @ts-expect-error(2322): ts thinks it's number[], but all origin is in [number, number] form
 const GearData: IGearDataJson = GearDataJson;
 const gearIDs = Object.keys(GearData).map(id => Number(id));
-const gearIDNames = Object.entries(GearData).map(e => [Number(e[0]), e[1].name]);
+const gearIDNames: [number, string][] = Object.entries(GearData).map(e => [Number(e[0]), e[1].name]);
 const ItemOptionData: IItemOptionJson = ItemOptionsJson;
+const itemOptionIDs = Object.keys(ItemOptionData).map(id => Number(id));
 
 /* resources */
 
@@ -25,6 +26,10 @@ export function getGearIDNames(): [number, string][] {
 
 export function getItemOptionNode(code: number): IItemOption | undefined {
   return ItemOptionData[code];
+}
+
+export function getItemOptionIDs(): number[] {
+  return itemOptionIDs;
 }
 
 /* interfaces */
