@@ -19,7 +19,7 @@ export function getGearIDs(): number[] {
   return gearIDs.slice();
 }
 
-export function getGearIDName(): [number, string][] {
+export function getGearIDNames(): [number, string][] {
   return gearIDNames.map(e => e.slice() as [number, string]);
 }
 

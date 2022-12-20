@@ -52,6 +52,6 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "maplegear-resource": "^0.0.2"
+    "maplegear-resource": "^0.0.4"
   }
 }

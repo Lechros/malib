@@ -1,4 +1,4 @@
-import { getItemOptionNode } from "./resource";
+import { getItemOptionNode } from "maplegear-resource";
 import Gear from "./Gear";
 import GearPropType from "./GearPropType";
 import GearType from "./GearType";
