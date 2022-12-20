@@ -1,9 +1,8 @@
+import { getGearDataNode, IGearReq } from "maplegear-resource";
 import GearPropType from "./GearPropType";
 import GearType from "./GearType";
-import { IGearReq } from "./interfaces/IGearData";
 import Potential from "./Potential";
 import PotentialGrade from "./PotentialGrade";
-import { getGearDataNode } from "./resource";
 import Soul from "./Soul";
 import { asEnum } from "./util";
 

@@ -1,9 +1,3 @@
-import { getSetItemNode } from "./resource";
-import Gear from "./Gear";
-import GearPropType from "./GearPropType";
-import GearType from "./GearType";
-import { addGearProp, asEnum } from "./util";
-
 /**
  * 세트 아이템
  */

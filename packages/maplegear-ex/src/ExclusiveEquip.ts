@@ -1,5 +1,4 @@
-import { Gear } from ".";
-import { getExclusiveEquipList, getExclusiveEquipNode } from "./resource";
+import { Gear } from "../../maplegear/src";
 
 /**
  * 중복 착용이 불가능한 장비 관련 기능을 제공합니다.
