@@ -1,4 +1,3 @@
-import { makeAutoObservable } from "mobx";
 import GearPropType from "./GearPropType";
 import GearType from "./GearType";
 import { IGearReq } from "./interfaces/IGearData";
@@ -8,6 +7,9 @@ import { getGearDataNode } from "./resource";
 import Soul from "./Soul";
 import { asEnum } from "./util";
 
+/**
+ * 장비 착용 제한
+ */
 export class GearReq {
   /** 착용 가능 레벨 */
   level = 0;
@@ -37,6 +39,9 @@ export class GearReq {
   }
 }
 
+/**
+ * 장비 옵션
+ */
 export class GearOption {
   /** 기본 수치 */
   base = 0;
@@ -46,10 +51,6 @@ export class GearOption {
   upgrade = 0;
   /** 장비 강화 수치 */
   enchant = 0;
-
-  constructor() {
-    makeAutoObservable(this, {}, { autoBind: true });
-  }
 
   /** 모든 수치가 0일 경우 `true`; 아닐 경우 `false` */
   get empty(): boolean {
@@ -67,6 +68,9 @@ export class GearOption {
   }
 }
 
+/**
+ * 장비
+ */
 export default class Gear {
   /** 장비 ID */
   itemID = 0;
@@ -123,10 +127,6 @@ export default class Gear {
 
   /** 소울 */
   soul: Soul | undefined;
-
-  constructor() {
-    makeAutoObservable(this, {}, { autoBind: true });
-  }
 
   /**
    * 장비 옵션을 반환합니다. 존재하지 않는 옵션은 장비에 추가됩니다.

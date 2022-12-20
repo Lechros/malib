@@ -1,5 +1,5 @@
 {
-  "name": "kms-gear",
+  "name": "maplegear",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -20,7 +20,6 @@
     "vitest": "^0.25.8"
   },
   "dependencies": {
-    "@changesets/cli": "^2.25.2",
-    "mobx": "^6.7.0"
+    "@changesets/cli": "^2.25.2"
   }
 }

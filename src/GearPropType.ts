@@ -44,7 +44,6 @@ enum GearPropType {
   nbdR,
   statR,
   incCHUC,
-  bossReward,
 
   incPADr = 100,
   incMADr,
@@ -152,6 +151,7 @@ enum GearPropType {
   charmEXP,
   // cashForceCharmExp,
   accountShareTag,
+  bossReward,
   noPotential,
   fixedPotential,
   // timeLimited,

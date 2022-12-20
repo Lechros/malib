@@ -45,7 +45,7 @@ export default class Soul {
    * 몬스터 이름, 소울 종류로부터 소울을 생성합니다.
    * @param mobName 몬스터 이름
    * @param soulType 소울 종류
-   * @returns 입력값에 맞는 소울; 존재하지 않을 경우 `undefined`
+   * @returns 일치하는 소울; 존재하지 않을 경우 `undefined`
    */
   static createFromName(mobName: SoulMobName, soulType: SoulType): Soul | undefined {
     const soul = new Soul();
