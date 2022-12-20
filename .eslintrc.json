@@ -3,25 +3,19 @@
         "browser": true,
         "es2021": true
     },
-    "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended"
+    "extends": "standard-with-typescript",
+    "overrides": [
     ],
-    "overrides": [],
-    "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module"
     },
-    "plugins": [
-        "@typescript-eslint"
-    ],
     "rules": {
         "indent": [
             "error",
             2,
             {
-                "SwitchCase": 1
+            "SwitchCase": 1
             }
         ],
         "linebreak-style": [
@@ -32,36 +26,36 @@
             "error",
             "double"
         ],
-        "@typescript-eslint/semi": [
+        "semi": [
             "error",
             "always"
         ],
+        "no-extra-semi": "error",
         "eqeqeq": "error",
         "no-restricted-imports": [
-            "error"
+        "error"
         ],
         "no-redeclare": "error",
         "keyword-spacing": [
-            "error",
-            {
-                "after": true,
-                "overrides": {
-                    "if": {
-                        "after": false
-                    },
-                    "for": {
-                        "after": false
-                    },
-                    "switch": {
-                        "after": false
-                    },
-                    "while": {
-                        "after": false
-                    }
+        "error",
+        {
+            "after": true,
+            "overrides": {
+                "if": {
+                    "after": false
+                },
+                "for": {
+                    "after": false
+                },
+                "switch": {
+                    "after": false
+                },
+                "while": {
+                    "after": false
                 }
             }
+        }
         ],
-        "prefer-const": "warn",
         "no-trailing-spaces": "error",
         "no-console": "error",
         "no-warning-comments": "warn",
@@ -69,10 +63,10 @@
         "no-throw-literal": "error",
         "no-cond-assign": "error",
         "@typescript-eslint/explicit-member-accessibility": [
-            "error",
-            {
-                "accessibility": "no-public"
-            }
+        "error",
+        {
+            "accessibility": "no-public"
+        }
         ]
     }
 }

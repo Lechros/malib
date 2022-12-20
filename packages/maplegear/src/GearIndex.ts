@@ -1,4 +1,4 @@
-import { GearData } from "./resource";
+import { getGearIDs } from "maplegear-resource";
 
 /**
  * 장비 이름으로부터 장비 ID를 일정한 속도로 찾는 기능을 제공합니다.
@@ -10,7 +10,7 @@ export default class GearIndex {
    * 내부에 장비 정보를 로드합니다.
    */
   static load(): void {
-    for(const [idStr, data] of Object.entries(GearData)) {
+    for(const id of Object.entries(getGearIDs())) {
       const id = Number(idStr);
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       if(this.index.has(data.name) || (this.index.get(data.name)! < id)) {

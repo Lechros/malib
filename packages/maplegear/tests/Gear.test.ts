@@ -1,5 +1,3 @@
-
-import { expect, test } from "vitest";
 import { Gear, GearPropType, GearType, PotentialGrade } from "../src";
 
 // test("test Gear (de)serialize", () => {

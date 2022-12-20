@@ -1,26 +1,57 @@
 {
   "name": "maplegear-ex",
   "private": true,
+  "author": "Lechros",
   "version": "0.0.0",
-  "description": "WIP",
-  "type": "module",
-  "scripts": {
-    "test": "vitest",
-    "coverage": "vitest run --coverage",
-    "lint": "eslint **/*.ts"
+  "description": "Maplestory gear item simulator",
+  "keywords": [
+    "maplestory",
+    "kms"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lechros/maplegear"
   },
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "peerDependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "module": "dist/maplegear.esm.js",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.46.1",
-    "eslint": "^8.30.0",
-    "eslint-config-standard-with-typescript": "^24.0.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-n": "^15.6.0",
-    "eslint-plugin-promise": "^6.1.1",
-    "typescript": "^4.9.4",
-    "vite": "^4.0.0",
-    "vitest": "^0.25.8"
+    "@size-limit/preset-small-lib": "^8.1.0",
+    "husky": "^8.0.2",
+    "size-limit": "^8.1.0",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.4.1",
+    "typescript": "^4.9.4"
   },
   "dependencies": {
-    "maplegear": "^0.0.0"
+    "maplegear-resource": "^0.0.0"
   }
 }

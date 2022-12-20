@@ -1,6 +1,4 @@
-import { expect, test } from "vitest";
 import { Gear } from "../src";
-import { GearData } from "../src/resource";
 
 test("check all gears in gear resource", () => {
   for(const gearID of Object.keys(GearData)) {

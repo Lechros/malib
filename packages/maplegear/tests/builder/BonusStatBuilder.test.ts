@@ -1,4 +1,3 @@
-import { expect, test } from "vitest";
 import { BonusStatBuilder, BonusStatType, Gear, GearPropType } from "../../src";
 
 test("init BonusStatBuilder", () => {

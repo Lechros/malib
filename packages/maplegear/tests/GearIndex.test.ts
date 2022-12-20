@@ -1,4 +1,3 @@
-import { expect, test } from "vitest";
 import { GearIndex } from "../src";
 
 test("test load and getGearID", () => {

@@ -1,7 +1,10 @@
 {
   "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "resolveJsonModule": true
+  },
   "include": [
-    "src",
-    "../maplegear-ex/src/interfaces/ITitle.ts"
+    "src"
   ]
 }

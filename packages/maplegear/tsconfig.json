@@ -1,10 +1,9 @@
 {
   "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src"
+  },
   "include": [
-    "src",
-    "../maplegear-resource/src/interfaces",
-    "../maplegear-ex/src/interfaces/IExclusiveEquip.ts",
-    "../maplegear-ex/src/interfaces/ISetItem.ts",
-    "../maplegear-ex/src/interfaces/ITitle.ts"
+    "src"
   ]
 }
