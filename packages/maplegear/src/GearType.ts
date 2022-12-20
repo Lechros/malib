@@ -1,7 +1,7 @@
 /**
  * 장비 분류
  */
-enum GearType {
+export enum GearType {
   /** 모자 */
   cap = 100,
   /** 얼굴장식 */
@@ -221,5 +221,3 @@ enum GearType {
   /** 드랴곤 꼬리장식 */
   dragonTail = 197,
 }
-
-export default GearType;

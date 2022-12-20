@@ -1,7 +1,7 @@
 /**
  * 소울 종류
  */
-enum SoulType {
+export enum SoulType {
   EX_PAD = "위대한 (공격력)",
   EX_MAD = "위대한 (마력)",
   EX_ALL = "위대한 (올스탯)",
@@ -22,5 +22,3 @@ enum SoulType {
   //IMD = "날카로운",
   //BD = "파괴하는",
 }
-
-export default SoulType;

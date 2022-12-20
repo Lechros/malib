@@ -1,9 +1,9 @@
 export { BonusStatBuilder, BonusStatType, UpgradeBuilder, EnhancementBuilder } from "./builder";
-export { default as Gear } from "./Gear";
-export { default as GearIndex } from "./GearIndex";
-export { default as GearPropType } from "./GearPropType";
-export { default as GearType } from "./GearType";
-export { default as Potential } from "./Potential";
-export { default as PotentialGrade } from "./PotentialGrade";
-export { default as Soul, getSoulMobNames } from "./Soul";
-export { default as SoulType } from "./SoulType";
+export { Gear } from "./Gear";
+export { GearIndex } from "./GearIndex";
+export { GearPropType } from "./GearPropType";
+export { GearType } from "./GearType";
+export { Potential } from "./Potential";
+export { PotentialGrade } from "./PotentialGrade";
+export { Soul, getSoulMobNames } from "./Soul";
+export { SoulType } from "./SoulType";

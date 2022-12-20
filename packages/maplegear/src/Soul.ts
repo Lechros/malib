@@ -1,12 +1,12 @@
-import GearPropType from "./GearPropType";
-import SoulType from "./SoulType";
+import { GearPropType } from "./GearPropType";
+import { SoulType } from "./SoulType";
 
 type SoulMobName = keyof typeof soulData;
 
 /**
  * 소울
  */
-export default class Soul {
+export class Soul {
   /** 소울 충전량 */
   charge = 0;
   /** 몬스터 이름 */

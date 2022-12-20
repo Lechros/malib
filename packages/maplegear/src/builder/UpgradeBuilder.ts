@@ -1,11 +1,11 @@
-import Gear from "../Gear";
-import GearPropType from "../GearPropType";
-import Scroll, { SpellTraceProbability, SpellTraceStatType } from "./Scroll";
+import { Gear } from "../Gear";
+import { GearPropType } from "../GearPropType";
+import { Scroll, SpellTraceProbability, SpellTraceStatType } from "./Scroll";
 
 /**
  * 주문서 업그레이드 관련 기능을 제공합니다.
  */
-export default class UpgradeBuilder {
+export class UpgradeBuilder {
   gear: Gear | undefined;
 
   constructor(gear?: Gear) {

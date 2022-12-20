@@ -1,4 +1,4 @@
-enum BonusStatType {
+export enum BonusStatType {
   /** STR 단일 */
   STR,
   /** DEX 단일 */
@@ -42,5 +42,3 @@ enum BonusStatType {
   /** 착용 레벨 감소 */
   reduceReq,
 }
-
-export default BonusStatType;

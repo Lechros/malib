@@ -3,7 +3,7 @@ import { getGearIDNames } from "maplegear-resource";
 /**
  * 장비 이름으로부터 장비 ID를 일정한 속도로 찾는 기능을 제공합니다.
  */
-export default class GearIndex {
+export class GearIndex {
   private static readonly index: Map<string, number> = new Map();
 
   /**

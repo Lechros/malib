@@ -1,13 +1,13 @@
-import Gear from "../Gear";
-import GearPropType from "../GearPropType";
-import GearType from "../GearType";
+import { Gear } from "../Gear";
+import { GearPropType } from "../GearPropType";
+import { GearType } from "../GearType";
 
 /**
  * 장비 강화 관련 기능을 제공합니다.
  *
  * 스타포스 강화 이후 주문서 수치가 변동될 경우 `recalculate` 함수를 호출해야 합니다.
  */
-export default class EnhancementBuilder {
+export class EnhancementBuilder {
   private static readonly MAX_STARFORCE = 25;
   private static readonly MAX_AMAZING = 15;
 

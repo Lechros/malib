@@ -1,7 +1,7 @@
-import Gear from "../Gear";
-import GearPropType from "../GearPropType";
-import GearType from "../GearType";
-import BonusStatType from "./BonusStatType";
+import { Gear } from "../Gear";
+import { GearPropType } from "../GearPropType";
+import { GearType } from "../GearType";
+import { BonusStatType } from "./BonusStatType";
 
 export type BonusStatGrade = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
@@ -10,7 +10,7 @@ export type BonusStatGrade = 1 | 2 | 3 | 4 | 5 | 6 | 7;
  *
  * - '보스 아레나 엠블렘'은 지원하지 않습니다.
  */
-export default class BonusStatBuilder {
+export class BonusStatBuilder {
   gear: Gear | undefined;
 
   constructor(gear?: Gear) {

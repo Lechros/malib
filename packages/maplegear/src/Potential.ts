@@ -1,13 +1,13 @@
 import { getItemOptionNode } from "maplegear-resource";
-import Gear from "./Gear";
-import GearPropType from "./GearPropType";
-import GearType from "./GearType";
+import { Gear } from "./Gear";
+import { GearPropType } from "./GearPropType";
+import { GearType } from "./GearType";
 import { asEnum } from "./util";
 
 /**
  * 잠재옵션
  */
-export default class Potential {
+export class Potential {
   /** 잠재옵션 ID */
   code = 0;
   /**

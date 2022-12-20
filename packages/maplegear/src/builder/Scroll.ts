@@ -1,6 +1,6 @@
-import Gear from "../Gear";
-import GearPropType from "../GearPropType";
-import GearType from "../GearType";
+import { Gear } from "../Gear";
+import { GearPropType } from "../GearPropType";
+import { GearType } from "../GearType";
 
 export type SpellTraceProbability = 100 | 70 | 30 | 15;
 export type SpellTraceStatType = GearPropType.incSTR | GearPropType.incDEX | GearPropType.incINT | GearPropType.incLUK | GearPropType.incAllStat | GearPropType.incMHP;
@@ -8,7 +8,7 @@ export type SpellTraceStatType = GearPropType.incSTR | GearPropType.incDEX | Gea
 /**
  * 주문서
  */
-export default class Scroll {
+export class Scroll {
   /** 주문서 이름 */
   name: string;
   /** 주문서 옵션 */

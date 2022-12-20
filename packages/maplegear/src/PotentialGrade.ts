@@ -1,7 +1,7 @@
 /**
  * 잠재능력 등급
  */
-enum PotentialGrade {
+export enum PotentialGrade {
   normal = 0,
   rare = 1,
   epic = 2,
@@ -9,5 +9,3 @@ enum PotentialGrade {
   legendary = 4,
   special = 5,
 }
-
-export default PotentialGrade;

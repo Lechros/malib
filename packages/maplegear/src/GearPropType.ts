@@ -1,7 +1,7 @@
 /**
  * 장비 속성
  */
-enum GearPropType {
+export enum GearPropType {
   incSTR = 1,
   incSTRr,
   incDEX,
@@ -179,5 +179,3 @@ enum GearPropType {
   noLookChange,
   tucIgnoreForPotential,
 }
-
-export { GearPropType as default };

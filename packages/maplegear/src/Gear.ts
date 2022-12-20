@@ -1,9 +1,9 @@
 import { getGearDataNode, IGearReq } from "maplegear-resource";
-import GearPropType from "./GearPropType";
-import GearType from "./GearType";
-import Potential from "./Potential";
-import PotentialGrade from "./PotentialGrade";
-import Soul from "./Soul";
+import { GearPropType } from "./GearPropType";
+import { GearType } from "./GearType";
+import { Potential } from "./Potential";
+import { PotentialGrade } from "./PotentialGrade";
+import { Soul } from "./Soul";
 import { asEnum } from "./util";
 
 /**
@@ -70,7 +70,7 @@ export class GearOption {
 /**
  * 장비
  */
-export default class Gear {
+export class Gear {
   /** 장비 ID */
   itemID = 0;
   /** 장비명 */
