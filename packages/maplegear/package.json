@@ -1,57 +1,5 @@
 {
   "name": "maplegear",
-  "author": "Lechros",
-  "version": "0.0.0",
-  "description": "Maplestory gear item simulator",
-  "keywords": [
-    "maplestory",
-    "kms"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Lechros/maplegear"
-  },
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "src"
-  ],
-  "engines": {
-    "node": ">=10"
-  },
-  "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "size": "size-limit",
-    "analyze": "size-limit --why"
-  },
-  "peerDependencies": {},
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
-  },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
-  },
-  "module": "dist/maplegear.esm.js",
-  "devDependencies": {
-    "@size-limit/preset-small-lib": "^8.1.0",
-    "eslint": "^8.30.0",
-    "husky": "^8.0.2",
-    "size-limit": "^8.1.0",
-    "tsdx": "^0.14.1",
-    "tslib": "^2.4.1",
-    "typescript": "^4.9.4"
-  },
-  "dependencies": {
-    "maplegear-resource": "^0.0.4"
-  }
+  "version": "0.0.1",
+  "type": "commonjs"
 }

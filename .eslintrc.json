@@ -1,72 +1,42 @@
 {
-    "env": {
-        "browser": true,
-        "es2021": true
-    },
-    "extends": "standard-with-typescript",
-    "overrides": [
-    ],
-    "parserOptions": {
-        "ecmaVersion": "latest",
-        "sourceType": "module"
-    },
-    "rules": {
-        "indent": [
-            "error",
-            2,
-            {
-            "SwitchCase": 1
-            }
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "double"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ],
-        "no-extra-semi": "error",
-        "eqeqeq": "error",
-        "no-restricted-imports": [
-        "error"
-        ],
-        "no-redeclare": "error",
-        "keyword-spacing": [
-        "error",
-        {
-            "after": true,
-            "overrides": {
-                "if": {
-                    "after": false
-                },
-                "for": {
-                    "after": false
-                },
-                "switch": {
-                    "after": false
-                },
-                "while": {
-                    "after": false
-                }
-            }
-        }
-        ],
-        "no-trailing-spaces": "error",
-        "no-console": "error",
-        "no-warning-comments": "warn",
-        "eol-last": "error",
-        "no-throw-literal": "error",
-        "no-cond-assign": "error",
-        "@typescript-eslint/explicit-member-accessibility": [
-        "error",
-        {
-            "accessibility": "no-public"
-        }
+  "root": true,
+  "ignorePatterns": ["**/*"],
+  "plugins": ["@nrwl/nx"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        "@nrwl/nx/enforce-module-boundaries": [
+          "error",
+          {
+            "enforceBuildableLibDependency": true,
+            "allow": [],
+            "depConstraints": [
+              {
+                "sourceTag": "*",
+                "onlyDependOnLibsWithTags": ["*"]
+              }
+            ]
+          }
         ]
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nrwl/nx/typescript"],
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": ["plugin:@nrwl/nx/javascript"],
+      "rules": {}
+    },
+    {
+      "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
+      "env": {
+        "jest": true
+      },
+      "rules": {}
     }
+  ]
 }
