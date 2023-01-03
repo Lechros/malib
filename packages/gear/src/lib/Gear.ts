@@ -39,7 +39,12 @@ export class GearOption {
 
   /** 모든 수치가 0일 경우 `true`; 아닐 경우 `false` */
   get empty(): boolean {
-    return this.base === 0 && this.bonus === 0 && this.upgrade === 0 && this.enchant === 0;
+    return (
+      this.base === 0 &&
+      this.bonus === 0 &&
+      this.upgrade === 0 &&
+      this.enchant === 0
+    );
   }
 
   /** 모든 수치의 합; 합이 음수일 경우 `0` */
@@ -119,7 +124,7 @@ export class Gear {
    * @returns 장비 옵션 객체
    */
   option(type: GearPropType): GearOption {
-    if(!this.options.has(type)) {
+    if (!this.options.has(type)) {
       this.options.set(type, new GearOption());
     }
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -149,27 +154,26 @@ export class Gear {
    * @returns 최대 장비 강화 수치
    */
   getMaxStar(): number {
-    if(this.totalUpgradeCount <= 0) {
+    if (this.totalUpgradeCount <= 0) {
       return 0;
     }
-    if(this.getBooleanValue(GearPropType.onlyUpgrade)) {
+    if (this.getBooleanValue(GearPropType.onlyUpgrade)) {
       return 0;
     }
-    if(Gear.isMechanicGear(this.type) || Gear.isDragonGear(this.type)) {
+    if (Gear.isMechanicGear(this.type) || Gear.isDragonGear(this.type)) {
       return 0;
     }
 
     let data: number[] | undefined;
     const reqLevel: number = this.req.level;
-    for(const item of Gear.starData) {
-      if(reqLevel >= item[0]) {
+    for (const item of Gear.starData) {
+      if (reqLevel >= item[0]) {
         data = item;
-      }
-      else {
+      } else {
         break;
       }
     }
-    if(data === undefined) {
+    if (data === undefined) {
       return 0;
     }
     return this.getBooleanValue(GearPropType.superiorEqp) ? data[2] : data[1];
@@ -190,7 +194,7 @@ export class Gear {
    */
   get diff(): number {
     let diff = 0;
-    for(const [type, option] of this.options) {
+    for (const [type, option] of this.options) {
       diff += Math.floor(option.diff / Gear.getPropTypeWeight(type));
     }
     return diff;
@@ -211,8 +215,10 @@ export class Gear {
    * @returns 한손무기일 경우 `true`; 아닐 경우 `false`
    */
   static isLeftWeapon(type: GearType): boolean {
-    return (type >= 121 && type <= 139 && type !== GearType.katara) ||
-      (Math.floor(type / 10) === 121);
+    return (
+      (type >= 121 && type <= 139 && type !== GearType.katara) ||
+      Math.floor(type / 10) === 121
+    );
   }
 
   /**
@@ -221,9 +227,11 @@ export class Gear {
    * @returns 두손무기일 경우 `true`; 아닐 경우 `false`
    */
   static isDoubleHandWeapon(type: GearType): boolean {
-    return (type >= 140 && type <= 149) ||
+    return (
+      (type >= 140 && type <= 149) ||
       (type >= 152 && type <= 159) ||
-      (Math.floor(type / 10) === 140);
+      Math.floor(type / 10) === 140
+    );
   }
 
   /**
@@ -232,14 +240,14 @@ export class Gear {
    * @returns 보조무기일 경우 `true`; 아닐 경우 `false`
    */
   static isSubWeapon(type: GearType): boolean {
-    switch(type) {
+    switch (type) {
       case GearType.katara:
       case GearType.shield:
       case GearType.demonShield:
       case GearType.soulShield:
         return true;
       default:
-        if(Math.floor(type / 1000) === 135) {
+        if (Math.floor(type / 1000) === 135) {
           return true;
         }
         return false;
@@ -252,7 +260,7 @@ export class Gear {
    * @returns 방패일 경우 `true`; 아닐 경우 `false`
    */
   static isShield(type: GearType): boolean {
-    switch(type) {
+    switch (type) {
       case GearType.shield:
       case GearType.demonShield:
       case GearType.soulShield:
@@ -268,7 +276,7 @@ export class Gear {
    * @returns 방어구일 경우 `true`; 아닐 경우 `false`
    */
   static isArmor(type: GearType): boolean {
-    return (type === 100) || (type >= 104 && type <= 110);
+    return type === 100 || (type >= 104 && type <= 110);
   }
 
   /**
@@ -277,9 +285,11 @@ export class Gear {
    * @returns 장신구일 경우 `true`; 아닐 경우 `false`
    */
   static isAccessory(type: GearType): boolean {
-    return (type >= 101 && type <= 103) ||
+    return (
+      (type >= 101 && type <= 103) ||
       (type >= 111 && type <= 113) ||
-      (type === 115);
+      type === 115
+    );
   }
 
   /**
@@ -301,7 +311,7 @@ export class Gear {
   }
 
   static specialCanPotential(type: GearType): boolean {
-    switch(type) {
+    switch (type) {
       case GearType.soulShield:
       case GearType.demonShield:
       case GearType.katara:
@@ -324,7 +334,7 @@ export class Gear {
    * @returns 장비 분류
    */
   static getGearType(gearID: number): GearType {
-    switch(Math.floor(gearID / 1000)) {
+    switch (Math.floor(gearID / 1000)) {
       case 1098:
         return GearType.soulShield;
       case 1099:
@@ -338,8 +348,8 @@ export class Gear {
       case 1404:
         return GearType.chakram;
     }
-    if(Math.floor(gearID / 10000) === 135) {
-      switch(Math.floor(gearID / 100)) {
+    if (Math.floor(gearID / 10000) === 135) {
+      switch (Math.floor(gearID / 100)) {
         case 13522:
         case 13528:
         case 13529:
@@ -349,8 +359,8 @@ export class Gear {
           return Math.floor(gearID / 100) * 10;
       }
     }
-    if(Math.floor(gearID / 10000) === 119) {
-      switch(Math.floor(gearID / 100)){
+    if (Math.floor(gearID / 10000) === 119) {
+      switch (Math.floor(gearID / 100)) {
         case 11902:
           return Math.floor(gearID / 10);
       }
@@ -360,19 +370,19 @@ export class Gear {
 
   static GetGender(gearID: number): number {
     const type: GearType = this.getGearType(gearID);
-    switch(type) {
+    switch (type) {
       case GearType.emblem:
       case GearType.powerSource:
         //case 3:
         return 2;
     }
 
-    return Math.floor(gearID / 1000 % 10);
+    return Math.floor(gearID / 1000) % 10;
   }
 
   private static getPropTypeWeight(type: GearPropType): number {
-    if(type < 100) {
-      switch(type) {
+    if (type < 100) {
+      switch (type) {
         case GearPropType.incSTR:
         case GearPropType.incDEX:
         case GearPropType.incINT:

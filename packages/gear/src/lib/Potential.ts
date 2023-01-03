@@ -28,8 +28,11 @@ export class Potential {
     const types: GearPropType[] = [...this.option.keys()];
     types.sort((a, b) => GearPropType[b].length - GearPropType[a].length);
     let summary = this.summary;
-    for(const type of types) {
-      summary = summary.replace("#" + GearPropType[type], (this.option.get(type) ?? 0).toString());
+    for (const type of types) {
+      summary = summary.replace(
+        `#${GearPropType[type]}`,
+        (this.option.get(type) ?? 0).toString()
+      );
     }
     return summary;
   }
@@ -40,8 +43,8 @@ export class Potential {
    * @returns 잠재옵션 레벨 (1~20)
    */
   static getPotentialLevel(gearReqLevel: number): number {
-    if(gearReqLevel <= 0) return 1;
-    else if(gearReqLevel >= 200) return 20;
+    if (gearReqLevel <= 0) return 1;
+    else if (gearReqLevel >= 200) return 20;
     else return Math.floor((gearReqLevel + 9) / 10);
   }
 
@@ -52,37 +55,50 @@ export class Potential {
    * @returns 잠재옵션 분류가 장비 분류에 적용 가능한 경우 `true`; 아닌 경우 `false`
    */
   static checkOptionType(optionType: number, gearType: GearType): boolean {
-    switch(optionType) {
-      case 0: return true;
+    switch (optionType) {
+      case 0:
+        return true;
       case 10:
-        return Gear.isWeapon(gearType) ||
-                    Gear.isSubWeapon(gearType) ||
-                    gearType === GearType.emblem;
+        return (
+          Gear.isWeapon(gearType) ||
+          Gear.isSubWeapon(gearType) ||
+          gearType === GearType.emblem
+        );
       case 11:
         return !Potential.checkOptionType(10, gearType);
       case 20:
-        return Gear.isSubWeapon(gearType) ||
-                    gearType === GearType.pants ||
-                    gearType === GearType.shoes ||
-                    gearType === GearType.cap ||
-                    gearType === GearType.coat ||
-                    gearType === GearType.longcoat ||
-                    gearType === GearType.glove ||
-                    gearType === GearType.cape ||
-                    gearType === GearType.belt ||
-                    gearType === GearType.shoulder;
+        return (
+          Gear.isSubWeapon(gearType) ||
+          gearType === GearType.pants ||
+          gearType === GearType.shoes ||
+          gearType === GearType.cap ||
+          gearType === GearType.coat ||
+          gearType === GearType.longcoat ||
+          gearType === GearType.glove ||
+          gearType === GearType.cape ||
+          gearType === GearType.belt ||
+          gearType === GearType.shoulder
+        );
       case 40:
-        return gearType === GearType.faceAccessory ||
-                    gearType === GearType.eyeAccessory ||
-                    gearType === GearType.ring ||
-                    gearType === GearType.earrings ||
-                    gearType === GearType.pendant;
-      case 51: return gearType === GearType.cap;
-      case 52: return gearType === GearType.coat || gearType === GearType.longcoat;
-      case 53: return gearType === GearType.pants;
-      case 54: return gearType === GearType.glove;
-      case 55: return gearType === GearType.shoes;
-      default: return false;
+        return (
+          gearType === GearType.faceAccessory ||
+          gearType === GearType.eyeAccessory ||
+          gearType === GearType.ring ||
+          gearType === GearType.earrings ||
+          gearType === GearType.pendant
+        );
+      case 51:
+        return gearType === GearType.cap;
+      case 52:
+        return gearType === GearType.coat || gearType === GearType.longcoat;
+      case 53:
+        return gearType === GearType.pants;
+      case 54:
+        return gearType === GearType.glove;
+      case 55:
+        return gearType === GearType.shoes;
+      default:
+        return false;
     }
   }
 }

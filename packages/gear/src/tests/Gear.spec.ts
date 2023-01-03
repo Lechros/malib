@@ -107,8 +107,6 @@ test("test isLeftWeapon()", () => {
   expect(Gear.isLeftWeapon(GearType.cap)).toBe(false);
 });
 
-
-
 test("test isDoubleHandWeapon()", () => {
   expect(Gear.isDoubleHandWeapon(GearType.thSword)).toBe(true);
   expect(Gear.isDoubleHandWeapon(GearType.thAxe)).toBe(true);
