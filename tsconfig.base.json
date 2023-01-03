@@ -16,8 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@malib/gear": ["packages/gear/src/index.ts"],
-      "@malib/gearlogic": ["packages/gearlogic/src/index.ts"],
-      "maplegear": ["packages/maplegear/src/index.ts"]
+      "@malib/gearlogic": ["packages/gearlogic/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

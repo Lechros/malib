@@ -1,1 +1,1 @@
-export * from './lib/gearlogic';
+export * from './lib';

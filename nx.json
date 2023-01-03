@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "npmScope": "maplegear",
+  "npmScope": "root",
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/nx-cloud",

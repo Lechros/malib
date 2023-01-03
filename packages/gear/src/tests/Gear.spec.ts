@@ -162,7 +162,7 @@ test("test isSubWeapon()", () => {
   expect(Gear.isSubWeapon(GearType.magicMarble)).toBe(true);
   expect(Gear.isSubWeapon(GearType.arrowhead)).toBe(true);
   expect(Gear.isSubWeapon(GearType.jewel)).toBe(true);
-  expect(Gear.isSubWeapon(GearType.cannonGunPowder2)).toBe(true);
+  expect(Gear.isSubWeapon(GearType.powderKeg2)).toBe(true);
   expect(Gear.isSubWeapon(GearType.controller)).toBe(true);
   expect(Gear.isSubWeapon(GearType.foxMarble)).toBe(true);
   expect(Gear.isSubWeapon(GearType.chessPiece)).toBe(true);
