@@ -1,5 +1,8 @@
 {
   "name": "@malib/gearlogic",
   "version": "0.0.1",
-  "type": "commonjs"
+  "type": "commonjs",
+  "dependencies": {
+    "@malib/gear": "^0.0.1"
+  }
 }
