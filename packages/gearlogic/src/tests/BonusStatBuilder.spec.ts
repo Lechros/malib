@@ -1,5 +1,5 @@
 import { Gear, GearPropType } from "@malib/gear";
-import { BonusStatBuilder, BonusStatType } from "@malib/gearlogic";
+import { BonusStatBuilder, BonusStatType } from "..";
 
 test("init BonusStatBuilder", () => {
   const gear = new Gear();
