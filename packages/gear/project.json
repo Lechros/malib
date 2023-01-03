@@ -1,0 +1,41 @@
+{
+  "name": "gear",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/gear/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/esbuild:esbuild",
+      "outputs": [ "{options.outputPath}" ],
+      "options": {
+        "outputPath": "dist/packages/gear",
+        "main": "packages/gear/src/index.ts",
+        "tsConfig": "packages/gear/tsconfig.lib.json",
+        "assets": [ "packages/gear/*.md" ]
+      }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs gear {args.ver} {args.tag}"
+      },
+      "dependsOn": [ "build" ]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [ "{options.outputFile}" ],
+      "options": {
+        "lintFilePatterns": [ "packages/gear/**/*.ts" ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [ "{workspaceRoot}/coverage/{projectRoot}" ],
+      "options": {
+        "jestConfig": "packages/gear/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": [ ]
+}

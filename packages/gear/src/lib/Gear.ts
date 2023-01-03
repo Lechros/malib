@@ -1,10 +1,8 @@
-import { getGearDataNode, IGearReq } from "maplegear-resource";
 import { GearPropType } from "./GearPropType";
 import { GearType } from "./GearType";
 import { Potential } from "./Potential";
 import { PotentialGrade } from "./PotentialGrade";
 import { Soul } from "./Soul";
-import { asEnum } from "./util";
 
 /**
  * 장비 착용 제한
@@ -24,18 +22,6 @@ export class GearReq {
   job = 0;
   /** 착용 가능 직업 */
   specJob = 0;
-
-  static createFromNode(node: IGearReq): GearReq {
-    const req = new GearReq();
-    req.level = node.level ?? 0;
-    req.str = node.str ?? 0;
-    req.luk = node.luk ?? 0;
-    req.dex = node.dex ?? 0;
-    req.int = node.int ?? 0;
-    req.job = node.job ?? 0;
-    req.specJob = node.specJob ?? 0;
-    return req;
-  }
 }
 
 /**
@@ -208,88 +194,6 @@ export class Gear {
       diff += Math.floor(option.diff / Gear.getPropTypeWeight(type));
     }
     return diff;
-  }
-
-  /**
-   * 장비 ID로부터 장비를 생성합니다.
-   * @param gearID 장비 ID
-   * @returns 장비; 존재하지 않을 경우 `undefined`
-   */
-  static createFromID(gearID: number): Gear | undefined {
-    const data = getGearDataNode(gearID);
-    if(!data) {
-      return undefined;
-    }
-
-    const gear: Gear = new Gear();
-    gear.itemID = gearID;
-    gear.type = Gear.getGearType(gearID);
-    gear.name = data.name;
-    gear.desc = data.desc ?? "";
-    gear.icon = data.icon;
-    gear.origin = data.origin;
-    gear.totalUpgradeCount = data.tuc ?? 0;
-    if(data.req) {
-      gear.req = GearReq.createFromNode(data.req);
-    }
-    if(data.options) {
-      for(const [key, value] of Object.entries(data.options)) {
-        const type = asEnum(key, GearPropType);
-        gear.option(type).base = value;
-      }
-    }
-    if(data.props) {
-      for(const [key, value] of Object.entries(data.props)) {
-        const type = asEnum(key, GearPropType);
-        gear.props.set(type, value);
-      }
-    }
-    if(data.pots) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      gear.potentials = data.pots.map(ol => Potential.createFromID(ol.option, ol.level)!);
-    }
-
-    if(gear.totalUpgradeCount > 0) {
-      gear.canPotential = true;
-    }
-    else if(Gear.specialCanPotential(gear.type) ||
-        Gear.isSubWeapon(gear.type) ||
-        gear.getBooleanValue(GearPropType.tucIgnoreForPotential)
-    ) {
-      gear.canPotential = true;
-    }
-    if(Gear.isMechanicGear(gear.type) || Gear.isDragonGear(gear.type)) {
-      gear.canPotential = false;
-    }
-
-    let value: number;
-    if((value = gear.getPropValue(GearPropType.fixedGrade))) {
-      switch(value) {
-        case 2: gear.grade = PotentialGrade.rare; break;
-        case 3: gear.grade = PotentialGrade.epic; break;
-        case 5: gear.grade = PotentialGrade.unique; break;
-        case 7: gear.grade = PotentialGrade.legendary; break;
-        default: gear.grade = value - 1; break;
-      }
-    }
-    if(gear.potentials.some(opt => opt !== undefined) && gear.grade === PotentialGrade.normal) {
-      gear.grade = PotentialGrade.rare;
-    }
-
-    if(gear.type === GearType.demonShield) {
-      value = gear.option(GearPropType.incMMP).base;
-      if(value > 0) {
-        gear.option(GearPropType.incMDF).base = value;
-        gear.option(GearPropType.incMMP).base = 0;
-      }
-    }
-
-    gear.maxStar = gear.getMaxStar();
-    const preStar = gear.getPropValue(GearPropType.incCHUC);
-    if(preStar > 0) {
-      gear.star = preStar;
-    }
-    return gear;
   }
 
   /**

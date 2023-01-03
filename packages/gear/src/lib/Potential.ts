@@ -1,8 +1,6 @@
-import { getItemOptionNode } from "maplegear-resource";
 import { Gear } from "./Gear";
 import { GearPropType } from "./GearPropType";
 import { GearType } from "./GearType";
-import { asEnum } from "./util";
 
 /**
  * 잠재옵션
@@ -34,41 +32,6 @@ export class Potential {
       summary = summary.replace("#" + GearPropType[type], (this.option.get(type) ?? 0).toString());
     }
     return summary;
-  }
-
-  /**
-   * 잠재옵션 ID로부터 잠재옵션을 생성합니다.
-   *
-   * - `incDAMr` 속성과 `boss` 속성이 있을 경우 `incBDR` 속성으로 대체됩니다.
-   * @param code 잠재옵션 ID
-   * @param potentialLevel 장비의 착용 가능 레벨로 계산되는 잠재옵션 레벨. `getPotentialLevel`로 계산 가능
-   * @returns 잠재옵션; 존재하지 않을 경우 `undefined`
-   */
-  static createFromID(code: number, potentialLevel: number): Potential | undefined {
-    const data = getItemOptionNode(code);
-    if(!data) {
-      return undefined;
-    }
-
-    const potential = new Potential();
-    potential.code = code;
-    potential.optionType = data.optionType ?? 0;
-    potential.reqLevel = data.reqLevel ?? 0;
-    potential.summary = data.string;
-    for(const [key, value] of Object.entries(data.level[potentialLevel])) {
-      const type = asEnum(key, GearPropType);
-      if(typeof value === "number") {
-        potential.option.set(type, value);
-      }
-    }
-    const incDAMr = potential.option.get(GearPropType.incDAMr) ?? 0;
-    if(incDAMr > 0 && (potential.option.get(GearPropType.boss) ?? 0) > 0) {
-      potential.option.delete(GearPropType.incDAMr);
-      potential.option.delete(GearPropType.boss);
-      potential.option.set(GearPropType.incBDR, incDAMr);
-      potential.summary = potential.summary.replace("#incDAMr", "#incBDR");
-    }
-    return potential;
   }
 
   /**
