@@ -308,9 +308,9 @@ export class Gear {
       case GearType.magicArrow:
       case GearType.card:
       case GearType.orb:
-      case GearType.novaMarrow:
-      case GearType.soulBangle:
-      case GearType.mailin:
+      case GearType.dragonEssence:
+      case GearType.soulRing:
+      case GearType.magnum:
       case GearType.emblem:
         return true;
       default:
@@ -335,8 +335,6 @@ export class Gear {
         return GearType.tuner;
       case 1214:
         return GearType.breathShooter;
-      // case 1403:
-      //   return GearType.boxingCannon;
       case 1404:
         return GearType.chakram;
     }

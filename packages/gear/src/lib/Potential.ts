@@ -70,7 +70,7 @@ export class Potential {
                     gearType === GearType.glove ||
                     gearType === GearType.cape ||
                     gearType === GearType.belt ||
-                    gearType === GearType.shoulderPad;
+                    gearType === GearType.shoulder;
       case 40:
         return gearType === GearType.faceAccessory ||
                     gearType === GearType.eyeAccessory ||
