@@ -1,8 +1,5 @@
 {
   "name": "@malib/resource",
   "version": "0.0.1",
-  "type": "commonjs",
-  "dependencies": {
-    "@malib/gear": "^0.0.1"
-  }
+  "type": "module"
 }
