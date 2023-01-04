@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@malib/create-gear": ["packages/create-gear/src/index.ts"],
       "@malib/gear": ["packages/gear/src/index.ts"],
       "@malib/gearlogic": ["packages/gearlogic/src/index.ts"],
       "@malib/resource": ["packages/resource/src/index.ts"]
