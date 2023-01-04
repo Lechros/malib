@@ -1,19 +1,19 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from "vite";
 
-import viteTsConfigPaths from 'vite-tsconfig-paths';
-import dts from 'vite-plugin-dts';
-import { join } from 'path';
+import viteTsConfigPaths from "vite-tsconfig-paths";
+import dts from "vite-plugin-dts";
+import { join } from "path";
 
 export default defineConfig({
   plugins: [
     dts({
-      tsConfigFilePath: join(__dirname, 'tsconfig.lib.json'),
+      tsConfigFilePath: join(__dirname, "tsconfig.lib.json"),
       // Faster builds by skipping tests. Set this to false to enable type checking.
       skipDiagnostics: true,
     }),
 
     viteTsConfigPaths({
-      root: '../../',
+      root: "../../",
     }),
   ],
 
@@ -22,12 +22,12 @@ export default defineConfig({
   build: {
     lib: {
       // Could also be a dictionary or array of multiple entry points.
-      entry: 'src/index.ts',
-      name: 'resource',
-      fileName: 'index',
+      entry: "src/index.ts",
+      name: "resource",
+      fileName: "index",
       // Change this to the formats you want to support.
       // Don't forgot to update your package.json as well.
-      formats: ['es', 'cjs'],
+      formats: ["es", "cjs"],
     },
     rollupOptions: {
       // External packages that should not be bundled into your library.
@@ -38,9 +38,9 @@ export default defineConfig({
   test: {
     globals: true,
     cache: {
-      dir: '../../node_modules/.vitest',
+      dir: "../../node_modules/.vitest",
     },
-    environment: 'jsdom',
-    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    environment: "jsdom",
+    include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
   },
 });
