@@ -1,5 +1,11 @@
 {
   "name": "@malib/create-gear",
   "version": "0.0.1",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@malib/gear": "^0.0.1"
+  },
+  "devDependencies": {
+    "@malib/resource": "^0.0.1"
+  }
 }
