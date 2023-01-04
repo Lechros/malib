@@ -1,5 +1,5 @@
 import { Gear, GearPropType, GearType } from "@malib/gear";
-import { BonusStatType } from "./BonusStatType";
+import { BonusStatType } from "./bonusstattype";
 
 export type BonusStatGrade = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
@@ -8,7 +8,7 @@ export type BonusStatGrade = 1 | 2 | 3 | 4 | 5 | 6 | 7;
  *
  * - '보스 아레나 엠블렘'은 지원하지 않습니다.
  */
-export class BonusStatBuilder {
+export class BonusStatLogic {
   gear: Gear | undefined;
 
   constructor(gear?: Gear) {
@@ -22,15 +22,15 @@ export class BonusStatBuilder {
    * @returns 추가옵션 부여애 성공했을 경우 `true`; 아닐 경우 `false`
    */
   addBonusStat(type: BonusStatType, grade: BonusStatGrade): boolean {
-    if(!this.gear) {
+    if (!this.gear) {
       return false;
     }
 
     const stat = this.getBonusStatOption(type, grade);
-    if(stat.size === 0) {
+    if (stat.size === 0) {
       return false;
     }
-    for(const [propType, value] of stat) {
+    for (const [propType, value] of stat) {
       this.gear.option(propType).bonus += value;
     }
     return true;
@@ -41,28 +41,31 @@ export class BonusStatBuilder {
    * @returns 추가옵션 제거에 성공했을 경우 `true`; 아닐 경우 `false`
    */
   resetBonusStat(): boolean {
-    if(!this.gear) {
+    if (!this.gear) {
       return false;
     }
 
-    for(const [, option] of this.gear.options) {
+    for (const [, option] of this.gear.options) {
       option.bonus = 0;
     }
     return true;
   }
 
-  getBonusStatOption(type: BonusStatType, grade: BonusStatGrade): Map<GearPropType, number> {
-    const propTypes = BonusStatBuilder.getGearPropType(type);
+  getBonusStatOption(
+    type: BonusStatType,
+    grade: BonusStatGrade
+  ): Map<GearPropType, number> {
+    const propTypes = BonusStatLogic.getGearPropType(type);
     const value = this.getBonusStatValue(type, grade);
 
-    if(value === 0) {
+    if (value === 0) {
       return new Map();
     }
-    return new Map(propTypes.map(propType => [propType, value]));
+    return new Map(propTypes.map((propType) => [propType, value]));
   }
 
   getBonusStatValue(type: BonusStatType, grade: BonusStatGrade): number {
-    if(!this.gear) {
+    if (!this.gear) {
       return 0;
     }
 
@@ -70,14 +73,14 @@ export class BonusStatBuilder {
     const bossReward = this.gear.getBooleanValue(GearPropType.bossReward);
     const gearType = this.gear.type;
 
-    if(reqLevel < 0) {
+    if (reqLevel < 0) {
       return 0;
     }
-    if(bossReward && grade < 3) {
+    if (bossReward && grade < 3) {
       return 0;
     }
 
-    switch(type) {
+    switch (type) {
       case BonusStatType.STR:
       case BonusStatType.DEX:
       case BonusStatType.INT:
@@ -94,12 +97,18 @@ export class BonusStatBuilder {
         return (Math.floor(reqLevel / 20) + 1) * grade;
       case BonusStatType.PAD:
       case BonusStatType.MAD:
-        if(Gear.isWeapon(gearType)) {
-          const data = bossReward ? [0, 0, 1, 1.4666, 2.0166, 2.663, 3.4166] : [1, 2.222, 3.63, 5.325, 7.32, 8.777, 10.25];
+        if (Gear.isWeapon(gearType)) {
+          const data = bossReward
+            ? [0, 0, 1, 1.4666, 2.0166, 2.663, 3.4166]
+            : [1, 2.222, 3.63, 5.325, 7.32, 8.777, 10.25];
           let att = this.gear.option(GearPropType.incPAD).base;
-          if(gearType === GearType.heavySword || gearType === GearType.longSword) {
-            if(gearType === GearType.longSword) {
-              switch(att) {
+          if (
+            gearType === GearType.heavySword ||
+            gearType === GearType.longSword
+          ) {
+            if (gearType === GearType.longSword) {
+              switch (att) {
+                /* eslint-disable prettier/prettier */
                 case 100: att = 102; break;
                 case 103: att = 105; break;
                 case 105: att = 107; break;
@@ -110,27 +119,33 @@ export class BonusStatBuilder {
                 case 203: att = 207; break;
                 case 293: att = 297; break;
                 case 337: att = 342; break;
+                /* eslint-enable */
               }
             }
-            const value = reqLevel > 180 ? 6 : (reqLevel > 160 ? 5 : (reqLevel > 110 ? 4 : 3));
-            return Math.ceil(att * data[grade - 1] * value / 100);
-          }
-          else {
+            const value =
+              reqLevel > 180 ? 6 : reqLevel > 160 ? 5 : reqLevel > 110 ? 4 : 3;
+            return Math.ceil((att * data[grade - 1] * value) / 100);
+          } else {
             const mad = this.gear.option(GearPropType.incMAD).base;
-            if(type === BonusStatType.MAD && mad >= att) {
+            if (type === BonusStatType.MAD && mad >= att) {
               att = mad;
             }
-            if(bossReward) {
-              const value = reqLevel > 160 ? 18 : (reqLevel > 150 ? 15 : (reqLevel > 110 ? 12 : 9));
-              return Math.ceil(att * data[grade - 1] * value / 100);
-            }
-            else {
+            if (bossReward) {
+              const value =
+                reqLevel > 160
+                  ? 18
+                  : reqLevel > 150
+                  ? 15
+                  : reqLevel > 110
+                  ? 12
+                  : 9;
+              return Math.ceil((att * data[grade - 1] * value) / 100);
+            } else {
               const value = reqLevel > 110 ? 4 : 3;
-              return Math.ceil(att * data[grade - 1] * value / 100);
+              return Math.ceil((att * data[grade - 1] * value) / 100);
             }
           }
-        }
-        else if(reqLevel < 60) {
+        } else if (reqLevel < 60) {
           return 0;
         }
         return grade;
@@ -139,22 +154,22 @@ export class BonusStatBuilder {
         return Math.floor(reqLevel / 10) * 30 * grade;
       case BonusStatType.speed:
       case BonusStatType.jump:
-        if(Gear.isWeapon(gearType)) {
+        if (Gear.isWeapon(gearType)) {
           return 0;
         }
         return grade;
       case BonusStatType.damR:
-        if(!Gear.isWeapon(gearType)) {
+        if (!Gear.isWeapon(gearType)) {
           return 0;
         }
         return grade;
       case BonusStatType.bdR:
-        if(reqLevel < 90 || !Gear.isWeapon(gearType)) {
+        if (reqLevel < 90 || !Gear.isWeapon(gearType)) {
           return 0;
         }
         return 2 * grade;
       case BonusStatType.allStatR:
-        if(reqLevel < 70 && !Gear.isWeapon(gearType)) {
+        if (reqLevel < 70 && !Gear.isWeapon(gearType)) {
           return 0;
         }
         return grade;
@@ -166,7 +181,7 @@ export class BonusStatBuilder {
   }
 
   static getGearPropType(type: BonusStatType): GearPropType[] {
-    switch(type) {
+    switch (type) {
       case BonusStatType.STR:
         return [GearPropType.incSTR];
       case BonusStatType.DEX:

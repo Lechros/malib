@@ -1,5 +1,5 @@
-export { BonusStatBuilder } from "./lib/BonusStatBuilder";
-export { BonusStatType } from "./lib/BonusStatType";
-export { EnhancementBuilder } from "./lib/EnhancementBuilder";
-export { Scroll } from "./lib/Scroll";
-export { UpgradeBuilder } from "./lib/UpgradeBuilder";
+export { BonusStatLogic as BonusStatBuilder } from "./lib/bonusstat";
+export { BonusStatType } from "./lib/bonusstattype";
+export { EnhancementLogic as EnhancementBuilder } from "./lib/enhancement";
+export { Scroll } from "./lib/scroll";
+export { UpgradeLogic as UpgradeBuilder } from "./lib/upgrade";

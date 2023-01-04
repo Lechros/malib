@@ -1,7 +1,7 @@
-export { Gear } from "./lib/Gear";
-export { GearPropType } from "./lib/GearPropType";
-export { GearType } from "./lib/GearType";
-export { Potential } from "./lib/Potential";
-export { PotentialGrade } from "./lib/PotentialGrade";
-export { Soul, getSoulMobNames } from "./lib/Soul";
-export { SoulType } from "./lib/SoulType";
+export { Gear } from "./lib/gear";
+export { GearPropType } from "./lib/gearproptype";
+export { GearType } from "./lib/geartype";
+export { Potential } from "./lib/potential";
+export { PotentialGrade } from "./lib/potentialgrade";
+export { Soul, getSoulMobNames } from "./lib/soul";
+export { SoulType } from "./lib/soultype";

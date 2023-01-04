@@ -1,8 +1,8 @@
-import { GearPropType } from "./GearPropType";
-import { GearType } from "./GearType";
-import { Potential } from "./Potential";
-import { PotentialGrade } from "./PotentialGrade";
-import { Soul } from "./Soul";
+import { GearPropType } from "./gearproptype";
+import { GearType } from "./geartype";
+import { Potential } from "./potential";
+import { PotentialGrade } from "./potentialgrade";
+import { Soul } from "./soul";
 
 /**
  * 장비 착용 제한

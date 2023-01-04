@@ -1,4 +1,4 @@
-import { GearPropType } from "./GearPropType";
+import { GearPropType } from "./gearproptype";
 
 type Enum = {
   [key: string]: number | string;

@@ -1,5 +1,5 @@
-import { GearPropType } from "./GearPropType";
-import { SoulType } from "./SoulType";
+import { GearPropType } from "./gearproptype";
+import { SoulType } from "./soultype";
 
 type SoulMobName = keyof typeof soulData;
 

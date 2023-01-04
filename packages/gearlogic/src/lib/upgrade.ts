@@ -1,10 +1,10 @@
 import { Gear, GearPropType } from "@malib/gear";
-import { Scroll, SpellTraceProbability, SpellTraceStatType } from "./Scroll";
+import { Scroll, SpellTraceProbability, SpellTraceStatType } from "./scroll";
 
 /**
  * 주문서 업그레이드 관련 기능을 제공합니다.
  */
-export class UpgradeBuilder {
+export class UpgradeLogic {
   gear: Gear | undefined;
 
   constructor(gear?: Gear) {
@@ -15,7 +15,7 @@ export class UpgradeBuilder {
    * 업그레이드 가능 횟수
    */
   get upgradeLeft(): number {
-    if(!this.gear) {
+    if (!this.gear) {
       return 0;
     }
 
@@ -32,17 +32,17 @@ export class UpgradeBuilder {
    * @returns 황금망치가 적용됐을 경우 `true`; 아닐 경우 `false`
    */
   applyGoldHammer(): boolean {
-    if(!this.gear) {
+    if (!this.gear) {
       return false;
     }
-    if(
+    if (
       this.gear.getBooleanValue(GearPropType.blockGoldHammer) ||
       this.gear.getBooleanValue(GearPropType.onlyUpgrade) ||
       this.gear.totalUpgradeCount <= 0
     ) {
       return false;
     }
-    if(this.gear.hammerCount > 0) {
+    if (this.gear.hammerCount > 0) {
       return false;
     }
     this.gear.hammerCount = 1;
@@ -56,14 +56,14 @@ export class UpgradeBuilder {
    * @returns 주문서가 적용됐을 경우 `true`; 아닐 경우 `false`
    */
   applyScroll(scroll: Scroll): boolean {
-    if(!this.gear) {
+    if (!this.gear) {
       return false;
     }
-    if(this.upgradeLeft < 1) {
+    if (this.upgradeLeft < 1) {
       return false;
     }
     this.gear.upgradeCount += 1;
-    for(const [type, value] of scroll.stat) {
+    for (const [type, value] of scroll.stat) {
       this.gear.option(type).upgrade += value;
     }
     return true;
@@ -75,12 +75,15 @@ export class UpgradeBuilder {
    * @param probability 주문의 흔적 성공 확률 %
    * @returns 주문서가 적용됐을 경우 `true`; 아닐 경우 `false`
    */
-  applySpellTrace(type: SpellTraceStatType, probability: SpellTraceProbability): boolean {
-    if(!this.gear) {
+  applySpellTrace(
+    type: SpellTraceStatType,
+    probability: SpellTraceProbability
+  ): boolean {
+    if (!this.gear) {
       return false;
     }
     const spellTrace = Scroll.getSpellTraceScroll(this.gear, type, probability);
-    if(!spellTrace) {
+    if (!spellTrace) {
       return false;
     }
     return this.applyScroll(spellTrace);
@@ -93,10 +96,10 @@ export class UpgradeBuilder {
    * @returns 감소됐을 경우 `true`; 아닐 경우 `false`
    */
   addUpgradeFail(): boolean {
-    if(!this.gear) {
+    if (!this.gear) {
       return false;
     }
-    if(this.upgradeLeft < 1) {
+    if (this.upgradeLeft < 1) {
       return false;
     }
     this.gear.failCount += 1;
@@ -110,10 +113,10 @@ export class UpgradeBuilder {
    * @returns 복구했을 경우 `true`; 아닐 경우 `false`
    */
   restoreUpgradeFail(): boolean {
-    if(!this.gear) {
+    if (!this.gear) {
       return false;
     }
-    if(this.gear.failCount < 1) {
+    if (this.gear.failCount < 1) {
       return false;
     }
     this.gear.failCount -= 1;
@@ -128,13 +131,13 @@ export class UpgradeBuilder {
    * @returns 초기화했을 경우 `true`; 아닐 경우 `false`
    */
   resetUpgrade(): boolean {
-    if(!this.gear) {
+    if (!this.gear) {
       return false;
     }
     this.gear.upgradeCount = 0;
     this.gear.failCount = 0;
     this.gear.hammerCount = 0;
-    for(const [, option] of this.gear.options) {
+    for (const [, option] of this.gear.options) {
       option.upgrade = 0;
     }
     return true;

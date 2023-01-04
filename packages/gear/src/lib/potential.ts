@@ -1,6 +1,6 @@
-import { Gear } from "./Gear";
-import { GearPropType } from "./GearPropType";
-import { GearType } from "./GearType";
+import { Gear } from "./gear";
+import { GearPropType } from "./gearproptype";
+import { GearType } from "./geartype";
 
 /**
  * 잠재옵션
