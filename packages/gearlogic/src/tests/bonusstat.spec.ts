@@ -101,3 +101,16 @@ test("addBonusStat zero weapon", () => {
   expect(bl.addBonusStat(BonusStatType.PAD, 5)).toBe(true);
   expect(bl.gear?.option(GearPropType.incPAD).bonus).toBe(151);
 });
+
+test("resetBonusStat", () => {
+  const bl = new BonusStatLogic();
+  bl.gear = new Gear();
+  bl.gear.option(GearPropType.incSTR).bonus = 15;
+  bl.gear.option(GearPropType.incPAD).bonus = 15;
+  bl.addBonusStat(BonusStatType.INT, 5);
+  bl.resetBonusStat();
+  expect(bl.gear.option(GearPropType.incSTR).bonus).toBe(0);
+  expect(bl.gear.option(GearPropType.incINT).bonus).toBe(0);
+  expect(bl.gear.option(GearPropType.incPAD).bonus).toBe(0);
+  expect(bl.gear.option(GearPropType.incMAD).bonus).toBe(0);
+});
