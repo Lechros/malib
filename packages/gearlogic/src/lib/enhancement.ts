@@ -3,7 +3,7 @@ import { Gear, GearPropType, GearType } from "@malib/gear";
 /**
  * 장비 강화 관련 기능을 제공합니다.
  *
- * 스타포스 강화 이후 주문서 수치가 변동될 경우 `recalculate` 함수를 호출해야 합니다.
+ * - 스타포스 강화 이후 주문서 수치가 변동될 경우 `recalculate` 함수를 호출해야 합니다.
  */
 export class EnhancementLogic {
   private static readonly MAX_STARFORCE = 25;
@@ -17,10 +17,8 @@ export class EnhancementLogic {
 
   /**
    * 장비에 스타포스 강화를 1회 적용합니다.
-   *
-   * 슈페리얼 장비, 놀라운 장비강화 주문서가 적용된 장비에도 사용 가능합니다.
-   * @param ignoreMaxStar 장비의 최대 강화 수치 초과로 강화하는 지 여부
-   * - ex) 착용 제한 레벨이 130인 장비는 최대 강화 수치가 20성이지만 `ignoreMaxStar`가 `true`일 경우 25성까지 강화 가능
+   * - 업그레이드가 완료되지 않은 장비, 놀라운 장비강화 주문서가 적용된 장비에도 적용됩니다.
+   * @param ignoreMaxStar 장비의 최대 강화 수치를 초과하여 강화하는지 여부
    * - 슈페리얼 장비는 최대 강화 수치를 초과할 수 없음
    * @returns 성공했을 경우 `true`; 아닐 경우 `false`
    */
@@ -101,11 +99,15 @@ export class EnhancementLogic {
           this.gear.option(GearPropType.incMAD).enchant += attData[star];
         }
       } else {
-        const pad = this.gear.option(GearPropType.incPAD).base;
+        const pad =
+          this.gear.option(GearPropType.incPAD).sum -
+          this.gear.option(GearPropType.incPAD).bonus;
         this.gear.option(GearPropType.incPAD).enchant +=
           Math.floor(pad / 50) + 1;
         if (useMad) {
-          const mad = this.gear.option(GearPropType.incMAD).base;
+          const mad =
+            this.gear.option(GearPropType.incMAD).sum -
+            this.gear.option(GearPropType.incMAD).bonus;
           this.gear.option(GearPropType.incMAD).enchant +=
             Math.floor(mad / 50) + 1;
         }
@@ -131,7 +133,9 @@ export class EnhancementLogic {
     }
     // pdd
     if (!isWeaponEnhance && this.gear.type !== GearType.machineHeart) {
-      const pdd = this.gear.option(GearPropType.incPDD).base;
+      const pdd =
+        this.gear.option(GearPropType.incPDD).sum -
+        this.gear.option(GearPropType.incPDD).bonus;
       this.gear.option(GearPropType.incPDD).enchant += Math.floor(pdd / 20) + 1;
     }
     // hp, mp
@@ -204,7 +208,9 @@ export class EnhancementLogic {
       }
     }
     // 방어력
-    const pdd = this.gear.option(GearPropType.incPDD).base;
+    const pdd =
+      this.gear.option(GearPropType.incPDD).sum -
+      this.gear.option(GearPropType.incPDD).bonus;
     this.gear.option(GearPropType.incPDD).enchant += Math.floor(pdd / 20) + 1;
 
     return true;
@@ -229,11 +235,22 @@ export class EnhancementLogic {
     if (this.gear.getBooleanValue(GearPropType.incCHUC)) {
       return false;
     }
+    if (this.gear.getBooleanValue(GearPropType.superiorEqp)) {
+      return false;
+    }
     if (
       (this.gear.star >= this.gear.maxStar && !ignoreMaxStar) ||
       this.gear.star >= EnhancementLogic.MAX_AMAZING
     ) {
       return false;
+    }
+
+    if (!this.gear.amazing) {
+      this.gear.amazing = true;
+      this.gear.maxStar = Math.min(
+        this.gear.maxStar,
+        EnhancementLogic.MAX_AMAZING
+      );
     }
 
     this.gear.star += 1;
@@ -300,7 +317,10 @@ export class EnhancementLogic {
     }
 
     this.gear.star = 0;
-    this.gear.amazing = false;
+    if (this.gear.amazing) {
+      this.gear.amazing = false;
+      this.gear.maxStar = this.gear.getMaxStar();
+    }
     for (const [, option] of this.gear.options) {
       option.enchant = 0;
     }
