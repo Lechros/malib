@@ -8,3 +8,5 @@ const gearJson: IGearDataJson = gears;
 const itemOptionJson: IItemOptionJson = itemoptions;
 
 export { gearJson, itemOptionJson };
+export * from "./lib/interfaces/gear";
+export * from "./lib/interfaces/itemoption";
