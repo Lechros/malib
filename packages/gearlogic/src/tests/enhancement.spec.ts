@@ -1,5 +1,5 @@
 import { Gear, GearPropType, GearType } from "@malib/gear";
-import { fail } from "assert";
+import { fail } from "assert/strict";
 import { EnhancementLogic } from "../lib/enhancement";
 import { createGearFromID } from "./util";
 
@@ -229,6 +229,19 @@ describe("starforce stat", () => {
     }
     expect(el.gear.option(GearPropType.incPAD).enchant).toBe(7);
   });
+  it("superior gear", () => {
+    const el = new EnhancementLogic();
+    el.gear = createGearFromID(1132174); // 타일런트 히아데스 벨트
+    if (!el.gear) {
+      fail();
+    }
+    for (let i = 0; i < 10; i++) {
+      el.addStarforce();
+    }
+    expect(el.gear.option(GearPropType.incSTR).enchant).toBe(115);
+    expect(el.gear.option(GearPropType.incPAD).enchant).toBe(55);
+    expect(el.gear.option(GearPropType.incMAD).enchant).toBe(55);
+  });
 });
 
 describe("amazing enhancement stat", () => {
@@ -259,5 +272,75 @@ describe("amazing enhancement stat", () => {
       el.addAmazingEnhancement(true);
     }
     expect(el.gear.option(GearPropType.incSTR).enchant).toBe(124);
+  });
+});
+
+describe("recalculate", () => {
+  it("should not update enhancement stat implicitly / check value", () => {
+    const el = new EnhancementLogic();
+    el.gear = new Gear();
+    el.gear.type = GearType.tuner;
+    el.gear.req.level = 200;
+    el.gear.option(GearPropType.incPAD).base = 295;
+    for (let i = 0; i < 17; i++) {
+      el.addStarforce(true);
+    }
+    expect(el.gear.option(GearPropType.incPAD).enchant).toBe(137);
+    el.gear.option(GearPropType.incPAD).upgrade = 72;
+    expect(el.gear.option(GearPropType.incPAD).enchant).toBe(137);
+    el.recalculate();
+    expect(el.gear.option(GearPropType.incPAD).enchant).toBe(161);
+  });
+  it("should return true on 0 star gear", () => {
+    const el = new EnhancementLogic();
+    el.gear = new Gear();
+    expect(el.recalculate()).toBe(true);
+  });
+  it("should work on gear with star > maxStar", () => {
+    const el = new EnhancementLogic();
+    el.gear = new Gear();
+    el.gear.star = 8;
+    el.gear.maxStar = 5;
+    expect(el.recalculate()).toBe(true);
+    expect(el.gear.star).toBe(8);
+  });
+  it("should return false on amazing enhancement gear", () => {
+    const el = new EnhancementLogic();
+    el.gear = new Gear();
+    el.gear.amazing = true;
+    expect(el.recalculate()).toBe(false);
+  });
+});
+
+describe("resetEnhancement", () => {
+  it("should return true on 0 star gear", () => {
+    const el = new EnhancementLogic();
+    el.gear = new Gear();
+    el.gear.star = 0;
+    expect(el.resetEnhancement()).toBe(true);
+  });
+  it("should reset maxStar", () => {
+    const el = new EnhancementLogic();
+    el.gear = createGearFromID(1113055); // 마이스터링
+    if (!el.gear) {
+      fail();
+    }
+    const refMaxStar = el.gear.maxStar;
+    el.addAmazingEnhancement();
+    expect(el.resetEnhancement()).toBe(true);
+    expect(el.gear.maxStar).toBe(refMaxStar);
+  });
+  it("should reset all gear stat", () => {
+    const el = new EnhancementLogic();
+    el.gear = createGearFromID(1062167); // 트릭스터 레인져팬츠
+    if (!el.gear) {
+      fail();
+    }
+    for (let i = 0; i < 17; i++) {
+      el.addStarforce();
+    }
+    expect(el.resetEnhancement()).toBe(true);
+    expect(el.gear.option(GearPropType.incDEX).enchant).toBe(0);
+    expect(el.gear.option(GearPropType.incMAD).enchant).toBe(0);
   });
 });

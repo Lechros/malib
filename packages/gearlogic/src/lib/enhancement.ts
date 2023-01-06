@@ -317,10 +317,8 @@ export class EnhancementLogic {
     }
 
     this.gear.star = 0;
-    if (this.gear.amazing) {
-      this.gear.amazing = false;
-      this.gear.maxStar = this.gear.getMaxStar();
-    }
+    this.gear.amazing = false;
+    this.gear.maxStar = this.gear.getMaxStar();
     for (const [, option] of this.gear.options) {
       option.enchant = 0;
     }
