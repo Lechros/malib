@@ -19,14 +19,14 @@ export class Scroll {
   stat: Map<GearPropType, number>;
 
   constructor(name = "", stats?: Map<GearPropType, number>) {
-    this.stat = stats ?? new Map();
     this.name = name;
+    this.stat = stats ?? new Map();
   }
 
   /**
    * 주문의 흔적 `Scroll`을 반환합니다.
    * @param gear 적용할 장비
-   * @param type 주문의 흔적 스탯
+   * @param type 주문의 흔적 스탯 (`GearPropType`)
    * @param probability 주문의 흔적 확률
    * @returns 주문의 흔적 `Scroll`; 존재하지 않을 경우 `undefined`
    */
@@ -227,7 +227,24 @@ export class Scroll {
     // acc
     if (Gear.isAccessory(gear.type)) {
       if (type === GearPropType.incAllStat) {
-        return undefined;
+        if (probability !== 30) {
+          return undefined;
+        }
+        const data = [
+          [1, 30, 4],
+          [2, 70, 7],
+          [3, 120, 10],
+        ];
+        const statValue = data[tier][0];
+
+        const name = `${probability}% ${statName} 주문서`;
+        const stat = new Map([
+          [GearPropType.incSTR, statValue],
+          [GearPropType.incDEX, statValue],
+          [GearPropType.incINT, statValue],
+          [GearPropType.incLUK, statValue],
+        ]);
+        return new Scroll(name, stat);
       }
       let data: number[];
       switch (probability) {
