@@ -6,54 +6,25 @@ import {
   Potential,
   PotentialGrade,
 } from "@malib/gear";
-import { IGearData, IItemOption } from "@malib/resource";
+import { createPotentialFromCode } from "./create-potential";
+import { IGearData } from "./interfaces/gear";
+import { gearJson } from "./resource";
 import { asEnum } from "./util";
-
-/**
- * 잠재옵션 코드로부터 잠재옵션을 생성합니다.
- * - `incDAMr` 속성과 `boss` 속성이 있을 경우 `incBDR` 속성으로 대체됩니다.
- * @param node 잠재옵션 정보
- * @param code 잠재옵션 코드
- * @param potentialLevel 장비의 착용 가능 레벨로 계산되는 잠재옵션 레벨. (`Potential.getPotentialLevel`로 계산)
- * @returns 잠재옵션
- */
-export function createPotentialFromNode(
-  node: IItemOption,
-  code: number,
-  potentialLevel: number
-): Potential {
-  const potential = new Potential();
-  potential.code = code;
-  potential.optionType = node.optionType ?? 0;
-  potential.reqLevel = node.reqLevel ?? 0;
-  potential.summary = node.string;
-  for (const [key, value] of Object.entries(node.level[potentialLevel])) {
-    const type = asEnum(key, GearPropType);
-    if (typeof value === "number") {
-      potential.option.set(type, value);
-    }
-  }
-  const incDAMr = potential.option.get(GearPropType.incDAMr) ?? 0;
-  if (incDAMr > 0 && (potential.option.get(GearPropType.boss) ?? 0) > 0) {
-    potential.option.delete(GearPropType.incDAMr);
-    potential.option.delete(GearPropType.boss);
-    potential.option.set(GearPropType.incBDR, incDAMr);
-    potential.summary = potential.summary.replace("#incDAMr", "#incBDR");
-  }
-  return potential;
-}
 
 /**
  * 장비 정보로부터 장비를 생성합니다.
  * @param node 장비 정보
  * @param id 장비 아이템 ID
- * @param getItemOptionNodeFunc 코드에 해당하는 잠재옵션 정보를 반환하는 함수
+ * @param getPotentialFunc 코드에 해당하는 잠재능력을 반환하는 함수
  * @returns 장비
  */
 export function createGearFromNode(
   node: IGearData,
   id: number,
-  getItemOptionNodeFunc: (code: number) => IItemOption
+  getPotentialFunc: (
+    code: number,
+    potentialLevel: number
+  ) => Potential | undefined
 ): Gear {
   const gear: Gear = new Gear();
   gear.itemID = id;
@@ -87,13 +58,9 @@ export function createGearFromNode(
     }
   }
   if (node.pots) {
-    gear.potentials = node.pots.map((ol) =>
-      createPotentialFromNode(
-        getItemOptionNodeFunc(ol.option),
-        ol.option,
-        ol.level
-      )
-    );
+    gear.potentials = node.pots
+      .map((ol) => getPotentialFunc(ol.option, ol.level))
+      .filter((pot): pot is Potential => pot !== undefined);
   }
 
   if (gear.totalUpgradeCount > 0) {
@@ -150,4 +117,17 @@ export function createGearFromNode(
     gear.star = preStar;
   }
   return gear;
+}
+
+/**
+ * 아이템 ID로부터 장비를 생성합니다.
+ * @param id 장비 아이템 ID
+ * @returns 장비; 존재하지 않을 경우 `undefined`
+ */
+export function createGearFromId(id: number): Gear | undefined {
+  if (!(id in gearJson)) {
+    return undefined;
+  }
+
+  return createGearFromNode(gearJson[id], id, createPotentialFromCode);
 }
