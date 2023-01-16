@@ -1,4 +1,5 @@
-import { Gear, GearPropType } from "@malib/gear";
+import { Gear } from "../gear";
+import { GearPropType } from "../gearproptype";
 import { Scroll, SpellTraceProbability, SpellTraceStatType } from "./scroll";
 
 /**

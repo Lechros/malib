@@ -1,4 +1,6 @@
-import { Gear, GearPropType, GearType } from "@malib/gear";
+import { Gear } from "../gear";
+import { GearPropType } from "../gearproptype";
+import { GearType } from "../geartype";
 import { BonusStatType } from "./bonusstattype";
 
 export type BonusStatGrade = 1 | 2 | 3 | 4 | 5 | 6 | 7;

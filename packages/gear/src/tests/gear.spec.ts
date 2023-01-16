@@ -82,6 +82,15 @@ test("test diff()", () => {
   expect(gear.diff).toBeCloseTo(24 + 15 + 24 + 5);
 });
 
+test("test upgradeLeft()", () => {
+  const gear = new Gear();
+  gear.totalUpgradeCount = 9;
+  gear.hammerCount = 1;
+  gear.failCount = 3;
+  gear.upgradeCount = 7;
+  expect(gear.upgradeLeft).toBe(0);
+});
+
 test("test isLeftWeapon()", () => {
   expect(Gear.isLeftWeapon(GearType.tuner)).toBe(true);
   expect(Gear.isLeftWeapon(GearType.soulShooter)).toBe(true);

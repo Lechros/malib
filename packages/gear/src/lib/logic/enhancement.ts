@@ -1,4 +1,6 @@
-import { Gear, GearPropType, GearType } from "@malib/gear";
+import { Gear } from "../gear";
+import { GearPropType } from "../gearproptype";
+import { GearType } from "../geartype";
 
 /**
  * 장비 강화 관련 기능을 제공합니다.

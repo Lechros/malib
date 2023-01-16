@@ -1,7 +1,4 @@
-import { GearPropType } from "@malib/gear";
-import { fail } from "assert";
-import { Scroll } from "..";
-import { createGearFromID } from "./util";
+import { GearPropType, Scroll } from "../..";
 
 describe("scroll basic functionality", () => {
   it("test constructor", () => {
@@ -22,9 +19,6 @@ describe("scroll basic functionality", () => {
 describe("spell trace normal", () => {
   it("low req level armor scroll name / stat", () => {
     const gear = createGearFromID(1005497); // T-boy의 모니터
-    if (!gear) {
-      fail();
-    }
     let scroll: Scroll | undefined;
     scroll = Scroll.getSpellTraceScroll(gear, GearPropType.incSTR, 100);
     expect(scroll?.stat.get(GearPropType.incSTR)).toBe(1);
@@ -55,9 +49,6 @@ describe("spell trace normal", () => {
   });
   it("medium req level weapon scroll name / stat", () => {
     const gear = createGearFromID(1382260); // 블랙 스태프
-    if (!gear) {
-      fail();
-    }
     let scroll: Scroll | undefined;
     scroll = Scroll.getSpellTraceScroll(gear, GearPropType.incINT, 100);
     expect(scroll?.stat.get(GearPropType.incINT)).toBe(0);
@@ -81,9 +72,6 @@ describe("spell trace normal", () => {
   });
   it("high req level accessory scroll name / stat", () => {
     const gear = createGearFromID(1022232); // 블랙빈 마크
-    if (!gear) {
-      fail();
-    }
     let scroll: Scroll | undefined;
     scroll = Scroll.getSpellTraceScroll(gear, GearPropType.incSTR, 100);
     expect(scroll?.stat.get(GearPropType.incSTR)).toBe(2);
@@ -111,18 +99,12 @@ describe("spell trace normal", () => {
 describe("spell trace invalid case", () => {
   it("accessory with probability 15", () => {
     const gear = createGearFromID(1022232); // 블랙빈 마크
-    if (!gear) {
-      fail();
-    }
     expect(
       Scroll.getSpellTraceScroll(gear, GearPropType.incSTR, 15)
     ).toBeUndefined();
   });
   it("all stat with probability 70", () => {
     const gear = createGearFromID(1022232); // 블랙빈 마크
-    if (!gear) {
-      fail();
-    }
     expect(
       Scroll.getSpellTraceScroll(gear, GearPropType.incAllStat, 70)
     ).toBeUndefined();
