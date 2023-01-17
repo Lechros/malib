@@ -6,7 +6,9 @@
   "targets": {
     "build": {
       "executor": "@nrwl/vite:build",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/packages/gear"
       }
@@ -16,21 +18,29 @@
       "options": {
         "command": "node tools/scripts/publish.mjs gear {args.ver} {args.tag}"
       },
-      "dependsOn": ["build"]
+      "dependsOn": [
+        "build"
+      ]
     },
     "test": {
       "executor": "@nrwl/vite:test",
-      "outputs": ["{projectRoot}/coverage"],
+      "outputs": [
+        "coverage/packages/gear"
+      ],
       "options": {
         "passWithNoTests": true,
-        "reportsDirectory": "{workspaceRoot}/coverage/{projectRoot}"
+        "reportsDirectory": "../../coverage/packages/gear"
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["packages/gear/**/*.ts"]
+        "lintFilePatterns": [
+          "packages/gear/**/*.ts"
+        ]
       }
     }
   },
