@@ -1,4 +1,6 @@
-import { Gear, GearPropType, GearType } from "@malib/gear";
+import { Gear } from "../gear";
+import { GearPropType } from "../gearproptype";
+import { GearType } from "../geartype";
 
 /**
  * 장비 강화 관련 기능을 제공합니다.
@@ -9,43 +11,35 @@ export class EnhancementLogic {
   private static readonly MAX_STARFORCE = 25;
   private static readonly MAX_AMAZING = 15;
 
-  gear: Gear | undefined;
-
-  constructor(gear?: Gear) {
-    this.gear = gear;
-  }
-
   /**
    * 장비에 스타포스 강화를 1회 적용합니다.
    * - 업그레이드가 완료되지 않은 장비, 놀라운 장비강화 주문서가 적용된 장비에도 적용됩니다.
+   * @param gear 강화를 적용할 장비
    * @param ignoreMaxStar 장비의 최대 강화 수치를 초과하여 강화하는지 여부
    * - 슈페리얼 장비는 최대 강화 수치를 초과할 수 없음
    * @returns 성공했을 경우 `true`; 아닐 경우 `false`
    */
-  addStarforce(ignoreMaxStar = false): boolean {
-    if (!this.gear) {
+  addStarforce(gear: Gear, ignoreMaxStar = false): boolean {
+    if (gear.getBooleanValue(GearPropType.incCHUC)) {
       return false;
     }
-    if (this.gear.getBooleanValue(GearPropType.incCHUC)) {
-      return false;
-    }
-    if (this.gear.getBooleanValue(GearPropType.superiorEqp)) {
-      return this.addSuperiorStarforce();
+    if (gear.getBooleanValue(GearPropType.superiorEqp)) {
+      return this.addSuperiorStarforce(gear);
     }
     if (
-      (this.gear.star >= this.gear.maxStar && !ignoreMaxStar) ||
-      this.gear.star >= EnhancementLogic.MAX_STARFORCE
+      (gear.star >= gear.maxStar && !ignoreMaxStar) ||
+      gear.star >= EnhancementLogic.MAX_STARFORCE
     ) {
       return false;
     }
 
-    this.gear.star += 1;
+    gear.star += 1;
 
-    const star = this.gear.star;
-    const statData = EnhancementLogic.getStatData(this.gear, false, false);
-    const attData = EnhancementLogic.getStatData(this.gear, false, true);
+    const star = gear.star;
+    const statData = EnhancementLogic.getStatData(gear, false, false);
+    const attData = EnhancementLogic.getStatData(gear, false, true);
     const isWeaponEnhance =
-      Gear.isWeapon(this.gear.type) || this.gear.type === GearType.katara;
+      Gear.isWeapon(gear.type) || gear.type === GearType.katara;
 
     // stat
     const jobStat = [
@@ -62,7 +56,7 @@ export class EnhancementLogic {
       GearPropType.incLUK,
     ];
     let statSet: Set<GearPropType>;
-    const reqJob = this.gear.req.job;
+    const reqJob = gear.req.job;
     if (reqJob === 0) {
       statSet = new Set([
         GearPropType.incSTR,
@@ -79,12 +73,12 @@ export class EnhancementLogic {
     }
     for (const type of statType) {
       if (statSet.has(type)) {
-        this.gear.option(type).enchant += statData[star];
+        gear.option(type).enchant += statData[star];
       } else if (
         star > 15 &&
-        (this.gear.option(type).base > 0 || this.gear.option(type).upgrade > 0)
+        (gear.option(type).base > 0 || gear.option(type).upgrade > 0)
       ) {
-        this.gear.option(type).enchant += statData[star];
+        gear.option(type).enchant += statData[star];
       }
     }
     // attack
@@ -92,51 +86,49 @@ export class EnhancementLogic {
       const useMad =
         reqJob === 0 ||
         Math.floor(reqJob / 2) % 2 === 1 ||
-        this.gear.option(GearPropType.incMAD).upgrade > 0;
+        gear.option(GearPropType.incMAD).upgrade > 0;
       if (star > 15) {
-        this.gear.option(GearPropType.incPAD).enchant += attData[star];
+        gear.option(GearPropType.incPAD).enchant += attData[star];
         if (useMad) {
-          this.gear.option(GearPropType.incMAD).enchant += attData[star];
+          gear.option(GearPropType.incMAD).enchant += attData[star];
         }
       } else {
         const pad =
-          this.gear.option(GearPropType.incPAD).sum -
-          this.gear.option(GearPropType.incPAD).bonus;
-        this.gear.option(GearPropType.incPAD).enchant +=
-          Math.floor(pad / 50) + 1;
+          gear.option(GearPropType.incPAD).sum -
+          gear.option(GearPropType.incPAD).bonus;
+        gear.option(GearPropType.incPAD).enchant += Math.floor(pad / 50) + 1;
         if (useMad) {
           const mad =
-            this.gear.option(GearPropType.incMAD).sum -
-            this.gear.option(GearPropType.incMAD).bonus;
-          this.gear.option(GearPropType.incMAD).enchant +=
-            Math.floor(mad / 50) + 1;
+            gear.option(GearPropType.incMAD).sum -
+            gear.option(GearPropType.incMAD).bonus;
+          gear.option(GearPropType.incMAD).enchant += Math.floor(mad / 50) + 1;
         }
       }
     } else {
-      this.gear.option(GearPropType.incPAD).enchant += attData[star];
-      this.gear.option(GearPropType.incMAD).enchant += attData[star];
+      gear.option(GearPropType.incPAD).enchant += attData[star];
+      gear.option(GearPropType.incMAD).enchant += attData[star];
 
-      if (this.gear.type === GearType.glove) {
+      if (gear.type === GearType.glove) {
         if (reqJob === 0) {
-          this.gear.option(GearPropType.incPAD).enchant +=
+          gear.option(GearPropType.incPAD).enchant +=
             EnhancementLogic.starforceGloveBonusAttData[star];
-          this.gear.option(GearPropType.incMAD).enchant +=
+          gear.option(GearPropType.incMAD).enchant +=
             EnhancementLogic.starforceGloveBonusAttData[star];
         } else if (Math.floor(reqJob / 2) % 2 === 1) {
-          this.gear.option(GearPropType.incMAD).enchant +=
+          gear.option(GearPropType.incMAD).enchant +=
             EnhancementLogic.starforceGloveBonusAttData[star];
         } else {
-          this.gear.option(GearPropType.incPAD).enchant +=
+          gear.option(GearPropType.incPAD).enchant +=
             EnhancementLogic.starforceGloveBonusAttData[star];
         }
       }
     }
     // pdd
-    if (!isWeaponEnhance && this.gear.type !== GearType.machineHeart) {
+    if (!isWeaponEnhance && gear.type !== GearType.machineHeart) {
       const pdd =
-        this.gear.option(GearPropType.incPDD).sum -
-        this.gear.option(GearPropType.incPDD).bonus;
-      this.gear.option(GearPropType.incPDD).enchant += Math.floor(pdd / 20) + 1;
+        gear.option(GearPropType.incPDD).sum -
+        gear.option(GearPropType.incPDD).bonus;
+      gear.option(GearPropType.incPDD).enchant += Math.floor(pdd / 20) + 1;
     }
     // hp, mp
     const mhpTypes = [
@@ -152,19 +144,19 @@ export class EnhancementLogic {
       GearType.shield,
     ];
     if (isWeaponEnhance) {
-      this.gear.option(GearPropType.incMHP).enchant +=
+      gear.option(GearPropType.incMHP).enchant +=
         EnhancementLogic.starforceMhpData[star];
-      this.gear.option(GearPropType.incMMP).enchant +=
+      gear.option(GearPropType.incMMP).enchant +=
         EnhancementLogic.starforceMhpData[star];
-    } else if (mhpTypes.includes(this.gear.type)) {
-      this.gear.option(GearPropType.incMHP).enchant +=
+    } else if (mhpTypes.includes(gear.type)) {
+      gear.option(GearPropType.incMHP).enchant +=
         EnhancementLogic.starforceMhpData[star];
     }
     // speed, jump
-    if (this.gear.type === GearType.shoes) {
-      this.gear.option(GearPropType.incSpeed).enchant +=
+    if (gear.type === GearType.shoes) {
+      gear.option(GearPropType.incSpeed).enchant +=
         EnhancementLogic.starforceSpeedJumpData[star];
-      this.gear.option(GearPropType.incJump).enchant +=
+      gear.option(GearPropType.incJump).enchant +=
         EnhancementLogic.starforceSpeedJumpData[star];
     }
 
@@ -174,19 +166,16 @@ export class EnhancementLogic {
   /**
    * 슈페리얼 장비에 스타포스 강화를 1회 적용합니다.
    */
-  private addSuperiorStarforce(): boolean {
-    if (!this.gear) {
-      return false;
-    }
-    if (this.gear.star >= this.gear.maxStar) {
+  private addSuperiorStarforce(gear: Gear): boolean {
+    if (gear.star >= gear.maxStar) {
       return false;
     }
 
-    this.gear.star += 1;
+    gear.star += 1;
 
-    const star = this.gear.star;
-    const statData = EnhancementLogic.getStatData(this.gear, false, false);
-    const attData = EnhancementLogic.getStatData(this.gear, false, true);
+    const star = gear.star;
+    const statData = EnhancementLogic.getStatData(gear, false, false);
+    const attData = EnhancementLogic.getStatData(gear, false, true);
 
     // stat
     const statType = [
@@ -196,22 +185,22 @@ export class EnhancementLogic {
       GearPropType.incLUK,
     ];
     for (const type of statType) {
-      if (this.gear.option(type).base > 0) {
-        this.gear.option(type).enchant += statData[star];
+      if (gear.option(type).base > 0) {
+        gear.option(type).enchant += statData[star];
       }
     }
     // 공격력, 마력
     const attType = [GearPropType.incPAD, GearPropType.incMAD];
     for (const type of attType) {
-      if (this.gear.option(type).base > 0) {
-        this.gear.option(type).enchant += attData[star];
+      if (gear.option(type).base > 0) {
+        gear.option(type).enchant += attData[star];
       }
     }
     // 방어력
     const pdd =
-      this.gear.option(GearPropType.incPDD).sum -
-      this.gear.option(GearPropType.incPDD).bonus;
-    this.gear.option(GearPropType.incPDD).enchant += Math.floor(pdd / 20) + 1;
+      gear.option(GearPropType.incPDD).sum -
+      gear.option(GearPropType.incPDD).bonus;
+    gear.option(GearPropType.incPDD).enchant += Math.floor(pdd / 20) + 1;
 
     return true;
   }
@@ -220,6 +209,7 @@ export class EnhancementLogic {
    * 장비에 놀라운 장비강화 주문서를 1회 적용합니다.
    *
    * 스타포스가 적용된 장비에도 사용 가능합니다. 슈페리얼 장비에는 적용되지 않습니다.
+   * @param gear 강화를 적용할 장비
    * @param ignoreMaxStar 장비의 최대 강화 수치 초과로 강화하는 지 여부
    * - ex) 착용 제한 레벨이 100인 장비는 최대 강화 수치가 8성이지만 `ignoreMaxStar`가 `true`일 경우 15성까지 강화 가능
    * @param bonus 보너스 스탯 적용 여부
@@ -228,38 +218,36 @@ export class EnhancementLogic {
    * - 주무기, 블레이드, 방패: 공격력, 마력 +1
    * @returns 성공했을 경우 `true`; 아닐 경우 `false`
    */
-  addAmazingEnhancement(bonus = false, ignoreMaxStar = false): boolean {
-    if (!this.gear) {
+  addAmazingEnhancement(
+    gear: Gear,
+    bonus = false,
+    ignoreMaxStar = false
+  ): boolean {
+    if (gear.getBooleanValue(GearPropType.incCHUC)) {
       return false;
     }
-    if (this.gear.getBooleanValue(GearPropType.incCHUC)) {
-      return false;
-    }
-    if (this.gear.getBooleanValue(GearPropType.superiorEqp)) {
+    if (gear.getBooleanValue(GearPropType.superiorEqp)) {
       return false;
     }
     if (
-      (this.gear.star >= this.gear.maxStar && !ignoreMaxStar) ||
-      this.gear.star >= EnhancementLogic.MAX_AMAZING
+      (gear.star >= gear.maxStar && !ignoreMaxStar) ||
+      gear.star >= EnhancementLogic.MAX_AMAZING
     ) {
       return false;
     }
 
-    if (!this.gear.amazing) {
-      this.gear.amazing = true;
-      this.gear.maxStar = Math.min(
-        this.gear.maxStar,
-        EnhancementLogic.MAX_AMAZING
-      );
+    if (!gear.amazing) {
+      gear.amazing = true;
+      gear.maxStar = Math.min(gear.maxStar, EnhancementLogic.MAX_AMAZING);
     }
 
-    this.gear.star += 1;
+    gear.star += 1;
 
-    const star = this.gear.star;
-    const statData = EnhancementLogic.getStatData(this.gear, true, false);
-    const attData = EnhancementLogic.getStatData(this.gear, true, true);
+    const star = gear.star;
+    const statData = EnhancementLogic.getStatData(gear, true, false);
+    const attData = EnhancementLogic.getStatData(gear, true, true);
     const isWeaponEnhance =
-      Gear.isWeapon(this.gear.type) || this.gear.type === GearType.katara;
+      Gear.isWeapon(gear.type) || gear.type === GearType.katara;
 
     // stat
     const statType = [
@@ -269,57 +257,55 @@ export class EnhancementLogic {
       GearPropType.incLUK,
     ];
     for (const type of statType) {
-      const hasType = this.gear.option(type).sum > 0;
+      const hasType = gear.option(type).sum > 0;
       if (hasType) {
         let statValue = statData[star];
-        if (bonus && Gear.isAccessory(this.gear.type)) {
+        if (bonus && Gear.isAccessory(gear.type)) {
           statValue += star > 5 ? 2 : 1;
         }
-        this.gear.option(type).enchant += statValue;
+        gear.option(type).enchant += statValue;
       }
     }
     // attack
     const attType = [GearPropType.incPAD, GearPropType.incMAD];
     for (const type of attType) {
-      const att = this.gear.option(type).sum;
+      const att = gear.option(type).sum;
       if (att > 0) {
         if (isWeaponEnhance) {
-          this.gear.option(type).enchant += Math.floor(att / 50) + 1;
+          gear.option(type).enchant += Math.floor(att / 50) + 1;
         }
         let attValue = attData[star];
-        if (bonus && (isWeaponEnhance || this.gear.type === GearType.shield)) {
+        if (bonus && (isWeaponEnhance || gear.type === GearType.shield)) {
           attValue += 1;
         }
-        this.gear.option(type).enchant += attValue;
+        gear.option(type).enchant += attValue;
       }
     }
     // hp
-    if (bonus && Gear.isArmor(this.gear.type)) {
-      this.gear.option(GearPropType.incMHP).enchant += 50;
+    if (bonus && Gear.isArmor(gear.type)) {
+      gear.option(GearPropType.incMHP).enchant += 50;
     }
     // pdd
-    const pdd = this.gear.option(GearPropType.incPDD).sum;
-    this.gear.option(GearPropType.incPDD).enchant += Math.floor(pdd / 20) + 1;
+    const pdd = gear.option(GearPropType.incPDD).sum;
+    gear.option(GearPropType.incPDD).enchant += Math.floor(pdd / 20) + 1;
 
     return true;
   }
 
   /**
    * 장비 강화를 초기화합니다.
+   * @param 강화를 초기화할 장비
    * @returns 성공했을 경우 `true`; 아닐 경우 `false`
    */
-  resetEnhancement(): boolean {
-    if (!this.gear) {
-      return false;
-    }
-    if (this.gear.getBooleanValue(GearPropType.incCHUC)) {
+  resetEnhancement(gear: Gear): boolean {
+    if (gear.getBooleanValue(GearPropType.incCHUC)) {
       return false;
     }
 
-    this.gear.star = 0;
-    this.gear.amazing = false;
-    this.gear.maxStar = this.gear.getMaxStar();
-    for (const [, option] of this.gear.options) {
+    gear.star = 0;
+    gear.amazing = false;
+    gear.maxStar = gear.getMaxStar();
+    for (const [, option] of gear.options) {
       option.enchant = 0;
     }
 
@@ -330,23 +316,22 @@ export class EnhancementLogic {
    * 스타포스 강화로 오르는 스탯을 다시 계산합니다.
    *
    * 놀라운 장비강화 주문서가 적용된 장비에는 적용되지 않습니다.
+   * @param 스탯을 다시 계산할 장비
+   * @returns 성공했을 경우 `true`; 아닐 경우 `false`
    */
-  recalculate(): boolean {
-    if (!this.gear) {
+  recalculate(gear: Gear): boolean {
+    if (gear.getBooleanValue(GearPropType.incCHUC)) {
       return false;
     }
-    if (this.gear.getBooleanValue(GearPropType.incCHUC)) {
-      return false;
-    }
-    if (this.gear.amazing) {
+    if (gear.amazing) {
       return false;
     }
 
-    const star = this.gear.star;
+    const star = gear.star;
 
-    this.resetEnhancement();
+    this.resetEnhancement(gear);
     for (let i = 0; i < star; i++) {
-      this.addStarforce(true);
+      this.addStarforce(gear, true);
     }
 
     return true;
@@ -390,6 +375,7 @@ export class EnhancementLogic {
     throw Error("Gear has invalid reqLevel.\n" + gear);
   }
 
+  /* eslint-disable prettier/prettier */
   private static superiorAttData = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [110, 0, 0, 0, 0, 0, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0],
@@ -404,120 +390,39 @@ export class EnhancementLogic {
   ];
 
   private static starforceWeaponAttData = [
-    [
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0,
-    ],
-    [
-      108, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 5, 6, 7, 8, 9, 27,
-      28, 29,
-    ],
-    [
-      118, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 6, 6, 7, 8, 9, 10,
-      28, 29, 30,
-    ],
-    [
-      128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 7, 7, 8, 9, 10, 11,
-      29, 30, 31,
-    ],
-    [
-      138, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 8, 8, 9, 10, 11, 12,
-      30, 31, 32,
-    ],
-    [
-      148, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 9, 9, 10, 11, 12, 13,
-      31, 32, 33,
-    ],
-    [
-      158, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 9, 10, 11, 12, 13,
-      14, 32, 33, 34,
-    ],
-    [
-      198, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 13, 14, 14, 15, 16,
-      17, 34, 35, 36,
-    ],
-    [
-      248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 15, 16, 16, 17, 18,
-      19, 36, 37, 38,
-    ],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
+    [108, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 5, 6, 7, 8, 9, 27, 28, 29,],
+    [118, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 6, 6, 7, 8, 9, 10, 28, 29, 30,],
+    [128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 7, 7, 8, 9, 10, 11, 29, 30, 31,],
+    [138, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 8, 8, 9, 10, 11, 12, 30, 31, 32,],
+    [148, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 9, 9, 10, 11, 12, 13, 31, 32, 33,],
+    [158, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 9, 10, 11, 12, 13, 14, 32, 33, 34,],
+    [198, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 13, 14, 14, 15, 16, 17, 34, 35, 36,],
+    [248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 15, 16, 16, 17, 18, 19, 36, 37, 38,],
   ];
 
   private static starforceAttData = [
-    [
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0,
-    ],
-    [
-      108, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 6, 7, 8, 9, 10, 12,
-      13, 15, 17,
-    ],
-    [
-      118, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 7, 8, 9, 10, 11, 13,
-      14, 16, 18,
-    ],
-    [
-      128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 8, 9, 10, 11, 12, 14,
-      16, 18, 20,
-    ],
-    [
-      138, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 9, 10, 11, 12, 13,
-      15, 17, 19, 21,
-    ],
-    [
-      148, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 10, 11, 12, 13, 14,
-      16, 18, 20, 22,
-    ],
-    [
-      158, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 11, 12, 13, 14, 15,
-      17, 19, 21, 23,
-    ],
-    [
-      198, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 13, 14, 15, 16, 17,
-      19, 21, 23, 25,
-    ],
-    [
-      248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 15, 16, 17, 18, 19,
-      21, 23, 25, 27,
-    ],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
+    [108, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 6, 7, 8, 9, 10, 12, 13, 15, 17,],
+    [118, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 7, 8, 9, 10, 11, 13, 14, 16, 18,],
+    [128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20,],
+    [138, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 9, 10, 11, 12, 13, 15, 17, 19, 21,],
+    [148, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22,],
+    [158, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 11, 12, 13, 14, 15, 17, 19, 21, 23,],
+    [198, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 13, 14, 15, 16, 17, 19, 21, 23, 25,],
+    [248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 15, 16, 17, 18, 19, 21, 23, 25, 27,],
   ];
 
   private static starforceStatData = [
-    [
-      0, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0,
-    ],
-    [
-      108, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0,
-      0, 0,
-    ],
-    [
-      118, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 0,
-      0, 0,
-    ],
-    [
-      128, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 0,
-      0, 0,
-    ],
-    [
-      138, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 9, 9, 9, 9, 9, 9, 9, 0,
-      0, 0,
-    ],
-    [
-      148, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 11, 11, 11, 11, 11, 11,
-      11, 0, 0, 0,
-    ],
-    [
-      158, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 13, 13, 13, 13, 13, 13,
-      13, 0, 0, 0,
-    ],
-    [
-      198, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15, 15, 15, 15, 15, 15,
-      15, 0, 0, 0,
-    ],
-    [
-      248, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 17, 17, 17, 17, 17, 17,
-      17, 0, 0, 0,
-    ],
+    [0, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
+    [108, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0,],
+    [118, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0,],
+    [128, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0,],
+    [138, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 9, 9, 9, 9, 9, 9, 9, 0, 0, 0,],
+    [148, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 11, 11, 11, 11, 11, 11, 11, 0, 0, 0,],
+    [158, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 13, 13, 13, 13, 13, 13, 13, 0, 0, 0,],
+    [198, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15, 15, 15, 15, 15, 15, 15, 0, 0, 0,],
+    [248, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 17, 17, 17, 17, 17, 17, 17, 0, 0, 0,],
   ];
 
   private static amazingAttData = [
@@ -552,17 +457,15 @@ export class EnhancementLogic {
   ];
 
   private static starforceGloveBonusAttData = [
-    0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0,
+    0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   ];
 
   private static starforceMhpData = [
-    0, 5, 5, 5, 10, 10, 15, 15, 20, 20, 25, 25, 25, 25, 25, 25, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0,
+    0, 5, 5, 5, 10, 10, 15, 15, 20, 20, 25, 25, 25, 25, 25, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   ];
 
   private static starforceSpeedJumpData = [
-    0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0,
+    0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   ];
+  /* eslint-enable prettier/prettier */
 }

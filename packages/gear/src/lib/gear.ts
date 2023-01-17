@@ -201,6 +201,18 @@ export class Gear {
   }
 
   /**
+   * 업그레이드 가능 횟수
+   */
+  get upgradeLeft(): number {
+    return (
+      this.totalUpgradeCount +
+      this.hammerCount -
+      this.upgradeCount -
+      this.failCount
+    );
+  }
+
+  /**
    * 장비가 주무기인지 여부를 나타내는 `boolean`값을 반환합니다. 블레이드(katara)는 포함되지 않습니다.
    * @param type 장비 분류
    * @returns 주무기일 경우 `true`; 아닐 경우 `false`

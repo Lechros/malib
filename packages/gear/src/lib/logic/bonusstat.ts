@@ -1,4 +1,6 @@
-import { Gear, GearPropType, GearType } from "@malib/gear";
+import { Gear } from "../gear";
+import { GearPropType } from "../gearproptype";
+import { GearType } from "../geartype";
 import { BonusStatType } from "./bonusstattype";
 
 export type BonusStatGrade = 1 | 2 | 3 | 4 | 5 | 6 | 7;
@@ -9,54 +11,47 @@ export type BonusStatGrade = 1 | 2 | 3 | 4 | 5 | 6 | 7;
  * - '보스 아레나 엠블렘'은 지원하지 않습니다.
  */
 export class BonusStatLogic {
-  gear: Gear | undefined;
-
-  constructor(gear?: Gear) {
-    this.gear = gear;
-  }
-
   /**
    * 장비에 1개의 추가옵션을 추가합니다. 기존에 부여된 추가옵션에 더해집니다.
+   * @param gear 추가옵션을 추가할 장비
    * @param type 추가옵션 스탯 종류
    * @param grade 추가옵션 등급; 1~7의 정수
    * @returns 추가옵션 부여애 성공했을 경우 `true`; 아닐 경우 `false`
    */
-  addBonusStat(type: BonusStatType, grade: BonusStatGrade): boolean {
-    if (!this.gear) {
-      return false;
-    }
-
-    const stat = this.getBonusStatOption(type, grade);
+  addBonusStat(
+    gear: Gear,
+    type: BonusStatType,
+    grade: BonusStatGrade
+  ): boolean {
+    const stat = this.getBonusStatOption(gear, type, grade);
     if (stat.size === 0) {
       return false;
     }
     for (const [propType, value] of stat) {
-      this.gear.option(propType).bonus += value;
+      gear.option(propType).bonus += value;
     }
     return true;
   }
 
   /**
-   * 장비에 적용된 추가옵션을 제거합니다.
-   * @returns 추가옵션 제거에 성공했을 경우 `true`; 아닐 경우 `false`
+   * 장비에 적용된 추가옵션을 초기화합니다.
+   * @param gear 추가옵션을 초기화할 장비
+   * @returns 추가옵션 초기화에 성공했을 경우 `true`; 아닐 경우 `false`
    */
-  resetBonusStat(): boolean {
-    if (!this.gear) {
-      return false;
-    }
-
-    for (const [, option] of this.gear.options) {
+  resetBonusStat(gear: Gear): boolean {
+    for (const [, option] of gear.options) {
       option.bonus = 0;
     }
     return true;
   }
 
   getBonusStatOption(
+    gear: Gear,
     type: BonusStatType,
     grade: BonusStatGrade
   ): Map<GearPropType, number> {
     const propTypes = BonusStatLogic.getGearPropType(type);
-    const value = this.getBonusStatValue(type, grade);
+    const value = this.getBonusStatValue(gear, type, grade);
 
     if (value === 0) {
       return new Map();
@@ -64,14 +59,14 @@ export class BonusStatLogic {
     return new Map(propTypes.map((propType) => [propType, value]));
   }
 
-  getBonusStatValue(type: BonusStatType, grade: BonusStatGrade): number {
-    if (!this.gear) {
-      return 0;
-    }
-
-    const reqLevel = this.gear.req.level;
-    const bossReward = this.gear.getBooleanValue(GearPropType.bossReward);
-    const gearType = this.gear.type;
+  getBonusStatValue(
+    gear: Gear,
+    type: BonusStatType,
+    grade: BonusStatGrade
+  ): number {
+    const reqLevel = gear.req.level;
+    const bossReward = gear.getBooleanValue(GearPropType.bossReward);
+    const gearType = gear.type;
 
     if (reqLevel < 0) {
       return 0;
@@ -101,7 +96,7 @@ export class BonusStatLogic {
           const data = bossReward
             ? [0, 0, 1, 1.4666, 2.0166, 2.663, 3.4166]
             : [1, 2.222, 3.63, 5.325, 7.32, 8.777, 10.25];
-          let att = this.gear.option(GearPropType.incPAD).base;
+          let att = gear.option(GearPropType.incPAD).base;
           if (
             gearType === GearType.heavySword ||
             gearType === GearType.longSword
@@ -126,7 +121,7 @@ export class BonusStatLogic {
               reqLevel > 180 ? 6 : reqLevel > 160 ? 5 : reqLevel > 110 ? 4 : 3;
             return Math.ceil((att * data[grade - 1] * value) / 100);
           } else {
-            const mad = this.gear.option(GearPropType.incMAD).base;
+            const mad = gear.option(GearPropType.incMAD).base;
             if (type === BonusStatType.MAD && mad >= att) {
               att = mad;
             }
