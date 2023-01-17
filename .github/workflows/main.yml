@@ -10,7 +10,6 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     strategy:
-      max-parallel: 4
       matrix:
         node: ['14', '16', '18']
         os: [ubuntu-latest, windows-latest]
