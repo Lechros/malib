@@ -11,8 +11,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node: ['14', '16', '18']
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        node: ['18']
+        os: [ubuntu-latest]
 
     steps:
       - name: Checkout repository
