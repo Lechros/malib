@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "type": "module",
   "dependencies": {
-    "@malib/gear": "^0.0.1"
+    "@malib/gear": "^0.0.1",
+    "@malib/create-gear": "^0.0.1"
   }
 }

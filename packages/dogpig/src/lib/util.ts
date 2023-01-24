@@ -8,22 +8,32 @@ export function randomInt(firstValue: number, secondValue?: number): number {
   }
 }
 
-export function randomIndex(weights: number[]): number {
-  return randomIndexCumulative(cumulativeSum(weights));
-}
-
-export function cumulativeSum(values: number[]): number[] {
-  let sum: number;
-  return values.map(((sum = 0), (value) => (sum += value)));
-}
-
-export function randomIndexCumulative(weights: number[]): number {
-  const weightSum = weights[weights.length - 1];
-  const random = randomInt(weightSum);
-  for (let i = 0; i < weights.length; i++) {
-    if (weights[i] > random) {
-      return i;
+export function randomKey(weights: { [key: string]: number }): string;
+export function randomKey(
+  weights: { [key: string]: number },
+  except: (string | number)[]
+): string;
+export function randomKey(
+  weights: { [key: string]: number },
+  except?: (string | number)[]
+): string {
+  if (except) {
+    weights = { ...weights };
+    for (const exceptKey of except) {
+      delete weights[exceptKey];
     }
   }
-  throw Error();
+  if (Object.keys(weights).length === 0) {
+    return "";
+  }
+
+  const weightSum = Object.values(weights).reduce((a, b) => a + b, 0);
+  let random = randomInt(weightSum);
+  for (const [key, weight] of Object.entries(weights)) {
+    random -= weight;
+    if (random < 0) {
+      return key;
+    }
+  }
+  throw Error("Unreachable code");
 }
