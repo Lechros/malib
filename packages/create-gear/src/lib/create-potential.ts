@@ -1,5 +1,5 @@
 import { GearPropType, Potential } from "@malib/gear";
-import { IItemOption } from "./interfaces/itemoption";
+import { ItemOption } from "./interfaces/itemoption";
 import { itemOptionJson } from "./resource";
 import { asEnum } from "./util";
 
@@ -12,7 +12,7 @@ import { asEnum } from "./util";
  * @returns 잠재옵션
  */
 export function createPotentialFromNode(
-  node: IItemOption,
+  node: ItemOption,
   code: number,
   potentialLevel: number
 ): Potential {
