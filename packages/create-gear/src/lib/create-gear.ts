@@ -7,7 +7,7 @@ import {
   PotentialGrade,
 } from "@malib/gear";
 import { createPotentialFromCode } from "./create-potential";
-import { IGearData } from "./interfaces/gear";
+import { GearData } from "./interfaces/gear";
 import { gearJson } from "./resource";
 import { asEnum } from "./util";
 
@@ -19,7 +19,7 @@ import { asEnum } from "./util";
  * @returns 장비
  */
 export function createGearFromNode(
-  node: IGearData,
+  node: GearData,
   id: number,
   getPotentialFunc: (
     code: number,

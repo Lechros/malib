@@ -1,8 +1,8 @@
-export interface IItemOptionJson {
-  [gearID: string]: IItemOption;
+export interface ItemOptionJson {
+  [gearID: string]: ItemOption;
 }
 
-export interface IItemOption {
+export interface ItemOption {
   optionType?: number;
   reqLevel?: number;
   string: string;

@@ -1,20 +1,20 @@
-export interface IGearDataJson {
-  [gearID: string]: IGearData;
+export interface GearDataJson {
+  [gearID: string]: GearData;
 }
 
-export interface IGearData {
+export interface GearData {
   name: string;
   desc?: string;
   icon: number;
   origin: [number, number];
-  req?: IGearReq;
+  req?: GearReqData;
   props?: number;
   options?: number;
   tuc?: number;
-  pots?: ISpecialOption[];
+  pots?: SpecialOptionData[];
 }
 
-export interface IGearReq {
+export interface GearReqData {
   level: number;
   str: number;
   luk: number;
@@ -24,7 +24,7 @@ export interface IGearReq {
   specJob: number;
 }
 
-export interface ISpecialOption {
+export interface SpecialOptionData {
   option: number;
   level: number;
 }
