@@ -1,9 +1,9 @@
 name: Test, lint
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
-    branches: [main, master]
+    branches: [main]
 jobs:
   build:
     name: Node ${{ matrix.node }}, ${{ matrix.os }}
@@ -21,7 +21,7 @@ jobs:
 
       - uses: nrwl/nx-set-shas@v3
         with:
-          main-branch-name: master
+          main-branch-name: main
 
       - uses: pnpm/action-setup@v2
         with:
