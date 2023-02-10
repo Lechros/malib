@@ -4,6 +4,9 @@
   "license": "MIT",
   "scripts": {},
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "devDependencies": {
     "@nrwl/eslint-plugin-nx": "15.5.1",
     "@nrwl/js": "15.5.1",
