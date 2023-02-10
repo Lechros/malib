@@ -21,14 +21,15 @@ function invariant(condition, message) {
 
 // Executing publish script: node path/to/publish.mjs {name} --version {version} --tag {tag}
 // Default "tag" to "next" so we won't publish the "latest" tag by accident.
-const [, , name, version, tag = 'next'] = process.argv;
+const [, , name, version, tag = 'latest'] = process.argv;
 
-// A simple SemVer validation to validate the version
-const validVersion = /^\d+\.\d+\.\d+(-\w+\.\d+)?/;
-invariant(
-  version && validVersion.test(version),
-  `No version provided or version did not match Semantic Versioning, expected: #.#.#-tag.# or #.#.#, got ${version}.`
-);
+// Skip validation since changeset takes care of versioning
+// // A simple SemVer validation to validate the version
+// const validVersion = /^\d+\.\d+\.\d+(-\w+\.\d+)?/;
+// invariant(
+//   version && validVersion.test(version),
+//   `No version provided or version did not match Semantic Versioning, expected: #.#.#-tag.# or #.#.#, got ${version}.`
+// );
 
 const graph = readCachedProjectGraph();
 const project = graph.nodes[name];
@@ -46,16 +47,17 @@ invariant(
 
 process.chdir(outputPath);
 
-// Updating the version in "package.json" before publishing
-try {
-  const json = JSON.parse(readFileSync(`package.json`).toString());
-  json.version = version;
-  writeFileSync(`package.json`, JSON.stringify(json, null, 2));
-} catch (e) {
-  console.error(
-    chalk.bold.red(`Error reading package.json file from library build output.`)
-  );
-}
+// Skip updating the version
+// // Updating the version in "package.json" before publishing
+// try {
+//   const json = JSON.parse(readFileSync(`package.json`).toString());
+//   json.version = version;
+//   writeFileSync(`package.json`, JSON.stringify(json, null, 2));
+// } catch (e) {
+//   console.error(
+//     chalk.bold.red(`Error reading package.json file from library build output.`)
+//   );
+// }
 
 // Execute "npm publish" to publish
 execSync(`npm publish --access public --tag ${tag}`);
