@@ -69,11 +69,11 @@ export class Potential {
       case 20:
         return (
           Gear.isSubWeapon(gearType) ||
-          gearType === GearType.pants ||
-          gearType === GearType.shoes ||
           gearType === GearType.cap ||
           gearType === GearType.coat ||
           gearType === GearType.longcoat ||
+          gearType === GearType.pants ||
+          gearType === GearType.shoes ||
           gearType === GearType.glove ||
           gearType === GearType.cape ||
           gearType === GearType.belt ||
@@ -83,8 +83,8 @@ export class Potential {
         return (
           gearType === GearType.faceAccessory ||
           gearType === GearType.eyeAccessory ||
-          gearType === GearType.ring ||
           gearType === GearType.earrings ||
+          gearType === GearType.ring ||
           gearType === GearType.pendant
         );
       case 51:
