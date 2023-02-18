@@ -2,7 +2,7 @@ import { GearPropType } from "./gearproptype";
 import { GearType } from "./geartype";
 import { Potential } from "./potential";
 import { PotentialGrade } from "./potentialgrade";
-import { Soul } from "./soul";
+import { SoulSlot } from "./soul";
 
 /**
  * 장비 착용 제한
@@ -116,7 +116,7 @@ export class Gear {
   additionalPotentials: Potential[] = [];
 
   /** 소울 */
-  soul: Soul | undefined;
+  soulSlot: SoulSlot = new SoulSlot();
 
   /**
    * 장비 옵션을 반환합니다. 존재하지 않는 옵션은 장비에 추가됩니다.
@@ -407,14 +407,10 @@ export class Gear {
         case GearPropType.incMHP:
         case GearPropType.incMMP:
           return 100;
-        case GearPropType.incPDD_incMDD:
         case GearPropType.incPDD:
           return 10;
-        case GearPropType.incPAD_incMAD:
         case GearPropType.incAD:
           return 2;
-        case GearPropType.incMHP_incMMP:
-          return 200;
       }
     }
     return Number.MAX_VALUE;
