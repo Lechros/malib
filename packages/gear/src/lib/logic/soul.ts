@@ -1,6 +1,6 @@
 import { Gear } from "../gear";
 import { GearPropType } from "../gearproptype";
-import { SoulSlot } from "../soul";
+import { Soul, SoulSlot } from "../soul";
 
 export class SoulLogic {
   /**
@@ -33,6 +33,21 @@ export class SoulLogic {
     gear.soulSlot.enchanted = false;
     gear.soulSlot.charge = 0;
     gear.soulSlot.chargeOption.clear();
+    return true;
+  }
+
+  /**
+   * 소울웨폰에 소울을 장착합니다.
+   * @param gear 소울을 장착할 장비
+   * @param soul 장착할 소울
+   * @returns 장착했을 경우 `true`; 아닐 경우 `false`
+   */
+  setSoul(gear: Gear, soul: Soul): boolean {
+    if (!gear.soulSlot.enchanted) {
+      return false;
+    }
+    gear.soulSlot.soul = soul;
+    this.setCharge(gear, gear.soulSlot.charge);
     return true;
   }
 
