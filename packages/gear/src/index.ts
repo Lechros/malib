@@ -5,7 +5,6 @@ export * from "./lib/geartype";
 export * from "./lib/potential";
 export * from "./lib/potentialgrade";
 export * from "./lib/soul";
-export * from "./lib/soultype";
 
 // logic
 export * from "./lib/logic/bonusstat";
