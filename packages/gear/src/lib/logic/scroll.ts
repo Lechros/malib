@@ -28,8 +28,14 @@ export class Scroll {
   /**
    * 주문의 흔적 `Scroll`을 반환합니다.
    * @param gear 적용할 장비
-   * @param type 주문의 흔적 스탯 (`GearPropType`)
-   * @param probability 주문의 흔적 확률
+   * @param type 주문의 흔적 스탯 종류; 다음 값 중 하나입니다:
+   *
+   * `GearPropType.incSTR` / `GearPropType.incDEX` /
+   * `GearPropType.incINT` / `GearPropType.incLUK` /
+   * `GearPropType.incAllStat` / `GearPropType.incMHP`
+   * @param probability 주문의 흔적 성공 확률 %; 다음 값 중 하나입니다:
+   *
+   * `100` / `70` / `30` / `15`
    * @returns 주문의 흔적 `Scroll`; 존재하지 않을 경우 `undefined`
    */
   static getSpellTraceScroll(
