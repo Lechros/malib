@@ -86,9 +86,9 @@ test("test upgradeLeft()", () => {
   const gear = new Gear();
   gear.totalUpgradeCount = 9;
   gear.hammerCount = 1;
-  gear.failCount = 3;
+  gear.upgradeFailCount = 3;
   gear.upgradeCount = 7;
-  expect(gear.upgradeLeft).toBe(0);
+  expect(gear.upgradeCountLeft).toBe(0);
 });
 
 test("test isLeftWeapon()", () => {

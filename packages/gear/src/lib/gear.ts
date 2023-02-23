@@ -77,12 +77,14 @@ export class Gear {
   /** 장비 착용 제한 */
   req: GearReq = new GearReq();
 
-  // /** addition */
-  // additions: Addition[] = [];
   /** 장비 속성 */
   props: Map<GearPropType, number> = new Map();
 
-  /** 장비 옵션 */
+  /**
+   * 장비 옵션
+   *
+   * 접근할 때는 `options` 대신 `option`을 사용하는 것이 권장됩니다.
+   */
   options: Map<GearPropType, GearOption> = new Map();
 
   /** 최대 업그레이드 가능 횟수 */
@@ -90,11 +92,9 @@ export class Gear {
   /** 업그레이드 횟수 */
   upgradeCount = 0;
   /** 복구 가능 횟수 */
-  failCount = 0;
+  upgradeFailCount = 0;
   /** 황금망치 횟수 */
   hammerCount = 0;
-  // /** 이그드라실 주문서 */
-  // yggdrasil = 0;
 
   /** 최대 장비 강화 수치 */
   maxStar = 0;
@@ -117,6 +117,30 @@ export class Gear {
 
   /** 소울 */
   soulSlot: SoulSlot = new SoulSlot();
+
+  /**
+   * 업그레이드 가능 횟수
+   */
+  get upgradeCountLeft(): number {
+    return (
+      this.totalUpgradeCount +
+      this.hammerCount -
+      this.upgradeCount -
+      this.upgradeFailCount
+    );
+  }
+
+  /**
+   * 현재 옵션과 기본 옵션의 차이를 가중치를 포함하여 계산합니다.
+   * @returns 가중치가 적용된 옵션 차이의 합
+   */
+  get diff(): number {
+    let diff = 0;
+    for (const [type, option] of this.options) {
+      diff += Math.floor(option.diff / Gear.getPropTypeWeight(type));
+    }
+    return diff;
+  }
 
   /**
    * 장비 옵션을 반환합니다. 존재하지 않는 옵션은 장비에 추가됩니다.
@@ -187,30 +211,6 @@ export class Gear {
     [130, 20, 12],
     [140, 25, 15],
   ];
-
-  /**
-   * 현재 옵션과 기본 옵션의 차이를 가중치를 포함하여 계산합니다.
-   * @returns 가중치가 적용된 옵션 차이의 합
-   */
-  get diff(): number {
-    let diff = 0;
-    for (const [type, option] of this.options) {
-      diff += Math.floor(option.diff / Gear.getPropTypeWeight(type));
-    }
-    return diff;
-  }
-
-  /**
-   * 업그레이드 가능 횟수
-   */
-  get upgradeLeft(): number {
-    return (
-      this.totalUpgradeCount +
-      this.hammerCount -
-      this.upgradeCount -
-      this.failCount
-    );
-  }
 
   /**
    * 장비가 주무기인지 여부를 나타내는 `boolean`값을 반환합니다. 블레이드(katara)는 포함되지 않습니다.
