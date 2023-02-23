@@ -1,62 +1,10 @@
+import { GearOption } from "./gearoption";
 import { GearPropType } from "./gearproptype";
+import { GearReq } from "./gearreq";
 import { GearType } from "./geartype";
 import { Potential } from "./potential";
 import { PotentialGrade } from "./potentialgrade";
 import { SoulSlot } from "./soul";
-
-/**
- * 장비 착용 제한
- */
-export class GearReq {
-  /** 착용 가능 레벨 */
-  level = 0;
-  /** REQ STR */
-  str = 0;
-  /** REQ LUK */
-  luk = 0;
-  /** REQ DEX */
-  dex = 0;
-  /** REQ INT */
-  int = 0;
-  /** 착용 가능 직업 분류 */
-  job = 0;
-  /** 착용 가능 직업 */
-  specJob = 0;
-}
-
-/**
- * 장비 옵션
- */
-export class GearOption {
-  /** 기본 수치 */
-  base = 0;
-  /** 추가옵션 수치 */
-  bonus = 0;
-  /** 주문서 강화 수치 */
-  upgrade = 0;
-  /** 장비 강화 수치 */
-  enchant = 0;
-
-  /** 모든 수치가 0일 경우 `true`; 아닐 경우 `false` */
-  get empty(): boolean {
-    return (
-      this.base === 0 &&
-      this.bonus === 0 &&
-      this.upgrade === 0 &&
-      this.enchant === 0
-    );
-  }
-
-  /** 모든 수치의 합; 합이 음수일 경우 `0` */
-  get sum(): number {
-    return Math.max(0, this.base + this.bonus + this.upgrade + this.enchant);
-  }
-
-  /** 기본 수치 대비 변화량 */
-  get diff(): number {
-    return this.bonus + this.upgrade + this.enchant;
-  }
-}
 
 /**
  * 장비
