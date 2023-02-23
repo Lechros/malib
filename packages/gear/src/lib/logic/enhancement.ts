@@ -304,7 +304,7 @@ export class EnhancementLogic {
 
     gear.star = 0;
     gear.amazing = false;
-    gear.maxStar = gear.getMaxStar();
+    gear.maxStar = Gear.getMaxStar(gear);
     for (const [, option] of gear.options) {
       option.enchant = 0;
     }

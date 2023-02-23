@@ -174,45 +174,6 @@ export class Gear {
   }
 
   /**
-   * 장비의 최대 강화 수치를 계산합니다.
-   * @returns 최대 장비 강화 수치
-   */
-  getMaxStar(): number {
-    if (this.totalUpgradeCount <= 0) {
-      return 0;
-    }
-    if (this.getBooleanValue(GearPropType.onlyUpgrade)) {
-      return 0;
-    }
-    if (Gear.isMechanicGear(this.type) || Gear.isDragonGear(this.type)) {
-      return 0;
-    }
-
-    let data: number[] | undefined;
-    const reqLevel: number = this.req.level;
-    for (const item of Gear.starData) {
-      if (reqLevel >= item[0]) {
-        data = item;
-      } else {
-        break;
-      }
-    }
-    if (data === undefined) {
-      return 0;
-    }
-    return this.getBooleanValue(GearPropType.superiorEqp) ? data[2] : data[1];
-  }
-
-  private static readonly starData = [
-    [0, 5, 3],
-    [95, 8, 5],
-    [110, 10, 8],
-    [120, 15, 10],
-    [130, 20, 12],
-    [140, 25, 15],
-  ];
-
-  /**
    * 장비가 주무기인지 여부를 나타내는 `boolean`값을 반환합니다. 블레이드(katara)는 포함되지 않습니다.
    * @param type 장비 분류
    * @returns 주무기일 경우 `true`; 아닐 경우 `false`
@@ -391,6 +352,45 @@ export class Gear {
 
     return Math.floor(gearID / 1000) % 10;
   }
+
+  /**
+   * 장비의 최대 강화 수치를 계산합니다.
+   * @returns 최대 장비 강화 수치
+   */
+  static getMaxStar(gear: Gear): number {
+    if (gear.totalUpgradeCount <= 0) {
+      return 0;
+    }
+    if (gear.getBooleanValue(GearPropType.onlyUpgrade)) {
+      return 0;
+    }
+    if (Gear.isMechanicGear(gear.type) || Gear.isDragonGear(gear.type)) {
+      return 0;
+    }
+
+    let data: number[] | undefined;
+    const reqLevel: number = gear.req.level;
+    for (const item of Gear.starData) {
+      if (reqLevel >= item[0]) {
+        data = item;
+      } else {
+        break;
+      }
+    }
+    if (data === undefined) {
+      return 0;
+    }
+    return gear.getBooleanValue(GearPropType.superiorEqp) ? data[2] : data[1];
+  }
+
+  private static readonly starData = [
+    [0, 5, 3],
+    [95, 8, 5],
+    [110, 10, 8],
+    [120, 15, 10],
+    [130, 20, 12],
+    [140, 25, 15],
+  ];
 
   private static getPropTypeWeight(type: GearPropType): number {
     if (type < 100) {

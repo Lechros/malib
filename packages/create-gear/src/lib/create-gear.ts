@@ -111,7 +111,7 @@ export function createGearFromNode(
     }
   }
 
-  gear.maxStar = gear.getMaxStar();
+  gear.maxStar = Gear.getMaxStar(gear);
   const preStar = gear.getPropValue(GearPropType.incCHUC);
   if (preStar > 0) {
     gear.star = preStar;
