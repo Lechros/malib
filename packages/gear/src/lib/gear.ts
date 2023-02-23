@@ -290,7 +290,7 @@ export class Gear {
   }
 
   static GetGender(gearID: number): number {
-    const type: GearType = this.getGearType(gearID);
+    const type = this.getGearType(gearID);
     switch (type) {
       case GearType.emblem:
       case GearType.powerSource:
@@ -316,8 +316,8 @@ export class Gear {
       return 0;
     }
 
-    let data: number[] | undefined;
-    const reqLevel: number = gear.req.level;
+    let data: readonly [number, number, number] | undefined;
+    const reqLevel = gear.req.level;
     for (const item of Gear.starData) {
       if (reqLevel >= item[0]) {
         data = item;
@@ -338,7 +338,7 @@ export class Gear {
     [120, 15, 10],
     [130, 20, 12],
     [140, 25, 15],
-  ];
+  ] as const;
 
   private static getPropTypeWeight(type: GearPropType): number {
     if (type < 100) {
