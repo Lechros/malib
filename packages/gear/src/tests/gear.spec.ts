@@ -1,4 +1,16 @@
-import { Gear, GearPropType, GearType, PotentialGrade } from "..";
+import { Gear, GearPropType, GearType } from "..";
+
+test("test option()", () => {
+  const gear = new Gear();
+  expect(gear.option(GearPropType.incSTR).base).toBe(0);
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  gear.options.get(GearPropType.incSTR)!.upgrade = 1;
+  expect(gear.option(GearPropType.incSTR).upgrade).toBe(1);
+
+  gear.option(GearPropType.incDEX).base = 5;
+  expect(gear.options.get(GearPropType.incDEX)?.base).toBe(5);
+});
 
 test("test getPropValue()", () => {
   const gear = new Gear();
@@ -16,38 +28,6 @@ test("test getBooleanValue()", () => {
   expect(gear.getBooleanValue(GearPropType.tradeBlock)).toBe(true);
   expect(gear.getBooleanValue(GearPropType.blockGoldHammer)).toBe(false);
   expect(gear.getBooleanValue(GearPropType.exceptUpgrade)).toBe(false);
-});
-
-test("test createFromID()", () => {
-  // let gear: Gear;
-  // // 앱솔랩스 아처슈즈
-  // // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  // gear = Gear.createFromID(1073033)!;
-  // expect(gear).not.toBeUndefined();
-  // expect(gear.itemID).toBe(1073033);
-  // expect(gear.name).toBe("앱솔랩스 아처슈즈");
-  // expect(gear.type).toBe(GearType.shoes);
-  // expect(gear.req.level).toBe(160);
-  // expect(gear.totalUpgradeCount).toBe(7);
-  // expect(gear.getPropValue(GearPropType.reqLevel)).toBe(0);
-  // expect(gear.getBooleanValue(GearPropType.equipTradeBlock)).toBe(true);
-  // expect(gear.maxStar).toBe(25);
-  // expect(gear.star).toBe(0);
-  // // 아케인셰이드 튜너 (PC방)
-  // // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  // gear = Gear.createFromID(1213030)!;
-  // expect(gear).not.toBeUndefined();
-  // expect(gear.name).toBe("아케인셰이드 튜너");
-  // expect(gear.req.level).toBe(200);
-  // expect(gear.req.job).toBe(1);
-  // expect(gear.req.str).toBe(600);
-  // expect(gear.req.int).toBe(0);
-  // expect(gear.upgradeCount).toBe(0);
-  // expect(gear.grade).toBe(PotentialGrade.legendary);
-  // expect(gear.potentials.length).toBe(3);
-  // expect(gear.potentials[0].convertSummary).toBe("보스 몬스터 공격 시 데미지 : +35%");
-  // expect(gear.potentials[1].convertSummary).toBe("데미지 : +12%");
-  // expect(gear.potentials[2].convertSummary).toBe("크리티컬 확률 : +12%");
 });
 
 test("test diff()", () => {
