@@ -303,6 +303,7 @@ export class Gear {
 
   /**
    * 장비의 최대 강화 수치를 계산합니다.
+   * @param gear 장비
    * @returns 최대 장비 강화 수치
    */
   static getMaxStar(gear: Gear): number {

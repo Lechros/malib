@@ -50,28 +50,6 @@ test("test createFromID()", () => {
   // expect(gear.potentials[2].convertSummary).toBe("크리티컬 확률 : +12%");
 });
 
-test("test getMaxStar()", () => {
-  /* eslint-disable @typescript-eslint/no-non-null-assertion */
-  // expect(Gear.createFromID(1022226)!.maxStar).toBe(5); // 사이클롭스 아이 Lv.3
-  // expect(Gear.createFromID(1002408)!.maxStar).toBe(8); // 그린 아르나햇
-  // expect(Gear.createFromID(1342041)!.maxStar).toBe(15); // 피어리스 코션
-  // expect(Gear.createFromID(1382246)!.maxStar).toBe(20); // 로얄 반 레온 스태프
-  // expect(Gear.createFromID(1432167)!.maxStar).toBe(25); // 파프니르 브류나크
-  // expect(Gear.createFromID(1005980)!.maxStar).toBe(25); // 에테르넬 나이트헬름
-  // expect(Gear.createFromID(1652003)!.maxStar).toBe(0); // 골드 트랜지스터
-  // expect(Gear.createFromID(1114303)!.maxStar).toBe(0); // 코스모스 링
-  // expect(Gear.createFromID(1114227)!.maxStar).toBe(0); // 오닉스 링 "완성"
-  // expect(Gear.createFromID(1114307)!.maxStar).toBe(0); // 테네브리스 원정대 반지
-  // expect(Gear.createFromID(1114305)!.maxStar).toBe(0); // 카오스 링
-  // expect(Gear.createFromID(1114324)!.maxStar).toBe(0); // 이터널 플레임 링
-  // expect(Gear.createFromID(1162025)!.maxStar).toBe(0); // 핑크빛 성배
-  // expect(Gear.createFromID(1142879)!.maxStar).toBe(0); // 우르스 격파왕
-  // expect(Gear.createFromID(1182200)!.maxStar).toBe(0); // 칠요의 뱃지
-  // expect(Gear.createFromID(1942004)!.maxStar).toBe(0); // 어비스 마스크
-  // expect(Gear.createFromID(1352972)!.maxStar).toBe(0); // 에레브의 광휘
-  /* eslint-enable @typescript-eslint/no-non-null-assertion */
-});
-
 test("test diff()", () => {
   const gear = new Gear();
   gear.option(GearPropType.incSTR).base = 10;
@@ -264,4 +242,93 @@ test("test getGearType()", () => {
   expect(Gear.getGearType(1592019)).toBe(GearType.ancientBow);
   expect(Gear.getGearType(1214017)).toBe(GearType.breathShooter);
   expect(Gear.getGearType(1404013)).toBe(GearType.chakram);
+});
+
+describe("getMaxStar", () => {
+  it("req level 75 gear max star should be 5", () => {
+    const gear = new Gear();
+    gear.type = GearType.eyeAccessory;
+    gear.req.level = 75;
+    gear.totalUpgradeCount = 3;
+    expect(Gear.getMaxStar(gear)).toBe(5);
+  });
+  it("req level 100 gear max star should be 8", () => {
+    const gear = new Gear();
+    gear.type = GearType.cap;
+    gear.req.level = 100;
+    gear.totalUpgradeCount = 7;
+    expect(Gear.getMaxStar(gear)).toBe(8);
+  });
+  it("req level 125 gear max star should be 15", () => {
+    const gear = new Gear();
+    gear.type = GearType.katara;
+    gear.req.level = 125;
+    gear.totalUpgradeCount = 8;
+    expect(Gear.getMaxStar(gear)).toBe(15);
+  });
+  it("req level 130 gear max star should be 20", () => {
+    const gear = new Gear();
+    gear.type = GearType.staff;
+    gear.req.level = 130;
+    gear.totalUpgradeCount = 8;
+    expect(Gear.getMaxStar(gear)).toBe(20);
+  });
+  it("req level 150 gear max star should be 25", () => {
+    const gear = new Gear();
+    gear.type = GearType.coat;
+    gear.req.level = 150;
+    gear.totalUpgradeCount = 7;
+    expect(Gear.getMaxStar(gear)).toBe(25);
+  });
+  it("req level 250 gear max star should be 25", () => {
+    const gear = new Gear();
+    gear.type = GearType.glove;
+    gear.req.level = 250;
+    gear.totalUpgradeCount = 11;
+    expect(Gear.getMaxStar(gear)).toBe(25);
+  });
+  it("req level 110 superior gear max star should be 8", () => {
+    const gear = new Gear();
+    gear.type = GearType.cape;
+    gear.req.level = 110;
+    gear.totalUpgradeCount = 1;
+    gear.props.set(GearPropType.superiorEqp, 1);
+    expect(Gear.getMaxStar(gear)).toBe(8);
+  });
+  it("req level 150 superior gear max star should be 15", () => {
+    const gear = new Gear();
+    gear.type = GearType.belt;
+    gear.req.level = 150;
+    gear.totalUpgradeCount = 1;
+    gear.props.set(GearPropType.superiorEqp, 1);
+    expect(Gear.getMaxStar(gear)).toBe(15);
+  });
+  it("mechanic gear max star should be 0", () => {
+    const gear = new Gear();
+    gear.type = GearType.machineTransistors;
+    gear.req.level = 100;
+    gear.totalUpgradeCount = 3;
+    expect(Gear.getMaxStar(gear)).toBe(0);
+  });
+  it("dragon gear max star should be 0", () => {
+    const gear = new Gear();
+    gear.type = GearType.machineTransistors;
+    gear.req.level = 125;
+    gear.totalUpgradeCount = 4;
+    expect(Gear.getMaxStar(gear)).toBe(0);
+  });
+  it("total upgrade count = 0 gear max star should be 0", () => {
+    const gear = new Gear();
+    gear.type = GearType.earrings;
+    gear.req.level = 130;
+    expect(Gear.getMaxStar(gear)).toBe(0);
+  });
+  it("only upgrade prop gear max star should be 0", () => {
+    const gear = new Gear();
+    gear.type = GearType.shoes;
+    gear.req.level = 130;
+    gear.totalUpgradeCount = 3;
+    gear.props.set(GearPropType.onlyUpgrade, 1);
+    expect(Gear.getMaxStar(gear)).toBe(0);
+  });
 });
