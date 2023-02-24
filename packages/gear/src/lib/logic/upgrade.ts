@@ -28,13 +28,12 @@ export class UpgradeLogic {
 
   /**
    * 장비에 주문서를 1회 적용합니다.
-   *
    * @param gear 주문서를 적용할 장비
    * @param scroll 적용할 주문서
    * @returns 주문서가 적용됐을 경우 `true`; 아닐 경우 `false`
    */
   applyScroll(gear: Gear, scroll: Scroll): boolean {
-    if (gear.upgradeLeft < 1) {
+    if (gear.upgradeCountLeft < 1) {
       return false;
     }
     gear.upgradeCount += 1;
@@ -64,32 +63,28 @@ export class UpgradeLogic {
   }
 
   /**
-   * 장비의 업그레이드 가능 횟수를 1회 감소합니다.
-   *
-   * 주문서가 실패한 것과 동일한 효과입니다.
+   * 장비의 업그레이드 가능 횟수를 실패로 1회 감소합니다.
    * @param gear 감소할 장비
    * @returns 감소됐을 경우 `true`; 아닐 경우 `false`
    */
-  addUpgradeFail(gear: Gear): boolean {
-    if (gear.upgradeLeft < 1) {
+  addUpgradeFailCount(gear: Gear): boolean {
+    if (gear.upgradeCountLeft < 1) {
       return false;
     }
-    gear.failCount += 1;
+    gear.upgradeFailCount += 1;
     return true;
   }
 
   /**
-   * 장비의 업그레이드 가능 횟수를 1회 복구합니다.
-   *
-   * 장비의 최대 업그레이드 가능 횟수를 초과하지 않습니다.
+   * 장비의 실패한 업그레이드 가능 횟수를 1회 복구합니다.
    * @param gear 복구할 장비
    * @returns 복구했을 경우 `true`; 아닐 경우 `false`
    */
-  restoreUpgradeFail(gear: Gear): boolean {
-    if (gear.failCount < 1) {
+  restoreUpgradeCount(gear: Gear): boolean {
+    if (gear.upgradeFailCount < 1) {
       return false;
     }
-    gear.failCount -= 1;
+    gear.upgradeFailCount -= 1;
     return true;
   }
 
@@ -102,7 +97,7 @@ export class UpgradeLogic {
    */
   resetUpgrade(gear: Gear): boolean {
     gear.upgradeCount = 0;
-    gear.failCount = 0;
+    gear.upgradeFailCount = 0;
     gear.hammerCount = 0;
     for (const [, option] of gear.options) {
       option.upgrade = 0;

@@ -1,62 +1,10 @@
+import { GearOption } from "./gearoption";
 import { GearPropType } from "./gearproptype";
+import { GearReq } from "./gearreq";
 import { GearType } from "./geartype";
 import { Potential } from "./potential";
 import { PotentialGrade } from "./potentialgrade";
 import { SoulSlot } from "./soul";
-
-/**
- * 장비 착용 제한
- */
-export class GearReq {
-  /** 착용 가능 레벨 */
-  level = 0;
-  /** REQ STR */
-  str = 0;
-  /** REQ LUK */
-  luk = 0;
-  /** REQ DEX */
-  dex = 0;
-  /** REQ INT */
-  int = 0;
-  /** 착용 가능 직업 분류 */
-  job = 0;
-  /** 착용 가능 직업 */
-  specJob = 0;
-}
-
-/**
- * 장비 옵션
- */
-export class GearOption {
-  /** 기본 수치 */
-  base = 0;
-  /** 추가옵션 수치 */
-  bonus = 0;
-  /** 주문서 강화 수치 */
-  upgrade = 0;
-  /** 장비 강화 수치 */
-  enchant = 0;
-
-  /** 모든 수치가 0일 경우 `true`; 아닐 경우 `false` */
-  get empty(): boolean {
-    return (
-      this.base === 0 &&
-      this.bonus === 0 &&
-      this.upgrade === 0 &&
-      this.enchant === 0
-    );
-  }
-
-  /** 모든 수치의 합; 합이 음수일 경우 `0` */
-  get sum(): number {
-    return Math.max(0, this.base + this.bonus + this.upgrade + this.enchant);
-  }
-
-  /** 기본 수치 대비 변화량 */
-  get diff(): number {
-    return this.bonus + this.upgrade + this.enchant;
-  }
-}
 
 /**
  * 장비
@@ -77,12 +25,14 @@ export class Gear {
   /** 장비 착용 제한 */
   req: GearReq = new GearReq();
 
-  // /** addition */
-  // additions: Addition[] = [];
   /** 장비 속성 */
   props: Map<GearPropType, number> = new Map();
 
-  /** 장비 옵션 */
+  /**
+   * 장비 옵션
+   *
+   * 접근할 때는 `options` 대신 `option`을 사용하는 것이 권장됩니다.
+   */
   options: Map<GearPropType, GearOption> = new Map();
 
   /** 최대 업그레이드 가능 횟수 */
@@ -90,11 +40,9 @@ export class Gear {
   /** 업그레이드 횟수 */
   upgradeCount = 0;
   /** 복구 가능 횟수 */
-  failCount = 0;
+  upgradeFailCount = 0;
   /** 황금망치 횟수 */
   hammerCount = 0;
-  // /** 이그드라실 주문서 */
-  // yggdrasil = 0;
 
   /** 최대 장비 강화 수치 */
   maxStar = 0;
@@ -117,6 +65,30 @@ export class Gear {
 
   /** 소울 */
   soulSlot: SoulSlot = new SoulSlot();
+
+  /**
+   * 업그레이드 가능 횟수
+   */
+  get upgradeCountLeft(): number {
+    return (
+      this.totalUpgradeCount +
+      this.hammerCount -
+      this.upgradeCount -
+      this.upgradeFailCount
+    );
+  }
+
+  /**
+   * 현재 옵션과 기본 옵션의 차이를 가중치를 포함하여 계산합니다.
+   * @returns 가중치가 적용된 옵션 차이의 합
+   */
+  get diff(): number {
+    let diff = 0;
+    for (const [type, option] of this.options) {
+      diff += Math.floor(option.diff / Gear.getPropTypeWeight(type));
+    }
+    return diff;
+  }
 
   /**
    * 장비 옵션을 반환합니다. 존재하지 않는 옵션은 장비에 추가됩니다.
@@ -147,69 +119,6 @@ export class Gear {
    */
   getBooleanValue(type: GearPropType): boolean {
     return Boolean(this.props.get(type));
-  }
-
-  /**
-   * 장비의 최대 강화 수치를 계산합니다.
-   * @returns 최대 장비 강화 수치
-   */
-  getMaxStar(): number {
-    if (this.totalUpgradeCount <= 0) {
-      return 0;
-    }
-    if (this.getBooleanValue(GearPropType.onlyUpgrade)) {
-      return 0;
-    }
-    if (Gear.isMechanicGear(this.type) || Gear.isDragonGear(this.type)) {
-      return 0;
-    }
-
-    let data: number[] | undefined;
-    const reqLevel: number = this.req.level;
-    for (const item of Gear.starData) {
-      if (reqLevel >= item[0]) {
-        data = item;
-      } else {
-        break;
-      }
-    }
-    if (data === undefined) {
-      return 0;
-    }
-    return this.getBooleanValue(GearPropType.superiorEqp) ? data[2] : data[1];
-  }
-
-  private static readonly starData = [
-    [0, 5, 3],
-    [95, 8, 5],
-    [110, 10, 8],
-    [120, 15, 10],
-    [130, 20, 12],
-    [140, 25, 15],
-  ];
-
-  /**
-   * 현재 옵션과 기본 옵션의 차이를 가중치를 포함하여 계산합니다.
-   * @returns 가중치가 적용된 옵션 차이의 합
-   */
-  get diff(): number {
-    let diff = 0;
-    for (const [type, option] of this.options) {
-      diff += Math.floor(option.diff / Gear.getPropTypeWeight(type));
-    }
-    return diff;
-  }
-
-  /**
-   * 업그레이드 가능 횟수
-   */
-  get upgradeLeft(): number {
-    return (
-      this.totalUpgradeCount +
-      this.hammerCount -
-      this.upgradeCount -
-      this.failCount
-    );
   }
 
   /**
@@ -381,7 +290,7 @@ export class Gear {
   }
 
   static GetGender(gearID: number): number {
-    const type: GearType = this.getGearType(gearID);
+    const type = this.getGearType(gearID);
     switch (type) {
       case GearType.emblem:
       case GearType.powerSource:
@@ -391,6 +300,46 @@ export class Gear {
 
     return Math.floor(gearID / 1000) % 10;
   }
+
+  /**
+   * 장비의 최대 강화 수치를 계산합니다.
+   * @param gear 장비
+   * @returns 최대 장비 강화 수치
+   */
+  static getMaxStar(gear: Gear): number {
+    if (gear.totalUpgradeCount <= 0) {
+      return 0;
+    }
+    if (gear.getBooleanValue(GearPropType.onlyUpgrade)) {
+      return 0;
+    }
+    if (Gear.isMechanicGear(gear.type) || Gear.isDragonGear(gear.type)) {
+      return 0;
+    }
+
+    let data: readonly [number, number, number] | undefined;
+    const reqLevel = gear.req.level;
+    for (const item of Gear.starData) {
+      if (reqLevel >= item[0]) {
+        data = item;
+      } else {
+        break;
+      }
+    }
+    if (data === undefined) {
+      return 0;
+    }
+    return gear.getBooleanValue(GearPropType.superiorEqp) ? data[2] : data[1];
+  }
+
+  private static readonly starData = [
+    [0, 5, 3],
+    [95, 8, 5],
+    [110, 10, 8],
+    [120, 15, 10],
+    [130, 20, 12],
+    [140, 25, 15],
+  ] as const;
 
   private static getPropTypeWeight(type: GearPropType): number {
     if (type < 100) {

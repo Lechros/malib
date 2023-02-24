@@ -1,6 +1,8 @@
 // core
 export * from "./lib/gear";
+export * from "./lib/gearoption";
 export * from "./lib/gearproptype";
+export * from "./lib/gearreq";
 export * from "./lib/geartype";
 export * from "./lib/potential";
 export * from "./lib/potentialgrade";

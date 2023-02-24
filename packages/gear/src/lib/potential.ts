@@ -25,7 +25,7 @@ export class Potential {
    * 장비에 표시되는 문자열
    */
   get convertSummary(): string {
-    const types: GearPropType[] = [...this.option.keys()];
+    const types = [...this.option.keys()];
     types.sort((a, b) => GearPropType[b].length - GearPropType[a].length);
     let summary = this.summary;
     for (const type of types) {
