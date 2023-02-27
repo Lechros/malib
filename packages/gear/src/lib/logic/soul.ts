@@ -2,6 +2,9 @@ import { Gear } from "../gear";
 import { GearPropType } from "../gearproptype";
 import { Soul, SoulSlot } from "../soul";
 
+/**
+ * 소울웨폰 관련 기능을 제공합니다.
+ */
 export class SoulLogic {
   /**
    * 무기를 소울웨폰으로 변환합니다.
@@ -16,6 +19,7 @@ export class SoulLogic {
       return false;
     }
     gear.soulSlot.enchanted = true;
+    gear.soulSlot.soul = undefined;
     gear.soulSlot.charge = 0;
     gear.soulSlot.chargeOption.clear();
     return true;
@@ -31,6 +35,7 @@ export class SoulLogic {
       return false;
     }
     gear.soulSlot.enchanted = false;
+    gear.soulSlot.soul = undefined;
     gear.soulSlot.charge = 0;
     gear.soulSlot.chargeOption.clear();
     return true;
@@ -47,6 +52,23 @@ export class SoulLogic {
       return false;
     }
     gear.soulSlot.soul = soul;
+    this.setCharge(gear, gear.soulSlot.charge);
+    return true;
+  }
+
+  /**
+   * 소울이 장착된 소울웨폰에서 소울을 제거합니다.
+   * @param gear 소울을 제거할 장비
+   * @returns 제거했을 경우 `true`; 아닐 경우 `false`
+   */
+  removeSoul(gear: Gear): boolean {
+    if (!gear.soulSlot.enchanted) {
+      return false;
+    }
+    if (!gear.soulSlot.soul) {
+      return false;
+    }
+    gear.soulSlot.soul = undefined;
     this.setCharge(gear, gear.soulSlot.charge);
     return true;
   }
