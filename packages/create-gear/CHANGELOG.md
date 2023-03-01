@@ -1,5 +1,13 @@
 # @malib/create-gear
 
+## 0.1.1
+
+### Patch Changes
+
+- 33fc4b4: Update version tag
+- Updated dependencies [33fc4b4]
+  - @malib/gear@0.1.1
+
 ## 0.1.0
 
 ### Minor Changes
