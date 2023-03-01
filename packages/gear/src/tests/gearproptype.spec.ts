@@ -1,4 +1,4 @@
-import { GearPropType } from "../lib/gearproptype";
+import { GearPropType } from "..";
 
 describe("GearPropType value tests", () => {
   // changing these value is a breaking change

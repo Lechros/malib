@@ -46,8 +46,14 @@ export class UpgradeLogic {
   /**
    * 장비에 주문의 흔적 강화를 1회 적용합니다.
    * @param gear 강화를 적용할 장비
-   * @param type 주문의 흔적 스탯 종류
-   * @param probability 주문의 흔적 성공 확률 %
+   * @param type 주문의 흔적 스탯 종류; 다음 값 중 하나입니다:
+   *
+   * `GearPropType.incSTR` / `GearPropType.incDEX` /
+   * `GearPropType.incINT` / `GearPropType.incLUK` /
+   * `GearPropType.incAllStat` / `GearPropType.incMHP`
+   * @param probability 주문의 흔적 성공 확률 %; 다음 값 중 하나입니다:
+   *
+   * `100` / `70` / `30` / `15`
    * @returns 주문서가 적용됐을 경우 `true`; 아닐 경우 `false`
    */
   applySpellTrace(
