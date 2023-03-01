@@ -144,7 +144,7 @@ describe("starforce stat", () => {
     gear.option(GearPropType.incPAD).base = 33;
     gear.option(GearPropType.incMAD).base = 53;
     gear.totalUpgradeCount = 7;
-    gear.maxStar = gear.getMaxStar();
+    gear.maxStar = Gear.getMaxStar(gear);
 
     for (let i = 0; i < 5; i++) {
       logic.addStarforce(gear);
@@ -163,7 +163,7 @@ describe("starforce stat", () => {
     gear.req.job = 16;
     gear.option(GearPropType.incPAD).base = 78;
     gear.totalUpgradeCount = 7;
-    gear.maxStar = gear.getMaxStar();
+    gear.maxStar = Gear.getMaxStar(gear);
 
     gear.option(GearPropType.incPAD).bonus = 18;
     gear.option(GearPropType.incPAD).upgrade = 35;
@@ -193,7 +193,7 @@ describe("starforce stat", () => {
     gear.option(GearPropType.incMMP).base = 360;
     gear.option(GearPropType.imdR).base = 10;
     gear.totalUpgradeCount = 11;
-    gear.maxStar = gear.getMaxStar();
+    gear.maxStar = Gear.getMaxStar(gear);
 
     gear.option(GearPropType.incINT).upgrade = 1;
     for (let i = 0; i < 22; i++) {
@@ -221,7 +221,7 @@ describe("starforce stat", () => {
     gear.option(GearPropType.bdR).base = 30;
     gear.option(GearPropType.incSpeed).base = 19;
     gear.totalUpgradeCount = 11;
-    gear.maxStar = gear.getMaxStar();
+    gear.maxStar = Gear.getMaxStar(gear);
 
     gear.option(GearPropType.incPAD).upgrade = 9 * 8;
     for (let i = 0; i < 22; i++) {
@@ -278,7 +278,7 @@ describe("starforce stat", () => {
     gear.option(GearPropType.incDEX).base = 50;
     gear.option(GearPropType.incLUK).base = 50;
     gear.totalUpgradeCount = 1;
-    gear.maxStar = gear.getMaxStar();
+    gear.maxStar = Gear.getMaxStar(gear);
 
     for (let i = 0; i < 10; i++) {
       logic.addStarforce(gear);
@@ -305,7 +305,7 @@ describe("amazing enhancement stat", () => {
     gear.option(GearPropType.incPAD).base = 2;
     gear.option(GearPropType.imdR).base = 5;
     gear.totalUpgradeCount = 7;
-    gear.maxStar = gear.getMaxStar();
+    gear.maxStar = Gear.getMaxStar(gear);
 
     gear.option(GearPropType.incLUK).bonus = 40;
     for (let i = 0; i < 12; i++) {
@@ -336,7 +336,7 @@ describe("amazing enhancement stat", () => {
     gear.option(GearPropType.incPAD).base = 1;
     gear.option(GearPropType.incMAD).base = 1;
     gear.totalUpgradeCount = 1;
-    gear.maxStar = gear.getMaxStar();
+    gear.maxStar = Gear.getMaxStar(gear);
 
     for (let i = 0; i < 12; i++) {
       logic.addAmazingEnhancement(gear, true);
@@ -407,7 +407,7 @@ describe("resetEnhancement", () => {
     gear.option(GearPropType.incPAD).base = 1;
     gear.option(GearPropType.incMAD).base = 1;
     gear.totalUpgradeCount = 1;
-    gear.maxStar = gear.getMaxStar();
+    gear.maxStar = Gear.getMaxStar(gear);
 
     const refMaxStar = gear.maxStar;
     logic.addAmazingEnhancement(gear);
@@ -429,7 +429,7 @@ describe("resetEnhancement", () => {
     gear.option(GearPropType.incPAD).base = 2;
     gear.option(GearPropType.imdR).base = 5;
     gear.totalUpgradeCount = 7;
-    gear.maxStar = gear.getMaxStar();
+    gear.maxStar = Gear.getMaxStar(gear);
 
     for (let i = 0; i < 17; i++) {
       logic.addStarforce(gear);

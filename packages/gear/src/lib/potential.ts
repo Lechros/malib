@@ -25,7 +25,7 @@ export class Potential {
    * 장비에 표시되는 문자열
    */
   get convertSummary(): string {
-    const types: GearPropType[] = [...this.option.keys()];
+    const types = [...this.option.keys()];
     types.sort((a, b) => GearPropType[b].length - GearPropType[a].length);
     let summary = this.summary;
     for (const type of types) {
@@ -69,11 +69,11 @@ export class Potential {
       case 20:
         return (
           Gear.isSubWeapon(gearType) ||
-          gearType === GearType.pants ||
-          gearType === GearType.shoes ||
           gearType === GearType.cap ||
           gearType === GearType.coat ||
           gearType === GearType.longcoat ||
+          gearType === GearType.pants ||
+          gearType === GearType.shoes ||
           gearType === GearType.glove ||
           gearType === GearType.cape ||
           gearType === GearType.belt ||
@@ -83,8 +83,8 @@ export class Potential {
         return (
           gearType === GearType.faceAccessory ||
           gearType === GearType.eyeAccessory ||
-          gearType === GearType.ring ||
           gearType === GearType.earrings ||
+          gearType === GearType.ring ||
           gearType === GearType.pendant
         );
       case 51:
