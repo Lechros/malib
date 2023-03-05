@@ -1,5 +1,9 @@
 {
   "name": "@malib/gear",
   "version": "0.1.1",
-  "type": "module"
+  "type": "module",
+  "main": "index.js",
+  "module": "index.js",
+  "types": "index.d.ts",
+  "typings": "index.d.ts"
 }
