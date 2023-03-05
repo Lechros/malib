@@ -3,6 +3,7 @@ import { defineConfig } from "vite";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import dts from "vite-plugin-dts";
 import { join } from "path";
+import normalizeDts from "../../tools/scripts/normalize-dts";
 
 export default defineConfig({
   plugins: [
@@ -10,6 +11,10 @@ export default defineConfig({
       tsConfigFilePath: join(__dirname, "tsconfig.lib.json"),
       // Faster builds by skipping tests. Set this to false to enable type checking.
       skipDiagnostics: true,
+      afterBuild: normalizeDts({
+        root: __dirname,
+        name: "create-gear",
+      }),
     }),
 
     viteTsConfigPaths({
@@ -31,7 +36,7 @@ export default defineConfig({
     },
     rollupOptions: {
       // External packages that should not be bundled into your library.
-      external: [],
+      external: ["@malib/gear"],
     },
   },
 
