@@ -1,5 +1,16 @@
 # @malib/create-gear
 
+## 0.2.0
+
+### Minor Changes
+
+- fde5254: Fix package.json types
+
+### Patch Changes
+
+- Updated dependencies [fde5254]
+  - @malib/gear@0.2.0
+
 ## 0.1.1
 
 ### Patch Changes
