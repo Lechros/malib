@@ -99,7 +99,7 @@ describe("setSoul", () => {
     expect(gear.soulSlot.enchanted).toBe(true);
     expect(gear.soulSlot.charge).toBe(200);
     expect(gear.soulSlot.chargeOption).toEqual(
-      new Map([[GearPropType.incPAD, 14]])
+      new Map([[GearPropType.incPAD, 12]])
     );
     expect(gear.soulSlot.soul).toEqual(soul);
   });
@@ -137,7 +137,7 @@ describe("removeSoul", () => {
     expect(gear.soulSlot.enchanted).toBe(true);
     expect(gear.soulSlot.charge).toBe(50);
     expect(gear.soulSlot.chargeOption).toEqual(
-      new Map([[GearPropType.incPAD, 6]])
+      new Map([[GearPropType.incPAD, 5]])
     );
     expect(gear.soulSlot.soul).toBeUndefined();
   });
@@ -203,15 +203,15 @@ describe("soul setCharge", () => {
 
       logic.setCharge(gear, 1);
       expect(gear.soulSlot.chargeOption).toEqual(
-        new Map([[GearPropType.incPAD, 6]])
+        new Map([[GearPropType.incPAD, 5]])
       );
       logic.setCharge(gear, 300);
       expect(gear.soulSlot.chargeOption).toEqual(
-        new Map([[GearPropType.incPAD, 8]])
+        new Map([[GearPropType.incPAD, 7]])
       );
       logic.setCharge(gear, 500);
       expect(gear.soulSlot.chargeOption).toEqual(
-        new Map([[GearPropType.incPAD, 10]])
+        new Map([[GearPropType.incPAD, 9]])
       );
       logic.setCharge(gear, 1000);
       expect(gear.soulSlot.chargeOption).toEqual(
@@ -229,13 +229,25 @@ describe("soul setCharge", () => {
 
       logic.setCharge(gear, 1);
       expect(gear.soulSlot.chargeOption).toEqual(
+        new Map([[GearPropType.incPAD, 10]])
+      );
+      logic.setCharge(gear, 101);
+      expect(gear.soulSlot.chargeOption).toEqual(
         new Map([[GearPropType.incPAD, 12]])
       );
-      logic.setCharge(gear, 300);
+      logic.setCharge(gear, 213);
+      expect(gear.soulSlot.chargeOption).toEqual(
+        new Map([[GearPropType.incPAD, 14]])
+      );
+      logic.setCharge(gear, 302);
       expect(gear.soulSlot.chargeOption).toEqual(
         new Map([[GearPropType.incPAD, 16]])
       );
       logic.setCharge(gear, 500);
+      expect(gear.soulSlot.chargeOption).toEqual(
+        new Map([[GearPropType.incPAD, 18]])
+      );
+      logic.setCharge(gear, 502);
       expect(gear.soulSlot.chargeOption).toEqual(
         new Map([[GearPropType.incPAD, 20]])
       );

@@ -101,10 +101,15 @@ export class SoulLogic {
     if (!soulSlot.enchanted) {
       return 0;
     }
+    if (soulSlot.charge === 0) {
+      return 0;
+    }
+
+    const chargeValue = Math.min(Math.ceil(soulSlot.charge / 100) - 1, 5);
     if (soulSlot.soul) {
       const multiplier = soulSlot.soul.multiplier;
-      return 10 + Math.min(Math.ceil(soulSlot.charge / 100), 5) * multiplier;
+      return 10 + chargeValue * multiplier;
     }
-    return 5 + Math.min(Math.ceil(soulSlot.charge / 100), 5);
+    return 5 + chargeValue;
   }
 }
