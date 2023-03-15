@@ -66,7 +66,7 @@ export function createGearFromNode(
   if (gear.totalUpgradeCount > 0) {
     gear.canPotential = true;
   } else if (
-    Gear.specialCanPotential(gear.type) ||
+    specialCanPotential(gear.type) ||
     Gear.isSubWeapon(gear.type) ||
     gear.getBooleanValue(GearPropType.tucIgnoreForPotential)
   ) {
@@ -130,4 +130,22 @@ export function createGearFromId(id: number): Gear | undefined {
   }
 
   return createGearFromNode(gearJson[id], id, createPotentialFromCode);
+}
+
+function specialCanPotential(type: GearType): boolean {
+  switch (type) {
+    case GearType.soulShield:
+    case GearType.demonShield:
+    case GearType.katara:
+    case GearType.magicArrow:
+    case GearType.card:
+    case GearType.orb:
+    case GearType.dragonEssence:
+    case GearType.soulRing:
+    case GearType.magnum:
+    case GearType.emblem:
+      return true;
+    default:
+      return false;
+  }
 }
