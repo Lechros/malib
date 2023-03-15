@@ -1,10 +1,11 @@
+import { GearIcon } from "./gearicon";
 import { GearOption } from "./gearoption";
 import { GearPropType } from "./gearproptype";
 import { GearReq } from "./gearreq";
 import { GearType } from "./geartype";
 import { Potential } from "./potential";
 import { PotentialGrade } from "./potentialgrade";
-import { SoulSlot } from "./soul";
+import { SoulWeapon } from "./soul";
 
 /**
  * 장비
@@ -17,9 +18,7 @@ export class Gear {
   /** 설명 */
   desc = "";
   /** 아이콘 */
-  icon = 0;
-  /** 아이콘 오프셋 */
-  origin: [number, number] = [0, 0];
+  icon: GearIcon = new GearIcon();
   /** 장비 분류 */
   type: GearType = 0;
   /** 장비 착용 제한 */
@@ -31,7 +30,7 @@ export class Gear {
   /**
    * 장비 옵션
    *
-   * 접근할 때는 `options` 대신 `option`을 사용하는 것이 권장됩니다.
+   * 개별 속성 접근 시 `options` 대신 `option`을 사용하는 것이 권장됩니다.
    */
   options: Map<GearPropType, GearOption> = new Map();
 
@@ -64,7 +63,7 @@ export class Gear {
   additionalPotentials: Potential[] = [];
 
   /** 소울 */
-  soulSlot: SoulSlot = new SoulSlot();
+  soulWeapon: SoulWeapon = new SoulWeapon(this);
 
   /**
    * 업그레이드 가능 횟수
@@ -118,7 +117,7 @@ export class Gear {
    * @returns 속성이 존재하고 값이 `0` 이상일 경우 `true`; 아닐 경우 `false`
    */
   getBooleanValue(type: GearPropType): boolean {
-    return Boolean(this.props.get(type));
+    return (this.props.get(type) ?? 0) > 0;
   }
 
   /**
