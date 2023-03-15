@@ -1,5 +1,6 @@
 import {
   Gear,
+  GearIcon,
   GearPropType,
   GearReq,
   GearType,
@@ -13,10 +14,10 @@ import { asEnum } from "./util";
 
 /**
  * 장비 정보로부터 장비를 생성합니다.
- * @param node 장비 정보
- * @param id 장비 아이템 ID
- * @param getPotentialFunc 코드에 해당하는 잠재능력을 반환하는 함수
- * @returns 장비
+ * @param node 장비 정보 노드.
+ * @param id 장비 아이템 ID.
+ * @param getPotentialFunc 코드에 해당하는 잠재능력을 반환하는 함수.
+ * @returns 아이템 정보에 해당하는 장비
  */
 export function createGearFromNode(
   node: GearData,
@@ -31,8 +32,9 @@ export function createGearFromNode(
   gear.type = Gear.getGearType(id);
   gear.name = node.name;
   gear.desc = node.desc ?? "";
-  gear.icon = node.icon;
-  gear.origin = node.origin;
+  gear.icon = new GearIcon();
+  gear.icon.id = node.icon;
+  gear.icon.origin = node.origin;
   gear.totalUpgradeCount = node.tuc ?? 0;
   if (node.req) {
     const req = new GearReq();
@@ -121,8 +123,8 @@ export function createGearFromNode(
 
 /**
  * 아이템 ID로부터 장비를 생성합니다.
- * @param id 장비 아이템 ID
- * @returns 장비; 존재하지 않을 경우 `undefined`
+ * @param id 장비 아이템 ID.
+ * @returns 아이템 ID에 해당하는 장비. 장비가 존재하지 않을 경우 `undefined`를 반환합니다.
  */
 export function createGearFromId(id: number): Gear | undefined {
   if (!(id in gearJson)) {

@@ -11,7 +11,7 @@ const MAX_AMAZING = 15;
  * 주문서 수치가 변경될 경우 `recalculate` 함수를 직접 적용해야 합니다.
  * @param gear 강화를 적용할 장비.
  * @param ignoreMaxStar 장비의 최대 강화 수치를 초과하여 강화하는지 여부. 기본값은 `false`입니다.
- * `gear`가 슈페리얼 장비일 경우 이 값은 무시됩니다.
+ * 슈페리얼 장비일 경우 무시합니다.
  * @returns 적용했을 경우 `true`; 아닐 경우 `false`.
  * `ignoreMaxStar`가 `false`고 장비의 현재 강화 수치가 최대 강화 수치와 동일하거나,
  * `ignoreMaxStar`가 `true`고 장비의 현재 강화 수치가 `25`이거나,
