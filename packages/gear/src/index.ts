@@ -9,12 +9,27 @@ export {
   PotentialGrade,
   Soul,
   SoulWeapon,
+  // bonus
+  addBonusStat,
+  getBonusStatOption,
+  getBonusStatValue,
+  resetBonusStat,
   BonusStatGrade,
-  BonusStatLogic,
   BonusStatType,
-  EnhancementLogic,
+  // enhancement
+  addStarforce,
+  addAmazingEnhancement,
+  resetEnhancement,
+  recalculateStarforce,
+  // scroll
   Scroll,
   SpellTraceProbability,
   SpellTraceStatType,
-  UpgradeLogic,
+  // upgrade
+  applyGoldHammer,
+  applyScroll,
+  applySpellTrace,
+  addUpgradeFailCount,
+  restoreUpgradeCount,
+  resetUpgrade,
 } from "./internal";
