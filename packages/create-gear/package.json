@@ -8,5 +8,11 @@
   "typings": "index.d.ts",
   "dependencies": {
     "@malib/gear": "^0.2.0"
+  },
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md",
+    "displayName": "create-gear",
+    "tsconfig": "./tsconfig.lib.json"
   }
 }

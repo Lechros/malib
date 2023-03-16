@@ -3,6 +3,9 @@ import { GearPropType } from "../gearproptype";
 import { GearType } from "../geartype";
 import { BonusStatType } from "./bonusstattype";
 
+/**
+ * 추가옵션 등급
+ */
 export type BonusStatGrade = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 /**
