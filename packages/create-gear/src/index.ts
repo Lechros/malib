@@ -6,6 +6,7 @@ export {
   createPotentialFromNode,
   createSoulFromId,
   createSoulFromNode,
+  MagnificentSoulOptionType,
   // json
   gearJson,
   itemOptionJson,
@@ -14,9 +15,11 @@ export {
   type GearData,
   type GearDataJson,
   type GearReqData,
+  type SpecialOptionData,
   type ItemOption,
   type ItemOptionJson,
   type SoulData,
   type SoulDataJson,
   type SoulOption,
+  type MagnificentSoulOption,
 } from "./internal";
