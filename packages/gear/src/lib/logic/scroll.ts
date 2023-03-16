@@ -2,7 +2,13 @@ import { Gear } from "../gear";
 import { GearPropType } from "../gearproptype";
 import { GearType } from "../geartype";
 
+/**
+ * 주문의 흔적 성공 확률
+ */
 export type SpellTraceProbability = 100 | 70 | 30 | 15;
+/**
+ * 주문의 흔적 스탯 종류
+ */
 export type SpellTraceStatType =
   | GearPropType.incSTR
   | GearPropType.incDEX

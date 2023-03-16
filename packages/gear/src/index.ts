@@ -14,7 +14,7 @@ export {
   getBonusStatOption,
   getBonusStatValue,
   resetBonusStat,
-  BonusStatGrade,
+  type BonusStatGrade,
   BonusStatType,
   // enhancement
   addStarforce,
@@ -23,8 +23,8 @@ export {
   recalculateStarforce,
   // scroll
   Scroll,
-  SpellTraceProbability,
-  SpellTraceStatType,
+  type SpellTraceProbability,
+  type SpellTraceStatType,
   // upgrade
   applyGoldHammer,
   applyScroll,

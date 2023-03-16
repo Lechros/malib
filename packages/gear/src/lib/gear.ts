@@ -30,7 +30,7 @@ export class Gear {
   /**
    * 장비 옵션
    *
-   * 개별 속성 접근 시 `options` 대신 `option`을 사용하는 것이 권장됩니다.
+   * 개별 속성 접근 시 이 속성 대신 `option`을 사용하는 것이 권장됩니다.
    */
   options: Map<GearPropType, GearOption> = new Map();
 
@@ -78,8 +78,7 @@ export class Gear {
   }
 
   /**
-   * 현재 옵션과 기본 옵션의 차이를 가중치를 포함하여 계산합니다.
-   * @returns 가중치가 적용된 옵션 차이의 합.
+   * 가중치를 포함하여 계산한 현재 옵션과 기본 옵션의 차이
    */
   get diff(): number {
     let diff = 0;
@@ -272,9 +271,9 @@ export class Gear {
 
   /**
    * 장비의 최대 강화 수치를 계산합니다.
-   * @param gear 장비.
+   * @param gear 계산할 장비.
    * @returns 장비의 최대 강화 수치.
-   * 최대 업그레이드 가능 횟수가 0이거나 `onlyUpgrade` 속성이 존재하거나 메카닉 장비 또는 드래곤 장비일 경우 `0`입니다.
+   * 최대 업그레이드 가능 횟수가 `0`이거나 `onlyUpgrade` 속성이 존재하거나 메카닉 장비 또는 드래곤 장비일 경우 `0`입니다.
    */
   static getMaxStar(gear: Gear): number {
     if (gear.totalUpgradeCount <= 0) {
