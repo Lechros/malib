@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 0.4.0
+
+### Minor Changes
+
+- c145405: Add anvil, karma support
+
 ## 0.3.0
 
 ### Minor Changes
