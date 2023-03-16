@@ -5,11 +5,11 @@ import { asEnum } from "./util";
 
 /**
  * 잠재옵션 정보로부터 잠재옵션을 생성합니다.
- * - `incDAMr` 속성과 `boss` 속성이 존재할 경우 `incBDR` 속성으로 대체됩니다.
- * @param node 잠재옵션 정보
- * @param code 잠재옵션 코드
- * @param potentialLevel 장비의 착용 가능 레벨로 계산되는 잠재옵션 레벨. (`Potential.getPotentialLevel`로 계산)
- * @returns 잠재옵션
+ * 잠재옵션에 `incDAMr` 속성과 `boss` 속성이 존재할 경우 `incBDR` 속성으로 대체됩니다.
+ * @param node 잠재옵션 정보 노드.
+ * @param code 잠재옵션 코드.
+ * @param potentialLevel 장비의 착용 가능 레벨로 계산되는 잠재옵션 레벨. `1`부터 `25`까지의 값입니다.
+ * @returns 정보에 해당하는 잠재옵션.
  */
 export function createPotentialFromNode(
   node: ItemOption,
@@ -39,10 +39,10 @@ export function createPotentialFromNode(
 
 /**
  * 잠재옵션 코드로부터 잠재옵션을 생성합니다.
- * - `incDAMr` 속성과 `boss` 속성이 존재할 경우 `incBDR` 속성으로 대체됩니다.
- * @param code 잠재옵션 코드
- * @param potentialLevel 장비의 착용 가능 레벨로 계산되는 잠재옵션 레벨. (`Potential.getPotentialLevel`로 계산)
- * @returns 잠재옵션
+ * 잠재옵션에 `incDAMr` 속성과 `boss` 속성이 존재할 경우 `incBDR` 속성으로 대체됩니다.
+ * @param code 잠재옵션 코드.
+ * @param potentialLevel 장비의 착용 가능 레벨로 계산되는 잠재옵션 레벨. `1`부터 `25`까지의 값입니다.
+ * @returns 코드에 해당하는 잠재옵션. 존재하지 않을 경우 `undefined`를 반환합니다.
  */
 export function createPotentialFromCode(
   code: number,

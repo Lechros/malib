@@ -1,11 +1,2 @@
 # gear
-
-This library was generated with [Nx](https://nx.dev).
-
-## Building
-
-Run `nx build gear` to build the library.
-
-## Running unit tests
-
-Run `nx test gear` to execute the unit tests via [Jest](https://jestjs.io).
+장비, 잠재옵션, 소울 클래스 등의 클래스를 제공하고, 장비의 추가옵션, 주문서, 강화 로직을 제공합니다.

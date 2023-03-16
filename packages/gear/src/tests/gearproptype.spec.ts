@@ -2,7 +2,6 @@ import { GearPropType } from "..";
 
 describe("GearPropType value tests", () => {
   // changing these value is a breaking change
-  // since serializing/deserializing GearPropType values might break
   it.each([
     [GearPropType.incSTR, 1],
     [GearPropType.incAUT, 16],

@@ -1,8 +1,14 @@
-import { BonusStatLogic, BonusStatType, Gear, GearPropType } from "../..";
+import {
+  addBonusStat,
+  BonusStatType,
+  Gear,
+  GearPropType,
+  getBonusStatValue,
+  resetBonusStat,
+} from "../..";
 
 describe("addBonusStat normal", () => {
   it("low req level armor", () => {
-    const bl = new BonusStatLogic();
     const gear = new Gear();
     gear.name = "블루몬 고깔모자";
     gear.itemID = 1002102;
@@ -12,13 +18,12 @@ describe("addBonusStat normal", () => {
     gear.option(GearPropType.incPDD).base = 8;
     gear.totalUpgradeCount = 7;
 
-    expect(bl.addBonusStat(gear, BonusStatType.DEX, 3)).toBe(true);
-    bl.addBonusStat(gear, BonusStatType.INT, 2);
+    expect(addBonusStat(gear, BonusStatType.DEX, 3)).toBe(true);
+    addBonusStat(gear, BonusStatType.INT, 2);
     expect(gear.option(GearPropType.incDEX).bonus).toBe(3);
     expect(gear.option(GearPropType.incINT).bonus).toBe(2);
   });
   it("medium req level armor", () => {
-    const bl = new BonusStatLogic();
     const gear = new Gear();
     gear.name = "블루 길티언";
     gear.itemID = 1002152;
@@ -29,11 +34,10 @@ describe("addBonusStat normal", () => {
     gear.option(GearPropType.incMMP).base = 20;
     gear.totalUpgradeCount = 7;
 
-    bl.addBonusStat(gear, BonusStatType.MHP, 3);
+    addBonusStat(gear, BonusStatType.MHP, 3);
     expect(gear.option(GearPropType.incMHP).bonus).toBe(360);
   });
   it("low req level weapon", () => {
-    const bl = new BonusStatLogic();
     const gear = new Gear();
     gear.name = "페어리 완드";
     gear.itemID = 1372000;
@@ -44,15 +48,14 @@ describe("addBonusStat normal", () => {
     gear.option(GearPropType.incMAD).base = 53;
     gear.totalUpgradeCount = 7;
 
-    bl.addBonusStat(gear, BonusStatType.MMP, 2);
-    bl.addBonusStat(gear, BonusStatType.PAD, 1);
-    bl.addBonusStat(gear, BonusStatType.allStatR, 1);
+    addBonusStat(gear, BonusStatType.MMP, 2);
+    addBonusStat(gear, BonusStatType.PAD, 1);
+    addBonusStat(gear, BonusStatType.allStatR, 1);
     expect(gear.option(GearPropType.incMMP).bonus).toBe(180);
     expect(gear.option(GearPropType.incPAD).bonus).toBe(1);
     expect(gear.option(GearPropType.statR).bonus).toBe(1);
   });
   it("high req level armor", () => {
-    const bl = new BonusStatLogic();
     const gear = new Gear();
     gear.name = "앱솔랩스 나이트케이프";
     gear.itemID = 1102775;
@@ -69,7 +72,7 @@ describe("addBonusStat normal", () => {
     gear.option(GearPropType.incMAD).base = 2;
     gear.totalUpgradeCount = 7;
 
-    bl.addBonusStat(gear, BonusStatType.STR_DEX, 4);
+    addBonusStat(gear, BonusStatType.STR_DEX, 4);
     expect(gear.option(GearPropType.incSTR).bonus).toBe(20);
     expect(gear.option(GearPropType.incDEX).bonus).toBe(20);
   });
@@ -77,7 +80,6 @@ describe("addBonusStat normal", () => {
 
 describe("addBonusStat invalid type", () => {
   it("boss reward gear with low grade", () => {
-    const bl = new BonusStatLogic();
     const gear = new Gear();
     gear.name = "파프니르 페니텐시아";
     gear.itemID = 1402196;
@@ -92,12 +94,11 @@ describe("addBonusStat invalid type", () => {
     gear.option(GearPropType.bdR).base = 30;
     gear.totalUpgradeCount = 8;
 
-    expect(bl.getBonusStatValue(gear, BonusStatType.INT_LUK, 1)).toBe(0);
-    expect(bl.addBonusStat(gear, BonusStatType.PAD, 1)).toBe(false);
+    expect(getBonusStatValue(gear, BonusStatType.INT_LUK, 1)).toBe(0);
+    expect(addBonusStat(gear, BonusStatType.PAD, 1)).toBe(false);
     expect(gear.option(GearPropType.incPAD).bonus).toBe(0);
   });
   it("boss damage bonus stat with weapon req level", () => {
-    const bl = new BonusStatLogic();
     const gear = new Gear();
     gear.name = "파프니르 페니텐시아";
     gear.itemID = 1402196;
@@ -111,15 +112,14 @@ describe("addBonusStat invalid type", () => {
     gear.option(GearPropType.imdR).base = 10;
     gear.option(GearPropType.bdR).base = 30;
     gear.totalUpgradeCount = 8;
-    expect(bl.addBonusStat(gear, BonusStatType.bdR, 4)).toBe(false);
+    expect(addBonusStat(gear, BonusStatType.bdR, 4)).toBe(false);
     expect(gear.option(GearPropType.bdR).bonus).toBe(0);
 
     gear.req.level = 90;
-    expect(bl.addBonusStat(gear, BonusStatType.bdR, 4)).toBe(true);
+    expect(addBonusStat(gear, BonusStatType.bdR, 4)).toBe(true);
     expect(gear.option(GearPropType.bdR).bonus).toBe(8);
   });
   it("invalid type for armor", () => {
-    const bl = new BonusStatLogic();
     const gear = new Gear();
     gear.name = "블루몬 고깔모자";
     gear.itemID = 1002102;
@@ -129,15 +129,14 @@ describe("addBonusStat invalid type", () => {
     gear.option(GearPropType.incPDD).base = 8;
     gear.totalUpgradeCount = 7;
 
-    expect(bl.addBonusStat(gear, BonusStatType.PAD, 3)).toBe(false);
-    expect(bl.addBonusStat(gear, BonusStatType.allStatR, 3)).toBe(false);
+    expect(addBonusStat(gear, BonusStatType.PAD, 3)).toBe(false);
+    expect(addBonusStat(gear, BonusStatType.allStatR, 3)).toBe(false);
     expect(gear.option(GearPropType.incPAD).bonus).toBe(0);
     expect(gear.option(GearPropType.statR).bonus).toBe(0);
   });
 });
 
 test("addBonusStat boss reward weapon", () => {
-  const bl = new BonusStatLogic();
   const gear = new Gear();
   gear.name = "파프니르 페니텐시아";
   gear.itemID = 1402196;
@@ -152,14 +151,13 @@ test("addBonusStat boss reward weapon", () => {
   gear.option(GearPropType.bdR).base = 30;
   gear.totalUpgradeCount = 8;
 
-  expect(bl.addBonusStat(gear, BonusStatType.PAD, 5)).toBe(true);
-  expect(bl.addBonusStat(gear, BonusStatType.MAD, 5)).toBe(true);
+  expect(addBonusStat(gear, BonusStatType.PAD, 5)).toBe(true);
+  expect(addBonusStat(gear, BonusStatType.MAD, 5)).toBe(true);
   expect(gear.option(GearPropType.incPAD).bonus).toBe(42);
   expect(gear.option(GearPropType.incMAD).bonus).toBe(42);
 });
 
 test("addBonusStat zero weapon", () => {
-  const bl = new BonusStatLogic();
   let gear: Gear;
 
   gear = new Gear();
@@ -176,7 +174,7 @@ test("addBonusStat zero weapon", () => {
   gear.option(GearPropType.bdR).base = 30;
   gear.totalUpgradeCount = 8;
 
-  expect(bl.addBonusStat(gear, BonusStatType.PAD, 4)).toBe(true);
+  expect(addBonusStat(gear, BonusStatType.PAD, 4)).toBe(true);
   expect(gear.option(GearPropType.incPAD).bonus).toBe(47);
 
   gear = new Gear();
@@ -194,7 +192,7 @@ test("addBonusStat zero weapon", () => {
   gear.option(GearPropType.incPDD).base = 150;
   gear.totalUpgradeCount = 8;
 
-  expect(bl.addBonusStat(gear, BonusStatType.PAD, 4)).toBe(true);
+  expect(addBonusStat(gear, BonusStatType.PAD, 4)).toBe(true);
   expect(gear.option(GearPropType.incPAD).bonus).toBe(47);
 
   gear = new Gear();
@@ -212,7 +210,7 @@ test("addBonusStat zero weapon", () => {
   gear.option(GearPropType.bdR).base = 30;
   gear.totalUpgradeCount = 8;
 
-  expect(bl.addBonusStat(gear, BonusStatType.PAD, 5)).toBe(true);
+  expect(addBonusStat(gear, BonusStatType.PAD, 5)).toBe(true);
   expect(gear.option(GearPropType.incPAD).bonus).toBe(151);
 
   gear = new Gear();
@@ -230,17 +228,16 @@ test("addBonusStat zero weapon", () => {
   gear.option(GearPropType.bdR).base = 30;
   gear.option(GearPropType.incPDD).base = 250;
   gear.totalUpgradeCount = 8;
-  expect(bl.addBonusStat(gear, BonusStatType.PAD, 5)).toBe(true);
+  expect(addBonusStat(gear, BonusStatType.PAD, 5)).toBe(true);
   expect(gear.option(GearPropType.incPAD).bonus).toBe(151);
 });
 
 test("resetBonusStat", () => {
-  const bl = new BonusStatLogic();
   const gear = new Gear();
   gear.option(GearPropType.incSTR).bonus = 15;
   gear.option(GearPropType.incPAD).bonus = 15;
-  bl.addBonusStat(gear, BonusStatType.INT, 5);
-  bl.resetBonusStat(gear);
+  addBonusStat(gear, BonusStatType.INT, 5);
+  resetBonusStat(gear);
   expect(gear.option(GearPropType.incSTR).bonus).toBe(0);
   expect(gear.option(GearPropType.incINT).bonus).toBe(0);
   expect(gear.option(GearPropType.incPAD).bonus).toBe(0);

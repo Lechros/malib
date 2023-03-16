@@ -1,17 +1,35 @@
-// core
-export * from "./lib/gear";
-export * from "./lib/gearoption";
-export * from "./lib/gearproptype";
-export * from "./lib/gearreq";
-export * from "./lib/geartype";
-export * from "./lib/potential";
-export * from "./lib/potentialgrade";
-export * from "./lib/soul";
-
-// logic
-export * from "./lib/logic/bonusstat";
-export * from "./lib/logic/bonusstattype";
-export * from "./lib/logic/enhancement";
-export * from "./lib/logic/scroll";
-export * from "./lib/logic/soul";
-export * from "./lib/logic/upgrade";
+export {
+  Gear,
+  GearIcon,
+  GearOption,
+  GearPropType,
+  GearReq,
+  GearType,
+  Potential,
+  PotentialGrade,
+  Soul,
+  SoulWeapon,
+  // bonus
+  addBonusStat,
+  getBonusStatOption,
+  getBonusStatValue,
+  resetBonusStat,
+  type BonusStatGrade,
+  BonusStatType,
+  // enhancement
+  addStarforce,
+  addAmazingEnhancement,
+  resetEnhancement,
+  recalculateStarforce,
+  // scroll
+  Scroll,
+  type SpellTraceProbability,
+  type SpellTraceStatType,
+  // upgrade
+  applyGoldHammer,
+  applyScroll,
+  applySpellTrace,
+  addUpgradeFailCount,
+  restoreUpgradeCount,
+  resetUpgrade,
+} from "./internal";

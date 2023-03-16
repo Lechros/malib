@@ -6,7 +6,7 @@ import { GearType } from "./geartype";
  * 잠재옵션
  */
 export class Potential {
-  /** 잠재옵션 ID */
+  /** 잠재옵션 코드 */
   code = 0;
   /**
    * 잠재옵션 분류
@@ -39,20 +39,20 @@ export class Potential {
 
   /**
    * 장비의 착용 가능 레벨로부터 잠재옵션의 레벨을 계산합니다.
-   * @param gearReqLevel 장비의 착용 가능 레벨
-   * @returns 잠재옵션 레벨 (1~20)
+   * @param gearReqLevel 장비의 착용 가능 레벨.
+   * @returns 잠재옵션 레벨. 1부터 25까지의 값입니다.
    */
   static getPotentialLevel(gearReqLevel: number): number {
     if (gearReqLevel <= 0) return 1;
-    else if (gearReqLevel >= 200) return 20;
+    else if (gearReqLevel >= 250) return 25;
     else return Math.floor((gearReqLevel + 9) / 10);
   }
 
   /**
    * 잠재옵션 분류와 장비 분류를 비교합니다.
-   * @param optionType 잠재옵션 분류
-   * @param gearType 장비 분류
-   * @returns 잠재옵션 분류가 장비 분류에 적용 가능한 경우 `true`; 아닌 경우 `false`
+   * @param optionType 잠재옵션 분류.
+   * @param gearType 장비 분류.
+   * @returns 잠재옵션 분류가 장비 분류에 적용 가능한 경우 `true`; 아닌 경우 `false`.
    */
   static checkOptionType(optionType: number, gearType: GearType): boolean {
     switch (optionType) {

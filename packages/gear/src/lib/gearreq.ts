@@ -4,13 +4,13 @@
 export class GearReq {
   /** 착용 가능 레벨 */
   level = 0;
-  /** REQ STR */
+  /** 착용 가능 STR */
   str = 0;
-  /** REQ LUK */
+  /** 착용 가능 LUK */
   luk = 0;
-  /** REQ DEX */
+  /** 착용 가능 DEX */
   dex = 0;
-  /** REQ INT */
+  /** 착용 가능 INT */
   int = 0;
   /** 착용 가능 직업 분류 */
   job = 0;

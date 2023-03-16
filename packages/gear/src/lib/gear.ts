@@ -1,10 +1,11 @@
+import { GearIcon } from "./gearicon";
 import { GearOption } from "./gearoption";
 import { GearPropType } from "./gearproptype";
 import { GearReq } from "./gearreq";
 import { GearType } from "./geartype";
 import { Potential } from "./potential";
 import { PotentialGrade } from "./potentialgrade";
-import { SoulSlot } from "./soul";
+import { SoulWeapon } from "./soul";
 
 /**
  * 장비
@@ -17,9 +18,7 @@ export class Gear {
   /** 설명 */
   desc = "";
   /** 아이콘 */
-  icon = 0;
-  /** 아이콘 오프셋 */
-  origin: [number, number] = [0, 0];
+  icon: GearIcon = new GearIcon();
   /** 장비 분류 */
   type: GearType = 0;
   /** 장비 착용 제한 */
@@ -31,7 +30,7 @@ export class Gear {
   /**
    * 장비 옵션
    *
-   * 접근할 때는 `options` 대신 `option`을 사용하는 것이 권장됩니다.
+   * 개별 속성 접근 시 이 속성 대신 `option`을 사용하는 것이 권장됩니다.
    */
   options: Map<GearPropType, GearOption> = new Map();
 
@@ -64,7 +63,7 @@ export class Gear {
   additionalPotentials: Potential[] = [];
 
   /** 소울 */
-  soulSlot: SoulSlot = new SoulSlot();
+  soulWeapon: SoulWeapon = new SoulWeapon(this);
 
   /**
    * 업그레이드 가능 횟수
@@ -79,8 +78,7 @@ export class Gear {
   }
 
   /**
-   * 현재 옵션과 기본 옵션의 차이를 가중치를 포함하여 계산합니다.
-   * @returns 가중치가 적용된 옵션 차이의 합
+   * 가중치를 포함하여 계산한 현재 옵션과 기본 옵션의 차이
    */
   get diff(): number {
     let diff = 0;
@@ -91,9 +89,9 @@ export class Gear {
   }
 
   /**
-   * 장비 옵션을 반환합니다. 존재하지 않는 옵션은 장비에 추가됩니다.
-   * @param type 장비 옵션 종류
-   * @returns 장비 옵션 객체
+   * 지정된 장비 옵션 종류과 연결된 옵션을 가져옵니다.
+   * @param type 장비 옵션 종류.
+   * @returns 장비 옵션 객체. 존재하지 않을 경우 장비에 추가한 뒤 반환합니다.
    */
   option(type: GearPropType): GearOption {
     if (!this.options.has(type)) {
@@ -104,36 +102,36 @@ export class Gear {
   }
 
   /**
-   * 장비 속성의 값을 반환합니다.
-   * @param type 장비 속성
-   * @returns 속성의 값; 존재하지 않을 경우 `0`
+   * 지정된 장비 속성 종류과 연결된 값을 가져옵니다.
+   * @param type 장비 속성 종류.
+   * @returns 속성의 값. 장비에 존재하지 않을 경우 추가하지 않고 `0`을 반환합니다.
    */
   getPropValue(type: GearPropType): number {
     return this.props.get(type) ?? 0;
   }
 
   /**
-   * 장비 속성의 값을 `boolean` 형식으로 반환합니다.
-   * @param type 장비 속성
-   * @returns 속성이 존재하고 값이 `0` 이상일 경우 `true`; 아닐 경우 `false`
+   * 지정된 장비 속성 종류과 연결된 `boolean` 값을 가져옵니다.
+   * @param type 장비 속성 종류.
+   * @returns 속성이 존재하고 값이 `0` 이상일 경우 `true`; 아닐 경우 `false`.
    */
   getBooleanValue(type: GearPropType): boolean {
-    return Boolean(this.props.get(type));
+    return (this.props.get(type) ?? 0) > 0;
   }
 
   /**
-   * 장비가 주무기인지 여부를 나타내는 `boolean`값을 반환합니다. 블레이드(katara)는 포함되지 않습니다.
-   * @param type 장비 분류
-   * @returns 주무기일 경우 `true`; 아닐 경우 `false`
+   * 장비 분류가 주무기인지 여부를 확인합니다. 블레이드(`katara`)는 포함되지 않습니다.
+   * @param type 장비 분류.
+   * @returns 주무기일 경우 `true`; 아닐 경우 `false`.
    */
   static isWeapon(type: GearType): boolean {
     return this.isLeftWeapon(type) || this.isDoubleHandWeapon(type);
   }
 
   /**
-   * 장비가 한손무기인지 여부를 나타내는 `boolean`값을 반환합니다. 블레이드(katara)는 포함되지 않습니다.
-   * @param type 장비 분류
-   * @returns 한손무기일 경우 `true`; 아닐 경우 `false`
+   * 장비 분류가 한손무기인지 여부를 확인합니다. 블레이드(`katara`)는 포함되지 않습니다.
+   * @param type 장비 분류.
+   * @returns 한손무기일 경우 `true`; 아닐 경우 `false`.
    */
   static isLeftWeapon(type: GearType): boolean {
     return (
@@ -143,9 +141,9 @@ export class Gear {
   }
 
   /**
-   * 장비가 두손무기인지 여부를 나타내는 `boolean`값을 반환합니다.
-   * @param type 장비 분류
-   * @returns 두손무기일 경우 `true`; 아닐 경우 `false`
+   * 장비 분류가 두손무기인지 여부를 확인합니다.
+   * @param type 장비 분류.
+   * @returns 두손무기일 경우 `true`; 아닐 경우 `false`.
    */
   static isDoubleHandWeapon(type: GearType): boolean {
     return (
@@ -156,9 +154,9 @@ export class Gear {
   }
 
   /**
-   * 장비가 보조무기인지 여부를 나타내는 `boolean`값을 반환합니다. 블레이드(katara), 방패류가 포함됩니다.
-   * @param type 장비 분류
-   * @returns 보조무기일 경우 `true`; 아닐 경우 `false`
+   * 장비 분류가 보조무기인지 여부를 확인합니다. 블레이드(`katara`), 방패류가 포함됩니다.
+   * @param type 장비 분류.
+   * @returns 보조무기일 경우 `true`; 아닐 경우 `false`.
    */
   static isSubWeapon(type: GearType): boolean {
     switch (type) {
@@ -176,9 +174,9 @@ export class Gear {
   }
 
   /**
-   * 장비가 방패인지 여부를 나타내는 `boolean`값을 반환합니다.
-   * @param type 장비 분류
-   * @returns 방패일 경우 `true`; 아닐 경우 `false`
+   * 장비 분류가 방패인지 여부를 확인합니다.
+   * @param type 장비 분류.
+   * @returns 방패일 경우 `true`; 아닐 경우 `false`.
    */
   static isShield(type: GearType): boolean {
     switch (type) {
@@ -192,18 +190,18 @@ export class Gear {
   }
 
   /**
-   * 장비가 방어구인지 여부를 나타내는 `boolean`값을 반환합니다. 방패가 포함됩니다.
-   * @param type 장비 분류
-   * @returns 방어구일 경우 `true`; 아닐 경우 `false`
+   * 장비 분류가 방어구인지 여부를 확인합니다. 어깨장식이 포함되지 않고 방패가 포함됩니다.
+   * @param type 장비 분류.
+   * @returns 방어구일 경우 `true`; 아닐 경우 `false`.
    */
   static isArmor(type: GearType): boolean {
     return type === 100 || (type >= 104 && type <= 110);
   }
 
   /**
-   * 장비가 장신구인지 여부를 나타내는 `boolean`값을 반환합니다.
-   * @param type 장비 분류
-   * @returns 장신구일 경우 `true`; 아닐 경우 `false`
+   * 장비 분류가 장신구인지 여부를 확인합니다. 어깨장식이 포함됩니다.
+   * @param type 장비 분류.
+   * @returns 장신구일 경우 `true`; 아닐 경우 `false`.
    */
   static isAccessory(type: GearType): boolean {
     return (
@@ -214,45 +212,27 @@ export class Gear {
   }
 
   /**
-   * 장비가 메카닉 장비인지 여부를 나타내는 `boolean`값을 반환합니다.
-   * @param type 장비 분류
-   * @returns 메카닉 장비일 경우 `true`; 아닐 경우 `false`
+   * 장비 분류가 메카닉 장비인지 여부를 확인합니다.
+   * @param type 장비 분류.
+   * @returns 메카닉 장비일 경우 `true`; 아닐 경우 `false`.
    */
   static isMechanicGear(type: GearType): boolean {
     return type >= 161 && type <= 165;
   }
 
   /**
-   * 장비가 에반 드래곤 장비인지 여부를 나타내는 `boolean`값을 반환합니다.
-   * @param type 장비 분류
-   * @returns 에반 드래곤 장비일 경우 `true`; 아닐 경우 `false`
+   * 장비 분류가 에반 드래곤 장비인지 여부를 확인합니다.
+   * @param type 장비 분류.
+   * @returns 에반 드래곤 장비일 경우 `true`; 아닐 경우 `false`.
    */
   static isDragonGear(type: GearType): boolean {
     return type >= 194 && type <= 197;
   }
 
-  static specialCanPotential(type: GearType): boolean {
-    switch (type) {
-      case GearType.soulShield:
-      case GearType.demonShield:
-      case GearType.katara:
-      case GearType.magicArrow:
-      case GearType.card:
-      case GearType.orb:
-      case GearType.dragonEssence:
-      case GearType.soulRing:
-      case GearType.magnum:
-      case GearType.emblem:
-        return true;
-      default:
-        return false;
-    }
-  }
-
   /**
    * 장비 ID로부터 장비 분류를 계산합니다.
-   * @param gearID 장비 ID
-   * @returns 장비 분류
+   * @param gearID 장비 ID.
+   * @returns 장비 분류.
    */
   static getGearType(gearID: number): GearType {
     switch (Math.floor(gearID / 1000)) {
@@ -289,22 +269,11 @@ export class Gear {
     return Math.floor(gearID / 10000);
   }
 
-  static GetGender(gearID: number): number {
-    const type = this.getGearType(gearID);
-    switch (type) {
-      case GearType.emblem:
-      case GearType.powerSource:
-        //case 3:
-        return 2;
-    }
-
-    return Math.floor(gearID / 1000) % 10;
-  }
-
   /**
    * 장비의 최대 강화 수치를 계산합니다.
-   * @param gear 장비
-   * @returns 최대 장비 강화 수치
+   * @param gear 계산할 장비.
+   * @returns 장비의 최대 강화 수치.
+   * 최대 업그레이드 가능 횟수가 `0`이거나 `onlyUpgrade` 속성이 존재하거나 메카닉 장비 또는 드래곤 장비일 경우 `0`입니다.
    */
   static getMaxStar(gear: Gear): number {
     if (gear.totalUpgradeCount <= 0) {
