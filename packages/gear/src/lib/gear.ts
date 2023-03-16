@@ -19,6 +19,8 @@ export class Gear {
   desc = "";
   /** 아이콘 */
   icon: GearIcon = new GearIcon();
+  /** 신비의 모루 */
+  anvil: GearIcon | undefined;
   /** 장비 분류 */
   type: GearType = 0;
   /** 장비 착용 제한 */
@@ -50,6 +52,12 @@ export class Gear {
   /** 놀라운 장비 강화 적용 여부 */
   amazing = false;
 
+  /**
+   * 가위 사용 가능 횟수
+   *
+   * `0` 이상의 값; 카르마의 가위를 사용할 수 없는 장비는 `undefined`.
+   */
+  karma: number | undefined;
   /** 잠재능력 설정 가능 여부 */
   canPotential = false;
 
@@ -86,6 +94,21 @@ export class Gear {
       diff += Math.floor(option.diff / Gear.getPropTypeWeight(type));
     }
     return diff;
+  }
+
+  /**
+   * 장비를 처음 획득했을 때 추가옵션이 존재했는지 여부
+   *
+   * *일부 저레벨 장비의 경우 인게임과 차이가 있습니다.*
+   *
+   * 장비 아이콘 왼쪽 위의 원이 채워져있으면 `true`; 아니면 `false`입니다.
+   */
+  get isNewBonusType(): boolean {
+    const anyBonus = [...this.options.values()].some((opt) => opt.bonus > 0);
+    if (anyBonus && this.getPropValue(GearPropType.tradeAvailable) !== 1) {
+      return true;
+    }
+    return false;
   }
 
   /**

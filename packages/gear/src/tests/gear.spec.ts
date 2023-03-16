@@ -49,6 +49,56 @@ test("test upgradeLeft()", () => {
   expect(gear.upgradeCountLeft).toBe(0);
 });
 
+describe("isNewBonusType", () => {
+  it("should be false for '실버블라썸 링'", () => {
+    const gear = new Gear();
+    gear.type = GearType.ring;
+    gear.req.level = 110;
+    gear.props.set(GearPropType.onlyEquip, 1);
+    gear.props.set(GearPropType.bossReward, 1);
+    gear.props.set(GearPropType.equipTradeBlock, 1);
+    expect(gear.isNewBonusType).toBe(false);
+  });
+  it("should be true for '아케인셰이드 클로' with bonus stat", () => {
+    const gear = new Gear();
+    gear.type = GearType.knuckle;
+    gear.req.level = 200;
+    gear.props.set(GearPropType.equipTradeBlock, 1);
+    gear.props.set(GearPropType.bossReward, 1);
+    gear.props.set(GearPropType.tradeAvailable, 2);
+    gear.option(GearPropType.incPAD).bonus = 106;
+    gear.karma = 10;
+    expect(gear.isNewBonusType).toBe(true);
+  });
+  it("should be true for '핑크빛 성배' with bonus stat", () => {
+    const gear = new Gear();
+    gear.type = GearType.pocket;
+    gear.req.level = 140;
+    gear.props.set(GearPropType.bossReward, 1);
+    gear.props.set(GearPropType.equipTradeBlock, 1);
+    gear.option(GearPropType.incSTR).bonus = 72;
+    expect(gear.isNewBonusType).toBe(true);
+  });
+  it("should be false for '마이스터 숄더'", () => {
+    const gear = new Gear();
+    gear.type = GearType.shoulder;
+    gear.req.level = 140;
+    gear.props.set(GearPropType.equipTradeBlock, 1);
+    gear.props.set(GearPropType.bossReward, 1);
+    gear.props.set(GearPropType.tradeAvailable, 2);
+    expect(gear.isNewBonusType).toBe(false);
+  });
+  it("should be true for '이피아의 귀고리'", () => {
+    const gear = new Gear();
+    gear.type = GearType.earrings;
+    gear.req.level = 110;
+    gear.props.set(GearPropType.equipTradeBlock, 1);
+    gear.props.set(GearPropType.tradeAvailable, 2);
+    gear.option(GearPropType.incSTR).bonus = 24;
+    expect(gear.isNewBonusType).toBe(true);
+  });
+});
+
 test("test isLeftWeapon()", () => {
   expect(Gear.isLeftWeapon(GearType.tuner)).toBe(true);
   expect(Gear.isLeftWeapon(GearType.soulShooter)).toBe(true);
