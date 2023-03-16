@@ -1,5 +1,15 @@
 # @malib/gear
 
+## 0.3.0
+
+### Minor Changes
+
+- 55d2b1a: Change exports
+
+### Patch Changes
+
+- ff78c05: Fix soul charge AD value
+
 ## 0.2.0
 
 ### Minor Changes
