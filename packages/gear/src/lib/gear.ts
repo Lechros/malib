@@ -19,8 +19,10 @@ export class Gear {
   desc = "";
   /** 아이콘 */
   icon: GearIcon = new GearIcon();
-  /** 신비의 모루 */
-  anvil: GearIcon | undefined;
+  /** 신비의 모루 아이콘 */
+  anvilIcon: GearIcon | undefined;
+  /** 신비의 모루 장비명 */
+  anvilName: string | undefined;
   /** 장비 분류 */
   type: GearType = 0;
   /** 장비 착용 제한 */
@@ -140,6 +142,24 @@ export class Gear {
    */
   getBooleanValue(type: GearPropType): boolean {
     return (this.props.get(type) ?? 0) > 0;
+  }
+
+  /**
+   * 장비에 신비의 모루 외형을 적용합니다.
+   * @param icon 외형 아이콘
+   * @param name 외형 장비명
+   */
+  setAnvil(icon: GearIcon, name: string): void {
+    this.anvilIcon = icon;
+    this.anvilName = name;
+  }
+
+  /**
+   * 장비에 적용된 신비의 모루 외형을 제거합니다.
+   */
+  resetAnvil(): void {
+    this.anvilIcon = undefined;
+    this.anvilName = undefined;
   }
 
   /**
