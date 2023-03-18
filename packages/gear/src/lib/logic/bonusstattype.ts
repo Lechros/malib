@@ -1,5 +1,5 @@
 /**
- * 보너스 스탯 종류
+ * 추가옵션 종류
  */
 export enum BonusStatType {
   /** STR 단일 */
