@@ -17,7 +17,7 @@ import { asEnum } from "./util";
  * @param node 장비 정보 노드.
  * @param id 장비 아이템 ID.
  * @param getPotentialFunc 코드에 해당하는 잠재능력을 반환하는 함수.
- * @returns 아이템 정보에 해당하는 장비
+ * @returns 아이템 정보에 해당하는 장비.
  */
 export function createGearFromNode(
   node: GearData,

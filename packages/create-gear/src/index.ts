@@ -6,6 +6,8 @@ export {
   createPotentialFromNode,
   createSoulFromId,
   createSoulFromNode,
+  ItemIndex,
+  type DataType,
   MagnificentSoulOptionType,
   // json
   gearJson,
