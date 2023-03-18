@@ -1,4 +1,4 @@
-export interface DataType {
+export interface ItemData {
   [id: number]: {
     name: string;
   };
@@ -10,7 +10,7 @@ export interface DataType {
 export class ItemIndex {
   private index: Map<string, number>;
 
-  constructor(data: DataType) {
+  constructor(data: ItemData) {
     this.index = new Map();
     for (const [id, node] of Object.entries(data)) {
       const name = node.name;
