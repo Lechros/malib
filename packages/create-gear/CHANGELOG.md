@@ -1,5 +1,20 @@
 # @malib/create-gear
 
+## 0.4.0
+
+### Minor Changes
+
+- 3deadac: Add gear anvil support
+- 3deadac: Add ItemIndex
+
+### Patch Changes
+
+- aae0150: Organize export file
+- Updated dependencies [3deadac]
+- Updated dependencies [3deadac]
+- Updated dependencies [aae0150]
+  - @malib/gear@0.5.0
+
 ## 0.3.1
 
 ### Patch Changes

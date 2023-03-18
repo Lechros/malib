@@ -1,5 +1,16 @@
 # @malib/gear
 
+## 0.5.0
+
+### Minor Changes
+
+- 3deadac: Add gear anvil support
+- 3deadac: Add ItemIndex
+
+### Patch Changes
+
+- aae0150: Organize export file
+
 ## 0.4.0
 
 ### Minor Changes
