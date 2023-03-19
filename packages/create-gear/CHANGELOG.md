@@ -1,5 +1,11 @@
 # @malib/create-gear
 
+## 0.4.1
+
+### Patch Changes
+
+- 448e66d: Update gear icon origin from iconRaw to icon
+
 ## 0.4.0
 
 ### Minor Changes
