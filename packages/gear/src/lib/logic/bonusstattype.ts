@@ -22,16 +22,16 @@ export enum BonusStatType {
   DEX_LUK,
   /** INT, LUK 이중 */
   INT_LUK,
-  /** 방어력 */
-  PDD,
-  /** 공격력 */
-  PAD,
-  /** 마력 */
-  MAD,
   /** 최대 HP */
   MHP,
   /** 최대 MP */
   MMP,
+  /** 공격력 */
+  PAD,
+  /** 마력 */
+  MAD,
+  /** 방어력 */
+  PDD,
   /** 이동속도 */
   speed,
   /** 점프력 */
