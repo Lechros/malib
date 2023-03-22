@@ -178,6 +178,9 @@ export function getBonusStatValue(
       return grade;
     case BonusStatType.MHP:
     case BonusStatType.MMP:
+      if (reqLevel < 10) {
+        return 3 * grade;
+      }
       return Math.floor(reqLevel / 10) * 30 * grade;
     case BonusStatType.speed:
     case BonusStatType.jump:
