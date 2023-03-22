@@ -238,7 +238,12 @@ export class Gear {
    * @returns 방어구일 경우 `true`; 아닐 경우 `false`.
    */
   static isArmor(type: GearType): boolean {
-    return type === 100 || (type >= 104 && type <= 110);
+    return (
+      type === 100 ||
+      (type >= 104 && type <= 110) ||
+      type === GearType.soulShield ||
+      type === GearType.demonShield
+    );
   }
 
   /**
