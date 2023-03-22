@@ -89,6 +89,7 @@ describe("amazing enhancement return value", () => {
   it("gear with req level 160", () => {
     const gear = new Gear();
     gear.req.level = 160;
+    gear.maxStar = 25;
     expect(addAmazingEnhancement(gear)).toBe(false);
   });
   it("gear with maxStar value 0", () => {

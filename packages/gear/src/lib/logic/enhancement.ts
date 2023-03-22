@@ -224,6 +224,9 @@ export function addAmazingEnhancement(
   if (gear.getBooleanValue(GearPropType.superiorEqp)) {
     return false;
   }
+  if (gear.req.level > 150) {
+    return false;
+  }
   if (
     (gear.star >= gear.maxStar && !ignoreMaxStar) ||
     gear.star >= MAX_AMAZING
