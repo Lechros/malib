@@ -204,7 +204,7 @@ export function getBonusStatValue(
       }
       return grade;
     case BonusStatType.reduceReq:
-      return Math.min(5 * grade, reqLevel);
+      return 5 * grade;
     default:
       return 0;
   }
