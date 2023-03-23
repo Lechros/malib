@@ -66,11 +66,11 @@ export class Gear {
   /** 잠재능력 등급 */
   grade: PotentialGrade = PotentialGrade.normal;
   /** 잠재옵션 목록 */
-  potentials: Potential[] = [];
+  potentials: (Potential | undefined)[] = [];
   /** 에디셔널 잠재능력 등급 */
   additionalGrade: PotentialGrade = PotentialGrade.normal;
   /** 에디셔널 잠재옵션 목록 */
-  additionalPotentials: Potential[] = [];
+  additionalPotentials: (Potential | undefined)[] = [];
 
   /** 소울 */
   soulWeapon: SoulWeapon = new SoulWeapon(this);

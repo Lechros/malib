@@ -21,9 +21,9 @@ export interface GearLike {
   karma?: number;
   canPot?: boolean;
   grade?: PotentialGrade;
-  pots?: PotLike[];
+  pots?: (PotLike | undefined)[];
   addGrade?: PotentialGrade;
-  addPots?: PotLike[];
+  addPots?: (PotLike | undefined)[];
   soulWeapon: SoulWeaponLike;
 }
 
