@@ -80,14 +80,16 @@ function serializeOption(option: GearOption): OptionLike {
   return like;
 }
 
-function serializePotential(pot: Potential): PotLike {
-  return {
-    code: pot.code,
-    optionType: pot.optionType,
-    reqLevel: pot.reqLevel,
-    summary: pot.summary,
-    option: serializeMap(pot.option),
-  };
+function serializePotential(pot: Potential | undefined): PotLike | undefined {
+  return pot
+    ? {
+        code: pot.code,
+        optionType: pot.optionType,
+        reqLevel: pot.reqLevel,
+        summary: pot.summary,
+        option: serializeMap(pot.option),
+      }
+    : undefined;
 }
 
 function serializeSoulWeapon(soulWeapon: SoulWeapon): SoulWeaponLike {
