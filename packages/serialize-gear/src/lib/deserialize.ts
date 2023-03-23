@@ -81,7 +81,10 @@ function deserializeOption(like: OptionLike): GearOption {
   return option;
 }
 
-function deserializePotential(like: PotLike): Potential {
+function deserializePotential(
+  like: PotLike | undefined
+): Potential | undefined {
+  if (!like) return undefined;
   const pot = new Potential();
   pot.code = like.code;
   pot.optionType = like.optionType;
