@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 0.7.0
+
+### Minor Changes
+
+- eda519f: Gear potential can contain undefined entries
+
 ## 0.6.0
 
 ### Minor Changes
