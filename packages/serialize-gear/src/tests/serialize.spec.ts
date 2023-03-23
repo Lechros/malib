@@ -36,14 +36,16 @@ describe("serializeGear", () => {
     pot1.option.set(GearPropType.incSTR, 16);
     pot1.summary = "STR : +#STR 증가";
     gear.potentials.push(pot1);
-    const pot2 = new Potential();
-    pot2.code = 30002;
-    gear.potentials.push(pot2);
+    gear.potentials.push(undefined);
+    const pot3 = new Potential();
+    pot3.code = 30002;
+    gear.potentials.push(pot3);
     const deserialized = deserializeGear(serializeGear(gear));
-    expect(deserialized.potentials[0].code).toBe(40001);
-    expect(deserialized.potentials[1].code).toBe(30002);
+    expect(deserialized.potentials[0]?.code).toBe(40001);
+    expect(deserialized.potentials[2]?.code).toBe(30002);
     expect(deserialized.potentials).not.toBe(gear.potentials);
     expect(deserialized.potentials[0]).not.toBe(gear.potentials[0]);
+    expect(deserialized.potentials[1]).toBe(undefined);
   });
   it("should serialize/deserialize every field correctly", () => {
     const gear = new Gear();
