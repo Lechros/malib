@@ -1,5 +1,11 @@
 # @malib/serialize-gear
 
+## 0.2.1
+
+### Patch Changes
+
+- b1c37e0: Fix deserialize potential error
+
 ## 0.2.0
 
 ### Minor Changes
