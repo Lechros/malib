@@ -1,5 +1,16 @@
 # @malib/serialize-gear
 
+## 0.2.0
+
+### Minor Changes
+
+- eda519f: Gear potential can contain undefined entries
+
+### Patch Changes
+
+- Updated dependencies [eda519f]
+  - @malib/gear@0.7.0
+
 ## 0.1.1
 
 ### Patch Changes
