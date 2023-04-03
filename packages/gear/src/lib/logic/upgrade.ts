@@ -1,6 +1,11 @@
 import { Gear } from "../gear";
 import { GearPropType } from "../gearproptype";
-import { Scroll, SpellTraceProbability, SpellTraceStatType } from "./scroll";
+import {
+  Scroll,
+  SpellTraceProbability,
+  SpellTraceStatType,
+  getSpellTraceScroll,
+} from "./scroll";
 
 /**
  * 장비에 황금망치를 적용합니다.
@@ -54,7 +59,7 @@ export function applySpellTrace(
   type: SpellTraceStatType,
   probability: SpellTraceProbability
 ): boolean {
-  const spellTrace = Scroll.getSpellTraceScroll(gear, type, probability);
+  const spellTrace = getSpellTraceScroll(gear, type, probability);
   if (!spellTrace) {
     return false;
   }

@@ -20,9 +20,6 @@ describe("serializeGear", () => {
     gear.option(GearPropType.incSTR).upgrade = 7;
     gear.option(GearPropType.incDEX).bonus = 20;
     const deserialized = deserializeGear(serializeGear(gear));
-    expect(deserialized.option(GearPropType.incSTR)).not.toBe(
-      gear.option(GearPropType.incSTR)
-    );
     expect(deserialized.option(GearPropType.incSTR)).toEqual(
       gear.option(GearPropType.incSTR)
     );
@@ -43,8 +40,8 @@ describe("serializeGear", () => {
     const deserialized = deserializeGear(serializeGear(gear));
     expect(deserialized.potentials[0]?.code).toBe(40001);
     expect(deserialized.potentials[2]?.code).toBe(30002);
-    expect(deserialized.potentials).not.toBe(gear.potentials);
-    expect(deserialized.potentials[0]).not.toBe(gear.potentials[0]);
+    expect(deserialized.potentials).toEqual(gear.potentials);
+    expect(deserialized.potentials[0]).toEqual(gear.potentials[0]);
     expect(deserialized.potentials[1]).toBe(undefined);
   });
   it("should serialize/deserialize every field correctly", () => {

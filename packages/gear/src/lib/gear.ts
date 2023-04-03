@@ -1,11 +1,39 @@
-import { GearIcon } from "./gearicon";
 import { GearOption } from "./gearoption";
 import { GearPropType } from "./gearproptype";
-import { GearReq } from "./gearreq";
 import { GearType } from "./geartype";
 import { Potential } from "./potential";
 import { PotentialGrade } from "./potentialgrade";
 import { SoulWeapon } from "./soul";
+
+/**
+ * 장비 아이콘
+ */
+export interface GearIcon {
+  /** 아이콘 ID */
+  id: number;
+  /** 아이콘 오프셋 */
+  origin: [number, number];
+}
+
+/**
+ * 장비 착용 제한
+ */
+export interface GearReq {
+  /** 착용 가능 레벨 */
+  level: number;
+  /** 착용 가능 STR */
+  str: number;
+  /** 착용 가능 LUK */
+  luk: number;
+  /** 착용 가능 DEX */
+  dex: number;
+  /** 착용 가능 INT */
+  int: number;
+  /** 착용 가능 직업 분류 */
+  job: number;
+  /** 착용 가능 직업 */
+  specJob: number;
+}
 
 /**
  * 장비
@@ -18,15 +46,15 @@ export class Gear {
   /** 설명 */
   desc = "";
   /** 아이콘 */
-  icon: GearIcon = new GearIcon();
+  icon: GearIcon;
   /** 신비의 모루 아이콘 */
   anvilIcon: GearIcon | undefined;
   /** 신비의 모루 장비명 */
   anvilName: string | undefined;
   /** 장비 분류 */
-  type: GearType = 0;
+  type: GearType = 0 as GearType;
   /** 장비 착용 제한 */
-  req: GearReq = new GearReq();
+  req: GearReq;
 
   /** 장비 속성 */
   props: Map<GearPropType, number> = new Map();
@@ -74,6 +102,22 @@ export class Gear {
 
   /** 소울 */
   soulWeapon: SoulWeapon = new SoulWeapon(this);
+
+  constructor() {
+    this.icon = {
+      id: 0,
+      origin: [0, 0],
+    };
+    this.req = {
+      level: 0,
+      str: 0,
+      dex: 0,
+      int: 0,
+      luk: 0,
+      job: 0,
+      specJob: 0,
+    };
+  }
 
   /**
    * 업그레이드 가능 횟수
