@@ -33,4 +33,15 @@ export {
   addUpgradeFailCount,
   restoreUpgradeCount,
   resetUpgrade,
+  // serialize
+  plainToGear,
+  gearToPlain,
+  stringifyGear,
+  parseGear,
+  validateParseGear,
+  isGearLike,
+  type GearLike,
+  type OptionLike as GearOptionLike,
+  type PotLike as GearPotLike,
+  type SoulWeaponLike,
 } from "./internal";
