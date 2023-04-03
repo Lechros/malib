@@ -1,14 +1,21 @@
-import { GearPropType, GearType, PotentialGrade } from "@malib/gear";
+import {
+  GearIcon,
+  GearPropType,
+  GearReq,
+  GearType,
+  PotentialGrade,
+  Soul,
+} from "@malib/gear";
 
 export interface GearLike {
   id: number;
   name: string;
   desc?: string;
-  icon: IconLike;
-  anvilIcon?: IconLike;
+  icon: GearIcon;
+  anvilIcon?: GearIcon;
   anvilName?: string;
   type: GearType;
-  req: ReqLike;
+  req: GearReq;
   props: [GearPropType, number][];
   options: [GearPropType, OptionLike][];
   tuc?: number;
@@ -25,21 +32,6 @@ export interface GearLike {
   addGrade?: PotentialGrade;
   addPots?: (PotLike | undefined)[];
   soulWeapon: SoulWeaponLike;
-}
-
-export interface IconLike {
-  id: number;
-  origin: [number, number];
-}
-
-export interface ReqLike {
-  level: number;
-  str?: number;
-  luk?: number;
-  dex?: number;
-  int?: number;
-  job: number;
-  spec?: number;
 }
 
 export interface OptionLike {
@@ -59,14 +51,7 @@ export interface PotLike {
 
 export interface SoulWeaponLike {
   enchanted?: boolean;
-  soul?: SoulLike;
+  soul?: Soul;
   charge?: number;
   chargeOption?: [GearPropType, number][];
-}
-
-export interface SoulLike {
-  name: string;
-  skill: string;
-  option: Map<GearPropType, number>;
-  mul: number;
 }

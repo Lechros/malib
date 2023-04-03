@@ -1,8 +1,6 @@
 import {
   Gear,
-  GearIcon,
   GearPropType,
-  GearReq,
   GearType,
   Potential,
   PotentialGrade,
@@ -32,20 +30,21 @@ export function createGearFromNode(
   gear.type = Gear.getGearType(id);
   gear.name = node.name;
   gear.desc = node.desc ?? "";
-  gear.icon = new GearIcon();
-  gear.icon.id = node.icon;
-  gear.icon.origin = node.origin;
+  gear.icon = {
+    id: id,
+    origin: [...node.origin],
+  };
   gear.totalUpgradeCount = node.tuc ?? 0;
   if (node.req) {
-    const req = new GearReq();
-    req.level = node.req.level ?? 0;
-    req.str = node.req.str ?? 0;
-    req.luk = node.req.luk ?? 0;
-    req.dex = node.req.dex ?? 0;
-    req.int = node.req.int ?? 0;
-    req.job = node.req.job ?? 0;
-    req.specJob = node.req.specJob ?? 0;
-    gear.req = req;
+    gear.req = {
+      level: node.req.level ?? 0,
+      str: node.req.str ?? 0,
+      luk: node.req.luk ?? 0,
+      dex: node.req.dex ?? 0,
+      int: node.req.int ?? 0,
+      job: node.req.job ?? 0,
+      specJob: node.req.specJob ?? 0,
+    };
   }
   if (node.options) {
     for (const [key, value] of Object.entries(node.options)) {

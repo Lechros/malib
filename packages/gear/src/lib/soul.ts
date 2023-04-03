@@ -2,6 +2,20 @@ import { Gear } from "./gear";
 import { GearPropType } from "./gearproptype";
 
 /**
+ * 소울
+ */
+export interface Soul {
+  /** 소울 이름 */
+  name: string;
+  /** 스킬명 */
+  skill: string;
+  /** 소울 옵션 */
+  option: Map<GearPropType, number>;
+
+  multiplier: number;
+}
+
+/**
  * 소울 웨폰
  */
 export class SoulWeapon {
@@ -129,18 +143,4 @@ export class SoulWeapon {
     }
     return 5 + chargeValue;
   }
-}
-
-/**
- * 소울
- */
-export class Soul {
-  /** 소울 이름 */
-  name = "";
-  /** 스킬명 */
-  skill = "";
-  /** 소울 옵션 */
-  option: Map<GearPropType, number> = new Map();
-
-  multiplier = 0;
 }

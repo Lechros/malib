@@ -1,13 +1,13 @@
 export {
   Gear,
-  GearIcon,
+  type GearIcon,
   GearOption,
   GearPropType,
-  GearReq,
+  type GearReq,
   GearType,
   Potential,
   PotentialGrade,
-  Soul,
+  type Soul,
   SoulWeapon,
   // bonus
   addBonusStat,
@@ -22,9 +22,10 @@ export {
   resetEnhancement,
   recalculateStarforce,
   // scroll
-  Scroll,
+  type Scroll,
   type SpellTraceProbability,
   type SpellTraceStatType,
+  getSpellTraceScroll,
   // upgrade
   applyGoldHammer,
   applyScroll,

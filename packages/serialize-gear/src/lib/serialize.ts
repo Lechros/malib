@@ -1,32 +1,16 @@
-import {
-  Gear,
-  GearIcon,
-  GearOption,
-  GearReq,
-  Potential,
-  Soul,
-  SoulWeapon,
-} from "@malib/gear";
-import {
-  IconLike,
-  GearLike,
-  OptionLike,
-  ReqLike,
-  PotLike,
-  SoulLike,
-  SoulWeaponLike,
-} from "./interface";
+import { Gear, GearOption, Potential, SoulWeapon } from "@malib/gear";
+import { GearLike, OptionLike, PotLike, SoulWeaponLike } from "./interface";
 
 export function serializeGear(gear: Gear): GearLike {
   const like: GearLike = {} as GearLike;
   like.id = gear.itemID;
   like.name = gear.name;
   if (gear.desc.length > 0) like.desc = gear.desc;
-  like.icon = serializeIcon(gear.icon);
-  if (gear.anvilIcon) like.anvilIcon = serializeIcon(gear.anvilIcon);
+  like.icon = gear.icon;
+  if (gear.anvilIcon) like.anvilIcon = gear.anvilIcon;
   if (gear.anvilName) like.anvilName = gear.anvilName;
   like.type = gear.type;
-  like.req = serializeReq(gear.req);
+  like.req = gear.req;
   like.props = serializeMap(gear.props);
   like.options = serializeMap(gear.options, serializeOption);
   if (gear.totalUpgradeCount > 0) like.tuc = gear.totalUpgradeCount;
@@ -48,26 +32,6 @@ export function serializeGear(gear: Gear): GearLike {
       serializePotential
     );
   like.soulWeapon = serializeSoulWeapon(gear.soulWeapon);
-  return like;
-}
-
-function serializeIcon(icon: GearIcon): IconLike {
-  return {
-    id: icon.id,
-    origin: serializeArray(icon.origin) as [number, number],
-  };
-}
-
-function serializeReq(req: GearReq): ReqLike {
-  const like: ReqLike = {
-    level: req.level,
-    job: req.job,
-  };
-  if (req.str > 0) like.str = req.str;
-  if (req.luk > 0) like.luk = req.luk;
-  if (req.dex > 0) like.dex = req.dex;
-  if (req.int > 0) like.int = req.int;
-  if (req.specJob > 0) like.spec = req.specJob;
   return like;
 }
 
@@ -95,20 +59,11 @@ function serializePotential(pot: Potential | undefined): PotLike | undefined {
 function serializeSoulWeapon(soulWeapon: SoulWeapon): SoulWeaponLike {
   const like: SoulWeaponLike = {};
   if (soulWeapon.enchanted) like.enchanted = soulWeapon.enchanted;
-  if (soulWeapon.soul) like.soul = serializeSoul(soulWeapon.soul);
+  if (soulWeapon.soul) like.soul = soulWeapon.soul;
   if (soulWeapon.charge > 0) like.charge = soulWeapon.charge;
   if (soulWeapon.chargeOption.size > 0)
     like.chargeOption = serializeMap(soulWeapon.chargeOption);
   return like;
-}
-
-function serializeSoul(soul: Soul): SoulLike {
-  return {
-    name: soul.name,
-    skill: soul.skill,
-    option: soul.option,
-    mul: soul.multiplier,
-  };
 }
 
 function serializeMap<K, V>(map: Map<K, V>): [K, V][];

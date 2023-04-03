@@ -34,17 +34,19 @@ export function createSoulFromNode(
   node: SoulData,
   type = MagnificentSoulOptionType.PAD
 ): Soul {
-  const soul = new Soul();
-  soul.name = node.name;
-  soul.skill = node.skill;
-  soul.multiplier = node.multiplier;
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const optionNode = node.magnificent ? node.options![type] : node.option!;
+  const option = new Map<GearPropType, number>();
   for (const [key, value] of Object.entries(optionNode)) {
     const type = asEnum(key, GearPropType);
-    soul.option.set(type, value);
+    option.set(type, value);
   }
-  return soul;
+  return {
+    name: node.name,
+    skill: node.skill,
+    multiplier: node.multiplier,
+    option,
+  };
 }
 
 /**
