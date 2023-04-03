@@ -44,7 +44,12 @@ describe("disenchant", () => {
     const gear = new Gear();
     gear.type = GearType.bow;
     gear.soulWeapon.enchanted = true;
-    gear.soulWeapon.soul = new Soul();
+    gear.soulWeapon.soul = {
+      name: "",
+      skill: "",
+      option: new Map(),
+      multiplier: 0,
+    };
     expect(gear.soulWeapon.disenchant()).toBe(true);
   });
   it("should set fields on success", () => {
@@ -63,22 +68,42 @@ describe("setSoul", () => {
   it("should fail on not enchanted gear", () => {
     const gear = new Gear();
     gear.type = GearType.bow;
-    const soul = new Soul();
+    const soul: Soul = {
+      name: "",
+      skill: "",
+      option: new Map(),
+      multiplier: 0,
+    };
     expect(gear.soulWeapon.setSoul(soul)).toBe(false);
   });
   it("should success on enchanted gear", () => {
     const gear = new Gear();
     gear.type = GearType.bow;
     gear.soulWeapon.enchanted = true;
-    const soul = new Soul();
+    const soul: Soul = {
+      name: "",
+      skill: "",
+      option: new Map(),
+      multiplier: 0,
+    };
     expect(gear.soulWeapon.setSoul(soul)).toBe(true);
   });
   it("should success on enchanted gear with soul", () => {
     const gear = new Gear();
     gear.type = GearType.bow;
     gear.soulWeapon.enchanted = true;
-    gear.soulWeapon.soul = new Soul();
-    const soul = new Soul();
+    gear.soulWeapon.soul = {
+      name: "",
+      skill: "",
+      option: new Map(),
+      multiplier: 0,
+    };
+    const soul: Soul = {
+      name: "",
+      skill: "",
+      option: new Map(),
+      multiplier: 0,
+    };
     expect(gear.soulWeapon.setSoul(soul)).toBe(true);
   });
   it("should set fields on success", () => {
@@ -88,7 +113,12 @@ describe("setSoul", () => {
     gear.soulWeapon.charge = 200;
     gear.soulWeapon.chargeOption.set(GearPropType.incSTR, 10);
     gear.soulWeapon.enchanted = true;
-    const soul = new Soul();
+    const soul: Soul = {
+      name: "",
+      skill: "",
+      option: new Map(),
+      multiplier: 0,
+    };
     soul.multiplier = 2;
     soul.name = "test soul";
     soul.skill = "test soul skill";
@@ -118,15 +148,30 @@ describe("removeSoul", () => {
     const gear = new Gear();
     gear.type = GearType.bow;
     gear.soulWeapon.enchanted = true;
-    gear.soulWeapon.soul = new Soul();
-    const soul = new Soul();
+    gear.soulWeapon.soul = {
+      name: "",
+      skill: "",
+      option: new Map(),
+      multiplier: 0,
+    };
+    const soul: Soul = {
+      name: "",
+      skill: "",
+      option: new Map(),
+      multiplier: 0,
+    };
     expect(gear.soulWeapon.setSoul(soul)).toBe(true);
   });
   it("should set fields on success", () => {
     const gear = new Gear();
     gear.type = GearType.bow;
     gear.soulWeapon.enchanted = true;
-    gear.soulWeapon.soul = new Soul();
+    gear.soulWeapon.soul = {
+      name: "",
+      skill: "",
+      option: new Map(),
+      multiplier: 0,
+    };
     gear.soulWeapon.charge = 50;
     gear.soulWeapon.chargeOption = new Map([[GearPropType.incMAD, 3]]);
     expect(gear.soulWeapon.removeSoul()).toBe(true);
@@ -219,8 +264,12 @@ describe("soul setCharge", () => {
       gear.type = GearType.bow;
       gear.option(GearPropType.incPAD).base = 50;
       gear.soulWeapon.enchanted = true;
-      gear.soulWeapon.soul = new Soul();
-      gear.soulWeapon.soul.multiplier = 2;
+      gear.soulWeapon.soul = {
+        name: "",
+        skill: "",
+        option: new Map(),
+        multiplier: 2,
+      };
 
       gear.soulWeapon.setCharge(1);
       expect(gear.soulWeapon.chargeOption).toEqual(
