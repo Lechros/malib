@@ -1,5 +1,13 @@
 # @malib/create-gear
 
+## 0.5.1
+
+### Patch Changes
+
+- Updated dependencies [2be4912]
+- Updated dependencies [2be4912]
+  - @malib/gear@0.9.0
+
 ## 0.5.0
 
 ### Minor Changes
