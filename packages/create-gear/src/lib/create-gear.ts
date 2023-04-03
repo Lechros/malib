@@ -70,11 +70,15 @@ export function createGearFromNode(
   } else if (
     specialCanPotential(gear.type) ||
     Gear.isSubWeapon(gear.type) ||
-    gear.getBooleanValue(GearPropType.tucIgnoreForPotential)
+    gear.getBooleanValue(GearPropType.tucIgnoreForPotential) ||
+    eventRingCanPotential(gear.itemID)
   ) {
     gear.canPotential = true;
   }
   if (Gear.isMechanicGear(gear.type) || Gear.isDragonGear(gear.type)) {
+    gear.canPotential = false;
+  }
+  if (gear.getBooleanValue(GearPropType.noPotential)) {
     gear.canPotential = false;
   }
 
@@ -146,6 +150,17 @@ function specialCanPotential(type: GearType): boolean {
     case GearType.soulRing:
     case GearType.magnum:
     case GearType.emblem:
+      return true;
+    default:
+      return false;
+  }
+}
+
+function eventRingCanPotential(id: number): boolean {
+  switch (id) {
+    case 1113231:
+    case 1114302:
+    case 1114305:
       return true;
     default:
       return false;
