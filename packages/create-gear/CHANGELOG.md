@@ -1,5 +1,11 @@
 # @malib/create-gear
 
+## 0.4.4
+
+### Patch Changes
+
+- 6efa4e1: Fix canPotential logic
+
 ## 0.4.3
 
 ### Patch Changes
