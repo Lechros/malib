@@ -1,5 +1,12 @@
 # @malib/gear
 
+## 0.9.0
+
+### Minor Changes
+
+- 2be4912: Move serialize inside gear.
+- 2be4912: Add gear data validator
+
 ## 0.8.0
 
 ### Minor Changes
