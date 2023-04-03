@@ -1,7 +1,15 @@
-import { Gear, GearOption, Potential, SoulWeapon } from "@malib/gear";
+import { Gear } from "../gear";
+import { GearOption } from "../gearoption";
+import { Potential } from "../potential";
+import { SoulWeapon } from "../soul";
 import { GearLike, OptionLike, PotLike, SoulWeaponLike } from "./interface";
 
-export function serializeGear(gear: Gear): GearLike {
+/**
+ * 장비를 순수 객체로 변환합니다.
+ * @param like 변환할 장비.
+ * @returns 변환된 순수 객체.
+ */
+export function gearToPlain(gear: Gear): GearLike {
   const like: GearLike = {} as GearLike;
   like.id = gear.itemID;
   like.name = gear.name;
@@ -44,7 +52,7 @@ function serializeOption(option: GearOption): OptionLike {
   return like;
 }
 
-function serializePotential(pot: Potential | undefined): PotLike | undefined {
+function serializePotential(pot: Potential | null): PotLike | null {
   return pot
     ? {
         code: pot.code,
@@ -53,7 +61,7 @@ function serializePotential(pot: Potential | undefined): PotLike | undefined {
         summary: pot.summary,
         option: serializeMap(pot.option),
       }
-    : undefined;
+    : null;
 }
 
 function serializeSoulWeapon(soulWeapon: SoulWeapon): SoulWeaponLike {

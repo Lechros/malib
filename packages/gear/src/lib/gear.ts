@@ -94,11 +94,11 @@ export class Gear {
   /** 잠재능력 등급 */
   grade: PotentialGrade = PotentialGrade.normal;
   /** 잠재옵션 목록 */
-  potentials: (Potential | undefined)[] = [];
+  potentials: (Potential | null)[] = [];
   /** 에디셔널 잠재능력 등급 */
   additionalGrade: PotentialGrade = PotentialGrade.normal;
   /** 에디셔널 잠재옵션 목록 */
-  additionalPotentials: (Potential | undefined)[] = [];
+  additionalPotentials: (Potential | null)[] = [];
 
   /** 소울 */
   soulWeapon: SoulWeapon = new SoulWeapon(this);
@@ -190,8 +190,8 @@ export class Gear {
 
   /**
    * 장비에 신비의 모루 외형을 적용합니다.
-   * @param icon 외형 아이콘
-   * @param name 외형 장비명
+   * @param icon 외형 아이콘.
+   * @param name 외형 장비명.
    */
   setAnvil(icon: GearIcon, name: string): void {
     this.anvilIcon = icon;

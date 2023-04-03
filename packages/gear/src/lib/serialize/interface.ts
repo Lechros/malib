@@ -1,12 +1,12 @@
-import {
-  GearIcon,
-  GearPropType,
-  GearReq,
-  GearType,
-  PotentialGrade,
-  Soul,
-} from "@malib/gear";
+import { GearIcon, GearReq } from "../gear";
+import { GearPropType } from "../gearproptype";
+import { GearType } from "../geartype";
+import { PotentialGrade } from "../potentialgrade";
+import { Soul } from "../soul";
 
+/**
+ * `Gear`를 나타내는 순수 객체 형식
+ */
 export interface GearLike {
   id: number;
   name: string;
@@ -28,9 +28,9 @@ export interface GearLike {
   karma?: number;
   canPot?: boolean;
   grade?: PotentialGrade;
-  pots?: (PotLike | undefined)[];
+  pots?: (PotLike | null)[];
   addGrade?: PotentialGrade;
-  addPots?: (PotLike | undefined)[];
+  addPots?: (PotLike | null)[];
   soulWeapon: SoulWeaponLike;
 }
 

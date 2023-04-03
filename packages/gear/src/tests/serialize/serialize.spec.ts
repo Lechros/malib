@@ -4,13 +4,16 @@ import {
   GearType,
   Potential,
   PotentialGrade,
-} from "@malib/gear";
-import { serializeGear, deserializeGear } from "../internal";
+  gearToPlain,
+  parseGear,
+  plainToGear,
+  stringifyGear,
+} from "../..";
 
 describe("serializeGear", () => {
   it("should serialize empty gear", () => {
     const original = new Gear();
-    const serialized = serializeGear(original);
+    const serialized = gearToPlain(original);
     expect(serialized.name).toBe("");
     expect(serialized.desc).toBe(undefined);
   });
@@ -19,7 +22,7 @@ describe("serializeGear", () => {
     gear.option(GearPropType.incSTR).base = 5;
     gear.option(GearPropType.incSTR).upgrade = 7;
     gear.option(GearPropType.incDEX).bonus = 20;
-    const deserialized = deserializeGear(serializeGear(gear));
+    const deserialized = plainToGear(gearToPlain(gear));
     expect(deserialized.option(GearPropType.incSTR)).toEqual(
       gear.option(GearPropType.incSTR)
     );
@@ -33,16 +36,16 @@ describe("serializeGear", () => {
     pot1.option.set(GearPropType.incSTR, 16);
     pot1.summary = "STR : +#STR 증가";
     gear.potentials.push(pot1);
-    gear.potentials.push(undefined);
+    gear.potentials.push(null);
     const pot3 = new Potential();
     pot3.code = 30002;
     gear.potentials.push(pot3);
-    const deserialized = deserializeGear(serializeGear(gear));
+    const deserialized = plainToGear(gearToPlain(gear));
     expect(deserialized.potentials[0]?.code).toBe(40001);
     expect(deserialized.potentials[2]?.code).toBe(30002);
     expect(deserialized.potentials).toEqual(gear.potentials);
     expect(deserialized.potentials[0]).toEqual(gear.potentials[0]);
-    expect(deserialized.potentials[1]).toBe(undefined);
+    expect(deserialized.potentials[1]).toBe(null);
   });
   it("should serialize/deserialize every field correctly", () => {
     const gear = new Gear();
@@ -69,9 +72,7 @@ describe("serializeGear", () => {
     const pot2 = new Potential();
     pot2.code = 30002;
     gear.potentials.push(pot2);
-    const deserialized = deserializeGear(
-      JSON.parse(JSON.stringify(serializeGear(gear)))
-    );
+    const deserialized = parseGear(stringifyGear(gear));
     expect(gear).toEqual(deserialized);
   });
   it("should serialize to stringify-able object", () => {
@@ -99,6 +100,6 @@ describe("serializeGear", () => {
     const pot2 = new Potential();
     pot2.code = 30002;
     gear.potentials.push(pot2);
-    expect(JSON.stringify(serializeGear(gear))).toBeTypeOf("string");
+    expect(stringifyGear(gear)).toBeTypeOf("string");
   });
 });
