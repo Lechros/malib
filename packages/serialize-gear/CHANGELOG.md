@@ -1,5 +1,16 @@
 # @malib/serialize-gear
 
+## 0.3.0
+
+### Minor Changes
+
+- 4477aa3: Use plain object instead of class where possible
+
+### Patch Changes
+
+- Updated dependencies [4477aa3]
+  - @malib/gear@0.8.0
+
 ## 0.2.1
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 0.8.0
+
+### Minor Changes
+
+- 4477aa3: Use plain object instead of class where possible
+
 ## 0.7.0
 
 ### Minor Changes

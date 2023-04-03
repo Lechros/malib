@@ -1,13 +1,13 @@
 {
   "name": "@malib/serialize-gear",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "type": "module",
   "main": "index.js",
   "module": "index.js",
   "types": "index.d.ts",
   "typings": "index.d.ts",
   "dependencies": {
-    "@malib/gear": "^0.7.0"
+    "@malib/gear": "^0.8.0"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",
