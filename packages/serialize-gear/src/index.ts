@@ -4,4 +4,8 @@ export type {
   PotLike as PotentialLike,
   SoulWeaponLike,
 } from "./internal";
-export { serializeGear, deserializeGear } from "./internal";
+export {
+  serializeGear,
+  deserializeGear,
+  isGearLike as isGearLike,
+} from "./internal";
