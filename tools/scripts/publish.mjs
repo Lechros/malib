@@ -2,7 +2,7 @@
  * This script is executed on "dist/path/to/library" as "cwd" by default.
  */
 
-import { readCachedProjectGraph } from '@nrwl/devkit';
+import Devkit from "@nrwl/devkit";
 import { execSync } from 'child_process';
 import chalk from 'chalk';
 
@@ -17,7 +17,7 @@ function invariant(condition, message) {
 // Default "tag" to "next" so we won't publish the "latest" tag by accident.
 const [, , name, version, tag = 'next'] = process.argv;
 
-const graph = readCachedProjectGraph();
+const graph = Devkit.readCachedProjectGraph();
 const project = graph.nodes[name];
 
 invariant(
