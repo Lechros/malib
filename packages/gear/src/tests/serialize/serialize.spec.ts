@@ -14,8 +14,8 @@ describe("serializeGear", () => {
   it("should serialize empty gear", () => {
     const original = new Gear();
     const serialized = gearToPlain(original);
-    expect(serialized.name).toBe("");
-    expect(serialized.desc).toBe(undefined);
+    expect(serialized.n).toBe("");
+    expect(serialized.d).toBe(undefined);
   });
   it("should serialize/deserialize options", () => {
     const gear = new Gear();

@@ -8,50 +8,79 @@ import { Soul } from "../soul";
  * `Gear`를 나타내는 순수 객체 형식
  */
 export interface GearLike {
+  /** id */
   id: number;
-  name: string;
-  desc?: string;
-  icon: GearIcon;
-  anvilIcon?: GearIcon;
-  anvilName?: string;
-  type: GearType;
-  req: GearReq;
-  props: [GearPropType, number][];
-  options: [GearPropType, OptionLike][];
-  tuc?: number;
+  /** name */
+  n: string;
+  /** desc */
+  d?: string;
+  /** icon */
+  i: GearIcon;
+  /** anvilIcon */
+  i2?: GearIcon;
+  /** anvilName */
+  n2?: string;
+  /** type */
+  t: GearType;
+  /** req */
+  r: GearReq;
+  /** props */
+  pr: [GearPropType, number][];
+  /** options */
+  o: [GearPropType, OptionLike][];
+  /** totalUpgradeCount */
+  c?: number;
+  /** upgradeCount */
   up?: number;
-  fail?: number;
-  hammer?: number;
-  maxStar?: number;
-  star?: number;
-  amazing?: boolean;
-  karma?: number;
-  canPot?: boolean;
-  grade?: PotentialGrade;
-  pots?: (PotLike | null)[];
-  addGrade?: PotentialGrade;
-  addPots?: (PotLike | null)[];
-  soulWeapon: SoulWeaponLike;
+  /** failCount */
+  f?: number;
+  /** hammerCount */
+  h?: number;
+  /** maxStar */
+  m?: number;
+  /** star */
+  s?: number;
+  /** amazing */
+  a?: boolean;
+  /** karma */
+  k?: number;
+  /** canPotential */
+  cp?: boolean;
+  /** grade */
+  g?: PotentialGrade;
+  /** potentials */
+  p?: (PotLike | null)[];
+  /** additionalGrade */
+  g2?: PotentialGrade;
+  /** additionalPotentials */
+  p2?: (PotLike | null)[];
+  /** soulWeapon */
+  w: SoulWeaponLike;
 }
 
-export interface OptionLike {
-  base?: number;
-  bonus?: number;
-  upgrade?: number;
-  enchant?: number;
-}
+/** base, bonus, upgrade, enchant */
+export type OptionLike = [number, number, number, number];
 
 export interface PotLike {
-  code: number;
-  optionType: number;
-  reqLevel: number;
-  summary: string;
-  option: [GearPropType, number][];
+  /** code */
+  c: number;
+  /** optionType */
+  t: number;
+  /** reqLevel */
+  l: number;
+  /** summary */
+  s: string;
+  /** options */
+  o: [GearPropType, number][];
 }
 
 export interface SoulWeaponLike {
-  enchanted?: boolean;
-  soul?: Soul;
-  charge?: number;
-  chargeOption?: [GearPropType, number][];
+  /** enchanted */
+  e?: boolean;
+  /** soul */
+  s?: Soul;
+  /** charge */
+  c?: number;
+  /** chargeOption */
+  o?: [GearPropType, number][];
 }

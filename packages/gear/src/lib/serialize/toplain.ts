@@ -3,6 +3,7 @@ import { GearOption } from "../gearoption";
 import { Potential } from "../potential";
 import { SoulWeapon } from "../soul";
 import { GearLike, OptionLike, PotLike, SoulWeaponLike } from "./interface";
+import { serializeArray, serializeMap } from "./util";
 
 /**
  * 장비를 순수 객체로 변환합니다.
@@ -12,90 +13,65 @@ import { GearLike, OptionLike, PotLike, SoulWeaponLike } from "./interface";
 export function gearToPlain(gear: Gear): GearLike {
   const like: GearLike = {} as GearLike;
   like.id = gear.itemID;
-  like.name = gear.name;
-  if (gear.desc.length > 0) like.desc = gear.desc;
-  like.icon = gear.icon;
-  if (gear.anvilIcon) like.anvilIcon = gear.anvilIcon;
-  if (gear.anvilName) like.anvilName = gear.anvilName;
-  like.type = gear.type;
-  like.req = gear.req;
-  like.props = serializeMap(gear.props);
-  like.options = serializeMap(gear.options, serializeOption);
-  if (gear.totalUpgradeCount > 0) like.tuc = gear.totalUpgradeCount;
+  like.n = gear.name;
+  if (gear.desc.length > 0) like.d = gear.desc;
+  like.i = gear.icon;
+  if (gear.anvilIcon) like.i2 = gear.anvilIcon;
+  if (gear.anvilName) like.n2 = gear.anvilName;
+  like.t = gear.type;
+  like.r = gear.req;
+  like.pr = serializeMap(gear.props, (val) => val !== 0);
+  like.o = serializeMap(gear.options, (opt) => !opt.empty, serializeOption);
+  if (gear.totalUpgradeCount > 0) like.c = gear.totalUpgradeCount;
   if (gear.upgradeCount > 0) like.up = gear.upgradeCount;
-  if (gear.upgradeFailCount > 0) like.fail = gear.upgradeFailCount;
-  if (gear.hammerCount > 0) like.hammer = gear.hammerCount;
-  if (gear.maxStar > 0) like.maxStar = gear.maxStar;
-  if (gear.star > 0) like.star = gear.star;
-  if (gear.amazing) like.amazing = gear.amazing;
-  if (gear.karma !== undefined) like.karma = gear.karma;
-  if (gear.canPotential) like.canPot = gear.canPotential;
-  if (gear.grade > 0) like.grade = gear.grade;
+  if (gear.upgradeFailCount > 0) like.f = gear.upgradeFailCount;
+  if (gear.hammerCount > 0) like.h = gear.hammerCount;
+  if (gear.maxStar > 0) like.m = gear.maxStar;
+  if (gear.star > 0) like.s = gear.star;
+  if (gear.amazing) like.a = gear.amazing;
+  if (gear.karma !== undefined) like.k = gear.karma;
+  if (gear.canPotential) like.cp = gear.canPotential;
+  if (gear.grade > 0) like.g = gear.grade;
   if (gear.grade > 0 && gear.potentials.length > 0)
-    like.pots = serializeArray(gear.potentials, serializePotential);
-  if (gear.additionalGrade > 0) like.addGrade = gear.additionalGrade;
+    like.p = serializeArray(gear.potentials, undefined, serializePotential);
+  if (gear.additionalGrade > 0) like.g2 = gear.additionalGrade;
   if (gear.additionalGrade > 0 && gear.additionalPotentials.length > 0)
-    like.addPots = serializeArray(
+    like.p2 = serializeArray(
       gear.additionalPotentials,
+      undefined,
       serializePotential
     );
-  like.soulWeapon = serializeSoulWeapon(gear.soulWeapon);
+  const soulWeapon = serializeSoulWeapon(gear.soulWeapon);
+  if (soulWeapon) like.w = soulWeapon;
   return like;
 }
 
 function serializeOption(option: GearOption): OptionLike {
-  const like: OptionLike = {};
-  if (option.base !== 0) like.base = option.base;
-  if (option.bonus !== 0) like.bonus = option.bonus;
-  if (option.upgrade !== 0) like.upgrade = option.upgrade;
-  if (option.enchant !== 0) like.enchant = option.enchant;
-  return like;
+  return [option.base, option.bonus, option.upgrade, option.enchant];
 }
 
 function serializePotential(pot: Potential | null): PotLike | null {
   return pot
     ? {
-        code: pot.code,
-        optionType: pot.optionType,
-        reqLevel: pot.reqLevel,
-        summary: pot.summary,
-        option: serializeMap(pot.option),
+        c: pot.code,
+        t: pot.optionType,
+        l: pot.reqLevel,
+        s: pot.summary,
+        o: serializeMap(pot.option, (val) => val !== 0),
       }
     : null;
 }
 
-function serializeSoulWeapon(soulWeapon: SoulWeapon): SoulWeaponLike {
+function serializeSoulWeapon(
+  soulWeapon: SoulWeapon
+): SoulWeaponLike | undefined {
   const like: SoulWeaponLike = {};
-  if (soulWeapon.enchanted) like.enchanted = soulWeapon.enchanted;
-  if (soulWeapon.soul) like.soul = soulWeapon.soul;
-  if (soulWeapon.charge > 0) like.charge = soulWeapon.charge;
+  if (soulWeapon.enchanted) like.e = soulWeapon.enchanted;
+  if (soulWeapon.soul) like.s = soulWeapon.soul;
+  if (soulWeapon.charge > 0) like.c = soulWeapon.charge;
   if (soulWeapon.chargeOption.size > 0)
-    like.chargeOption = serializeMap(soulWeapon.chargeOption);
-  return like;
-}
+    like.o = serializeMap(soulWeapon.chargeOption, (val) => val !== 0);
 
-function serializeMap<K, V>(map: Map<K, V>): [K, V][];
-function serializeMap<K, V, VLike>(
-  map: Map<K, V>,
-  func: (val: V) => VLike
-): [K, VLike][];
-function serializeMap<K, V, VLike>(
-  map: Map<K, V>,
-  func?: (val: V) => VLike
-): [K, V][] | [K, VLike][] {
-  if (func) {
-    return [...map.entries()].map((e) => [e[0], func(e[1])]);
-  }
-  return [...map.entries()];
-}
-function serializeArray<T>(arr: T[]): T[];
-function serializeArray<T, TLike>(arr: T[], func: (e: T) => TLike): TLike[];
-function serializeArray<T, TLike>(
-  arr: T[],
-  func?: (e: T) => TLike
-): T[] | TLike[] {
-  if (func) {
-    return [...arr].map(func);
-  }
-  return [...arr];
+  if (Object.keys(like).length > 0) return like;
+  else return undefined;
 }

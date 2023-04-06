@@ -33,3 +33,81 @@ export function validateParseGear(maybe: string): Gear | null {
   }
   return null;
 }
+
+export function serializeMap<K, V>(
+  map: Map<K, V>,
+  filterFunc?: (val: V) => boolean
+): [K, V][];
+export function serializeMap<K, V, VLike>(
+  map: Map<K, V>,
+  filterFunc: ((val: V) => boolean) | undefined,
+  convertFunc: (val: V) => VLike
+): [K, VLike][];
+export function serializeMap<K, V, VLike>(
+  map: Map<K, V>,
+  filterFunc?: (val: V) => boolean,
+  convertFunc?: (val: V) => VLike
+): [K, V][] | [K, VLike][] {
+  let entries = [...map];
+  if (filterFunc) {
+    entries = entries.filter((e) => filterFunc(e[1]));
+  }
+  if (convertFunc) {
+    return entries.map((e) => [e[0], convertFunc(e[1])]);
+  }
+  return entries;
+}
+
+export function serializeArray<T>(
+  arr: T[],
+  filterFunc?: (e: T) => boolean
+): T[];
+export function serializeArray<T, TLike>(
+  arr: T[],
+  filterFunc: ((e: T) => boolean) | undefined,
+  convertFunc: (e: T) => TLike
+): TLike[];
+export function serializeArray<T, TLike>(
+  arr: T[],
+  filterFunc?: (e: T) => boolean,
+  convertFunc?: (e: T) => TLike
+): T[] | TLike[] {
+  let _arr = arr;
+  if (filterFunc) {
+    _arr = _arr.filter(filterFunc);
+  }
+  if (convertFunc) {
+    return _arr.map(convertFunc);
+  }
+  return _arr === arr ? [...arr] : _arr;
+}
+
+export function deserializeMap<K, V>(mapLike: [K, V][]): Map<K, V>;
+export function deserializeMap<K, V, VLike>(
+  mapLike: [K, VLike][],
+  func: (val: VLike) => V
+): Map<K, V>;
+export function deserializeMap<K, V, VLike>(
+  mapLike: [K, V][] | [K, VLike][],
+  func?: (val: VLike) => V
+): Map<K, V> {
+  if (func) {
+    return new Map((mapLike as [K, VLike][]).map((e) => [e[0], func(e[1])]));
+  }
+  return new Map(mapLike as [K, V][]);
+}
+
+export function deserializeArray<T>(arr: T[]): T[];
+export function deserializeArray<T, TLike>(
+  arr: TLike[],
+  func: (e: TLike) => T
+): T[];
+export function deserializeArray<T, TLike>(
+  arr: T[] | TLike[],
+  func?: (e: TLike) => T
+): T[] {
+  if (func) {
+    return [...(arr as TLike[])].map(func);
+  }
+  return [...(arr as T[])];
+}
