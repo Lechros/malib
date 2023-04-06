@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 0.10.2
+
+### Patch Changes
+
+- 8b347f3: Fix validateParseGear throw
+
 ## 0.10.1
 
 ### Patch Changes
