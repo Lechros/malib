@@ -26,6 +26,18 @@ function normalizeDts(options: Options): () => void {
       // remove empty dir
       rmSync(join(dist, name), { recursive: true });
     }
+    if (existsSync(join(dist, "malib", "packages", name))) {
+      // move all files to dist
+      const files = readdirSync(join(dist, "malib", "packages", name, "src"));
+      for (const file of files) {
+        renameSync(
+          join(dist, "malib", "packages", name, "src", file),
+          join(dist, file)
+        );
+      }
+      // remove empty dir
+      rmSync(join(dist, "malib"), { recursive: true });
+    }
   };
 }
 
