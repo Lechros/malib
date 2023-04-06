@@ -1,5 +1,11 @@
 # @malib/create-gear
 
+## 0.5.3
+
+### Patch Changes
+
+- 72a1349: Release d.ts file
+
 ## 0.5.2
 
 ### Patch Changes
