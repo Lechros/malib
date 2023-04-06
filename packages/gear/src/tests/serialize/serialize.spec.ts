@@ -28,7 +28,29 @@ describe("serializeGear", () => {
     );
     expect(deserialized.option(GearPropType.incDEX).bonus).toBe(20);
   });
-  it("should serialize/deserialize potential correctly", () => {
+  it("should serialize/deserialize soul", () => {
+    const gear = new Gear();
+    gear.type = GearType.bow;
+    const deserialized = plainToGear(gearToPlain(gear));
+    expect(deserialized.soulWeapon.enchanted).toBe(false);
+    gear.soulWeapon.charge = 500;
+    gear.soulWeapon.soul = {
+      name: "test",
+      skill: "test-skill",
+      option: new Map([[GearPropType.incDEXr, 5]]),
+      multiplier: 2,
+    };
+    gear.soulWeapon.enchanted = true;
+    const deserialized2 = plainToGear(gearToPlain(gear));
+    expect(deserialized2.soulWeapon.charge).toBe(500);
+    expect(deserialized2.soulWeapon.soul?.name).toBe("test");
+    expect(deserialized2.soulWeapon.soul?.skill).toBe("test-skill");
+    expect(
+      deserialized2.soulWeapon.soul?.option.get(GearPropType.incDEXr)
+    ).toBe(5);
+    expect(deserialized2.soulWeapon.soul?.multiplier).toBe(2);
+  });
+  it("should serialize/deserialize potential", () => {
     const gear = new Gear();
     gear.grade = PotentialGrade.legendary;
     const pot1 = new Potential();
@@ -47,7 +69,7 @@ describe("serializeGear", () => {
     expect(deserialized.potentials[0]).toEqual(gear.potentials[0]);
     expect(deserialized.potentials[1]).toBe(null);
   });
-  it("should serialize/deserialize every field correctly", () => {
+  it("should serialize/deserialize every field", () => {
     const gear = new Gear();
     gear.itemID = 1082699;
     gear.name = "아케인셰이드 파이렛글러브";

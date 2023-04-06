@@ -1,7 +1,6 @@
 import { Gear } from "../gear";
 import { GearOption } from "../gearoption";
 import { Potential } from "../potential";
-import { SoulWeapon } from "../soul";
 import { GearLike, OptionLike, PotLike, SoulWeaponLike } from "./interface";
 import { deserializeArray, deserializeMap } from "./util";
 
@@ -38,7 +37,7 @@ export function plainToGear(like: GearLike): Gear {
   if (like.g2) gear.additionalGrade = like.g2;
   if (like.p2)
     gear.additionalPotentials = deserializeArray(like.p2, deserializePotential);
-  gear.soulWeapon = deserializeSoulWeapon(like.w, gear);
+  deserializeSoulWeapon(like.w, gear);
   return gear;
 }
 
@@ -65,11 +64,12 @@ function deserializePotential(like: PotLike | null): Potential | null {
 function deserializeSoulWeapon(
   like: SoulWeaponLike | undefined,
   gear: Gear
-): SoulWeapon {
-  const soulWeapon = new SoulWeapon(gear);
-  if (like?.e) soulWeapon.enchanted = like.e;
-  if (like?.s) soulWeapon.soul = like.s;
-  if (like?.c) soulWeapon.charge = like.c;
-  if (like?.o) soulWeapon.chargeOption = deserializeMap(like.o);
-  return soulWeapon;
+): void {
+  if (like) {
+    const soulWeapon = gear.soulWeapon;
+    if (like?.e) soulWeapon.enchanted = like.e;
+    if (like?.s) soulWeapon.soul = like.s;
+    if (like?.c) soulWeapon.charge = like.c;
+    if (like?.o) soulWeapon.chargeOption = deserializeMap(like.o);
+  }
 }
