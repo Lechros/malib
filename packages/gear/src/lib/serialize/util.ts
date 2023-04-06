@@ -24,13 +24,18 @@ export function parseGear(like: string): Gear {
 /**
  * 문자열을 장비로 변환합니다. 입력을 검사하고 `JSON.parse`를 사용합니다.
  * @param gear 변환할 문자열.
- * @returns 장비. 입력이 잘못되었을 경우 `null`을 반환합니다.
+ * @returns 장비. 입력이 올바른 JSON이 아니거나 `GearLike`가 아닐 경우 `null`을 반환합니다.
  */
 export function validateParseGear(maybe: string): Gear | null {
-  const maybeLike = JSON.parse(maybe) as unknown;
-  if (isGearLike(maybeLike)) {
-    return plainToGear(maybeLike);
+  try {
+    const maybeLike = JSON.parse(maybe) as unknown;
+    if (isGearLike(maybeLike)) {
+      return plainToGear(maybeLike);
+    }
+  } catch {
+    /* empty */
   }
+
   return null;
 }
 
