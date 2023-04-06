@@ -9,130 +9,128 @@ export const isGearLike = (input: unknown): input is GearLike => {
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const $io0 = (input: any): boolean =>
     "number" === typeof input.id &&
-    "string" === typeof input.name &&
-    (undefined === input.desc || "string" === typeof input.desc) &&
-    "object" === typeof input.icon &&
-    null !== input.icon &&
-    $io1(input.icon) &&
-    (undefined === input.anvilIcon ||
-      ("object" === typeof input.anvilIcon &&
-        null !== input.anvilIcon &&
-        $io1(input.anvilIcon))) &&
-    (undefined === input.anvilName || "string" === typeof input.anvilName) &&
-    (100 === input.type ||
-      101 === input.type ||
-      102 === input.type ||
-      103 === input.type ||
-      104 === input.type ||
-      105 === input.type ||
-      106 === input.type ||
-      107 === input.type ||
-      108 === input.type ||
-      110 === input.type ||
-      111 === input.type ||
-      112 === input.type ||
-      113 === input.type ||
-      114 === input.type ||
-      115 === input.type ||
-      116 === input.type ||
-      118 === input.type ||
-      166 === input.type ||
-      167 === input.type ||
-      109 === input.type ||
-      119 === input.type ||
-      119020 === input.type ||
-      1212 === input.type ||
-      1213 === input.type ||
-      1214 === input.type ||
-      122 === input.type ||
-      123 === input.type ||
-      124 === input.type ||
-      126 === input.type ||
-      127 === input.type ||
-      128 === input.type ||
-      129 === input.type ||
-      130 === input.type ||
-      131 === input.type ||
-      132 === input.type ||
-      133 === input.type ||
-      134 === input.type ||
-      136 === input.type ||
-      137 === input.type ||
-      138 === input.type ||
-      140 === input.type ||
-      1404 === input.type ||
-      141 === input.type ||
-      142 === input.type ||
-      143 === input.type ||
-      144 === input.type ||
-      145 === input.type ||
-      146 === input.type ||
-      147 === input.type ||
-      148 === input.type ||
-      149 === input.type ||
-      150 === input.type ||
-      151 === input.type ||
-      152 === input.type ||
-      153 === input.type ||
-      156 === input.type ||
-      157 === input.type ||
-      158 === input.type ||
-      159 === input.type ||
-      1098 === input.type ||
-      1099 === input.type ||
-      135200 === input.type ||
-      135210 === input.type ||
-      135220 === input.type ||
-      135221 === input.type ||
-      135222 === input.type ||
-      135223 === input.type ||
-      135224 === input.type ||
-      135225 === input.type ||
-      135226 === input.type ||
-      135227 === input.type ||
-      135228 === input.type ||
-      135229 === input.type ||
-      135240 === input.type ||
-      135250 === input.type ||
-      135260 === input.type ||
-      135270 === input.type ||
-      135290 === input.type ||
-      135291 === input.type ||
-      135292 === input.type ||
-      135293 === input.type ||
-      135294 === input.type ||
-      135295 === input.type ||
-      135296 === input.type ||
-      135297 === input.type ||
-      135298 === input.type ||
-      135300 === input.type ||
-      135310 === input.type ||
-      135320 === input.type ||
-      135330 === input.type ||
-      135340 === input.type ||
-      135350 === input.type ||
-      135360 === input.type ||
-      135370 === input.type ||
-      135380 === input.type ||
-      135400 === input.type ||
-      135401 === input.type ||
-      135402 === input.type ||
-      135403 === input.type ||
-      180 === input.type ||
-      161 === input.type ||
-      162 === input.type ||
-      163 === input.type ||
-      164 === input.type ||
-      165 === input.type ||
-      194 === input.type ||
-      195 === input.type ||
-      196 === input.type ||
-      197 === input.type) &&
-    "object" === typeof input.req &&
-    null !== input.req &&
-    $io2(input.req) &&
-    Array.isArray(input.props) &&
-    input.props.every(
+    "string" === typeof input.n &&
+    (undefined === input.d || "string" === typeof input.d) &&
+    "object" === typeof input.i &&
+    null !== input.i &&
+    $io1(input.i) &&
+    (undefined === input.i2 ||
+      ("object" === typeof input.i2 && null !== input.i2 && $io1(input.i2))) &&
+    (undefined === input.n2 || "string" === typeof input.n2) &&
+    (100 === input.t ||
+      101 === input.t ||
+      102 === input.t ||
+      103 === input.t ||
+      104 === input.t ||
+      105 === input.t ||
+      106 === input.t ||
+      107 === input.t ||
+      108 === input.t ||
+      110 === input.t ||
+      111 === input.t ||
+      112 === input.t ||
+      113 === input.t ||
+      114 === input.t ||
+      115 === input.t ||
+      116 === input.t ||
+      118 === input.t ||
+      166 === input.t ||
+      167 === input.t ||
+      109 === input.t ||
+      119 === input.t ||
+      119020 === input.t ||
+      1212 === input.t ||
+      1213 === input.t ||
+      1214 === input.t ||
+      122 === input.t ||
+      123 === input.t ||
+      124 === input.t ||
+      126 === input.t ||
+      127 === input.t ||
+      128 === input.t ||
+      129 === input.t ||
+      130 === input.t ||
+      131 === input.t ||
+      132 === input.t ||
+      133 === input.t ||
+      134 === input.t ||
+      136 === input.t ||
+      137 === input.t ||
+      138 === input.t ||
+      140 === input.t ||
+      1404 === input.t ||
+      141 === input.t ||
+      142 === input.t ||
+      143 === input.t ||
+      144 === input.t ||
+      145 === input.t ||
+      146 === input.t ||
+      147 === input.t ||
+      148 === input.t ||
+      149 === input.t ||
+      150 === input.t ||
+      151 === input.t ||
+      152 === input.t ||
+      153 === input.t ||
+      156 === input.t ||
+      157 === input.t ||
+      158 === input.t ||
+      159 === input.t ||
+      1098 === input.t ||
+      1099 === input.t ||
+      135200 === input.t ||
+      135210 === input.t ||
+      135220 === input.t ||
+      135221 === input.t ||
+      135222 === input.t ||
+      135223 === input.t ||
+      135224 === input.t ||
+      135225 === input.t ||
+      135226 === input.t ||
+      135227 === input.t ||
+      135228 === input.t ||
+      135229 === input.t ||
+      135240 === input.t ||
+      135250 === input.t ||
+      135260 === input.t ||
+      135270 === input.t ||
+      135290 === input.t ||
+      135291 === input.t ||
+      135292 === input.t ||
+      135293 === input.t ||
+      135294 === input.t ||
+      135295 === input.t ||
+      135296 === input.t ||
+      135297 === input.t ||
+      135298 === input.t ||
+      135300 === input.t ||
+      135310 === input.t ||
+      135320 === input.t ||
+      135330 === input.t ||
+      135340 === input.t ||
+      135350 === input.t ||
+      135360 === input.t ||
+      135370 === input.t ||
+      135380 === input.t ||
+      135400 === input.t ||
+      135401 === input.t ||
+      135402 === input.t ||
+      135403 === input.t ||
+      180 === input.t ||
+      161 === input.t ||
+      162 === input.t ||
+      163 === input.t ||
+      164 === input.t ||
+      165 === input.t ||
+      194 === input.t ||
+      195 === input.t ||
+      196 === input.t ||
+      197 === input.t) &&
+    "object" === typeof input.r &&
+    null !== input.r &&
+    $io2(input.r) &&
+    Array.isArray(input.pr) &&
+    input.pr.every(
       (elem: any) =>
         Array.isArray(elem) &&
         elem.length === 2 &&
@@ -236,8 +234,8 @@ export const isGearLike = (input: unknown): input is GearLike => {
           1126 === elem[0]) &&
         "number" === typeof elem[1]
     ) &&
-    Array.isArray(input.options) &&
-    input.options.every(
+    Array.isArray(input.o) &&
+    input.o.every(
       (elem: any) =>
         Array.isArray(elem) &&
         elem.length === 2 &&
@@ -339,52 +337,54 @@ export const isGearLike = (input: unknown): input is GearLike => {
           1124 === elem[0] ||
           1125 === elem[0] ||
           1126 === elem[0]) &&
-        "object" === typeof elem[1] &&
-        null !== elem[1] &&
-        false === Array.isArray(elem[1]) &&
-        $io3(elem[1])
+        Array.isArray(elem[1]) &&
+        elem[1].length === 4 &&
+        "number" === typeof elem[1][0] &&
+        "number" === typeof elem[1][1] &&
+        "number" === typeof elem[1][2] &&
+        "number" === typeof elem[1][3]
     ) &&
-    (undefined === input.tuc || "number" === typeof input.tuc) &&
+    (undefined === input.c || "number" === typeof input.c) &&
     (undefined === input.up || "number" === typeof input.up) &&
-    (undefined === input.fail || "number" === typeof input.fail) &&
-    (undefined === input.hammer || "number" === typeof input.hammer) &&
-    (undefined === input.maxStar || "number" === typeof input.maxStar) &&
-    (undefined === input.star || "number" === typeof input.star) &&
-    (undefined === input.amazing || "boolean" === typeof input.amazing) &&
-    (undefined === input.karma || "number" === typeof input.karma) &&
-    (undefined === input.canPot || "boolean" === typeof input.canPot) &&
-    (undefined === input.grade ||
-      0 === input.grade ||
-      1 === input.grade ||
-      2 === input.grade ||
-      3 === input.grade ||
-      4 === input.grade ||
-      5 === input.grade) &&
-    (undefined === input.pots ||
-      (Array.isArray(input.pots) &&
-        input.pots.every(
+    (undefined === input.f || "number" === typeof input.f) &&
+    (undefined === input.h || "number" === typeof input.h) &&
+    (undefined === input.m || "number" === typeof input.m) &&
+    (undefined === input.s || "number" === typeof input.s) &&
+    (undefined === input.a || "boolean" === typeof input.a) &&
+    (undefined === input.k || "number" === typeof input.k) &&
+    (undefined === input.cp || "boolean" === typeof input.cp) &&
+    (undefined === input.g ||
+      0 === input.g ||
+      1 === input.g ||
+      2 === input.g ||
+      3 === input.g ||
+      4 === input.g ||
+      5 === input.g) &&
+    (undefined === input.p ||
+      (Array.isArray(input.p) &&
+        input.p.every(
           (elem: any) =>
-            undefined === elem ||
-            ("object" === typeof elem && null !== elem && $io4(elem))
+            null === elem ||
+            ("object" === typeof elem && null !== elem && $io3(elem))
         ))) &&
-    (undefined === input.addGrade ||
-      0 === input.addGrade ||
-      1 === input.addGrade ||
-      2 === input.addGrade ||
-      3 === input.addGrade ||
-      4 === input.addGrade ||
-      5 === input.addGrade) &&
-    (undefined === input.addPots ||
-      (Array.isArray(input.addPots) &&
-        input.addPots.every(
+    (undefined === input.g2 ||
+      0 === input.g2 ||
+      1 === input.g2 ||
+      2 === input.g2 ||
+      3 === input.g2 ||
+      4 === input.g2 ||
+      5 === input.g2) &&
+    (undefined === input.p2 ||
+      (Array.isArray(input.p2) &&
+        input.p2.every(
           (elem: any) =>
-            undefined === elem ||
-            ("object" === typeof elem && null !== elem && $io4(elem))
+            null === elem ||
+            ("object" === typeof elem && null !== elem && $io3(elem))
         ))) &&
-    "object" === typeof input.soulWeapon &&
-    null !== input.soulWeapon &&
-    false === Array.isArray(input.soulWeapon) &&
-    $io5(input.soulWeapon);
+    "object" === typeof input.w &&
+    null !== input.w &&
+    false === Array.isArray(input.w) &&
+    $io4(input.w);
   const $io1 = (input: any): boolean =>
     "number" === typeof input.id &&
     Array.isArray(input.origin) &&
@@ -400,17 +400,12 @@ export const isGearLike = (input: unknown): input is GearLike => {
     "number" === typeof input.job &&
     "number" === typeof input.specJob;
   const $io3 = (input: any): boolean =>
-    (undefined === input.base || "number" === typeof input.base) &&
-    (undefined === input.bonus || "number" === typeof input.bonus) &&
-    (undefined === input.upgrade || "number" === typeof input.upgrade) &&
-    (undefined === input.enchant || "number" === typeof input.enchant);
-  const $io4 = (input: any): boolean =>
-    "number" === typeof input.code &&
-    "number" === typeof input.optionType &&
-    "number" === typeof input.reqLevel &&
-    "string" === typeof input.summary &&
-    Array.isArray(input.option) &&
-    input.option.every(
+    "number" === typeof input.c &&
+    "number" === typeof input.t &&
+    "number" === typeof input.l &&
+    "string" === typeof input.s &&
+    Array.isArray(input.o) &&
+    input.o.every(
       (elem: any) =>
         Array.isArray(elem) &&
         elem.length === 2 &&
@@ -514,16 +509,14 @@ export const isGearLike = (input: unknown): input is GearLike => {
           1126 === elem[0]) &&
         "number" === typeof elem[1]
     );
-  const $io5 = (input: any): boolean =>
-    (undefined === input.enchanted || "boolean" === typeof input.enchanted) &&
-    (undefined === input.soul ||
-      ("object" === typeof input.soul &&
-        null !== input.soul &&
-        $io6(input.soul))) &&
-    (undefined === input.charge || "number" === typeof input.charge) &&
-    (undefined === input.chargeOption ||
-      (Array.isArray(input.chargeOption) &&
-        input.chargeOption.every(
+  const $io4 = (input: any): boolean =>
+    (undefined === input.e || "boolean" === typeof input.e) &&
+    (undefined === input.s ||
+      ("object" === typeof input.s && null !== input.s && $io5(input.s))) &&
+    (undefined === input.c || "number" === typeof input.c) &&
+    (undefined === input.o ||
+      (Array.isArray(input.o) &&
+        input.o.every(
           (elem: any) =>
             Array.isArray(elem) &&
             elem.length === 2 &&
@@ -627,7 +620,7 @@ export const isGearLike = (input: unknown): input is GearLike => {
               1126 === elem[0]) &&
             "number" === typeof elem[1]
         )));
-  const $io6 = (input: any): boolean =>
+  const $io5 = (input: any): boolean =>
     "string" === typeof input.name &&
     "string" === typeof input.skill &&
     input.option instanceof Map &&

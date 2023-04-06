@@ -1,8 +1,8 @@
 import { Gear } from "../gear";
 import { GearOption } from "../gearoption";
 import { Potential } from "../potential";
-import { SoulWeapon } from "../soul";
 import { GearLike, OptionLike, PotLike, SoulWeaponLike } from "./interface";
+import { deserializeArray, deserializeMap } from "./util";
 
 /**
  * 순수 객체를 장비로 변환합니다.
@@ -12,92 +12,64 @@ import { GearLike, OptionLike, PotLike, SoulWeaponLike } from "./interface";
 export function plainToGear(like: GearLike): Gear {
   const gear = new Gear();
   gear.itemID = like.id;
-  gear.name = like.name;
-  if (like.desc) gear.desc = like.desc;
-  gear.icon = like.icon;
-  if (like.anvilIcon && like.anvilName) {
-    gear.anvilIcon = like.anvilIcon;
-    gear.anvilName = like.anvilName;
+  gear.name = like.n;
+  if (like.d) gear.desc = like.d;
+  gear.icon = like.i;
+  if (like.i2 && like.n2) {
+    gear.anvilIcon = like.i2;
+    gear.anvilName = like.n2;
   }
-  gear.type = like.type;
-  gear.req = like.req;
-  gear.props = deserializeMap(like.props);
-  gear.options = deserializeMap(like.options, deserializeOption);
-  if (like.tuc) gear.totalUpgradeCount = like.tuc;
+  gear.type = like.t;
+  gear.req = like.r;
+  gear.props = deserializeMap(like.pr);
+  gear.options = deserializeMap(like.o, deserializeOption);
+  if (like.c) gear.totalUpgradeCount = like.c;
   if (like.up) gear.upgradeCount = like.up;
-  if (like.fail) gear.upgradeFailCount = like.fail;
-  if (like.hammer) gear.hammerCount = like.hammer;
-  if (like.maxStar) gear.maxStar = like.maxStar;
-  if (like.star) gear.star = like.star;
-  if (like.amazing) gear.amazing = like.amazing;
-  if (like.karma) gear.karma = like.karma;
-  if (like.canPot) gear.canPotential = like.canPot;
-  if (like.grade) gear.grade = like.grade;
-  if (like.pots)
-    gear.potentials = deserializeArray(like.pots, deserializePotential);
-  if (like.addGrade) gear.additionalGrade = like.addGrade;
-  if (like.addPots)
-    gear.additionalPotentials = deserializeArray(
-      like.addPots,
-      deserializePotential
-    );
-  gear.soulWeapon = deserializeSoulWeapon(like.soulWeapon, gear);
+  if (like.f) gear.upgradeFailCount = like.f;
+  if (like.h) gear.hammerCount = like.h;
+  if (like.m) gear.maxStar = like.m;
+  if (like.s) gear.star = like.s;
+  if (like.a) gear.amazing = like.a;
+  if (like.k) gear.karma = like.k;
+  if (like.cp) gear.canPotential = like.cp;
+  if (like.g) gear.grade = like.g;
+  if (like.p) gear.potentials = deserializeArray(like.p, deserializePotential);
+  if (like.g2) gear.additionalGrade = like.g2;
+  if (like.p2)
+    gear.additionalPotentials = deserializeArray(like.p2, deserializePotential);
+  deserializeSoulWeapon(like.w, gear);
   return gear;
 }
 
 function deserializeOption(like: OptionLike): GearOption {
   const option = new GearOption();
-  if (like.base) option.base = like.base;
-  if (like.bonus) option.bonus = like.bonus;
-  if (like.upgrade) option.upgrade = like.upgrade;
-  if (like.enchant) option.enchant = like.enchant;
+  option.base = like[0];
+  option.bonus = like[1];
+  option.upgrade = like[2];
+  option.enchant = like[3];
   return option;
 }
 
 function deserializePotential(like: PotLike | null): Potential | null {
   if (!like) return null;
   const pot = new Potential();
-  pot.code = like.code;
-  pot.optionType = like.optionType;
-  pot.reqLevel = like.reqLevel;
-  pot.summary = like.summary;
-  pot.option = deserializeMap(like.option);
+  pot.code = like.c;
+  pot.optionType = like.t;
+  pot.reqLevel = like.l;
+  pot.summary = like.s;
+  pot.option = deserializeMap(like.o);
   return pot;
 }
 
-function deserializeSoulWeapon(like: SoulWeaponLike, gear: Gear): SoulWeapon {
-  const soulWeapon = new SoulWeapon(gear);
-  if (like.enchanted) soulWeapon.enchanted = like.enchanted;
-  if (like.soul) soulWeapon.soul = like.soul;
-  if (like.charge) soulWeapon.charge = like.charge;
-  if (like.chargeOption)
-    soulWeapon.chargeOption = deserializeMap(like.chargeOption);
-  return soulWeapon;
-}
-
-function deserializeMap<K, V>(mapLike: [K, V][]): Map<K, V>;
-function deserializeMap<K, V, VLike>(
-  mapLike: [K, VLike][],
-  func: (val: VLike) => V
-): Map<K, V>;
-function deserializeMap<K, V, VLike>(
-  mapLike: [K, V][] | [K, VLike][],
-  func?: (val: VLike) => V
-): Map<K, V> {
-  if (func) {
-    return new Map((mapLike as [K, VLike][]).map((e) => [e[0], func(e[1])]));
+function deserializeSoulWeapon(
+  like: SoulWeaponLike | undefined,
+  gear: Gear
+): void {
+  if (like) {
+    const soulWeapon = gear.soulWeapon;
+    if (like?.e) soulWeapon.enchanted = like.e;
+    if (like?.s) soulWeapon.soul = like.s;
+    if (like?.c) soulWeapon.charge = like.c;
+    if (like?.o) soulWeapon.chargeOption = deserializeMap(like.o);
   }
-  return new Map(mapLike as [K, V][]);
-}
-
-function deserializeArray<T>(arr: T[]): T[];
-function deserializeArray<T, TLike>(arr: TLike[], func: (e: TLike) => T): T[];
-function deserializeArray<T, TLike>(
-  arr: T[] | TLike[],
-  func?: (e: TLike) => T
-): T[] {
-  if (func) {
-    return [...(arr as TLike[])].map(func);
-  }
-  return [...(arr as T[])];
 }
