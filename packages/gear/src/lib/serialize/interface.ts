@@ -55,7 +55,7 @@ export interface GearLike {
   /** additionalPotentials */
   p2?: (PotLike | null)[];
   /** soulWeapon */
-  w: SoulWeaponLike;
+  w?: SoulWeaponLike;
 }
 
 /** base, bonus, upgrade, enchant */

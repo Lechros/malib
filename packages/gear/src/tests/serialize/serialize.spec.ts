@@ -5,6 +5,7 @@ import {
   Potential,
   PotentialGrade,
   gearToPlain,
+  isGearLike,
   parseGear,
   plainToGear,
   stringifyGear,
@@ -124,4 +125,9 @@ describe("serializeGear", () => {
     gear.potentials.push(pot2);
     expect(stringifyGear(gear)).toBeTypeOf("string");
   });
+});
+test("isGearLike", () => {
+  const str =
+    '{"id":1004422,"n":"앱솔랩스 나이트헬름","i":{"id":1004422,"origin":[1,30]},"t":100,"r":{"level":160,"str":480,"luk":0,"dex":0,"int":0,"job":1,"specJob":0},"pr":[[1105,1],[1104,2],[1112,100],[1114,1],[201,504]],"o":[[1,[45,0,0,0]],[3,[45,0,0,0]],[20,[400,0,0,0]],[17,[3,0,0,0]],[26,[10,0,0,0]]],"c":11,"m":25,"cp":true}';
+  expect(isGearLike(JSON.parse(str))).toBe(true);
 });
