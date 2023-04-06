@@ -1,5 +1,11 @@
 # @malib/create-gear
 
+## 0.5.4
+
+### Patch Changes
+
+- d3c736a: Fix release file
+
 ## 0.5.3
 
 ### Patch Changes
