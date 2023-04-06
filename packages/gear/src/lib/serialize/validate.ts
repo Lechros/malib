@@ -1,5 +1,7 @@
 import { GearLike } from "./interface";
 
+//$ pnpm typia generate --input packages/gear/src/lib/serialize/typia --output packages/gear/src/lib/serialize --project tsconfig.typia.json
+
 /**
  * 객체가 `GearLike` 형식인지 여부를 확인합니다.
  * @param input 확인할 객체.
@@ -381,10 +383,11 @@ export const isGearLike = (input: unknown): input is GearLike => {
             null === elem ||
             ("object" === typeof elem && null !== elem && $io3(elem))
         ))) &&
-    "object" === typeof input.w &&
-    null !== input.w &&
-    false === Array.isArray(input.w) &&
-    $io4(input.w);
+    (undefined === input.w ||
+      ("object" === typeof input.w &&
+        null !== input.w &&
+        false === Array.isArray(input.w) &&
+        $io4(input.w)));
   const $io1 = (input: any): boolean =>
     "number" === typeof input.id &&
     Array.isArray(input.origin) &&
@@ -729,6 +732,6 @@ export const isGearLike = (input: unknown): input is GearLike => {
         "number" === typeof elem[1]
     ) &&
     "number" === typeof input.multiplier;
-  return "object" === typeof input && null !== input && $io0(input);
   /* eslint-enable @typescript-eslint/no-explicit-any */
+  return "object" === typeof input && null !== input && $io0(input);
 };
