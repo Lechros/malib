@@ -42,7 +42,7 @@
   "dependencies": {
     "@changesets/cli": "^2.26.0",
     "@nrwl/devkit": "15.6.3",
-    "@swc/helpers": "~0.4.14",
+    "@swc/helpers": "^0.4.14",
     "chalk": "^5.2.0",
     "tslib": "^2.5.0"
   }
