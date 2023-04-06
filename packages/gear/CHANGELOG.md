@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 0.10.0
+
+### Minor Changes
+
+- 9e62e4e: Fix serialize bugs
+
 ## 0.9.0
 
 ### Minor Changes
