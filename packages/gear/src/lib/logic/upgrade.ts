@@ -40,7 +40,7 @@ export function applyScroll(gear: Gear, scroll: Scroll): boolean {
     return false;
   }
   gear.upgradeCount += 1;
-  for (const [type, value] of scroll.stat) {
+  for (const [type, value] of scroll.option) {
     gear.option(type).upgrade += value;
   }
   return true;

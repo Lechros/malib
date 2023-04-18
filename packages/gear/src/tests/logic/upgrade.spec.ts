@@ -60,7 +60,7 @@ describe("golden hammer", () => {
 describe("apply scroll", () => {
   it("apply to gear with no upgrade count should fail", () => {
     const gear = new Gear();
-    const scroll: Scroll = { name: "", stat: new Map() };
+    const scroll: Scroll = { name: "", option: new Map() };
     gear.totalUpgradeCount = 0;
     expect(applyScroll(gear, scroll)).toBe(false);
     gear.totalUpgradeCount = 1;
@@ -68,7 +68,7 @@ describe("apply scroll", () => {
   });
   it("should increase upgrade count", () => {
     const gear = new Gear();
-    const scroll: Scroll = { name: "", stat: new Map() };
+    const scroll: Scroll = { name: "", option: new Map() };
     gear.totalUpgradeCount = 2;
     expect(applyScroll(gear, scroll)).toBe(true);
     expect(gear.upgradeCount).toBe(1);
@@ -77,7 +77,7 @@ describe("apply scroll", () => {
   });
   it("should not affect other upgrade related count", () => {
     const gear = new Gear();
-    const scroll: Scroll = { name: "", stat: new Map() };
+    const scroll: Scroll = { name: "", option: new Map() };
     gear.totalUpgradeCount = 0;
     applyScroll(gear, scroll);
     expect(gear.upgradeCountLeft).toBe(0);
@@ -92,7 +92,7 @@ describe("apply scroll", () => {
     const gear = new Gear();
     const scroll = {
       name: "test scroll",
-      stat: new Map([
+      option: new Map([
         [GearPropType.incSTR, 2],
         [GearPropType.incINT, 1],
       ]),
