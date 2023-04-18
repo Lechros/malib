@@ -26,7 +26,6 @@ import {
   applySpellTrace,
   BonusStatType,
   GearPropType,
-  Scroll,
 } from "@malib/gear";
 
 // 트릭스터 레인져팬츠 장비 생성
@@ -37,7 +36,13 @@ if (gear === undefined) { /* return */ }
 addBonusStat(gear, BonusStatType.DEX, 7);
 
 // 주문서
-const scroll = new Scroll("놀긍혼", new Map([[GearPropType.incPAD, 6]]));
+const scroll = {
+  name: "놀라운 긍정의 혼돈 주문서",
+  option: new Map([
+    [GearPropType.incSTR, 1],
+    [GearPropType.incPAD, 6],
+  ])
+};
 applyScroll(gear, scroll);
 
 // 주문의 흔적
