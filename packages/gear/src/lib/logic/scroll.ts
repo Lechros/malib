@@ -23,7 +23,7 @@ export type SpellTraceStatType =
  */
 export interface Scroll {
   /** 주문서 이름 */
-  name: string;
+  name?: string;
   /** 주문서 옵션 */
   option: Map<GearPropType, number>;
 }
