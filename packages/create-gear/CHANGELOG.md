@@ -1,5 +1,14 @@
 # @malib/create-gear
 
+## 0.5.5
+
+### Patch Changes
+
+- 6b47b81: Add '카링' souls.
+- 6b47b81: Update lv2\* potentials
+- Updated dependencies [af21c5b]
+  - @malib/gear@0.11.0
+
 ## 0.5.4
 
 ### Patch Changes

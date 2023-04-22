@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 0.11.0
+
+### Minor Changes
+
+- af21c5b: Update spelltrace code. Support armor 15% scroll.
+
 ## 0.10.2
 
 ### Patch Changes
