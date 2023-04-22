@@ -2248,5 +2248,68 @@
       "bdR": { "bdR": 7 },
       "imdR": { "imdR": 7 }
     }
+  },
+  "2591718": {
+    "name": "기운찬 카링의 소울",
+    "skill": "유폐",
+    "multiplier": 2,
+    "option": { "incSTR": 24 }
+  },
+  "2591719": {
+    "name": "날렵한 카링의 소울",
+    "skill": "유폐",
+    "multiplier": 2,
+    "option": { "incDEX": 24 }
+  },
+  "2591720": {
+    "name": "총명한 카링의 소울",
+    "skill": "유폐",
+    "multiplier": 2,
+    "option": { "incINT": 24 }
+  },
+  "2591721": {
+    "name": "놀라운 카링의 소울",
+    "skill": "유폐",
+    "multiplier": 2,
+    "option": { "incLUK": 24 }
+  },
+  "2591722": {
+    "name": "화려한 카링의 소울",
+    "skill": "유폐",
+    "multiplier": 2,
+    "option": { "incAllStat": 15 }
+  },
+  "2591723": {
+    "name": "강력한 카링의 소울",
+    "skill": "유폐",
+    "multiplier": 2,
+    "option": { "incPAD": 6 }
+  },
+  "2591724": {
+    "name": "빛나는 카링의 소울",
+    "skill": "유폐",
+    "multiplier": 2,
+    "option": { "incMAD": 6 }
+  },
+  "2591725": {
+    "name": "강인한 카링의 소울",
+    "skill": "유폐",
+    "multiplier": 2,
+    "option": { "incMHP": 960 }
+  },
+  "2591726": {
+    "name": "위대한 카링의 소울",
+    "skill": "수라",
+    "multiplier": 2,
+    "magnificent": true,
+    "options": {
+      "PAD": { "incPADr": 3 },
+      "MAD": { "incMADr": 3 },
+      "allStat": { "statR": 5 },
+      "MHP": { "incMHP": 2000 },
+      "cr": { "incCr": 12 },
+      "bdR": { "bdR": 7 },
+      "imdR": { "imdR": 7 }
+    }
   }
 }
