@@ -76,6 +76,32 @@ describe("addBonusStat normal", () => {
     expect(gear.option(GearPropType.incSTR).bonus).toBe(20);
     expect(gear.option(GearPropType.incDEX).bonus).toBe(20);
   });
+  it("eternel", () => {
+    const gear = new Gear();
+    gear.name = "에테르넬 나이트헬름";
+    gear.itemID = 1005980;
+    gear.type = Gear.getGearType(gear.itemID);
+    gear.req.level = 250;
+    gear.req.job = 1;
+    gear.props.set(GearPropType.bossReward, 1);
+    gear.option(GearPropType.incSTR).base = 80;
+    gear.option(GearPropType.incDEX).base = 80;
+    gear.option(GearPropType.incPAD).base = 10;
+    gear.option(GearPropType.incPDD).base = 750;
+    gear.totalUpgradeCount = 11;
+
+    addBonusStat(gear, BonusStatType.STR, 6);
+    expect(gear.option(GearPropType.incSTR).bonus).toBe(72);
+
+    addBonusStat(gear, BonusStatType.DEX_INT, 7);
+    expect(gear.option(GearPropType.incDEX).bonus).toBe(49);
+
+    addBonusStat(gear, BonusStatType.MHP, 6);
+    expect(gear.option(GearPropType.incMHP).bonus).toBe(4200);
+
+    addBonusStat(gear, BonusStatType.PDD, 7);
+    expect(gear.option(GearPropType.incPDD).bonus).toBe(84);
+  });
 });
 
 describe("addBonusStat invalid type", () => {

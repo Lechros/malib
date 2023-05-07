@@ -94,94 +94,30 @@ export function getBonusStatValue(
     case BonusStatType.DEX:
     case BonusStatType.INT:
     case BonusStatType.LUK:
-      return (Math.floor(reqLevel / 20) + 1) * grade;
+      return getSingleStatValue(reqLevel, grade);
     case BonusStatType.STR_DEX:
     case BonusStatType.STR_INT:
     case BonusStatType.STR_LUK:
     case BonusStatType.DEX_INT:
     case BonusStatType.DEX_LUK:
     case BonusStatType.INT_LUK:
-      return (Math.floor(reqLevel / 40) + 1) * grade;
+      return getDoubleStatValue(reqLevel, grade);
     case BonusStatType.PDD:
-      return (Math.floor(reqLevel / 20) + 1) * grade;
+      return getSingleStatValue(reqLevel, grade);
     case BonusStatType.PAD:
     case BonusStatType.MAD:
-      if (Gear.isWeapon(gearType)) {
-        const data = bossReward
-          ? [0, 0, 1, 1.4666, 2.0166, 2.663, 3.4166]
-          : [1, 2.222, 3.63, 5.325, 7.32, 8.777, 10.25];
-        let att = gear.option(GearPropType.incPAD).base;
-        if (
-          gearType === GearType.heavySword ||
-          gearType === GearType.longSword
-        ) {
-          if (gearType === GearType.longSword) {
-            switch (att) {
-              case 100:
-                att = 102;
-                break;
-              case 103:
-                att = 105;
-                break;
-              case 105:
-                att = 107;
-                break;
-              case 112:
-                att = 114;
-                break;
-              case 117:
-                att = 121;
-                break;
-              case 135:
-                att = 139;
-                break;
-              case 169:
-                att = 173;
-                break;
-              case 203:
-                att = 207;
-                break;
-              case 293:
-                att = 297;
-                break;
-              case 337:
-                att = 342;
-                break;
-            }
-          }
-          const value =
-            reqLevel > 180 ? 6 : reqLevel > 160 ? 5 : reqLevel > 110 ? 4 : 3;
-          return Math.ceil((att * data[grade - 1] * value) / 100);
-        } else {
-          const mad = gear.option(GearPropType.incMAD).base;
-          if (type === BonusStatType.MAD && mad >= att) {
-            att = mad;
-          }
-          if (bossReward) {
-            const value =
-              reqLevel > 160
-                ? 18
-                : reqLevel > 150
-                ? 15
-                : reqLevel > 110
-                ? 12
-                : 9;
-            return Math.ceil((att * data[grade - 1] * value) / 100);
-          } else {
-            const value = reqLevel > 110 ? 4 : 3;
-            return Math.ceil((att * data[grade - 1] * value) / 100);
-          }
-        }
-      } else if (reqLevel < 60) {
-        return 0;
-      }
-      return grade;
+      return getAttackStatValue(
+        reqLevel,
+        grade,
+        type,
+        gear.type,
+        bossReward,
+        gear.option(GearPropType.incPAD).base,
+        gear.option(GearPropType.incMAD).base
+      );
     case BonusStatType.MHP:
     case BonusStatType.MMP:
-      if (reqLevel < 10) {
-        return 3 * grade;
-      }
-      return Math.floor(reqLevel / 10) * 30 * grade;
+      return getHpMpStatValue(reqLevel, grade);
     case BonusStatType.speed:
     case BonusStatType.jump:
       if (Gear.isWeapon(gearType)) {
@@ -204,10 +140,106 @@ export function getBonusStatValue(
       }
       return grade;
     case BonusStatType.reduceReq:
-      return 5 * grade;
+      return getReduceReqValue(reqLevel, grade);
     default:
       return 0;
   }
+}
+
+function getSingleStatValue(reqLevel: number, grade: BonusStatGrade) {
+  if (reqLevel >= 250) {
+    return Math.floor(reqLevel / 20) * grade;
+  }
+  return (Math.floor(reqLevel / 20) + 1) * grade;
+}
+
+function getDoubleStatValue(reqLevel: number, grade: BonusStatGrade) {
+  return (Math.floor(reqLevel / 40) + 1) * grade;
+}
+
+function getAttackStatValue(
+  reqLevel: number,
+  grade: BonusStatGrade,
+  type: BonusStatType,
+  gearType: GearType,
+  bossReward: boolean,
+  pad: number,
+  mad: number
+) {
+  if (Gear.isWeapon(gearType)) {
+    const data = bossReward
+      ? [0, 0, 1, 1.4666, 2.0166, 2.663, 3.4166]
+      : [1, 2.222, 3.63, 5.325, 7.32, 8.777, 10.25];
+    let att = pad;
+    if (gearType === GearType.heavySword || gearType === GearType.longSword) {
+      if (gearType === GearType.longSword) {
+        switch (att) {
+          case 100:
+            att = 102;
+            break;
+          case 103:
+            att = 105;
+            break;
+          case 105:
+            att = 107;
+            break;
+          case 112:
+            att = 114;
+            break;
+          case 117:
+            att = 121;
+            break;
+          case 135:
+            att = 139;
+            break;
+          case 169:
+            att = 173;
+            break;
+          case 203:
+            att = 207;
+            break;
+          case 293:
+            att = 297;
+            break;
+          case 337:
+            att = 342;
+            break;
+        }
+      }
+      const value =
+        reqLevel > 180 ? 6 : reqLevel > 160 ? 5 : reqLevel > 110 ? 4 : 3;
+      return Math.ceil((att * data[grade - 1] * value) / 100);
+    } else {
+      if (type === BonusStatType.MAD && mad >= att) {
+        att = mad;
+      }
+      if (bossReward) {
+        const value =
+          reqLevel > 160 ? 18 : reqLevel > 150 ? 15 : reqLevel > 110 ? 12 : 9;
+        return Math.ceil((att * data[grade - 1] * value) / 100);
+      } else {
+        const value = reqLevel > 110 ? 4 : 3;
+        return Math.ceil((att * data[grade - 1] * value) / 100);
+      }
+    }
+  } else if (reqLevel < 60) {
+    return 0;
+  }
+  return grade;
+}
+
+function getHpMpStatValue(reqLevel: number, grade: BonusStatGrade) {
+  if (reqLevel < 10) {
+    return 3 * grade;
+  }
+  if (reqLevel >= 250) {
+    return 700 * grade;
+  }
+  return Math.floor(reqLevel / 10) * 30 * grade;
+}
+
+function getReduceReqValue(reqLevel: number, grade: BonusStatGrade) {
+  return grade * 5;
 }
 
 function getGearPropType(type: BonusStatType): GearPropType[] {
