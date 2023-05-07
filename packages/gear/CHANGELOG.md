@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 0.11.1
+
+### Patch Changes
+
+- 4f9c66f: Fix eternel bonus stat bug.
+
 ## 0.11.0
 
 ### Minor Changes
