@@ -1,5 +1,14 @@
 # @malib/create-gear
 
+## 0.5.6
+
+### Patch Changes
+
+- afb2c43: Support exceptional enchant
+- Updated dependencies [6fe266e]
+- Updated dependencies [afb2c43]
+  - @malib/gear@0.12.0
+
 ## 0.5.5
 
 ### Patch Changes
