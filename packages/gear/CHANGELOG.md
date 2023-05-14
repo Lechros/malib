@@ -1,5 +1,12 @@
 # @malib/gear
 
+## 0.12.0
+
+### Minor Changes
+
+- 6fe266e: Use setter in soul weapon
+- afb2c43: Support exceptional enchant
+
 ## 0.11.1
 
 ### Patch Changes
