@@ -66,6 +66,11 @@ export class Gear {
    */
   options: Map<GearPropType, GearOption> = new Map();
 
+  /**
+   * 익셉셔널 강화 옵션
+   */
+  exceptionalOptions: Map<GearPropType, number> = new Map();
+
   /** 최대 업그레이드 가능 횟수 */
   totalUpgradeCount = 0;
   /** 업그레이드 횟수 */
@@ -74,6 +79,11 @@ export class Gear {
   upgradeFailCount = 0;
   /** 황금망치 횟수 */
   hammerCount = 0;
+
+  /** 익셉셔널 강화 가능 횟수 */
+  exceptionalTotalUpgradeCount = 0;
+  /** 익셉셔널 강화 횟수 */
+  exceptionalUpgradeCount = 0;
 
   /** 최대 장비 강화 수치 */
   maxStar = 0;
@@ -129,6 +139,13 @@ export class Gear {
       this.upgradeCount -
       this.upgradeFailCount
     );
+  }
+
+  /**
+   * 익셉셔널 업그레이드 가능 횟수
+   */
+  get exceptionalUpgradeCountLeft(): number {
+    return this.exceptionalTotalUpgradeCount - this.exceptionalUpgradeCount;
   }
 
   /**

@@ -11,6 +11,7 @@ export interface GearData {
   props?: number;
   options?: number;
   tuc?: number;
+  etuc?: number;
   pots?: SpecialOptionData[];
 }
 
