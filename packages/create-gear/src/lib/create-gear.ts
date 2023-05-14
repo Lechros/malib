@@ -35,6 +35,7 @@ export function createGearFromNode(
     origin: [...node.origin],
   };
   gear.totalUpgradeCount = node.tuc ?? 0;
+  gear.exceptionalTotalUpgradeCount = node.etuc ?? 0;
   if (node.req) {
     gear.req = {
       level: node.req.level ?? 0,

@@ -23,8 +23,30 @@ export class SoulWeapon {
   enchanted = false;
   /** 소울 */
   soul: Soul | undefined;
+
+  private _charge = 0;
+
   /** 소울 충전량 */
-  charge = 0;
+  get charge() {
+    return this._charge;
+  }
+
+  /**
+   * 소울 충전량
+   *
+   * `0`부터 `1000`까지의 값으로 설정할 수 있습니다.
+   */
+  set charge(value: number) {
+    if (!this.enchanted) {
+      return;
+    }
+    if (value < 0 || value > 1000) {
+      return;
+    }
+    this._charge = value;
+    this.updateChargeOption();
+  }
+
   /** 소울 충전량으로 증가하는 옵션 */
   chargeOption: Map<GearPropType, number> = new Map();
 
@@ -82,7 +104,7 @@ export class SoulWeapon {
       return false;
     }
     this.soul = soul;
-    this.setCharge(this.charge);
+    this.updateChargeOption();
     return true;
   }
 
@@ -99,26 +121,15 @@ export class SoulWeapon {
       return false;
     }
     this.soul = undefined;
-    this.setCharge(this.charge);
+    this.updateChargeOption();
     return true;
   }
 
   /**
-   * 소울 충전량을 설정합니다.
    * 소울 충전량으로 증가하는 옵션을 다시 계산합니다.
-   * @param charge 설정할 소울 충전량.
-   * `0`부터 `1000`까지의 값으로 설정할 수 있습니다.
    * @returns 적용했을 경우 `true`; 아닐 경우 `false`.
-   * 소울 인챈트 상태가 아니거나 설정할 소울 충전량이 0과 1000 사이의 값이 아닐 경우 `false`를 반환합니다.
    */
-  setCharge(charge: number): boolean {
-    if (!this.enchanted) {
-      return false;
-    }
-    if (charge < 0 || charge > 1000) {
-      return false;
-    }
-    this.charge = charge;
+  updateChargeOption(): boolean {
     const useMad =
       this.gear.option(GearPropType.incPAD).base <
       this.gear.option(GearPropType.incMAD).base;

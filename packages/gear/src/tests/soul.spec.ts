@@ -110,9 +110,9 @@ describe("setSoul", () => {
     const gear = new Gear();
     gear.type = GearType.bow;
     gear.option(GearPropType.incPAD).base = 100;
+    gear.soulWeapon.enchanted = true;
     gear.soulWeapon.charge = 200;
     gear.soulWeapon.chargeOption.set(GearPropType.incSTR, 10);
-    gear.soulWeapon.enchanted = true;
     const soul: Soul = {
       name: "",
       skill: "",
@@ -184,32 +184,38 @@ describe("removeSoul", () => {
   });
 });
 
-describe("soul setCharge", () => {
+describe("soul charge setter", () => {
   it("should fail on not enchanted gear", () => {
     const gear = new Gear();
     gear.type = GearType.bow;
-    expect(gear.soulWeapon.setCharge(100)).toBe(false);
+    gear.soulWeapon.charge = 100;
+    expect(gear.soulWeapon.charge).toBe(0);
   });
   it("should success on enchanted gear", () => {
     const gear = new Gear();
     gear.type = GearType.bow;
     gear.soulWeapon.enchanted = true;
-    expect(gear.soulWeapon.setCharge(100)).toBe(true);
+    gear.soulWeapon.charge = 100;
+    expect(gear.soulWeapon.charge).toBe(100);
   });
   it("should only success on charge value [0, 1000]", () => {
     const gear = new Gear();
     gear.type = GearType.bow;
     gear.soulWeapon.enchanted = true;
 
-    expect(gear.soulWeapon.setCharge(0)).toBe(true);
-    expect(gear.soulWeapon.setCharge(1000)).toBe(true);
-    expect(gear.soulWeapon.setCharge(500)).toBe(true);
-    expect(gear.soulWeapon.setCharge(999)).toBe(true);
+    gear.soulWeapon.charge = 1000;
+    expect(gear.soulWeapon.charge).toBe(1000);
+    gear.soulWeapon.charge = 999;
+    expect(gear.soulWeapon.charge).toBe(999);
+    gear.soulWeapon.charge = 0;
+    expect(gear.soulWeapon.charge).toBe(0);
 
-    expect(gear.soulWeapon.setCharge(-1)).toBe(false);
-    expect(gear.soulWeapon.setCharge(-1000)).toBe(false);
-    expect(gear.soulWeapon.setCharge(1001)).toBe(false);
-    expect(gear.soulWeapon.setCharge(3000)).toBe(false);
+    gear.soulWeapon.charge = -1;
+    expect(gear.soulWeapon.charge).toBe(0);
+    gear.soulWeapon.charge = -1000;
+    expect(gear.soulWeapon.charge).toBe(0);
+    gear.soulWeapon.charge = 1001;
+    expect(gear.soulWeapon.charge).toBe(0);
   });
   describe("should set correct charge option", () => {
     it("PAD gear: type", () => {
@@ -218,7 +224,7 @@ describe("soul setCharge", () => {
       gear.type = GearType.bow;
       gear.option(GearPropType.incPAD).base = 50;
       gear.soulWeapon.enchanted = true;
-      expect(gear.soulWeapon.setCharge(1000)).toBe(true);
+      gear.soulWeapon.charge = 1000;
       expect(gear.soulWeapon.chargeOption).toEqual(
         new Map([[GearPropType.incPAD, 10]])
       );
@@ -229,7 +235,7 @@ describe("soul setCharge", () => {
       gear.type = GearType.staff;
       gear.option(GearPropType.incMAD).base = 50;
       gear.soulWeapon.enchanted = true;
-      expect(gear.soulWeapon.setCharge(1000)).toBe(true);
+      gear.soulWeapon.charge = 1000;
       expect(gear.soulWeapon.chargeOption).toEqual(
         new Map([[GearPropType.incMAD, 10]])
       );
@@ -241,19 +247,19 @@ describe("soul setCharge", () => {
       gear.option(GearPropType.incPAD).base = 50;
       gear.soulWeapon.enchanted = true;
 
-      gear.soulWeapon.setCharge(1);
+      gear.soulWeapon.charge = 1;
       expect(gear.soulWeapon.chargeOption).toEqual(
         new Map([[GearPropType.incPAD, 5]])
       );
-      gear.soulWeapon.setCharge(300);
+      gear.soulWeapon.charge = 300;
       expect(gear.soulWeapon.chargeOption).toEqual(
         new Map([[GearPropType.incPAD, 7]])
       );
-      gear.soulWeapon.setCharge(500);
+      gear.soulWeapon.charge = 500;
       expect(gear.soulWeapon.chargeOption).toEqual(
         new Map([[GearPropType.incPAD, 9]])
       );
-      gear.soulWeapon.setCharge(1000);
+      gear.soulWeapon.charge = 1000;
       expect(gear.soulWeapon.chargeOption).toEqual(
         new Map([[GearPropType.incPAD, 10]])
       );
@@ -271,31 +277,31 @@ describe("soul setCharge", () => {
         multiplier: 2,
       };
 
-      gear.soulWeapon.setCharge(1);
+      gear.soulWeapon.charge = 1;
       expect(gear.soulWeapon.chargeOption).toEqual(
         new Map([[GearPropType.incPAD, 10]])
       );
-      gear.soulWeapon.setCharge(101);
+      gear.soulWeapon.charge = 101;
       expect(gear.soulWeapon.chargeOption).toEqual(
         new Map([[GearPropType.incPAD, 12]])
       );
-      gear.soulWeapon.setCharge(213);
+      gear.soulWeapon.charge = 213;
       expect(gear.soulWeapon.chargeOption).toEqual(
         new Map([[GearPropType.incPAD, 14]])
       );
-      gear.soulWeapon.setCharge(302);
+      gear.soulWeapon.charge = 302;
       expect(gear.soulWeapon.chargeOption).toEqual(
         new Map([[GearPropType.incPAD, 16]])
       );
-      gear.soulWeapon.setCharge(500);
+      gear.soulWeapon.charge = 500;
       expect(gear.soulWeapon.chargeOption).toEqual(
         new Map([[GearPropType.incPAD, 18]])
       );
-      gear.soulWeapon.setCharge(502);
+      gear.soulWeapon.charge = 502;
       expect(gear.soulWeapon.chargeOption).toEqual(
         new Map([[GearPropType.incPAD, 20]])
       );
-      gear.soulWeapon.setCharge(1000);
+      gear.soulWeapon.charge = 1000;
       expect(gear.soulWeapon.chargeOption).toEqual(
         new Map([[GearPropType.incPAD, 20]])
       );

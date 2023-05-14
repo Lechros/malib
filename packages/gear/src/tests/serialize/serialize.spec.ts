@@ -35,6 +35,7 @@ describe("serializeGear", () => {
     gear.type = GearType.bow;
     const deserialized = plainToGear(gearToPlain(gear));
     expect(deserialized.soulWeapon.enchanted).toBe(false);
+    gear.soulWeapon.enchanted = true;
     gear.soulWeapon.charge = 500;
     gear.soulWeapon.soul = {
       name: "test",
@@ -42,7 +43,6 @@ describe("serializeGear", () => {
       option: new Map([[GearPropType.incDEXr, 5]]),
       multiplier: 2,
     };
-    gear.soulWeapon.enchanted = true;
     const deserialized2 = plainToGear(gearToPlain(gear));
     expect(deserialized2.soulWeapon.charge).toBe(500);
     expect(deserialized2.soulWeapon.soul?.name).toBe("test");
