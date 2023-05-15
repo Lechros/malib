@@ -2,7 +2,6 @@ import { GearIcon, GearReq } from "../gear";
 import { GearPropType } from "../gearproptype";
 import { GearType } from "../geartype";
 import { PotentialGrade } from "../potentialgrade";
-import { Soul } from "../soul";
 
 /**
  * `Gear`를 나타내는 순수 객체 형식
@@ -78,9 +77,20 @@ export interface SoulWeaponLike {
   /** enchanted */
   e?: boolean;
   /** soul */
-  s?: Soul;
+  s?: SoulLike;
   /** charge */
   c?: number;
   /** chargeOption */
   o?: [GearPropType, number][];
+}
+
+export interface SoulLike {
+  /** name */
+  n: string;
+  /** skill */
+  s: string;
+  /** option */
+  o: [GearPropType, number][];
+  /** multiplier */
+  m: number;
 }

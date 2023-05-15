@@ -1,8 +1,14 @@
 import { Gear } from "../gear";
 import { GearOption } from "../gearoption";
 import { Potential } from "../potential";
-import { SoulWeapon } from "../soul";
-import { GearLike, OptionLike, PotLike, SoulWeaponLike } from "./interface";
+import { Soul, SoulWeapon } from "../soul";
+import {
+  GearLike,
+  OptionLike,
+  PotLike,
+  SoulLike,
+  SoulWeaponLike,
+} from "./interface";
 import { serializeArray, serializeMap } from "./util";
 
 /**
@@ -67,11 +73,22 @@ function serializeSoulWeapon(
 ): SoulWeaponLike | undefined {
   const like: SoulWeaponLike = {};
   if (soulWeapon.enchanted) like.e = soulWeapon.enchanted;
-  if (soulWeapon.soul) like.s = soulWeapon.soul;
+  if (soulWeapon.soul) like.s = serializeSoul(soulWeapon.soul);
   if (soulWeapon.charge > 0) like.c = soulWeapon.charge;
   if (soulWeapon.chargeOption.size > 0)
     like.o = serializeMap(soulWeapon.chargeOption, (val) => val !== 0);
 
   if (Object.keys(like).length > 0) return like;
   else return undefined;
+}
+
+function serializeSoul(soul: Soul | undefined): SoulLike | undefined {
+  return soul
+    ? {
+        n: soul.name,
+        s: soul.skill,
+        o: serializeMap(soul.option, (val) => val !== 0),
+        m: soul.multiplier,
+      }
+    : undefined;
 }

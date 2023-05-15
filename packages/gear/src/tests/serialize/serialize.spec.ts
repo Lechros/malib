@@ -7,7 +7,6 @@ import {
   gearToPlain,
   isGearLike,
   parseGear,
-  plainToGear,
   stringifyGear,
   validateParseGear,
 } from "../..";
@@ -24,7 +23,7 @@ describe("serializeGear", () => {
     gear.option(GearPropType.incSTR).base = 5;
     gear.option(GearPropType.incSTR).upgrade = 7;
     gear.option(GearPropType.incDEX).bonus = 20;
-    const deserialized = plainToGear(gearToPlain(gear));
+    const deserialized = parseGear(stringifyGear(gear));
     expect(deserialized.option(GearPropType.incSTR)).toEqual(
       gear.option(GearPropType.incSTR)
     );
@@ -33,7 +32,7 @@ describe("serializeGear", () => {
   it("should serialize/deserialize soul", () => {
     const gear = new Gear();
     gear.type = GearType.bow;
-    const deserialized = plainToGear(gearToPlain(gear));
+    const deserialized = parseGear(stringifyGear(gear));
     expect(deserialized.soulWeapon.enchanted).toBe(false);
     gear.soulWeapon.enchanted = true;
     gear.soulWeapon.charge = 500;
@@ -43,7 +42,7 @@ describe("serializeGear", () => {
       option: new Map([[GearPropType.incDEXr, 5]]),
       multiplier: 2,
     };
-    const deserialized2 = plainToGear(gearToPlain(gear));
+    const deserialized2 = parseGear(stringifyGear(gear));
     expect(deserialized2.soulWeapon.charge).toBe(500);
     expect(deserialized2.soulWeapon.soul?.name).toBe("test");
     expect(deserialized2.soulWeapon.soul?.skill).toBe("test-skill");
@@ -64,7 +63,7 @@ describe("serializeGear", () => {
     const pot3 = new Potential();
     pot3.code = 30002;
     gear.potentials.push(pot3);
-    const deserialized = plainToGear(gearToPlain(gear));
+    const deserialized = parseGear(stringifyGear(gear));
     expect(deserialized.potentials[0]?.code).toBe(40001);
     expect(deserialized.potentials[2]?.code).toBe(30002);
     expect(deserialized.potentials).toEqual(gear.potentials);
