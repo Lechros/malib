@@ -93,8 +93,8 @@ importers:
         specifier: ^4.8.4
         version: 4.8.4
       typia:
-        specifier: 3.7.1
-        version: 3.7.1(typescript@4.8.4)
+        specifier: 3.8.6
+        version: 3.8.6(typescript@4.8.4)
       vite:
         specifier: ^4.2.1
         version: 4.2.1(@types/node@18.15.11)
@@ -114,7 +114,7 @@ importers:
   packages/create-gear:
     dependencies:
       '@malib/gear':
-        specifier: ^0.10.0
+        specifier: ^0.12.0
         version: link:../gear
 
   packages/gear: {}
@@ -2884,6 +2884,10 @@ packages:
       is-array-buffer: 3.0.2
     dev: false
 
+  /array-timsort@1.0.3:
+    resolution: {integrity: sha512-/+3GRL7dDAGEfM6TseQk/U+mi18TU2Ms9I3UlLdUMhz2hbvGNTKdj9xniwXfUqgYhHxRx0+8UnKkvlNwVU+cWQ==}
+    dev: true
+
   /array-union@2.1.0:
     resolution: {integrity: sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==}
     engines: {node: '>=8'}
@@ -3349,6 +3353,17 @@ packages:
     dev: true
     optional: true
 
+  /comment-json@4.2.3:
+    resolution: {integrity: sha512-SsxdiOf064DWoZLH799Ata6u7iV658A11PlWtZATDlXPpKGJnbJZ5Z24ybixAi+LUUqJ/GKowAejtC5GFUG7Tw==}
+    engines: {node: '>= 6'}
+    dependencies:
+      array-timsort: 1.0.3
+      core-util-is: 1.0.3
+      esprima: 4.0.1
+      has-own-prop: 2.0.0
+      repeat-string: 1.6.1
+    dev: true
+
   /concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
@@ -3371,6 +3386,10 @@ packages:
     resolution: {integrity: sha512-P5A2h/9mRYZFIAP+5Ab8ns6083IyVpSclU74UNvbGVQ8VM7n3n3/g2yF3AkKQ9NXz2O+ioxLbEWKnDtgsFamhg==}
     dependencies:
       browserslist: 4.21.5
+    dev: true
+
+  /core-util-is@1.0.3:
+    resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
     dev: true
 
   /cosmiconfig@6.0.0:
@@ -4329,6 +4348,11 @@ packages:
   /has-flag@4.0.0:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
+
+  /has-own-prop@2.0.0:
+    resolution: {integrity: sha512-Pq0h+hvsVm6dDEa8x82GnLSYHOzNDt7f0ddFa3FqcQlgzEiptPqL+XrOJNavjOzSYiYWIrgeVYYgGlLmnxwilQ==}
+    engines: {node: '>=8'}
+    dev: true
 
   /has-property-descriptors@1.0.0:
     resolution: {integrity: sha512-62DVLZGoiEBDHQyqG4w9xCuZ7eJEwNmJRWw2VY84Oedb7WFcA27fiEVe8oUQx9hAUJ4ekurquucTGwsyO1XGdQ==}
@@ -5733,6 +5757,11 @@ packages:
       jsesc: 0.5.0
     dev: true
 
+  /repeat-string@1.6.1:
+    resolution: {integrity: sha512-PV0dzCYDNfRi1jCDbJzpW7jNNDRuCOG/jI5ctQcGKt/clZD+YcPS3yIlWuTJMmESC8aevCFmWJy5wjAFgNqN6w==}
+    engines: {node: '>=0.10'}
+    dev: true
+
   /require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
     engines: {node: '>=0.10.0'}
@@ -6498,12 +6527,15 @@ packages:
     hasBin: true
     dev: true
 
-  /typia@3.7.1(typescript@4.8.4):
-    resolution: {integrity: sha512-voaThqcD6PQmoUxHQovqjrAQlpRmtdni81+ApTmK99+d4ngp4Hx/Cs0ZVcOrjGjPiDpZsB3o5tMWAgul0JsAqA==}
+  /typia@3.8.6(typescript@4.8.4):
+    resolution: {integrity: sha512-uQ07El1JL7ETOs/DAJkeXaHw1y85tyolPwcAna7oEC7uizFr5oIa5LE0SeGqeVBcEz5B1Y6fa8YJqLu7T+LCRw==}
     hasBin: true
     peerDependencies:
-      typescript: '>= 4.5.2 && < 5.0.0'
+      typescript: '>= 4.5.2'
     dependencies:
+      commander: 10.0.0
+      comment-json: 4.2.3
+      inquirer: 8.2.5
       randexp: 0.5.3
       typescript: 4.8.4
     dev: true
