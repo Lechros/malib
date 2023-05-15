@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 0.12.1
+
+### Patch Changes
+
+- 7db4a90: Fix soul option serialize error.
+
 ## 0.12.0
 
 ### Minor Changes
