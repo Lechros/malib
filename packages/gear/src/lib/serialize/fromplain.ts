@@ -1,7 +1,14 @@
 import { Gear } from "../gear";
 import { GearOption } from "../gearoption";
 import { Potential } from "../potential";
-import { GearLike, OptionLike, PotLike, SoulWeaponLike } from "./interface";
+import { Soul } from "../soul";
+import {
+  GearLike,
+  OptionLike,
+  PotLike,
+  SoulLike,
+  SoulWeaponLike,
+} from "./interface";
 import { deserializeArray, deserializeMap } from "./util";
 
 /**
@@ -68,8 +75,18 @@ function deserializeSoulWeapon(
   if (like) {
     const soulWeapon = gear.soulWeapon;
     if (like?.e) soulWeapon.enchanted = like.e;
-    if (like?.s) soulWeapon.soul = like.s;
+    if (like?.s) soulWeapon.soul = deserializeSoul(like.s);
     if (like?.c) soulWeapon.charge = like.c;
     if (like?.o) soulWeapon.chargeOption = deserializeMap(like.o);
   }
+}
+
+function deserializeSoul(like: SoulLike | undefined): Soul | undefined {
+  if (!like) return undefined;
+  return {
+    name: like.n,
+    skill: like.s,
+    option: deserializeMap(like.o),
+    multiplier: like.m,
+  };
 }

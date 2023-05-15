@@ -624,10 +624,10 @@ export const isGearLike = (input: unknown): input is GearLike => {
             "number" === typeof elem[1]
         )));
   const $io5 = (input: any): boolean =>
-    "string" === typeof input.name &&
-    "string" === typeof input.skill &&
-    input.option instanceof Map &&
-    [...input.option].every(
+    "string" === typeof input.n &&
+    "string" === typeof input.s &&
+    Array.isArray(input.o) &&
+    input.o.every(
       (elem: any) =>
         Array.isArray(elem) &&
         elem.length === 2 &&
@@ -731,7 +731,7 @@ export const isGearLike = (input: unknown): input is GearLike => {
           1126 === elem[0]) &&
         "number" === typeof elem[1]
     ) &&
-    "number" === typeof input.multiplier;
+    "number" === typeof input.m;
   /* eslint-enable @typescript-eslint/no-explicit-any */
   return "object" === typeof input && null !== input && $io0(input);
 };
