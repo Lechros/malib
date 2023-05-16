@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 0.12.2
+
+### Patch Changes
+
+- 7bfebb2: Support exceptional enchant serialize/deserialize
+
 ## 0.12.1
 
 ### Patch Changes
