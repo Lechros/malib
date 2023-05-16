@@ -70,6 +70,39 @@ describe("serializeGear", () => {
     expect(deserialized.potentials[0]).toEqual(gear.potentials[0]);
     expect(deserialized.potentials[1]).toBe(null);
   });
+  it("should serialize/deserialize exceptional enchant", () => {
+    const gear = new Gear();
+    gear.itemID = 1012632;
+    gear.name = "루즈 컨트롤 머신 마크";
+    gear.props.set(GearPropType.equipTradeBlock, 1);
+    gear.props.set(GearPropType.bossReward, 1);
+    gear.req.level = 160;
+    gear.req.job = 0;
+    gear.type = GearType.faceAccessory;
+    gear.option(GearPropType.incSTR).base = 10;
+    gear.option(GearPropType.incDEX).base = 10;
+    gear.option(GearPropType.incPAD).base = 10;
+    gear.totalUpgradeCount = 5;
+    gear.exceptionalTotalUpgradeCount = 1;
+    gear.exceptionalUpgradeCount = 1;
+    gear.exceptionalOptions = new Map([
+      [GearPropType.incSTR, 20],
+      [GearPropType.incDEX, 20],
+      [GearPropType.incMAD, 10],
+      [GearPropType.incMHP, 1000],
+    ]);
+    const deserialized = parseGear(stringifyGear(gear));
+    expect(deserialized.exceptionalTotalUpgradeCount).toBe(1);
+    expect(deserialized.exceptionalUpgradeCount).toBe(1);
+    expect(deserialized.exceptionalOptions).toEqual(
+      new Map([
+        [GearPropType.incSTR, 20],
+        [GearPropType.incDEX, 20],
+        [GearPropType.incMAD, 10],
+        [GearPropType.incMHP, 1000],
+      ])
+    );
+  });
   it("should serialize/deserialize every field", () => {
     const gear = new Gear();
     gear.itemID = 1082699;

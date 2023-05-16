@@ -350,6 +350,114 @@ export const isGearLike = (input: unknown): input is GearLike => {
     (undefined === input.up || "number" === typeof input.up) &&
     (undefined === input.f || "number" === typeof input.f) &&
     (undefined === input.h || "number" === typeof input.h) &&
+    (undefined === input.ec || "number" === typeof input.ec) &&
+    (undefined === input.eu || "number" === typeof input.eu) &&
+    (undefined === input.eo ||
+      (Array.isArray(input.eo) &&
+        input.eo.every(
+          (elem: any) =>
+            Array.isArray(elem) &&
+            elem.length === 2 &&
+            (1 === elem[0] ||
+              2 === elem[0] ||
+              3 === elem[0] ||
+              4 === elem[0] ||
+              5 === elem[0] ||
+              6 === elem[0] ||
+              7 === elem[0] ||
+              8 === elem[0] ||
+              9 === elem[0] ||
+              10 === elem[0] ||
+              11 === elem[0] ||
+              12 === elem[0] ||
+              13 === elem[0] ||
+              14 === elem[0] ||
+              15 === elem[0] ||
+              16 === elem[0] ||
+              17 === elem[0] ||
+              18 === elem[0] ||
+              19 === elem[0] ||
+              20 === elem[0] ||
+              21 === elem[0] ||
+              22 === elem[0] ||
+              23 === elem[0] ||
+              24 === elem[0] ||
+              25 === elem[0] ||
+              26 === elem[0] ||
+              27 === elem[0] ||
+              28 === elem[0] ||
+              29 === elem[0] ||
+              30 === elem[0] ||
+              31 === elem[0] ||
+              100 === elem[0] ||
+              101 === elem[0] ||
+              102 === elem[0] ||
+              103 === elem[0] ||
+              104 === elem[0] ||
+              105 === elem[0] ||
+              106 === elem[0] ||
+              107 === elem[0] ||
+              108 === elem[0] ||
+              109 === elem[0] ||
+              110 === elem[0] ||
+              111 === elem[0] ||
+              112 === elem[0] ||
+              113 === elem[0] ||
+              114 === elem[0] ||
+              115 === elem[0] ||
+              116 === elem[0] ||
+              117 === elem[0] ||
+              118 === elem[0] ||
+              119 === elem[0] ||
+              120 === elem[0] ||
+              121 === elem[0] ||
+              122 === elem[0] ||
+              123 === elem[0] ||
+              124 === elem[0] ||
+              125 === elem[0] ||
+              126 === elem[0] ||
+              127 === elem[0] ||
+              128 === elem[0] ||
+              129 === elem[0] ||
+              130 === elem[0] ||
+              131 === elem[0] ||
+              132 === elem[0] ||
+              133 === elem[0] ||
+              134 === elem[0] ||
+              135 === elem[0] ||
+              200 === elem[0] ||
+              201 === elem[0] ||
+              202 === elem[0] ||
+              203 === elem[0] ||
+              1100 === elem[0] ||
+              1101 === elem[0] ||
+              1102 === elem[0] ||
+              1103 === elem[0] ||
+              1104 === elem[0] ||
+              1105 === elem[0] ||
+              1106 === elem[0] ||
+              1107 === elem[0] ||
+              1108 === elem[0] ||
+              1109 === elem[0] ||
+              1110 === elem[0] ||
+              1111 === elem[0] ||
+              1112 === elem[0] ||
+              1113 === elem[0] ||
+              1114 === elem[0] ||
+              1115 === elem[0] ||
+              1116 === elem[0] ||
+              1117 === elem[0] ||
+              1118 === elem[0] ||
+              1119 === elem[0] ||
+              1120 === elem[0] ||
+              1121 === elem[0] ||
+              1122 === elem[0] ||
+              1123 === elem[0] ||
+              1124 === elem[0] ||
+              1125 === elem[0] ||
+              1126 === elem[0]) &&
+            "number" === typeof elem[1]
+        ))) &&
     (undefined === input.m || "number" === typeof input.m) &&
     (undefined === input.s || "number" === typeof input.s) &&
     (undefined === input.a || "boolean" === typeof input.a) &&
@@ -365,9 +473,7 @@ export const isGearLike = (input: unknown): input is GearLike => {
     (undefined === input.p ||
       (Array.isArray(input.p) &&
         input.p.every(
-          (elem: any) =>
-            null === elem ||
-            ("object" === typeof elem && null !== elem && $io3(elem))
+          (elem: any) => "object" === typeof elem && null !== elem && $io3(elem)
         ))) &&
     (undefined === input.g2 ||
       0 === input.g2 ||
@@ -379,9 +485,7 @@ export const isGearLike = (input: unknown): input is GearLike => {
     (undefined === input.p2 ||
       (Array.isArray(input.p2) &&
         input.p2.every(
-          (elem: any) =>
-            null === elem ||
-            ("object" === typeof elem && null !== elem && $io3(elem))
+          (elem: any) => "object" === typeof elem && null !== elem && $io3(elem)
         ))) &&
     (undefined === input.w ||
       ("object" === typeof input.w &&
