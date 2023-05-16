@@ -11,6 +11,8 @@ export * from "./lib/soul";
 export * from "./lib/logic/bonusstat";
 export * from "./lib/logic/bonusstattype";
 export * from "./lib/logic/enhancement";
+export * from "./lib/logic/exceptional";
+export * from "./lib/logic/exceptionalparts";
 export * from "./lib/logic/scroll";
 export * from "./lib/logic/upgrade";
 
