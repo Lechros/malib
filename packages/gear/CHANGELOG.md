@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 0.12.3
+
+### Patch Changes
+
+- 5db130d: Export exceptional types.
+
 ## 0.12.2
 
 ### Patch Changes
