@@ -32,6 +32,10 @@ export function gearToPlain(gear: Gear): GearLike {
   if (gear.upgradeCount > 0) like.up = gear.upgradeCount;
   if (gear.upgradeFailCount > 0) like.f = gear.upgradeFailCount;
   if (gear.hammerCount > 0) like.h = gear.hammerCount;
+  if (gear.exceptionalTotalUpgradeCount > 0)
+    like.ec = gear.exceptionalTotalUpgradeCount;
+  if (gear.exceptionalUpgradeCount > 0) like.eu = gear.exceptionalUpgradeCount;
+  like.eo = serializeMap(gear.exceptionalOptions, (val) => val !== 0);
   if (gear.maxStar > 0) like.m = gear.maxStar;
   if (gear.star > 0) like.s = gear.star;
   if (gear.amazing) like.a = gear.amazing;

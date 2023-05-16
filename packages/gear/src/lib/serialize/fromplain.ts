@@ -34,6 +34,9 @@ export function plainToGear(like: GearLike): Gear {
   if (like.up) gear.upgradeCount = like.up;
   if (like.f) gear.upgradeFailCount = like.f;
   if (like.h) gear.hammerCount = like.h;
+  if (like.ec) gear.exceptionalTotalUpgradeCount = like.ec;
+  if (like.eu) gear.exceptionalUpgradeCount = like.eu;
+  if (like.eo) gear.exceptionalOptions = deserializeMap(like.eo);
   if (like.m) gear.maxStar = like.m;
   if (like.s) gear.star = like.s;
   if (like.a) gear.amazing = like.a;

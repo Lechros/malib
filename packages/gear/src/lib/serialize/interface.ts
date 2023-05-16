@@ -35,6 +35,12 @@ export interface GearLike {
   f?: number;
   /** hammerCount */
   h?: number;
+  /** exceptionalTotalUpgradeCount */
+  ec?: number;
+  /** exceptionalUpgradeCount */
+  eu?: number;
+  /** exceptionalOptions */
+  eo?: [GearPropType, number][];
   /** maxStar */
   m?: number;
   /** star */
