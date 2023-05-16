@@ -21,6 +21,10 @@ export {
   addAmazingEnhancement,
   resetEnhancement,
   recalculateStarforce,
+  // exceptional
+  applyExceptionalEnchant,
+  resetExceptionalEnchant,
+  type ExceptionalParts,
   // scroll
   type Scroll,
   type SpellTraceProbability,
