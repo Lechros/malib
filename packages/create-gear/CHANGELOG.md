@@ -1,5 +1,16 @@
 # @malib/create-gear
 
+## 0.6.0
+
+### Minor Changes
+
+- 6593115: Remove icon origin from gear.
+
+### Patch Changes
+
+- Updated dependencies [6593115]
+  - @malib/gear@0.13.0
+
 ## 0.5.6
 
 ### Patch Changes

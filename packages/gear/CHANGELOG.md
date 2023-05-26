@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 0.13.0
+
+### Minor Changes
+
+- 6593115: Remove icon origin from gear.
+
 ## 0.12.3
 
 ### Patch Changes
