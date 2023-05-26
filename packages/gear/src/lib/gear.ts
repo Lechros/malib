@@ -11,8 +11,6 @@ import { SoulWeapon } from "./soul";
 export interface GearIcon {
   /** 아이콘 ID */
   id: number;
-  /** 아이콘 오프셋 */
-  origin: [number, number];
 }
 
 /**
@@ -36,6 +34,16 @@ export interface GearReq {
 }
 
 /**
+ * 신비의 모루
+ */
+export interface Anvil {
+  /** 모루 장비명 */
+  name: string;
+  /** 모루 장비 아이콘 */
+  icon: GearIcon;
+}
+
+/**
  * 장비
  */
 export class Gear {
@@ -47,10 +55,8 @@ export class Gear {
   desc = "";
   /** 아이콘 */
   icon: GearIcon;
-  /** 신비의 모루 아이콘 */
-  anvilIcon: GearIcon | undefined;
-  /** 신비의 모루 장비명 */
-  anvilName: string | undefined;
+  /** 신비의 모루 */
+  anvil: Anvil | undefined;
   /** 장비 분류 */
   type: GearType = 0 as GearType;
   /** 장비 착용 제한 */
@@ -116,7 +122,6 @@ export class Gear {
   constructor() {
     this.icon = {
       id: 0,
-      origin: [0, 0],
     };
     this.req = {
       level: 0,
@@ -210,17 +215,15 @@ export class Gear {
    * @param icon 외형 아이콘.
    * @param name 외형 장비명.
    */
-  setAnvil(icon: GearIcon, name: string): void {
-    this.anvilIcon = icon;
-    this.anvilName = name;
+  setAnvil(anvil: Anvil): void {
+    this.anvil = anvil;
   }
 
   /**
    * 장비에 적용된 신비의 모루 외형을 제거합니다.
    */
   resetAnvil(): void {
-    this.anvilIcon = undefined;
-    this.anvilName = undefined;
+    this.anvil = undefined;
   }
 
   /**
