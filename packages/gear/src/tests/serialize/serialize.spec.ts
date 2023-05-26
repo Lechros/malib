@@ -29,6 +29,13 @@ describe("serializeGear", () => {
     );
     expect(deserialized.option(GearPropType.incDEX).bonus).toBe(20);
   });
+  it("should serialize/deserialize anvil", () => {
+    const gear = new Gear();
+    gear.anvil = { icon: { id: 123123 }, name: "test anvil name" };
+    const deserialized = parseGear(stringifyGear(gear));
+    expect(deserialized.anvil?.icon.id).toEqual(123123);
+    expect(deserialized.anvil?.name).toEqual("test anvil name");
+  });
   it("should serialize/deserialize soul", () => {
     const gear = new Gear();
     gear.type = GearType.bow;
