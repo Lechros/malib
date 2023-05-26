@@ -22,8 +22,7 @@ export function gearToPlain(gear: Gear): GearLike {
   like.n = gear.name;
   if (gear.desc.length > 0) like.d = gear.desc;
   like.i = gear.icon;
-  if (gear.anvilIcon) like.i2 = gear.anvilIcon;
-  if (gear.anvilName) like.n2 = gear.anvilName;
+  if (gear.anvil) like.an = gear.anvil;
   like.t = gear.type;
   like.r = gear.req;
   like.pr = serializeMap(gear.props, (val) => val !== 0);

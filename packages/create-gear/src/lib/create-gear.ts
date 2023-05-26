@@ -32,7 +32,6 @@ export function createGearFromNode(
   gear.desc = node.desc ?? "";
   gear.icon = {
     id: id,
-    origin: [...node.origin],
   };
   gear.totalUpgradeCount = node.tuc ?? 0;
   gear.exceptionalTotalUpgradeCount = node.etuc ?? 0;

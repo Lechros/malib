@@ -29,6 +29,13 @@ describe("serializeGear", () => {
     );
     expect(deserialized.option(GearPropType.incDEX).bonus).toBe(20);
   });
+  it("should serialize/deserialize anvil", () => {
+    const gear = new Gear();
+    gear.anvil = { icon: { id: 123123 }, name: "test anvil name" };
+    const deserialized = parseGear(stringifyGear(gear));
+    expect(deserialized.anvil?.icon.id).toEqual(123123);
+    expect(deserialized.anvil?.name).toEqual("test anvil name");
+  });
   it("should serialize/deserialize soul", () => {
     const gear = new Gear();
     gear.type = GearType.bow;
@@ -161,7 +168,7 @@ describe("serializeGear", () => {
 });
 test("isGearLike", () => {
   const str =
-    '{"id":1004422,"n":"앱솔랩스 나이트헬름","i":{"id":1004422,"origin":[1,30]},"t":100,"r":{"level":160,"str":480,"luk":0,"dex":0,"int":0,"job":1,"specJob":0},"pr":[[1105,1],[1104,2],[1112,100],[1114,1],[201,504]],"o":[[1,[45,0,0,0]],[3,[45,0,0,0]],[20,[400,0,0,0]],[17,[3,0,0,0]],[26,[10,0,0,0]]],"c":11,"m":25,"cp":true}';
+    '{"id":1004422,"n":"앱솔랩스 나이트헬름","i":{"id":1004422},"t":100,"r":{"level":160,"str":480,"luk":0,"dex":0,"int":0,"job":1,"specJob":0},"pr":[[1105,1],[1104,2],[1112,100],[1114,1],[201,504]],"o":[[1,[45,0,0,0]],[3,[45,0,0,0]],[20,[400,0,0,0]],[17,[3,0,0,0]],[26,[10,0,0,0]]],"c":11,"m":25,"cp":true}';
   expect(isGearLike(JSON.parse(str))).toBe(true);
   expect(validateParseGear(str)).not.toBe(null);
 });

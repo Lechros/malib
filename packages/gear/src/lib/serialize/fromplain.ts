@@ -22,9 +22,8 @@ export function plainToGear(like: GearLike): Gear {
   gear.name = like.n;
   if (like.d) gear.desc = like.d;
   gear.icon = like.i;
-  if (like.i2 && like.n2) {
-    gear.anvilIcon = like.i2;
-    gear.anvilName = like.n2;
+  if (like.an) {
+    gear.anvil = like.an;
   }
   gear.type = like.t;
   gear.req = like.r;

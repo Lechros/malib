@@ -15,10 +15,9 @@ export const isGearLike = (input: unknown): input is GearLike => {
     (undefined === input.d || "string" === typeof input.d) &&
     "object" === typeof input.i &&
     null !== input.i &&
-    $io1(input.i) &&
-    (undefined === input.i2 ||
-      ("object" === typeof input.i2 && null !== input.i2 && $io1(input.i2))) &&
-    (undefined === input.n2 || "string" === typeof input.n2) &&
+    "number" === typeof input.i.id &&
+    (undefined === input.an ||
+      ("object" === typeof input.an && null !== input.an && $io2(input.an))) &&
     (100 === input.t ||
       101 === input.t ||
       102 === input.t ||
@@ -130,7 +129,7 @@ export const isGearLike = (input: unknown): input is GearLike => {
       197 === input.t) &&
     "object" === typeof input.r &&
     null !== input.r &&
-    $io2(input.r) &&
+    $io3(input.r) &&
     Array.isArray(input.pr) &&
     input.pr.every(
       (elem: any) =>
@@ -473,7 +472,9 @@ export const isGearLike = (input: unknown): input is GearLike => {
     (undefined === input.p ||
       (Array.isArray(input.p) &&
         input.p.every(
-          (elem: any) => "object" === typeof elem && null !== elem && $io3(elem)
+          (elem: any) =>
+            null === elem ||
+            ("object" === typeof elem && null !== elem && $io4(elem))
         ))) &&
     (undefined === input.g2 ||
       0 === input.g2 ||
@@ -485,20 +486,21 @@ export const isGearLike = (input: unknown): input is GearLike => {
     (undefined === input.p2 ||
       (Array.isArray(input.p2) &&
         input.p2.every(
-          (elem: any) => "object" === typeof elem && null !== elem && $io3(elem)
+          (elem: any) =>
+            null === elem ||
+            ("object" === typeof elem && null !== elem && $io4(elem))
         ))) &&
     (undefined === input.w ||
       ("object" === typeof input.w &&
         null !== input.w &&
         false === Array.isArray(input.w) &&
-        $io4(input.w)));
-  const $io1 = (input: any): boolean =>
-    "number" === typeof input.id &&
-    Array.isArray(input.origin) &&
-    input.origin.length === 2 &&
-    "number" === typeof input.origin[0] &&
-    "number" === typeof input.origin[1];
+        $io5(input.w)));
   const $io2 = (input: any): boolean =>
+    "string" === typeof input.name &&
+    "object" === typeof input.icon &&
+    null !== input.icon &&
+    "number" === typeof input.icon.id;
+  const $io3 = (input: any): boolean =>
     "number" === typeof input.level &&
     "number" === typeof input.str &&
     "number" === typeof input.luk &&
@@ -506,7 +508,7 @@ export const isGearLike = (input: unknown): input is GearLike => {
     "number" === typeof input.int &&
     "number" === typeof input.job &&
     "number" === typeof input.specJob;
-  const $io3 = (input: any): boolean =>
+  const $io4 = (input: any): boolean =>
     "number" === typeof input.c &&
     "number" === typeof input.t &&
     "number" === typeof input.l &&
@@ -616,10 +618,10 @@ export const isGearLike = (input: unknown): input is GearLike => {
           1126 === elem[0]) &&
         "number" === typeof elem[1]
     );
-  const $io4 = (input: any): boolean =>
+  const $io5 = (input: any): boolean =>
     (undefined === input.e || "boolean" === typeof input.e) &&
     (undefined === input.s ||
-      ("object" === typeof input.s && null !== input.s && $io5(input.s))) &&
+      ("object" === typeof input.s && null !== input.s && $io6(input.s))) &&
     (undefined === input.c || "number" === typeof input.c) &&
     (undefined === input.o ||
       (Array.isArray(input.o) &&
@@ -727,7 +729,7 @@ export const isGearLike = (input: unknown): input is GearLike => {
               1126 === elem[0]) &&
             "number" === typeof elem[1]
         )));
-  const $io5 = (input: any): boolean =>
+  const $io6 = (input: any): boolean =>
     "string" === typeof input.n &&
     "string" === typeof input.s &&
     Array.isArray(input.o) &&

@@ -1,4 +1,4 @@
-import { GearIcon, GearReq } from "../gear";
+import { Anvil, GearIcon, GearReq } from "../gear";
 import { GearPropType } from "../gearproptype";
 import { GearType } from "../geartype";
 import { PotentialGrade } from "../potentialgrade";
@@ -15,10 +15,8 @@ export interface GearLike {
   d?: string;
   /** icon */
   i: GearIcon;
-  /** anvilIcon */
-  i2?: GearIcon;
-  /** anvilName */
-  n2?: string;
+  /** anvil */
+  an?: Anvil;
   /** type */
   t: GearType;
   /** req */
