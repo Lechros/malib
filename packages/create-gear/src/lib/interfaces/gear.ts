@@ -6,7 +6,6 @@ export interface GearData {
   name: string;
   desc?: string;
   icon: number;
-  origin: [number, number];
   req?: GearReqData;
   props?: number;
   options?: number;
