@@ -16,6 +16,9 @@ export * from "./lib/logic/exceptionalparts";
 export * from "./lib/logic/scroll";
 export * from "./lib/logic/upgrade";
 
+// migrate
+export * from "./lib/migrate/migrate";
+
 // serialize
 export * from "./lib/serialize/fromplain";
 export * from "./lib/serialize/interface";

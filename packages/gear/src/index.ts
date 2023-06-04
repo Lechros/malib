@@ -37,6 +37,8 @@ export {
   addUpgradeFailCount,
   restoreUpgradeCount,
   resetUpgrade,
+  // migrate
+  migrate,
   // serialize
   plainToGear,
   gearToPlain,
