@@ -31,6 +31,17 @@ export class SoulWeapon {
 
   private gear: Gear;
 
+  private get can(): boolean {
+    return Gear.isWeapon(this.gear.type);
+  }
+
+  private get type() {
+    return this.gear.option(GearPropType.incPAD).base >=
+      this.gear.option(GearPropType.incMAD).base
+      ? GearPropType.incPAD
+      : GearPropType.incMAD;
+  }
+
   constructor(gear: Gear) {
     this.gear = gear;
   }
@@ -44,7 +55,7 @@ export class SoulWeapon {
     if (this.enchanted) {
       return false;
     }
-    if (!Gear.isWeapon(this.gear.type)) {
+    if (!this.can) {
       return false;
     }
     this.enchanted = true;
@@ -129,12 +140,8 @@ export class SoulWeapon {
    * @returns 적용했을 경우 `true`; 아닐 경우 `false`.
    */
   updateChargeOption(): boolean {
-    const useMad =
-      this.gear.option(GearPropType.incPAD).base <
-      this.gear.option(GearPropType.incMAD).base;
-    const adType = useMad ? GearPropType.incMAD : GearPropType.incPAD;
     this.chargeOption.clear();
-    this.chargeOption.set(adType, this.getChargeAD());
+    this.chargeOption.set(this.type, this.getChargeAD());
     return true;
   }
 
