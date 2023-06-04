@@ -1,13 +1,13 @@
 {
   "name": "@malib/create-gear",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "type": "module",
   "main": "index.js",
   "module": "index.js",
   "types": "index.d.ts",
   "typings": "index.d.ts",
   "dependencies": {
-    "@malib/gear": "^0.13.0"
+    "@malib/gear": "^0.14.0"
   },
   "typedoc": {
     "entryPoint": "./src/index.ts",
