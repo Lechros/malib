@@ -184,127 +184,104 @@ describe("removeSoul", () => {
   });
 });
 
-describe("soul charge setter", () => {
-  it("should fail on not enchanted gear", () => {
+describe("soul setCharge", () => {
+  it("should return false on not enchanted gear", () => {
     const gear = new Gear();
     gear.type = GearType.bow;
-    gear.soulWeapon.charge = 100;
+    gear.soulWeapon.setCharge(100);
     expect(gear.soulWeapon.charge).toBe(0);
   });
-  it("should success on enchanted gear", () => {
+  it("should set charge and return true on success", () => {
     const gear = new Gear();
     gear.type = GearType.bow;
     gear.soulWeapon.enchanted = true;
-    gear.soulWeapon.charge = 100;
-    expect(gear.soulWeapon.charge).toBe(100);
+    expect(gear.soulWeapon.setCharge(150)).toBe(true);
+    expect(gear.soulWeapon.charge).toBe(150);
   });
-  it("should only success on charge value [0, 1000]", () => {
+  it.each([
+    [true, 1000],
+    [true, 999],
+    [true, 0],
+    [false, -1],
+    [false, -1000],
+    [false, 1001],
+  ])("should return %s for charge value %d", (expected, charge) => {
     const gear = new Gear();
     gear.type = GearType.bow;
     gear.soulWeapon.enchanted = true;
+    gear.soulWeapon.charge = 2;
 
-    gear.soulWeapon.charge = 1000;
-    expect(gear.soulWeapon.charge).toBe(1000);
-    gear.soulWeapon.charge = 999;
-    expect(gear.soulWeapon.charge).toBe(999);
-    gear.soulWeapon.charge = 0;
-    expect(gear.soulWeapon.charge).toBe(0);
-
-    gear.soulWeapon.charge = -1;
-    expect(gear.soulWeapon.charge).toBe(0);
-    gear.soulWeapon.charge = -1000;
-    expect(gear.soulWeapon.charge).toBe(0);
-    gear.soulWeapon.charge = 1001;
-    expect(gear.soulWeapon.charge).toBe(0);
+    expect(gear.soulWeapon.setCharge(charge)).toBe(expected);
+    expect(gear.soulWeapon.charge).toBe(expected ? charge : 2);
   });
   describe("should set correct charge option", () => {
-    it("PAD gear: type", () => {
+    it("PAD should increase for PAD gear", () => {
       const gear = new Gear();
       gear.name = "PAD gear";
       gear.type = GearType.bow;
       gear.option(GearPropType.incPAD).base = 50;
       gear.soulWeapon.enchanted = true;
-      gear.soulWeapon.charge = 1000;
+      gear.soulWeapon.setCharge(1000);
       expect(gear.soulWeapon.chargeOption).toEqual(
         new Map([[GearPropType.incPAD, 10]])
       );
     });
-    it("MAD gear: type", () => {
+    it("MAD should increase for MAD gear", () => {
       const gear = new Gear();
       gear.name = "MAD gear";
       gear.type = GearType.staff;
       gear.option(GearPropType.incMAD).base = 50;
       gear.soulWeapon.enchanted = true;
-      gear.soulWeapon.charge = 1000;
+      gear.soulWeapon.setCharge(1000);
       expect(gear.soulWeapon.chargeOption).toEqual(
         new Map([[GearPropType.incMAD, 10]])
       );
     });
-    it("gear without soul: value", () => {
+    it.each([
+      [5, 1],
+      [7, 300],
+      [9, 500],
+      [10, 1000],
+    ])("PAD %d for charge %d on gear without soul", (expectedPAD, charge) => {
       const gear = new Gear();
       gear.name = "PAD gear";
       gear.type = GearType.bow;
       gear.option(GearPropType.incPAD).base = 50;
       gear.soulWeapon.enchanted = true;
 
-      gear.soulWeapon.charge = 1;
+      gear.soulWeapon.setCharge(charge);
       expect(gear.soulWeapon.chargeOption).toEqual(
-        new Map([[GearPropType.incPAD, 5]])
-      );
-      gear.soulWeapon.charge = 300;
-      expect(gear.soulWeapon.chargeOption).toEqual(
-        new Map([[GearPropType.incPAD, 7]])
-      );
-      gear.soulWeapon.charge = 500;
-      expect(gear.soulWeapon.chargeOption).toEqual(
-        new Map([[GearPropType.incPAD, 9]])
-      );
-      gear.soulWeapon.charge = 1000;
-      expect(gear.soulWeapon.chargeOption).toEqual(
-        new Map([[GearPropType.incPAD, 10]])
+        new Map([[GearPropType.incPAD, expectedPAD]])
       );
     });
-    it("gear with soul: value", () => {
-      const gear = new Gear();
-      gear.name = "PAD gear";
-      gear.type = GearType.bow;
-      gear.option(GearPropType.incPAD).base = 50;
-      gear.soulWeapon.enchanted = true;
-      gear.soulWeapon.soul = {
-        name: "",
-        skill: "",
-        option: new Map(),
-        multiplier: 2,
-      };
+    it.each([
+      [10, 1, 2],
+      [12, 101, 2],
+      [14, 213, 2],
+      [16, 302, 2],
+      [18, 500, 2],
+      [20, 502, 2],
+      [20, 1000, 2],
+    ])(
+      "PAD %d for charge %d on gear with soul multiplier %d",
+      (expectedPAD, charge, multiplier) => {
+        const gear = new Gear();
+        gear.name = "PAD gear";
+        gear.type = GearType.bow;
+        gear.option(GearPropType.incPAD).base = 50;
+        gear.soulWeapon.enchanted = true;
+        gear.soulWeapon.soul = {
+          name: "",
+          skill: "",
+          option: new Map(),
+          multiplier,
+        };
 
-      gear.soulWeapon.charge = 1;
-      expect(gear.soulWeapon.chargeOption).toEqual(
-        new Map([[GearPropType.incPAD, 10]])
-      );
-      gear.soulWeapon.charge = 101;
-      expect(gear.soulWeapon.chargeOption).toEqual(
-        new Map([[GearPropType.incPAD, 12]])
-      );
-      gear.soulWeapon.charge = 213;
-      expect(gear.soulWeapon.chargeOption).toEqual(
-        new Map([[GearPropType.incPAD, 14]])
-      );
-      gear.soulWeapon.charge = 302;
-      expect(gear.soulWeapon.chargeOption).toEqual(
-        new Map([[GearPropType.incPAD, 16]])
-      );
-      gear.soulWeapon.charge = 500;
-      expect(gear.soulWeapon.chargeOption).toEqual(
-        new Map([[GearPropType.incPAD, 18]])
-      );
-      gear.soulWeapon.charge = 502;
-      expect(gear.soulWeapon.chargeOption).toEqual(
-        new Map([[GearPropType.incPAD, 20]])
-      );
-      gear.soulWeapon.charge = 1000;
-      expect(gear.soulWeapon.chargeOption).toEqual(
-        new Map([[GearPropType.incPAD, 20]])
-      );
-    });
+        gear.soulWeapon.setCharge(charge);
+        expect(gear.soulWeapon.chargeOption).toEqual(
+          new Map([[GearPropType.incPAD, expectedPAD]])
+        );
+      }
+    );
   });
 });
