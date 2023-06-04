@@ -1,5 +1,14 @@
 # @malib/create-gear
 
+## 0.6.1
+
+### Patch Changes
+
+- 03e900d: Use resolved icon id in created gear
+- Updated dependencies [00fa0d4]
+- Updated dependencies [fff2336]
+  - @malib/gear@0.14.0
+
 ## 0.6.0
 
 ### Minor Changes

@@ -1,5 +1,12 @@
 # @malib/gear
 
+## 0.14.0
+
+### Minor Changes
+
+- 00fa0d4: Add gear migrate function.
+- fff2336: Remove soulWeapon.charge setter and add setCharge method.
+
 ## 0.13.0
 
 ### Minor Changes
