@@ -23,29 +23,8 @@ export class SoulWeapon {
   enchanted = false;
   /** 소울 */
   soul: Soul | undefined;
-
-  private _charge = 0;
-
   /** 소울 충전량 */
-  get charge() {
-    return this._charge;
-  }
-
-  /**
-   * 소울 충전량
-   *
-   * `0`부터 `1000`까지의 값으로 설정할 수 있습니다.
-   */
-  set charge(value: number) {
-    if (!this.enchanted) {
-      return;
-    }
-    if (value < 0 || value > 1000) {
-      return;
-    }
-    this._charge = value;
-    this.updateChargeOption();
-  }
+  charge = 0;
 
   /** 소울 충전량으로 증가하는 옵션 */
   chargeOption: Map<GearPropType, number> = new Map();
@@ -88,6 +67,26 @@ export class SoulWeapon {
     this.soul = undefined;
     this.charge = 0;
     this.chargeOption.clear();
+    return true;
+  }
+
+  /**
+   * 소울 충전량을 설정합니다.
+   * 소울 충전량으로 증가하는 옵션을 다시 계산합니다.
+   * `0`부터 `1000`까지의 값으로 설정할 수 있습니다.
+   * @param charge 소울 충전량.
+   * @returns 설정했을 경우 `true`; 아닐 경우 `false`.
+   * 소울 인챈트 상태가 아닐 경우 `false`를 반환합니다.
+   */
+  setCharge(charge: number): boolean {
+    if (!this.enchanted) {
+      return false;
+    }
+    if (charge < 0 || charge > 1000) {
+      return false;
+    }
+    this.charge = charge;
+    this.updateChargeOption();
     return true;
   }
 
