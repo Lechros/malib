@@ -1,1 +1,1 @@
-export {} from "./internal";
+export { IStat, Stat } from "./internal";

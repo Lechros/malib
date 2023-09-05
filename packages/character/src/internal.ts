@@ -1,1 +1,1 @@
-export * from "./lib/character";
+export * from "./lib/stat/stat";
