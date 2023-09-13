@@ -1,0 +1,15 @@
+{
+  "name": "@malib/setitem",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "index.js",
+  "module": "index.js",
+  "types": "index.d.ts",
+  "typings": "index.d.ts",
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md",
+    "displayName": "gear",
+    "tsconfig": "./tsconfig.lib.json"
+  }
+}
