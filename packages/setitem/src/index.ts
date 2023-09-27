@@ -1,1 +1,1 @@
-export * from "./lib/setitem";
+export {} from "./internal";
