@@ -17,7 +17,8 @@
     "paths": {
       "@malib/create-gear": ["packages/create-gear/src/index.ts"],
       "@malib/gear": ["packages/gear/src/index.ts"],
-      "@malib/serialize-gear": ["packages/serialize-gear/src/index.ts"]
+      "@malib/serialize-gear": ["packages/serialize-gear/src/index.ts"],
+      "@malib/setitem": ["packages/setitem/src/index.ts"]
     }
   },
   "files": ["tools/scripts/normalize-dts.ts"],
