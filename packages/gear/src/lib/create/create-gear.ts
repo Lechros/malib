@@ -1,14 +1,14 @@
-import {
-  Gear,
-  GearPropType,
-  GearType,
-  Potential,
-  PotentialGrade,
-} from "@malib/gear";
+import { Gear, GearPropType, GearType, Potential, PotentialGrade } from "../..";
 import { createPotentialFromCode } from "./create-potential";
-import { GearData } from "./interfaces/gear";
-import { gearJson } from "./resource";
-import { asEnum } from "./util";
+import { GearData, GearDataJson } from "./interfaces/gear";
+import gearJson from "../../res/gear.json";
+
+/**
+ * KMS 장비 정보를 제공합니다.
+ *
+ * 이 객체를 수정할 경우 관련 함수의 작동이 변경될 수 있습니다.
+ */
+export const gearData: GearDataJson = gearJson;
 
 /**
  * 장비 정보로부터 장비를 생성합니다.
@@ -48,13 +48,13 @@ export function createGearFromNode(
   }
   if (node.options) {
     for (const [key, value] of Object.entries(node.options)) {
-      const type = asEnum(key, GearPropType);
+      const type = GearPropType[key as keyof typeof GearPropType];
       gear.option(type).base = value;
     }
   }
   if (node.props) {
     for (const [key, value] of Object.entries(node.props)) {
-      const type = asEnum(key, GearPropType);
+      const type = GearPropType[key as keyof typeof GearPropType];
       gear.props.set(type, value);
     }
   }
@@ -130,11 +130,11 @@ export function createGearFromNode(
  * @returns 아이템 ID에 해당하는 장비. 장비가 존재하지 않을 경우 `undefined`를 반환합니다.
  */
 export function createGearFromId(id: number): Gear | undefined {
-  if (!(id in gearJson)) {
+  if (!(id in gearData)) {
     return undefined;
   }
 
-  return createGearFromNode(gearJson[id], id, createPotentialFromCode);
+  return createGearFromNode(gearData[id], id, createPotentialFromCode);
 }
 
 function specialCanPotential(type: GearType): boolean {
