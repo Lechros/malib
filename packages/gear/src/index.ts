@@ -1,4 +1,5 @@
 export {
+  // core
   Gear,
   type GearIcon,
   GearOption,
@@ -9,6 +10,7 @@ export {
   PotentialGrade,
   type Soul,
   SoulWeapon,
+  // logic
   // bonus
   addBonusStat,
   getBonusStatOption,
@@ -37,6 +39,27 @@ export {
   addUpgradeFailCount,
   restoreUpgradeCount,
   resetUpgrade,
+  // create
+  createGearFromId,
+  createGearFromNode,
+  createPotentialFromCode,
+  createPotentialFromNode,
+  createSoulFromId,
+  createSoulFromNode,
+  // interface
+  GearDataJson,
+  GearData,
+  ItemOptionJson,
+  ItemOption,
+  SoulDataJson,
+  SoulData,
+  SoulOption,
+  MagnificentSoulOption,
+  MagnificentSoulOptionType,
+  // data
+  gearData,
+  itemOptionData,
+  soulData,
   // migrate
   migrate,
   // serialize

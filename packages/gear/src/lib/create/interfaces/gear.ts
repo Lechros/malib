@@ -7,8 +7,8 @@ export interface GearData {
   desc?: string;
   icon: number;
   req?: GearReqData;
-  props?: number;
-  options?: number;
+  props?: Record<string, number>;
+  options?: Record<string, number>;
   tuc?: number;
   etuc?: number;
   pots?: SpecialOptionData[];
@@ -16,12 +16,12 @@ export interface GearData {
 
 export interface GearReqData {
   level: number;
-  str: number;
-  luk: number;
-  dex: number;
-  int: number;
-  job: number;
-  specJob: number;
+  str?: number;
+  luk?: number;
+  dex?: number;
+  int?: number;
+  job?: number;
+  specJob?: number;
 }
 
 export interface SpecialOptionData {

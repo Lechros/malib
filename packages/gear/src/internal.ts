@@ -16,6 +16,14 @@ export * from "./lib/logic/exceptionalparts";
 export * from "./lib/logic/scroll";
 export * from "./lib/logic/upgrade";
 
+// create
+export * from "./lib/create/interfaces/gear";
+export * from "./lib/create/interfaces/itemoption";
+export * from "./lib/create/interfaces/soul";
+export * from "./lib/create/create-gear";
+export * from "./lib/create/create-potential";
+export * from "./lib/create/create-soul";
+
 // migrate
 export * from "./lib/migrate/migrate";
 

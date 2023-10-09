@@ -1,7 +1,13 @@
-import { GearPropType, Soul } from "@malib/gear";
-import { SoulData } from "./interfaces/soul";
-import { soulJson } from "./resource";
-import { asEnum } from "./util";
+import { GearPropType, Soul } from "../..";
+import { SoulData, SoulDataJson } from "./interfaces/soul";
+import soulJson from "../../res/soul.json";
+
+/**
+ * KMS 소울 정보를 제공합니다.
+ *
+ * 이 객체를 수정할 경우 관련 함수의 작동이 변경될 수 있습니다.
+ */
+export const soulData: SoulDataJson = soulJson;
 
 /**
  * 위대한 소울 옵션 종류
@@ -38,7 +44,7 @@ export function createSoulFromNode(
   const optionNode = node.magnificent ? node.options![type] : node.option!;
   const option = new Map<GearPropType, number>();
   for (const [key, value] of Object.entries(optionNode)) {
-    const type = asEnum(key, GearPropType);
+    const type = GearPropType[key as keyof typeof GearPropType];
     option.set(type, value);
   }
   return {
@@ -64,5 +70,5 @@ export function createSoulFromId(
     return undefined;
   }
 
-  return createSoulFromNode(soulJson[id], type);
+  return createSoulFromNode(soulData[id], type);
 }

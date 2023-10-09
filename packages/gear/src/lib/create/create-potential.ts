@@ -1,7 +1,13 @@
-import { GearPropType, Potential } from "@malib/gear";
-import { ItemOption } from "./interfaces/itemoption";
-import { itemOptionJson } from "./resource";
-import { asEnum } from "./util";
+import { GearPropType, Potential } from "../..";
+import { ItemOption, ItemOptionJson } from "./interfaces/itemoption";
+import itemOptionJson from "../../res/itemoption.json";
+
+/**
+ * KMS 잠재옵션 정보를 제공합니다.
+ *
+ * 이 객체를 수정할 경우 관련 함수의 작동이 변경될 수 있습니다.
+ */
+export const itemOptionData: ItemOptionJson = itemOptionJson;
 
 /**
  * 잠재옵션 정보로부터 잠재옵션을 생성합니다.
@@ -22,7 +28,7 @@ export function createPotentialFromNode(
   potential.reqLevel = node.reqLevel ?? 0;
   potential.summary = node.string;
   for (const [key, value] of Object.entries(node.level[potentialLevel])) {
-    const type = asEnum(key, GearPropType);
+    const type = GearPropType[key as keyof typeof GearPropType];
     if (typeof value === "number") {
       potential.option.set(type, value);
     }
@@ -52,5 +58,5 @@ export function createPotentialFromCode(
     return undefined;
   }
 
-  return createPotentialFromNode(itemOptionJson[code], code, potentialLevel);
+  return createPotentialFromNode(itemOptionData[code], code, potentialLevel);
 }

@@ -1,8 +1,7 @@
-import { createGearFromId } from "..";
-import { gearJson } from "../lib/resource";
+import { createGearFromId, gearData } from "../..";
 
 test("create all gears in resource", () => {
-  for (const id of Object.keys(gearJson)) {
+  for (const id of Object.keys(gearData)) {
     expect(createGearFromId(Number(id))).not.toBeUndefined();
   }
 });
