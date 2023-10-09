@@ -5,7 +5,7 @@ export {
   createSetItemFromId,
   createSetItemFromNode,
   // interface
-  SetItemData,
-  SetItemDataJson,
+  type SetItemData,
+  type SetItemDataJson,
   setItemData,
 } from "./internal";
