@@ -41,5 +41,5 @@ test("exceptional upgrade count", () => {
   expect(createGearFromId(1003797)?.exceptionalTotalUpgradeCount).toBe(0);
   expect(createGearFromId(1012632)?.exceptionalTotalUpgradeCount).toBe(1);
   expect(createGearFromId(1132308)?.exceptionalTotalUpgradeCount).toBe(1);
-  expect(createGearFromId(1022278)?.exceptionalTotalUpgradeCount).toBe(0);
+  expect(createGearFromId(1022278)?.exceptionalTotalUpgradeCount).toBe(1);
 });

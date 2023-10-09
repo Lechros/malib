@@ -1,4 +1,4 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
@@ -114,12 +114,6 @@ importers:
       vitest:
         specifier: ^0.29.8
         version: 0.29.8(@vitest/ui@0.29.8)(jsdom@21.1.1)
-
-  packages/create-gear:
-    dependencies:
-      '@malib/gear':
-        specifier: ^0.14.0
-        version: link:../gear
 
   packages/gear: {}
 
