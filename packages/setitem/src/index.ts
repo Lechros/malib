@@ -2,10 +2,10 @@ export {
   // core
   SetItem,
   // create
-  createSetItemFromId,
+  type ISetItemRepository,
+  SetItemRepository,
   createSetItemFromNode,
   // interface
   type SetItemData,
-  type SetItemDataJson,
-  setItemData,
+  type SetItemDataMap,
 } from "./internal";

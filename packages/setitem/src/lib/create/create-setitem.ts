@@ -1,14 +1,6 @@
 import { GearPropType } from "@malib/gear";
-import setItemJson from "../../res/setitem.json";
 import { SetItem } from "../setitem";
-import { SetItemData, SetItemDataJson } from "./interfaces/setitem";
-
-/**
- * KMS 세트 아이템 정보를 제공합니다.
- *
- * 이 객체를 수정할 경우 관련 함수의 작동이 변경될 수 있습니다.
- */
-export const setItemData: SetItemDataJson = setItemJson;
+import { SetItemData, SetItemDataMap } from "./interfaces/setitem";
 
 /**
  * 세트 아이템 정보로부터 세트 아이템을 생성합니다.
@@ -35,15 +27,39 @@ export function createSetItemFromNode(node: SetItemData, id: number): SetItem {
   return setItem;
 }
 
-/**
- * 세트 아이템 ID로부터 세트 아이템을 생성합니다.
- * @param id 세트 아이템 ID.
- * @returns 세트 아이템 ID에 해당하는 세트 아이템. 세트 아이템이 존재하지 않을 경우 `undefined`를 반환합니다.
- */
-export function createSetItemFromId(id: number): SetItem | undefined {
-  if (!(id in setItemData)) {
-    return undefined;
+export interface ISetItemRepository {
+  ids(): number[];
+
+  createSetItemFromId(id: number): SetItem | undefined;
+}
+
+export class SetItemRepository {
+  /**
+   * KMS 세트 아이템 정보
+   */
+  private setItems: SetItemDataMap;
+
+  /**
+   * @param setItems KMS 세트 아이템 정보
+   */
+  constructor(setItems: SetItemDataMap) {
+    this.setItems = setItems;
   }
 
-  return createSetItemFromNode(setItemData[id], id);
+  ids(): number[] {
+    return Object.keys(this.setItems).map((key) => Number(key));
+  }
+
+  /**
+   * 세트 아이템 ID로부터 세트 아이템을 생성합니다.
+   * @param id 세트 아이템 ID.
+   * @returns 세트 아이템 ID에 해당하는 세트 아이템. 세트 아이템이 존재하지 않을 경우 `undefined`를 반환합니다.
+   */
+  createSetItemFromId(id: number): SetItem | undefined {
+    if (!(id in this.setItems)) {
+      return undefined;
+    }
+
+    return createSetItemFromNode(this.setItems[id], id);
+  }
 }

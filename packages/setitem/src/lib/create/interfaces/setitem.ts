@@ -1,4 +1,4 @@
-export interface SetItemDataJson {
+export interface SetItemDataMap {
   [setItemID: string]: SetItemData;
 }
 

@@ -1,8 +1,15 @@
-import { createGearFromId, gearData } from "../..";
+import { PotentialRepository } from "../..";
+import { GearRepository } from "./../../lib/create/create-gear";
+import gearJson from "./res/gear.json";
+import itemOptionJson from "./res/itemoption.json";
 
-test("create all gears in resource", () => {
-  for (const id of Object.keys(gearData)) {
-    expect(createGearFromId(Number(id))).not.toBeUndefined();
+const potentialRepository = new PotentialRepository(itemOptionJson);
+
+const gearRepository = new GearRepository(gearJson, potentialRepository);
+
+test("create all gears in KMS gear data", () => {
+  for (const id of gearRepository.ids()) {
+    expect(gearRepository.createGearFromId(id)).not.toBeUndefined();
   }
 });
 
@@ -16,7 +23,7 @@ describe("gear canPotential", () => {
     ["테네브리스 원정대 반지", 1114307, true],
     ["글로리온 링 : 슈프림", 1114316, true],
     ["카오스 링", 1114305, true],
-    ["어드벤처 딥다크 크리티컬링", 1114312, false],
+    ["어드벤처 딥다크 크리티컬 링", 1114312, false],
     ["SS급 마스터 쥬얼링", 1113231, true],
     ["결속의 반지", 1114302, true],
     ["코스모스 링", 1114303, true],
@@ -31,15 +38,23 @@ describe("gear canPotential", () => {
     ["무공의 장갑", 1082393, false],
     ["베테랑 크로스 숄더", 1152069, false],
   ])("%s(%s) should be %s", (name, id, expected) => {
-    const gear = createGearFromId(id);
+    const gear = gearRepository.createGearFromId(id);
     expect(gear?.name).toBe(name);
     expect(gear?.canPotential).toBe(expected);
   });
 });
 
 test("exceptional upgrade count", () => {
-  expect(createGearFromId(1003797)?.exceptionalTotalUpgradeCount).toBe(0);
-  expect(createGearFromId(1012632)?.exceptionalTotalUpgradeCount).toBe(1);
-  expect(createGearFromId(1132308)?.exceptionalTotalUpgradeCount).toBe(1);
-  expect(createGearFromId(1022278)?.exceptionalTotalUpgradeCount).toBe(1);
+  expect(
+    gearRepository.createGearFromId(1003797)?.exceptionalTotalUpgradeCount
+  ).toBe(0);
+  expect(
+    gearRepository.createGearFromId(1012632)?.exceptionalTotalUpgradeCount
+  ).toBe(1);
+  expect(
+    gearRepository.createGearFromId(1132308)?.exceptionalTotalUpgradeCount
+  ).toBe(1);
+  expect(
+    gearRepository.createGearFromId(1022278)?.exceptionalTotalUpgradeCount
+  ).toBe(1);
 });

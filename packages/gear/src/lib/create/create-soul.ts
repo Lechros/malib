@@ -1,13 +1,5 @@
 import { GearPropType, Soul } from "../..";
-import { SoulData, SoulDataJson } from "./interfaces/soul";
-import soulJson from "../../res/soul.json";
-
-/**
- * KMS 소울 정보를 제공합니다.
- *
- * 이 객체를 수정할 경우 관련 함수의 작동이 변경될 수 있습니다.
- */
-export const soulData: SoulDataJson = soulJson;
+import { SoulData, SoulDataMap } from "./interfaces/soul";
 
 /**
  * 위대한 소울 옵션 종류
@@ -55,20 +47,48 @@ export function createSoulFromNode(
   };
 }
 
-/**
- * 소울 ID로부터 소울를 생성합니다.
- * @param id 소울 ID.
- * @param type 위대한 소울 옵션 종류. 기본값은 `PAD`입니다.
- * 위대한 소울이 아닐 경우 무시합니다.
- * @returns 정보에 해당하는 소울. 존재하지 않을 경우 `undefined`를 반환합니다.
- */
-export function createSoulFromId(
-  id: number,
-  type = MagnificentSoulOptionType.PAD
-): Soul | undefined {
-  if (!(id in soulJson)) {
-    return undefined;
+export interface ISoulRepository {
+  ids(): number[];
+
+  createSoulFromId(id: number, ...args: unknown[]): Soul | undefined;
+}
+
+export class SoulRepository implements ISoulRepository {
+  /**
+   * KMS 소울 정보
+   */
+  private souls: SoulDataMap;
+
+  /**
+   * @param souls KMS 소울 정보
+   */
+  constructor(souls: SoulDataMap) {
+    this.souls = souls;
   }
 
-  return createSoulFromNode(soulData[id], type);
+  /**
+   * 소울 ID 목록을 반환합니다.
+   * @returns 소울 ID 목록
+   */
+  ids(): number[] {
+    return Object.keys(this.souls).map((key) => Number(key));
+  }
+
+  /**
+   * 소울 ID로부터 소울를 생성합니다.
+   * @param id 소울 ID.
+   * @param type 위대한 소울 옵션 종류. 기본값은 `PAD`입니다.
+   * 위대한 소울이 아닐 경우 무시합니다.
+   * @returns 정보에 해당하는 소울. 존재하지 않을 경우 `undefined`를 반환합니다.
+   */
+  createSoulFromId(
+    id: number,
+    type = MagnificentSoulOptionType.PAD
+  ): Soul | undefined {
+    if (!(id in this.souls)) {
+      return undefined;
+    }
+
+    return createSoulFromNode(this.souls[id], type);
+  }
 }
