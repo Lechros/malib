@@ -1,13 +1,5 @@
 import { GearPropType, Potential } from "../..";
-import { ItemOption, ItemOptionJson } from "./interfaces/itemoption";
-import itemOptionJson from "../../res/itemoption.json";
-
-/**
- * KMS 잠재옵션 정보를 제공합니다.
- *
- * 이 객체를 수정할 경우 관련 함수의 작동이 변경될 수 있습니다.
- */
-export const itemOptionData: ItemOptionJson = itemOptionJson;
+import { ItemOption, ItemOptionMap } from "./interfaces/itemoption";
 
 /**
  * 잠재옵션 정보로부터 잠재옵션을 생성합니다.
@@ -43,20 +35,45 @@ export function createPotentialFromNode(
   return potential;
 }
 
-/**
- * 잠재옵션 코드로부터 잠재옵션을 생성합니다.
- * 잠재옵션에 `incDAMr` 속성과 `boss` 속성이 존재할 경우 `incBDR` 속성으로 대체됩니다.
- * @param code 잠재옵션 코드.
- * @param potentialLevel 장비의 착용 가능 레벨로 계산되는 잠재옵션 레벨. `1`부터 `25`까지의 값입니다.
- * @returns 코드에 해당하는 잠재옵션. 존재하지 않을 경우 `undefined`를 반환합니다.
- */
-export function createPotentialFromCode(
-  code: number,
-  potentialLevel: number
-): Potential | undefined {
-  if (!(code in itemOptionJson)) {
-    return undefined;
+export interface IPotentialRepository {
+  createPotentialFromCode(
+    code: number,
+    potentialLevel: number
+  ): Potential | undefined;
+}
+
+export class PotentialRepository implements IPotentialRepository {
+  /**
+   * KMS 잠재옵션 정보
+   */
+  private itemOptions: ItemOptionMap;
+
+  /**
+   * @param itemOptions KMS 잠재옵션 정보
+   */
+  constructor(itemOptions: ItemOptionMap) {
+    this.itemOptions = itemOptions;
   }
 
-  return createPotentialFromNode(itemOptionData[code], code, potentialLevel);
+  /**
+   * 잠재옵션 코드로부터 잠재옵션을 생성합니다.
+   * 잠재옵션에 `incDAMr` 속성과 `boss` 속성이 존재할 경우 `incBDR` 속성으로 대체됩니다.
+   * @param code 잠재옵션 코드.
+   * @param potentialLevel 장비의 착용 가능 레벨로 계산되는 잠재옵션 레벨. `1`부터 `25`까지의 값입니다.
+   * @returns 코드에 해당하는 잠재옵션. 존재하지 않을 경우 `undefined`를 반환합니다.
+   */
+  createPotentialFromCode(
+    code: number,
+    potentialLevel: number
+  ): Potential | undefined {
+    if (!(code in this.itemOptions)) {
+      return undefined;
+    }
+
+    return createPotentialFromNode(
+      this.itemOptions[code],
+      code,
+      potentialLevel
+    );
+  }
 }

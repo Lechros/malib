@@ -1,4 +1,4 @@
-export interface GearDataJson {
+export interface GearDataMap {
   [gearID: string]: GearData;
 }
 

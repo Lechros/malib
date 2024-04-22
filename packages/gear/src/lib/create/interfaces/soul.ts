@@ -1,4 +1,4 @@
-export interface SoulDataJson {
+export interface SoulDataMap {
   [soulID: string]: SoulData;
 }
 

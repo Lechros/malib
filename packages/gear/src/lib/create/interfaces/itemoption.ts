@@ -1,4 +1,4 @@
-export interface ItemOptionJson {
+export interface ItemOptionMap {
   [gearID: string]: ItemOption;
 }
 

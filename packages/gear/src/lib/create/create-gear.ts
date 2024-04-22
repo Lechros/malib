@@ -1,14 +1,6 @@
 import { Gear, GearPropType, GearType, Potential, PotentialGrade } from "../..";
-import { createPotentialFromCode } from "./create-potential";
-import { GearData, GearDataJson } from "./interfaces/gear";
-import gearJson from "../../res/gear.json";
-
-/**
- * KMS 장비 정보를 제공합니다.
- *
- * 이 객체를 수정할 경우 관련 함수의 작동이 변경될 수 있습니다.
- */
-export const gearData: GearDataJson = gearJson;
+import { IPotentialRepository } from "./create-potential";
+import { GearData, GearDataMap } from "./interfaces/gear";
 
 /**
  * 장비 정보로부터 장비를 생성합니다.
@@ -123,20 +115,6 @@ export function createGearFromNode(
   }
   return gear;
 }
-
-/**
- * 아이템 ID로부터 장비를 생성합니다.
- * @param id 장비 아이템 ID.
- * @returns 아이템 ID에 해당하는 장비. 장비가 존재하지 않을 경우 `undefined`를 반환합니다.
- */
-export function createGearFromId(id: number): Gear | undefined {
-  if (!(id in gearData)) {
-    return undefined;
-  }
-
-  return createGearFromNode(gearData[id], id, createPotentialFromCode);
-}
-
 function specialCanPotential(type: GearType): boolean {
   switch (type) {
     case GearType.soulShield:
@@ -163,5 +141,51 @@ function eventRingCanPotential(id: number): boolean {
       return true;
     default:
       return false;
+  }
+}
+
+export interface IGearRepository {
+  ids(): number[];
+
+  createGearFromId(id: number): Gear | undefined;
+}
+export class GearRepository implements IGearRepository {
+  /**
+   * KMS 장비 정보
+   */
+  private gears: GearDataMap;
+
+  private potentialRepository: IPotentialRepository;
+
+  /**
+   * @param gears KMS 장비 정보
+   * @param
+   */
+  constructor(gears: GearDataMap, potentialRepository: IPotentialRepository) {
+    this.gears = gears;
+    this.potentialRepository = potentialRepository;
+  }
+
+  /**
+   * 아이템 ID 목록을 반환합니다.
+   * @returns 아이템 ID 목록
+   */
+  ids(): number[] {
+    return Object.keys(this.gears).map((key) => Number(key));
+  }
+
+  /**
+   * 아이템 ID로부터 장비를 생성합니다.
+   * @param id 장비 아이템 ID.
+   * @returns 아이템 ID에 해당하는 장비. 장비가 존재하지 않을 경우 `undefined`를 반환합니다.
+   */
+  createGearFromId(id: number): Gear | undefined {
+    if (!(id in this.gears)) {
+      return undefined;
+    }
+
+    return createGearFromNode(this.gears[id], id, (code, potentialLevel) =>
+      this.potentialRepository.createPotentialFromCode(code, potentialLevel)
+    );
   }
 }
