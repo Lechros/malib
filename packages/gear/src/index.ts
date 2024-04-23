@@ -49,6 +49,7 @@ export {
   type ISoulRepository,
   SoulRepository,
   createSoulFromNode,
+  MagnificentSoulOptionType,
   // interface
   type GearDataMap,
   type GearData,
@@ -58,7 +59,6 @@ export {
   type SoulData,
   type SoulOption,
   type MagnificentSoulOption,
-  type MagnificentSoulOptionType,
   // migrate
   migrate,
   // serialize
