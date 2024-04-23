@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 0.15.1
+
+### Patch Changes
+
+- dfc938e: Fix MagnificentSoulOptionType export.
+
 ## 0.15.0
 
 ### Minor Changes
