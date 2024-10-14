@@ -1,4 +1,11 @@
-import { GearData, GearTrade, GearType, PotentialGrade } from './data';
+import {
+  GearAddOption,
+  GearData,
+  GearTrade,
+  GearType,
+  PotentialGrade,
+} from './data';
+import { AddOptionGrade, AddOptionType } from './enhance/addOption';
 import { Gear } from './Gear';
 
 describe('Gear constructor', () => {
@@ -7,6 +14,7 @@ describe('Gear constructor', () => {
       meta: {
         id: 0,
         version: 1,
+        add: [],
       },
       name: '',
       icon: '0',
@@ -691,11 +699,109 @@ describe('Gear', () => {
     });
   });
 
+  describe('canAddOption', () => {
+    it.each([
+      GearType.magicGauntlet,
+      GearType.handCannon,
+      GearType.faceAccessory,
+      GearType.pocket,
+    ])('returns true for gearType %d', (gearType) => {
+      gear.type = gearType;
+
+      const can = gear.canAddOption;
+
+      expect(can).toBe(true);
+    });
+
+    it.each([GearType.ring, GearType.shoulder, GearType.badge])(
+      'returns false for gearType %d',
+      (gearType) => {
+        gear.type = gearType;
+
+        const can = gear.canAddOption;
+
+        expect(can).toBe(false);
+      },
+    );
+  });
+
+  describe('applyAddOption', () => {
+    it.each([
+      [GearType.cape, 160, AddOptionType.str, 5, { str: 45 }],
+      [GearType.wand, 200, AddOptionType.bossDamage, 7, { bossDamage: 14 }],
+    ] satisfies [
+      GearType,
+      number,
+      AddOptionType,
+      AddOptionGrade,
+      Partial<GearAddOption>,
+    ][])('sets addOption', (gearType, reqLevel, type, grade, expected) => {
+      gear.type = gearType;
+      gear.req.level = reqLevel;
+      gear.data.addOption = {};
+
+      gear.applyAddOption(type, grade);
+
+      expect(gear.addOption).toEqual(expected);
+    });
+
+    it('adds to previous addOption', () => {
+      gear.type = GearType.belt;
+      gear.req.level = 200;
+      gear.data.addOption = { str: 1, dex: 2 };
+
+      gear.applyAddOption(AddOptionType.str_dex, 3);
+
+      expect(gear.addOption).toEqual({ str: 19, dex: 20 });
+    });
+
+    it('sets meta add property', () => {
+      gear.type = GearType.cap;
+      gear.req.level = 160;
+
+      gear.applyAddOption(AddOptionType.str, 2);
+      gear.applyAddOption(AddOptionType.str, 3);
+      gear.applyAddOption(AddOptionType.str, 2);
+      gear.applyAddOption(AddOptionType.dex, 5);
+      gear.applyAddOption(AddOptionType.allStat, 7);
+
+      expect(gear.meta.add).toEqual([
+        [AddOptionType.str, 2],
+        [AddOptionType.str, 3],
+        [AddOptionType.str, 2],
+        [AddOptionType.dex, 5],
+        [AddOptionType.allStat, 7],
+      ]);
+    });
+  });
+
+  describe('resetAddOption', () => {
+    it('resets addOption', () => {
+      gear.data.addOption = { str: 1, dex: 2, bossDamage: 10 };
+
+      gear.resetAddOption();
+
+      expect(gear.addOption).toEqual({});
+    });
+
+    it('resets meta add property', () => {
+      gear.meta.add = [
+        [AddOptionType.luk, 5],
+        [AddOptionType.armor, 3],
+      ];
+
+      gear.resetAddOption();
+
+      expect(gear.meta.add).toEqual([]);
+    });
+  });
+
   beforeEach(() => {
     gear = new Gear({
       meta: {
         id: 1212128,
         version: 1,
+        add: [],
       },
       name: '제네시스 샤이닝로드',
       icon: '1212128',

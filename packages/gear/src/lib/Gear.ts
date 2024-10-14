@@ -14,7 +14,13 @@ import {
   SoulChargeOption,
   SoulData,
 } from './data';
-import { sumOptions } from './utils';
+import {
+  AddOptionGrade,
+  AddOptionType,
+  canAddOption,
+  getAddOption,
+} from './enhance/addOption';
+import { addOptions, sumOptions } from './utils';
 
 /**
  * 장비
@@ -318,5 +324,36 @@ export class Gear {
   resetShape() {
     this.data.shapeName = undefined;
     this.data.shapeIcon = undefined;
+  }
+
+  /**
+   * 장비에 추가 옵션을 적용할 수 있는지 여부
+   *
+   * '스칼렛 숄더', '보스 아레나 엠블렘'일 경우 `false`를 반환합니다. 해당 동작은 변경될 수 있습니다.
+   */
+  get canAddOption(): boolean {
+    return canAddOption(this.type);
+  }
+
+  /**
+   * 장비에 추가 옵션을 적용합니다.
+   * @param type 추가 옵션 종류.
+   * @param grade 추가 옵션 등급.
+   *
+   * @throws {@link TypeError}
+   * 장비에 부여할 수 없는 추가 옵션을 지정했을 경우.
+   */
+  applyAddOption(type: AddOptionType, grade: AddOptionGrade) {
+    const addOption = getAddOption(this, type, grade);
+    addOptions(this.data.addOption, addOption);
+    this.meta.add.push([type, grade]);
+  }
+
+  /**
+   * 장비의 추가 옵션을 초기화합니다.
+   */
+  resetAddOption() {
+    this.data.addOption = {};
+    this.meta.add = [];
   }
 }
