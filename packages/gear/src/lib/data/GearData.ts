@@ -161,7 +161,6 @@ export type GearAddOption = Pick<
   | 'speed'
   | 'jump'
   | 'bossDamage'
-  | 'ignoreMonsterArmor'
   | 'allStat'
   | 'damage'
   | 'reqLevelDecrease'
