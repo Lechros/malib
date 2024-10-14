@@ -1,5 +1,6 @@
 import { GearAttributeData } from './GearAttributeData';
 import { GearOption } from './GearOption';
+import { GearType } from './GearType';
 import { PotentialData } from './PotentialData';
 import { PotentialGrade } from './PotentialGrade';
 import { SoulData } from './SoulData';
@@ -21,7 +22,7 @@ export type GearData = {
   /** 장비 외형 아이콘 */
   shapeIcon?: string;
   /** 장비 분류 */
-  type: number;
+  type: GearType;
   /** 장비 착용 제한 */
   req: GearReq;
   /** 장비 속성 */
