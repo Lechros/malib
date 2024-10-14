@@ -92,10 +92,9 @@ describe('Gear', () => {
       expect(gear.name).toBe('제네시스 샤이닝로드');
     });
 
-    it('is settable to 제네시스 스태프', () => {
+    it('is readonly property', () => {
+      // @ts-expect-error
       gear.name = '제네시스 스태프';
-
-      expect(gear.name).toBe('제네시스 스태프');
     });
   });
 
@@ -104,10 +103,9 @@ describe('Gear', () => {
       expect(gear.icon).toBe('1212128');
     });
 
-    it('is settable to 1234567', () => {
+    it('is readonly property', () => {
+      // @ts-expect-error
       gear.icon = '1234567';
-
-      expect(gear.icon).toBe('1234567');
     });
   });
 
@@ -116,17 +114,11 @@ describe('Gear', () => {
       expect(gear.desc).toBe('해방 무기');
     });
 
-    it('is settable to 설명', () => {
+    it('is readonly property', () => {
+      // @ts-expect-error
       gear.desc = '설명';
-
-      expect(gear.desc).toBe('설명');
-    });
-
-    it('is settable to undefined', () => {
-      gear.desc = '설명';
+      // @ts-expect-error
       gear.desc = undefined;
-
-      expect(gear.desc).toBeUndefined();
     });
   });
 
@@ -157,10 +149,9 @@ describe('Gear', () => {
       expect(gear.type).toBe(GearType.shiningRod);
     });
 
-    it('is settable to staff', () => {
+    it('is readonly property', () => {
+      // @ts-expect-error
       gear.type = GearType.staff;
-
-      expect(gear.type).toBe(GearType.staff);
     });
   });
 
@@ -706,7 +697,7 @@ describe('Gear', () => {
       GearType.faceAccessory,
       GearType.pocket,
     ])('returns true for gearType %d', (gearType) => {
-      gear.type = gearType;
+      gear.data.type = gearType;
 
       const can = gear.canAddOption;
 
@@ -716,7 +707,7 @@ describe('Gear', () => {
     it.each([GearType.ring, GearType.shoulder, GearType.badge])(
       'returns false for gearType %d',
       (gearType) => {
-        gear.type = gearType;
+        gear.data.type = gearType;
 
         const can = gear.canAddOption;
 
@@ -736,7 +727,7 @@ describe('Gear', () => {
       AddOptionGrade,
       Partial<GearAddOption>,
     ][])('sets addOption', (gearType, reqLevel, type, grade, expected) => {
-      gear.type = gearType;
+      gear.data.type = gearType;
       gear.req.level = reqLevel;
       gear.data.addOption = {};
 
@@ -746,7 +737,7 @@ describe('Gear', () => {
     });
 
     it('adds to previous addOption', () => {
-      gear.type = GearType.belt;
+      gear.data.type = GearType.belt;
       gear.req.level = 200;
       gear.data.addOption = { str: 1, dex: 2 };
 
@@ -756,7 +747,7 @@ describe('Gear', () => {
     });
 
     it('sets meta add property', () => {
-      gear.type = GearType.cap;
+      gear.data.type = GearType.cap;
       gear.req.level = 160;
 
       gear.applyAddOption(AddOptionType.str, 2);
