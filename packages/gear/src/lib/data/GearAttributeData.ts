@@ -1,5 +1,5 @@
 /**
- * 장비 속성
+ * 장비 속성 정보
  */
 export type GearAttributeData = {
   /** 고유 아이템 */
@@ -23,14 +23,26 @@ export type GearAttributeData = {
   /** 에디셔널 잠재능력 설정 가능 여부 */
   additionalPotential?: PotentialCan;
 
+  /** 착용 레벨 증가 */
+  reqLevelIncrease?: number;
+
   /** 카르마의 가위 사용 가능 여부 */
   cuttable?: GearCuttable;
+  /** 가위 사용 가능 횟수 */
+  cuttableCount?: number;
   /** 쉐어 네임 텍을 사용 가능 여부 */
   accountShareTag?: boolean;
   /** 럭키 아이템 */
   lucky?: boolean;
   /** 장착 시 획득 경험치 */
   incline?: Partial<GearIncline>;
+
+  /** 성장 경험치 */
+  growthExp?: number;
+  /** 성장 레벨 */
+  growthLevel?: number;
+  /** 장비 유효 기간(KST) */
+  dateExpire?: string;
 };
 
 export const enum GearTrade {

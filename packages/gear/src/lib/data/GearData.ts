@@ -1,32 +1,31 @@
+import { GearAttributeData } from './GearAttributeData';
 import { GearOption } from './GearOption';
 import { PotentialData } from './PotentialData';
 import { PotentialGrade } from './PotentialGrade';
 import { SoulData } from './SoulData';
 
-type GearType = number;
-
 /**
  * 장비 정보
  */
 export type GearData = {
-  /** 아이템 ID */
-  id: number;
+  /** 장비 메타데이터 */
+  meta: GearMetadata;
   /** 장비명 */
   name: string;
   /** 장비 아이콘 */
   icon: string;
   /** 장비 설명 */
-  desc: string;
+  desc?: string;
   /** 장비 외형 */
-  shapeName: string;
+  shapeName?: string;
   /** 장비 외형 아이콘 */
-  shapeIcon: string;
+  shapeIcon?: string;
   /** 장비 분류 */
-  type: GearType;
+  type: number;
   /** 장비 착용 제한 */
   req: GearReq;
-  /** 착용 레벨 증가 */
-  reqLevelIncrease: number;
+  /** 장비 속성 */
+  attributes: GearAttributeData;
 
   /** 장비 기본 옵션 */
   baseOption: Partial<GearBaseOption>;
@@ -45,9 +44,6 @@ export type GearData = {
   scrollUpgradeableCount: number;
   /** 황금 망치 재련 적용 */
   goldenHammer: number;
-
-  /** 가위 사용 가능 횟수 (교환 불가 장비, 가위 횟수가 없는 교환 가능 장비는 `undefined`) */
-  cuttableCount?: number;
 
   /** 강화 단계 */
   star: number;
@@ -88,15 +84,23 @@ export type GearData = {
   exceptionalUpgradeCount: number;
   /** 익셉셔널 강화 가능 횟수 */
   exceptionalUpgradeableCount: number;
-
-  /** 성장 경험치 */
-  growthExp: number;
-  /** 성장 레벨 */
-  growthLevel: number;
-  /** 장비 유효 기간(KST) */
-  dateExpire: string;
 };
 
+/**
+ * 장비 메타데이터
+ *
+ * 사용자는 메타데이터에 커스텀 속성을 추가할 수 있습니다. 커스텀 속성은 해당 라이브러리가 임의로 변경하지 않습니다. 충돌을 방지하기 위해 커스텀 속성명은 `_`으로 시작해야 합니다.
+ */
+export type GearMetadata = {
+  /** 아이템 ID */
+  id: number;
+  /** 장비 정보 버전 */
+  version: 1;
+};
+
+/**
+ * 장비 착용 제한
+ */
 export type GearReq = {
   /** 착용 가능 레벨 */
   level: number;
@@ -111,9 +115,12 @@ export type GearReq = {
   /** 착용 가능 직업 분류 */
   job: number;
   /** 착용 가능 직업 */
-  class: number;
+  class?: number;
 };
 
+/**
+ * 장비 기본 옵션
+ */
 export type GearBaseOption = Pick<
   GearOption,
   | 'str'
@@ -136,6 +143,9 @@ export type GearBaseOption = Pick<
   | 'reqLevelDecrease'
 >;
 
+/**
+ * 장비 추가 옵션
+ */
 export type GearAddOption = Pick<
   GearBaseOption,
   | 'str'
@@ -156,6 +166,9 @@ export type GearAddOption = Pick<
   | 'reqLevelDecrease'
 >;
 
+/**
+ * 장비 주문서 옵션
+ */
 export type GearScrollOption = Pick<
   GearBaseOption,
   | 'str'
@@ -171,6 +184,9 @@ export type GearScrollOption = Pick<
   | 'jump'
 >;
 
+/**
+ * 장비 스타포스 옵션
+ */
 export type GearStarforceOption = Pick<
   GearBaseOption,
   | 'str'
@@ -186,6 +202,9 @@ export type GearStarforceOption = Pick<
   | 'jump'
 >;
 
+/**
+ * 장비 익셉셔널 옵션
+ */
 export type GearExceptionalOption = Pick<
   GearBaseOption,
   | 'str'
@@ -198,4 +217,7 @@ export type GearExceptionalOption = Pick<
   | 'magicPower'
 >;
 
+/**
+ * 소울 충전 옵션
+ */
 export type SoulChargeOption = Pick<GearOption, 'attackPower' | 'magicPower'>;
