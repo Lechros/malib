@@ -1,3 +1,4 @@
+import { AddOptionGrade, AddOptionType } from '../enhance/addOption';
 import { GearAttributeData } from './GearAttributeData';
 import { GearOption } from './GearOption';
 import { GearType } from './GearType';
@@ -90,13 +91,17 @@ export type GearData = {
 /**
  * 장비 메타데이터
  *
- * 사용자는 메타데이터에 커스텀 속성을 추가할 수 있습니다. 커스텀 속성은 해당 라이브러리가 임의로 변경하지 않습니다. 충돌을 방지하기 위해 커스텀 속성명은 `_`으로 시작해야 합니다.
+ * 사용자는 메타데이터에 커스텀 속성을 추가할 수 있습니다.
+ * 커스텀 속성은 해당 라이브러리가 임의로 변경하지 않습니다.
+ * 충돌을 방지하기 위해 커스텀 속성명은 하나의 `_`으로 시작해야 합니다.
  */
 export type GearMetadata = {
   /** 아이템 ID */
   id: number;
   /** 장비 정보 버전 */
   version: 1;
+  /** 추가 옵션 적용 기록 */
+  add: [AddOptionType, AddOptionGrade][];
 };
 
 /**

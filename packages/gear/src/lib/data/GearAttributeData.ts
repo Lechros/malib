@@ -36,6 +36,8 @@ export type GearAttributeData = {
   lucky?: boolean;
   /** 장착 시 획득 경험치 */
   incline?: Partial<GearIncline>;
+  /** 보스 드롭 여부 */
+  bossReward?: boolean;
 
   /** 성장 경험치 */
   growthExp?: number;
