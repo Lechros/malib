@@ -1,4 +1,4 @@
-import { GearData, PotentialGrade } from './data';
+import { GearData, GearType, PotentialGrade } from './data';
 import { Gear } from './Gear';
 
 describe('Gear constructor', () => {
@@ -10,7 +10,7 @@ describe('Gear constructor', () => {
       },
       name: '',
       icon: '0',
-      type: 0,
+      type: GearType.cap,
       req: {
         level: 0,
         str: 0,
