@@ -301,4 +301,22 @@ export class Gear {
   get exceptionalUpgradeableCount(): number {
     return this.data.exceptionalUpgradeableCount;
   }
+
+  /**
+   * 장비의 외형을 설정합니다.
+   * @param name 외형 장비명.
+   * @param icon 외형 아이콘.
+   */
+  setShape(name: string, icon: string) {
+    this.data.shapeName = name;
+    this.data.shapeIcon = icon;
+  }
+
+  /**
+   * 장비의 외형을 제거합니다.
+   */
+  resetShape() {
+    this.data.shapeName = undefined;
+    this.data.shapeIcon = undefined;
+  }
 }

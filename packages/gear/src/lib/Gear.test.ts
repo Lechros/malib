@@ -663,6 +663,34 @@ describe('Gear', () => {
     });
   });
 
+  describe('setShape', () => {
+    it('sets shapeName', () => {
+      gear.setShape('외형 이름', '');
+
+      expect(gear.shapeName).toBe('외형 이름');
+    });
+
+    it('sets shapeIcon', () => {
+      gear.setShape('', '1515151');
+
+      expect(gear.shapeIcon).toBe('1515151');
+    });
+  });
+
+  describe('resetShape', () => {
+    it('resets shapeName', () => {
+      gear.resetShape();
+
+      expect(gear.shapeName).toBeUndefined();
+    });
+
+    it('resets shapeIcon', () => {
+      gear.resetShape();
+
+      expect(gear.shapeIcon).toBe('1212128');
+    });
+  });
+
   beforeEach(() => {
     gear = new Gear({
       meta: {
