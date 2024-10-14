@@ -51,10 +51,6 @@ export class Gear {
     return this.data.name;
   }
 
-  set name(value) {
-    this.data.name = value;
-  }
-
   /**
    * 장비 아이콘
    */
@@ -62,19 +58,11 @@ export class Gear {
     return this.data.icon;
   }
 
-  set icon(value) {
-    this.data.icon = value;
-  }
-
   /**
    * 장비 설명
    */
   get desc(): string | undefined {
     return this.data.desc;
-  }
-
-  set desc(value) {
-    this.data.desc = value;
   }
 
   /**
@@ -98,10 +86,6 @@ export class Gear {
    */
   get type(): GearType {
     return this.data.type;
-  }
-
-  set type(value) {
-    this.data.type = value;
   }
 
   /**
