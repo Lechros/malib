@@ -1,9 +1,10 @@
 import { GearOption } from './data';
 
-export function sumOptions(
+export function addOptions(
+  option: Partial<GearOption>,
   ...options: Partial<GearOption>[]
-): Partial<GearOption> {
-  const sum: Record<string, number> = {};
+): void {
+  const sum: Record<string, number> = option;
   for (const option of options) {
     for (const [stat, value] of Object.entries(option)) {
       if (stat in sum) {
@@ -13,5 +14,12 @@ export function sumOptions(
       }
     }
   }
+}
+
+export function sumOptions(
+  ...options: Partial<GearOption>[]
+): Partial<GearOption> {
+  const sum: Record<string, number> = {};
+  addOptions(sum, ...options);
   return sum;
 }
