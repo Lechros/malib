@@ -94,7 +94,7 @@ describe('Gear', () => {
 
     it('is readonly property', () => {
       // @ts-expect-error
-      gear.name = '제네시스 스태프';
+      expect(() => (gear.name = '제네시스 스태프')).toThrow();
     });
   });
 
@@ -105,7 +105,7 @@ describe('Gear', () => {
 
     it('is readonly property', () => {
       // @ts-expect-error
-      gear.icon = '1234567';
+      expect(() => (gear.icon = '1234567')).toThrow();
     });
   });
 
@@ -116,9 +116,9 @@ describe('Gear', () => {
 
     it('is readonly property', () => {
       // @ts-expect-error
-      gear.desc = '설명';
+      expect(() => (gear.desc = '설명')).toThrow();
       // @ts-expect-error
-      gear.desc = undefined;
+      expect(() => (gear.desc = undefined)).toThrow();
     });
   });
 
@@ -151,7 +151,7 @@ describe('Gear', () => {
 
     it('is readonly property', () => {
       // @ts-expect-error
-      gear.type = GearType.staff;
+      expect(() => (gear.type = GearType.staff)).toThrow();
     });
   });
 
@@ -247,18 +247,6 @@ describe('Gear', () => {
       expect(gear.attributes.only).toBe(true);
     });
 
-    it('only is settable to false', () => {
-      gear.attributes.only = false;
-
-      expect(gear.attributes.only).toBe(false);
-    });
-
-    it('only is settable to undefined', () => {
-      gear.attributes.only = undefined;
-
-      expect(gear.attributes.only).toBeUndefined();
-    });
-
     it('trade is TradeBlock', () => {
       expect(gear.attributes.trade).toBe(GearTrade.TradeBlock);
     });
@@ -270,25 +258,13 @@ describe('Gear', () => {
     });
 
     it('trade is settable to undefined', () => {
-      gear.attributes.trade = undefined;
+      gear.attributes.trade = GearTrade.Tradeable;
 
-      expect(gear.attributes.trade).toBeUndefined();
+      expect(gear.attributes.trade).toBe(GearTrade.Tradeable);
     });
 
     it('onlyEquip is true', () => {
       expect(gear.attributes.onlyEquip).toBe(true);
-    });
-
-    it('onlyEquip is settable to false', () => {
-      gear.attributes.onlyEquip = false;
-
-      expect(gear.attributes.onlyEquip).toBe(false);
-    });
-
-    it('onlyEquip is settable to undefined', () => {
-      gear.attributes.onlyEquip = undefined;
-
-      expect(gear.attributes.onlyEquip).toBeUndefined();
     });
 
     it('is readonly property', () => {

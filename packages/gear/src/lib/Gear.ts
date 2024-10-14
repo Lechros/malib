@@ -1,6 +1,5 @@
 import {
   GearAddOption,
-  GearAttributeData,
   GearBaseOption,
   GearData,
   GearExceptionalOption,
@@ -20,6 +19,7 @@ import {
   canAddOption,
   getAddOption,
 } from './enhance/addOption';
+import { GearAttribute } from './GearAttribute';
 import { addOptions, sumOptions } from './utils';
 
 /**
@@ -106,8 +106,8 @@ export class Gear {
   /**
    * 장비 속성
    */
-  get attributes(): GearAttributeData {
-    return this.data.attributes;
+  get attributes(): GearAttribute {
+    return new GearAttribute(this.data.attributes);
   }
 
   /**
