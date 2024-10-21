@@ -66,6 +66,14 @@ export class GearReq implements GearReqData {
   }
 
   /**
+   * 초보자 및 전 직업 착용 가능 여부를 계산합니다.
+   * @returns 착용할 수 있을 경우 `true`; 아닐 경우 `false`.
+   */
+  beginner(): boolean {
+    return this.job === 0;
+  }
+
+  /**
    * 전사 착용 가능 여부를 계산합니다.
    * @returns 착용할 수 있을 경우 `true`; 아닐 경우 `false`.
    */
