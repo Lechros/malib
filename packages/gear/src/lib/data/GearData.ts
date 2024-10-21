@@ -33,8 +33,8 @@ export type GearData = {
   baseOption: Partial<GearBaseOption>;
   /** 장비 추가 옵션 */
   addOption: Partial<GearAddOption>;
-  /** 장비 주문서 옵션 */
-  scrollOption: Partial<GearScrollOption>;
+  /** 장비 주문서 강화 옵션 */
+  upgradeOption: Partial<GearUpgradeOption>;
   /** 장비 스타포스 옵션 */
   starforceOption: Partial<GearStarforceOption>;
 
@@ -174,7 +174,7 @@ export type GearAddOption = Pick<
 /**
  * 장비 주문서 옵션
  */
-export type GearScrollOption = Pick<
+export type GearUpgradeOption = Pick<
   GearBaseOption,
   | 'str'
   | 'dex'

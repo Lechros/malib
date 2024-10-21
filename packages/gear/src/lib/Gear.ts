@@ -7,6 +7,7 @@ import {
   GearScrollOption,
   GearStarforceOption,
   GearType,
+  GearUpgradeOption,
   PotentialData,
   PotentialGrade,
   SoulChargeOption,
@@ -119,13 +120,13 @@ export class Gear {
    */
   get totalOption(): Readonly<
     Partial<
-      GearBaseOption | GearAddOption | GearScrollOption | GearStarforceOption
+      GearBaseOption | GearAddOption | GearUpgradeOption | GearStarforceOption
     >
   > {
     return sumOptions(
       this.data.baseOption,
       this.data.addOption,
-      this.data.scrollOption,
+      this.data.upgradeOption,
       this.data.starforceOption,
     );
   }
@@ -145,10 +146,10 @@ export class Gear {
   }
 
   /**
-   * 장비 주문서 옵션
+   * 장비 주문서 강화 옵션
    */
-  get scrollOption(): Readonly<Partial<GearScrollOption>> {
-    return this.data.scrollOption;
+  get upgradeOption(): Readonly<Partial<GearUpgradeOption>> {
+    return this.data.upgradeOption;
   }
 
   /**
