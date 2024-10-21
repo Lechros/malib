@@ -4,7 +4,6 @@ import {
   GearData,
   GearExceptionalOption,
   GearMetadata,
-  GearReq,
   GearScrollOption,
   GearStarforceOption,
   GearType,
@@ -20,6 +19,7 @@ import {
   getAddOption,
 } from './enhance/addOption';
 import { GearAttribute } from './GearAttribute';
+import { GearReq } from './GearReq';
 import { addOptions, sumOptions } from './utils';
 
 /**
@@ -100,7 +100,7 @@ export class Gear {
    * 장비 착용 제한
    */
   get req(): GearReq {
-    return this.data.req;
+    return new GearReq(this.data.req);
   }
 
   /**

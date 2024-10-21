@@ -25,7 +25,7 @@ export type GearData = {
   /** 장비 분류 */
   type: GearType;
   /** 장비 착용 제한 */
-  req: GearReq;
+  req: GearReqData;
   /** 장비 속성 */
   attributes: GearAttributeData;
 
@@ -105,21 +105,21 @@ export type GearMetadata = {
 };
 
 /**
- * 장비 착용 제한
+ * 장비 착용 제한 정보
  */
-export type GearReq = {
+export type GearReqData = {
   /** 착용 가능 레벨 */
-  level: number;
+  level?: number;
   /** 착용 가능 STR */
-  str: number;
+  str?: number;
   /** 착용 가능 LUK */
-  luk: number;
+  luk?: number;
   /** 착용 가능 DEX */
-  dex: number;
+  dex?: number;
   /** 착용 가능 INT */
-  int: number;
+  int?: number;
   /** 착용 가능 직업 분류 */
-  job: number;
+  job?: number;
   /** 착용 가능 직업 */
   class?: number;
 };
