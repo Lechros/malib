@@ -160,70 +160,28 @@ describe('Gear', () => {
       expect(gear.req.level).toBe(200);
     });
 
-    it('level is settable to 250', () => {
-      gear.req.level = 250;
-
-      expect(gear.req.level).toBe(250);
-    });
-
     it('str is 0', () => {
       expect(gear.req.str).toBe(0);
-    });
-
-    it('str is settable to 100', () => {
-      gear.req.str = 100;
-
-      expect(gear.req.str).toBe(100);
     });
 
     it('dex is 0', () => {
       expect(gear.req.dex).toBe(0);
     });
 
-    it('dex is settable to 100', () => {
-      gear.req.dex = 100;
-
-      expect(gear.req.dex).toBe(100);
-    });
-
     it('int is 600', () => {
       expect(gear.req.int).toBe(600);
-    });
-
-    it('int is settable to 100', () => {
-      gear.req.int = 100;
-
-      expect(gear.req.int).toBe(100);
     });
 
     it('luk is 0', () => {
       expect(gear.req.luk).toBe(0);
     });
 
-    it('luk is settable to 100', () => {
-      gear.req.luk = 100;
-
-      expect(gear.req.luk).toBe(100);
-    });
-
     it('job is 2', () => {
       expect(gear.req.job).toBe(2);
     });
 
-    it('job is settable to 4', () => {
-      gear.req.job = 4;
-
-      expect(gear.req.job).toBe(4);
-    });
-
-    it('class is undefined', () => {
-      expect(gear.req.class).toBeUndefined();
-    });
-
-    it('class is settable to 57', () => {
-      gear.req.job = 57;
-
-      expect(gear.req.job).toBe(57);
+    it('class is 0', () => {
+      expect(gear.req.class).toBe(0);
     });
 
     it('is readonly property', () => {
@@ -704,7 +662,7 @@ describe('Gear', () => {
       Partial<GearAddOption>,
     ][])('sets addOption', (gearType, reqLevel, type, grade, expected) => {
       gear.data.type = gearType;
-      gear.req.level = reqLevel;
+      gear.data.req.level = reqLevel;
       gear.data.addOption = {};
 
       gear.applyAddOption(type, grade);
@@ -714,7 +672,7 @@ describe('Gear', () => {
 
     it('adds to previous addOption', () => {
       gear.data.type = GearType.belt;
-      gear.req.level = 200;
+      gear.data.req.level = 200;
       gear.data.addOption = { str: 1, dex: 2 };
 
       gear.applyAddOption(AddOptionType.str_dex, 3);
@@ -724,7 +682,7 @@ describe('Gear', () => {
 
     it('sets meta add property', () => {
       gear.data.type = GearType.cap;
-      gear.req.level = 160;
+      gear.data.req.level = 160;
 
       gear.applyAddOption(AddOptionType.str, 2);
       gear.applyAddOption(AddOptionType.str, 3);
