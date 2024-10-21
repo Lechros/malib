@@ -40,8 +40,8 @@ export class GearAttribute implements GearAttributeData {
   }
 
   /** 황금망치 사용 불가 */
-  get blockGoldHammer(): boolean {
-    return this.data.blockGoldHammer ?? false;
+  get blockGoldenHammer(): boolean {
+    return this.data.blockGoldenHammer ?? false;
   }
 
   /** 슈페리얼 */
@@ -146,49 +146,3 @@ export class GearAttribute implements GearAttributeData {
     }
   }
 }
-
-export type GearAttribute2 = {
-  /** 고유 아이템 */
-  readonly only?: boolean;
-  /** 교환 가능 여부 */
-  trade?: GearTrade;
-  /** 고유장착 아이템 */
-  readonly onlyEquip?: boolean;
-  /** 월드 내 나의 캐릭터 간 이동 가능 여부 */
-  share?: GearShare;
-  /** 황금망치 사용 불가 */
-  readonly blockGoldHammer?: boolean;
-
-  /** 슈페리얼 */
-  readonly superior?: boolean;
-
-  /** 강화불가 */
-  readonly cannotUpgrade?: boolean;
-  /** 잠재능력 설정 가능 여부 */
-  readonly potential?: PotentialCan;
-  /** 에디셔널 잠재능력 설정 가능 여부 */
-  readonly additionalPotential?: PotentialCan;
-
-  /** 착용 레벨 증가 */
-  readonly reqLevelIncrease?: number;
-
-  /** 카르마의 가위 사용 가능 여부 */
-  readonly cuttable?: GearCuttable;
-  /** 가위 사용 가능 횟수 */
-  cuttableCount?: number;
-  /** 쉐어 네임 텍을 사용 가능 여부 */
-  readonly accountShareTag?: boolean;
-  /** 럭키 아이템 */
-  readonly lucky?: boolean;
-  /** 장착 시 획득 경험치 */
-  incline?: Partial<GearIncline>;
-  /** 보스 드롭 여부 */
-  readonly bossReward?: boolean;
-
-  /** 성장 경험치 */
-  growthExp?: number;
-  /** 성장 레벨 */
-  growthLevel?: number;
-  /** 장비 유효 기간(KST) */
-  dateExpire?: string;
-};

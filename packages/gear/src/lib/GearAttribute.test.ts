@@ -73,20 +73,20 @@ describe('GearAttribute', () => {
     });
   });
 
-  describe('blockGoldHammer', () => {
+  describe('blockGoldenHammer', () => {
     it('returns false by default', () => {
-      expect(attr.blockGoldHammer).toBe(false);
+      expect(attr.blockGoldenHammer).toBe(false);
     });
 
     it('returns true', () => {
-      attr.data.blockGoldHammer = true;
+      attr.data.blockGoldenHammer = true;
 
-      expect(attr.blockGoldHammer).toBe(true);
+      expect(attr.blockGoldenHammer).toBe(true);
     });
 
     it('is readonly property', () => {
       // @ts-expect-error
-      expect(() => (attr.blockGoldHammer = true)).toThrow();
+      expect(() => (attr.blockGoldenHammer = true)).toThrow();
     });
   });
 

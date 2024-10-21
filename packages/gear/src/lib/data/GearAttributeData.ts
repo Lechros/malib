@@ -11,7 +11,7 @@ export type GearAttributeData = {
   /** 월드 내 나의 캐릭터 간 이동 가능 여부 */
   share?: GearShare;
   /** 황금망치 사용 불가 */
-  blockGoldHammer?: boolean;
+  blockGoldenHammer?: boolean;
 
   /** 슈페리얼 */
   superior?: boolean;
