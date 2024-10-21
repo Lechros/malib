@@ -842,7 +842,7 @@ function createGear(
       magicPower,
     },
     addOption: {},
-    scrollOption: {},
+    upgradeOption: {},
     starforceOption: {},
 
     scrollUpgradeCount: 0,

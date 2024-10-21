@@ -31,7 +31,7 @@ describe('Gear constructor', () => {
 
       baseOption: {},
       addOption: {},
-      scrollOption: {},
+      upgradeOption: {},
       starforceOption: {},
 
       scrollUpgradeCount: 0,
@@ -303,7 +303,7 @@ describe('Gear', () => {
 
   describe('scrollOption', () => {
     it('is equal to input value', () => {
-      expect(gear.scrollOption).toEqual({
+      expect(gear.upgradeOption).toEqual({
         int: 32,
         magicPower: 72,
       });
@@ -311,12 +311,12 @@ describe('Gear', () => {
 
     it('is readonly property', () => {
       // @ts-expect-error
-      expect(() => (gear.scrollOption = {})).toThrow();
+      expect(() => (gear.upgradeOption = {})).toThrow();
     });
 
     it('is readonly object', () => {
       // @ts-expect-error
-      expect(() => (gear.scrollOption.int = 3)).not.toThrow();
+      expect(() => (gear.upgradeOption.int = 3)).not.toThrow();
     });
   });
 
@@ -762,7 +762,7 @@ describe('Gear', () => {
         bossDamage: 14,
         allStat: 4,
       },
-      scrollOption: {
+      upgradeOption: {
         int: 32,
         magicPower: 72,
       },
