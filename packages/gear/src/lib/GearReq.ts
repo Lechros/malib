@@ -5,8 +5,8 @@ import { GearReqData } from './data';
  */
 export class GearReq implements GearReqData {
   /**
-   * 장비 착용 제한
-   * 정보 */
+   * 장비 착용 제한 정보
+   */
   data: GearReqData;
 
   /**
