@@ -1,13 +1,19 @@
 /** @type {import('jest').Config} */
 const config = {
-  displayName: 'gear',
+  projects: [
+    {
+      displayName: 'gear',
+      rootDir: 'packages/gear',
+      roots: ['src'],
+    },
+  ],
   collectCoverage: true,
   coverageProvider: 'v8',
   coverageReporters: ['text'],
-  preset: 'ts-jest',
-  roots: ['src'],
-  testEnvironment: 'jsdom',
   testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
+  transform: {
+    '^.+\\.(t|j)sx?$': '@swc/jest',
+  },
 };
 
 export default config;
