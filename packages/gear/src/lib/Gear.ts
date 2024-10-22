@@ -82,7 +82,7 @@ export class Gear {
    * 장비 아이콘
    */
   get icon(): string {
-    return this.data.icon;
+    return this.data.icon ?? '';
   }
 
   /**
@@ -105,7 +105,7 @@ export class Gear {
    * `shapeIcon`을 설정하지 않았을 경우 장비의 기본 아이콘.
    */
   get shapeIcon(): string {
-    return this.data.shapeIcon || this.data.icon;
+    return this.data.shapeIcon || this.icon;
   }
 
   /**
@@ -119,14 +119,14 @@ export class Gear {
    * 장비 착용 제한
    */
   get req(): GearReq {
-    return new GearReq(this.data.req);
+    return new GearReq(this.data.req ?? {});
   }
 
   /**
    * 장비 속성
    */
   get attributes(): GearAttribute {
-    return new GearAttribute(this.data.attributes);
+    return new GearAttribute(this.data.attributes ?? {});
   }
 
   /**
@@ -142,10 +142,10 @@ export class Gear {
     >
   > {
     return sumOptions(
-      this.data.baseOption,
-      this.data.addOption,
-      this.data.upgradeOption,
-      this.data.starforceOption,
+      this.baseOption,
+      this.addOption,
+      this.upgradeOption,
+      this.starforceOption,
     );
   }
 
@@ -153,56 +153,56 @@ export class Gear {
    * 장비 순수 옵션
    */
   get baseOption(): Readonly<Partial<GearBaseOption>> {
-    return this.data.baseOption;
+    return this.data.baseOption ?? {};
   }
 
   /**
    * 장비 추가 옵션
    */
   get addOption(): Readonly<Partial<GearAddOption>> {
-    return this.data.addOption;
+    return this.data.addOption ?? {};
   }
 
   /**
    * 장비 주문서 강화 옵션
    */
   get upgradeOption(): Readonly<Partial<GearUpgradeOption>> {
-    return this.data.upgradeOption;
+    return this.data.upgradeOption ?? {};
   }
 
   /**
    * 장비 스타포스 옵션
    */
   get starforceOption(): Readonly<Partial<GearStarforceOption>> {
-    return this.data.starforceOption;
+    return this.data.starforceOption ?? {};
   }
 
   /**
    * 업그레이드 횟수
    */
   get scrollUpgradeCount(): number {
-    return this.data.scrollUpgradeCount;
+    return this.data.scrollUpgradeCount ?? 0;
   }
 
   /**
    * 복구 가능 횟수
    */
   get scrollResilienceCount(): number {
-    return this.data.scrollResilienceCount;
+    return this.data.scrollResilienceCount ?? 0;
   }
 
   /**
    * 업그레이드 가능 횟수
    */
   get scrollUpgradeableCount(): number {
-    return this.data.scrollUpgradeableCount;
+    return this.data.scrollUpgradeableCount ?? 0;
   }
 
   /**
    * 황금 망치 재련 적용
    */
   get goldenHammer(): number {
-    return this.data.goldenHammer;
+    return this.data.goldenHammer ?? 0;
   }
 
   /**
@@ -223,28 +223,28 @@ export class Gear {
    * 강화 단계
    */
   get star(): number {
-    return this.data.star;
+    return this.data.star ?? 0;
   }
 
   /**
    * 최대 강화 단계
    */
   get maxStar(): number {
-    return this.data.maxStar;
+    return this.data.maxStar ?? 0;
   }
 
   /**
    * 놀라운 장비 강화 주문서 사용 여부
    */
   get starScroll(): boolean {
-    return this.data.starScroll;
+    return this.data.starScroll ?? false;
   }
 
   /**
    * 소울 인챈트 여부
    */
   get soulEnchanted(): boolean {
-    return this.data.soulEnchanted;
+    return this.data.soulEnchanted ?? false;
   }
 
   /**
@@ -258,21 +258,21 @@ export class Gear {
    * 소울 충전량
    */
   get soulCharge(): number {
-    return this.data.soulCharge;
+    return this.data.soulCharge ?? 0;
   }
 
   /**
    * 소울 충전 옵션
    */
   get soulChargeOption(): Readonly<Partial<SoulChargeOption>> {
-    return this.data.soulChargeOption;
+    return this.data.soulChargeOption ?? {};
   }
 
   /**
    * 잠재능력 등급
    */
   get potentialGrade(): PotentialGrade {
-    return this.data.potentialGrade;
+    return this.data.potentialGrade ?? PotentialGrade.Normal;
   }
 
   set potentialGrade(value) {
@@ -294,7 +294,7 @@ export class Gear {
    * 에디셔널 잠재능력 등급
    */
   get additionalPotentialGrade(): PotentialGrade {
-    return this.data.additionalPotentialGrade;
+    return this.data.additionalPotentialGrade ?? PotentialGrade.Normal;
   }
 
   set additionalPotentialGrade(value) {
@@ -316,21 +316,21 @@ export class Gear {
    * 장비 익셉셔널 옵션
    */
   get exceptionalOption(): Readonly<Partial<GearExceptionalOption>> {
-    return this.data.exceptionalOption;
+    return this.data.exceptionalOption ?? {};
   }
 
   /**
    * 익셉셔널 강화 횟수
    */
   get exceptionalUpgradeCount(): number {
-    return this.data.exceptionalUpgradeCount;
+    return this.data.exceptionalUpgradeCount ?? 0;
   }
 
   /**
    * 익셉셔널 강화 가능 횟수
    */
   get exceptionalUpgradeableCount(): number {
-    return this.data.exceptionalUpgradeableCount;
+    return this.data.exceptionalUpgradeableCount ?? 0;
   }
 
   /**
@@ -370,6 +370,9 @@ export class Gear {
    */
   applyAddOption(type: AddOptionType, grade: AddOptionGrade) {
     const addOption = getAddOption(this, type, grade);
+    if (!this.data.addOption) {
+      this.data.addOption = {};
+    }
     addOptions(this.data.addOption, addOption);
     this.meta.add.push([type, grade]);
   }
@@ -378,7 +381,7 @@ export class Gear {
    * 장비의 추가 옵션을 초기화합니다.
    */
   resetAddOption() {
-    this.data.addOption = {};
+    this.data.addOption = undefined;
     this.meta.add = [];
   }
 

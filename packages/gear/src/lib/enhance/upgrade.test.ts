@@ -149,7 +149,7 @@ describe('failScroll', () => {
 
     failScroll(gear);
 
-    expect(gear.data.scrollResilienceCount).toBe(2);
+    expect(gear.scrollResilienceCount).toBe(2);
   });
 
   it('decrements scrollUpgradeableCount by 1', () => {
@@ -158,7 +158,7 @@ describe('failScroll', () => {
 
     failScroll(gear);
 
-    expect(gear.data.scrollUpgradeableCount).toBe(1);
+    expect(gear.scrollUpgradeableCount).toBe(1);
   });
 });
 
@@ -209,7 +209,7 @@ describe('resileScroll', () => {
 
     resileScroll(gear);
 
-    expect(gear.data.scrollUpgradeableCount).toBe(2);
+    expect(gear.scrollUpgradeableCount).toBe(2);
   });
 
   it('decrements scrollResilienceCount by 1', () => {
@@ -218,7 +218,7 @@ describe('resileScroll', () => {
 
     resileScroll(gear);
 
-    expect(gear.data.scrollResilienceCount).toBe(1);
+    expect(gear.scrollResilienceCount).toBe(1);
   });
 });
 
@@ -248,39 +248,39 @@ describe('resetUpgrade', () => {
   });
 
   it('resets goldenHammer', () => {
-    expect(gear.data.scrollUpgradeableCount).toBe(8);
-    expect(gear.data.goldenHammer).toBe(0);
+    expect(gear.scrollUpgradeableCount).toBe(8);
+    expect(gear.goldenHammer).toBe(0);
     applyGoldenHammer(gear);
 
     resetUpgrade(gear);
 
-    expect(gear.data.scrollUpgradeableCount).toBe(8);
-    expect(gear.data.goldenHammer).toBe(0);
+    expect(gear.scrollUpgradeableCount).toBe(8);
+    expect(gear.goldenHammer).toBe(0);
   });
 
   it('resets scrollResilienceCount', () => {
-    expect(gear.data.scrollUpgradeableCount).toBe(8);
-    expect(gear.data.scrollResilienceCount).toBe(0);
+    expect(gear.scrollUpgradeableCount).toBe(8);
+    expect(gear.scrollResilienceCount).toBe(0);
     for (let i = 0; i < 3; i++) {
       failScroll(gear);
     }
 
     resetUpgrade(gear);
 
-    expect(gear.data.scrollUpgradeableCount).toBe(8);
-    expect(gear.data.scrollResilienceCount).toBe(0);
+    expect(gear.scrollUpgradeableCount).toBe(8);
+    expect(gear.scrollResilienceCount).toBe(0);
   });
 
   it('resets scrollUpgradeCount', () => {
-    expect(gear.data.scrollUpgradeableCount).toBe(8);
-    expect(gear.data.scrollUpgradeCount).toBe(0);
-    gear.data.scrollUpgradeableCount -= 7;
-    gear.data.scrollUpgradeCount += 7;
+    expect(gear.scrollUpgradeableCount).toBe(8);
+    expect(gear.scrollUpgradeCount).toBe(0);
+    gear.data.scrollUpgradeableCount = 1;
+    gear.data.scrollUpgradeCount = 7;
 
     resetUpgrade(gear);
 
-    expect(gear.data.scrollUpgradeableCount).toBe(8);
-    expect(gear.data.scrollUpgradeCount).toBe(0);
+    expect(gear.scrollUpgradeableCount).toBe(8);
+    expect(gear.scrollUpgradeCount).toBe(0);
   });
 
   it('resets upgradeOption', () => {
@@ -344,7 +344,7 @@ describe('applyScroll', () => {
 
     applyScroll(gear, scroll);
 
-    expect(gear.data.scrollUpgradeCount).toBe(2);
+    expect(gear.scrollUpgradeCount).toBe(2);
   });
 
   it('decrements scrollUpgradeableCount by 1', () => {
@@ -353,7 +353,7 @@ describe('applyScroll', () => {
 
     applyScroll(gear, scroll);
 
-    expect(gear.data.scrollUpgradeableCount).toBe(1);
+    expect(gear.scrollUpgradeableCount).toBe(1);
   });
 
   it('adds option to upgradeOption', () => {

@@ -15,7 +15,7 @@ export type GearData = {
   /** 장비명 */
   name: string;
   /** 장비 아이콘 */
-  icon: string;
+  icon?: string;
   /** 장비 설명 */
   desc?: string;
   /** 장비 외형 */
@@ -30,41 +30,41 @@ export type GearData = {
   attributes: GearAttributeData;
 
   /** 장비 기본 옵션 */
-  baseOption: Partial<GearBaseOption>;
+  baseOption?: Partial<GearBaseOption>;
   /** 장비 추가 옵션 */
-  addOption: Partial<GearAddOption>;
+  addOption?: Partial<GearAddOption>;
   /** 장비 주문서 강화 옵션 */
-  upgradeOption: Partial<GearUpgradeOption>;
+  upgradeOption?: Partial<GearUpgradeOption>;
   /** 장비 스타포스 옵션 */
-  starforceOption: Partial<GearStarforceOption>;
+  starforceOption?: Partial<GearStarforceOption>;
 
   /** 업그레이드 횟수 */
-  scrollUpgradeCount: number;
+  scrollUpgradeCount?: number;
   /** 복구 가능 횟수 */
-  scrollResilienceCount: number;
+  scrollResilienceCount?: number;
   /** 업그레이드 가능 횟수 */
-  scrollUpgradeableCount: number;
+  scrollUpgradeableCount?: number;
   /** 황금 망치 재련 적용 */
-  goldenHammer: number;
+  goldenHammer?: number;
 
   /** 강화 단계 */
-  star: number;
+  star?: number;
   /** 최대 강화 단계 */
-  maxStar: number;
+  maxStar?: number;
   /** 놀라운 장비 강화 주문서 사용 여부 */
-  starScroll: boolean;
+  starScroll?: boolean;
 
   /** 소울 인챈트 */
-  soulEnchanted: boolean;
+  soulEnchanted?: boolean;
   /** 소울 */
   soul?: SoulData;
   /** 소울 충전량 */
-  soulCharge: number;
+  soulCharge?: number;
   /** 소울 충전 옵션 */
-  soulChargeOption: Partial<SoulChargeOption>;
+  soulChargeOption?: Partial<SoulChargeOption>;
 
   /** 잠재능력 등급 */
-  potentialGrade: PotentialGrade;
+  potentialGrade?: PotentialGrade;
   /** 잠재능력 목록 */
   potentials: [
     PotentialData | null,
@@ -72,7 +72,7 @@ export type GearData = {
     PotentialData | null,
   ];
   /** 에디셔널 잠재능력 등급 */
-  additionalPotentialGrade: PotentialGrade;
+  additionalPotentialGrade?: PotentialGrade;
   /** 에디셔널 잠재능력 목록 */
   additionalPotentials: [
     PotentialData | null,
@@ -81,11 +81,11 @@ export type GearData = {
   ];
 
   /** 장비 익셉셔널 옵션 */
-  exceptionalOption: Partial<GearExceptionalOption>;
+  exceptionalOption?: Partial<GearExceptionalOption>;
   /** 익셉셔널 강화 횟수 */
-  exceptionalUpgradeCount: number;
+  exceptionalUpgradeCount?: number;
   /** 익셉셔널 강화 가능 횟수 */
-  exceptionalUpgradeableCount: number;
+  exceptionalUpgradeableCount?: number;
 };
 
 /**

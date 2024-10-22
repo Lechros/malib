@@ -394,26 +394,26 @@ describe('Gear', () => {
     });
 
     it('is 9 after scrollUpgradeCount += 1', () => {
-      gear.data.scrollUpgradeCount += 1;
+      gear.data.scrollUpgradeCount = gear.scrollUpgradeCount + 1;
 
       expect(gear.scrollTotalUpgradeableCount).toBe(9);
     });
 
     it('is 9 after scrollResilienceCount += 1', () => {
-      gear.data.scrollResilienceCount += 1;
+      gear.data.scrollResilienceCount = gear.scrollResilienceCount + 1;
 
       expect(gear.scrollTotalUpgradeableCount).toBe(9);
     });
 
     it('is 9 after scrollUpgradeableCount += 1', () => {
-      gear.data.scrollUpgradeableCount += 1;
+      gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount + 1;
 
       expect(gear.scrollTotalUpgradeableCount).toBe(9);
     });
 
     it('is 8 after scrollUpgrabeableCount += 1, goldenHammer += 1', () => {
-      gear.data.scrollUpgradeableCount += 1;
-      gear.data.goldenHammer += 1;
+      gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount + 1;
+      gear.data.goldenHammer = gear.goldenHammer + 1;
 
       expect(gear.scrollTotalUpgradeableCount).toBe(8);
     });
