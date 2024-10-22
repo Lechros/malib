@@ -1,5 +1,6 @@
-import { GearType, PotentialGrade } from '../data';
+import { GearType } from '../data';
 import { Gear } from '../Gear';
+import { defaultGear } from '../testUtils';
 import {
   applyGoldenHammer,
   applyScroll,
@@ -384,60 +385,11 @@ describe('applyScroll', () => {
 });
 
 beforeEach(() => {
-  gear = new Gear({
-    meta: {
-      id: 1212128,
-      version: 1,
-      add: [],
-    },
-    name: '제네시스 샤이닝로드',
-    icon: '1212128',
-    desc: '해방 무기',
+  gear = defaultGear({
     type: GearType.shiningRod,
     req: {
       level: 200,
-      int: 600,
-      job: 2,
     },
-    attributes: {},
-
-    baseOption: {
-      int: 150,
-      luk: 150,
-      attackPower: 237,
-      magicPower: 400,
-      bossDamage: 30,
-      ignoreMonsterArmor: 20,
-    },
-    addOption: {
-      int: 55,
-      magicPower: 192,
-      bossDamage: 14,
-      allStat: 4,
-    },
-    upgradeOption: {},
-    starforceOption: {},
-
-    scrollUpgradeCount: 0,
-    scrollResilienceCount: 0,
     scrollUpgradeableCount: 8,
-    goldenHammer: 0,
-
-    star: 0,
-    maxStar: 0,
-    starScroll: false,
-
-    soulEnchanted: false,
-    soulCharge: 0,
-    soulChargeOption: {},
-
-    potentialGrade: PotentialGrade.Normal,
-    potentials: [null, null, null],
-    additionalPotentialGrade: PotentialGrade.Normal,
-    additionalPotentials: [null, null, null],
-
-    exceptionalOption: {},
-    exceptionalUpgradeCount: 0,
-    exceptionalUpgradeableCount: 0,
   });
 });

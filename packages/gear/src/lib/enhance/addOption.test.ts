@@ -1,5 +1,6 @@
-import { GearAddOption, GearType, PotentialGrade } from '../data';
+import { GearAddOption, GearType } from '../data';
 import { Gear } from '../Gear';
+import { defaultGear, getGearTypeContains } from '../testUtils';
 import {
   _getAddOptionKeys,
   _getAllStatValue,
@@ -21,7 +22,7 @@ import {
 } from './addOption';
 
 test.each(
-  getGearTypeMap([
+  getGearTypeContains([
     GearType.cap,
     GearType.coat,
     GearType.longcoat,
@@ -816,56 +817,11 @@ function createGear(
   magicPower: number = 0,
   bossReward: boolean = false,
 ): Gear {
-  return new Gear({
-    meta: {
-      id: 0,
-      version: 1,
-      add: [],
-    },
-    name: '',
-    icon: '',
+  return defaultGear({
     type: gearType,
-    req: {
-      level: reqLevel,
-      str: 0,
-      luk: 0,
-      dex: 0,
-      int: 0,
-      job: 0,
-    },
-    attributes: {
-      bossReward,
-    },
-
-    baseOption: {
-      attackPower,
-      magicPower,
-    },
-    addOption: {},
-    upgradeOption: {},
-    starforceOption: {},
-
-    scrollUpgradeCount: 0,
-    scrollResilienceCount: 0,
-    scrollUpgradeableCount: 0,
-    goldenHammer: 0,
-
-    star: 0,
-    maxStar: 0,
-    starScroll: false,
-
-    soulEnchanted: false,
-    soulCharge: 0,
-    soulChargeOption: {},
-
-    potentialGrade: PotentialGrade.Normal,
-    potentials: [null, null, null],
-    additionalPotentialGrade: PotentialGrade.Normal,
-    additionalPotentials: [null, null, null],
-
-    exceptionalOption: {},
-    exceptionalUpgradeCount: 0,
-    exceptionalUpgradeableCount: 0,
+    req: { level: reqLevel },
+    attributes: { bossReward },
+    baseOption: { attackPower, magicPower },
   });
 }
 
@@ -938,123 +894,4 @@ function withCtx<T>(
   ...gradeValues: [AddOptionGrade, number][]
 ): [T, AddOptionGrade, number][] {
   return gradeValues.map(([grade, value]) => [ctx, grade, value]);
-}
-
-function getGearTypeMap(types: GearType[]): [GearType, boolean][] {
-  const set = new Set(types);
-  return getGearTypes().map((type) => [type, set.has(type)]);
-}
-
-function getGearTypes() {
-  return [
-    GearType.cap,
-    GearType.faceAccessory,
-    GearType.eyeAccessory,
-    GearType.earrings,
-    GearType.coat,
-    GearType.longcoat,
-    GearType.pants,
-    GearType.shoes,
-    GearType.glove,
-    GearType.cape,
-    GearType.ring,
-    GearType.pendant,
-    GearType.belt,
-    GearType.medal,
-    GearType.shoulder,
-    GearType.pocket,
-    GearType.badge,
-    GearType.android,
-    GearType.machineHeart,
-    GearType.shield,
-    GearType.emblem,
-    GearType.powerSource,
-    GearType.shiningRod,
-    GearType.tuner,
-    GearType.breathShooter,
-    GearType.soulShooter,
-    GearType.desperado,
-    GearType.energySword,
-    GearType.espLimiter,
-    GearType.chain,
-    GearType.magicGauntlet,
-    GearType.ritualFan,
-    GearType.ohSword,
-    GearType.ohAxe,
-    GearType.ohBlunt,
-    GearType.dagger,
-    GearType.katara,
-    GearType.cane,
-    GearType.wand,
-    GearType.staff,
-    GearType.thSword,
-    GearType.chakram,
-    GearType.thAxe,
-    GearType.thBlunt,
-    GearType.spear,
-    GearType.polearm,
-    GearType.bow,
-    GearType.crossbow,
-    GearType.claw,
-    GearType.knuckle,
-    GearType.gun,
-    GearType.shovel,
-    GearType.pickaxe,
-    GearType.dualBowguns,
-    GearType.handCannon,
-    GearType.heavySword,
-    GearType.longSword,
-    GearType.gauntletRevolver,
-    GearType.ancientBow,
-    GearType.soulShield,
-    GearType.demonShield,
-    GearType.magicArrow,
-    GearType.card,
-    GearType.medallion,
-    GearType.rosary,
-    GearType.ironChain,
-    GearType.magicBook1,
-    GearType.magicBook2,
-    GearType.magicBook3,
-    GearType.arrowFletching,
-    GearType.bowThimble,
-    GearType.daggerScabbard,
-    GearType.charm,
-    GearType.orb,
-    GearType.dragonEssence,
-    GearType.soulRing,
-    GearType.magnum,
-    GearType.wristBand,
-    GearType.farSight,
-    GearType.powderKeg,
-    GearType.mass,
-    GearType.document,
-    GearType.magicMarble,
-    GearType.arrowhead,
-    GearType.jewel,
-    GearType.powderKeg2,
-    GearType.controller,
-    GearType.foxMarble,
-    GearType.chessPiece,
-    GearType.transmitter,
-    GearType.charge,
-    GearType.magicWing,
-    GearType.pathOfAbyss,
-    GearType.relic,
-    GearType.fanTassel,
-    GearType.bracelet,
-    GearType.weaponBelt,
-    GearType.ornament,
-    GearType.hexSeeker,
-    GearType.petEquip,
-    GearType.machineEngine,
-    GearType.machineArms,
-    GearType.machineLegs,
-    GearType.machineBody,
-    GearType.machineTransistors,
-    GearType.dragonMask,
-    GearType.dragonPendant,
-    GearType.dragonWings,
-    GearType.dragonTail,
-  ];
 }
