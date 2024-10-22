@@ -4,7 +4,6 @@ import {
   GearData,
   GearExceptionalOption,
   GearMetadata,
-  GearScrollOption,
   GearStarforceOption,
   GearType,
   GearUpgradeOption,
@@ -19,6 +18,25 @@ import {
   canAddOption,
   getAddOption,
 } from './enhance/addOption';
+import {
+  applySpellTrace,
+  SpellTraceRate,
+  SpellTraceType,
+} from './enhance/spellTrace';
+import {
+  applyGoldenHammer,
+  applyScroll,
+  canApplyScroll,
+  canFailScroll,
+  canGoldenHammer,
+  canResetUpgrade,
+  canResileScroll,
+  canUpgrade,
+  failScroll,
+  resetUpgrade,
+  resileScroll,
+  Scroll,
+} from './enhance/upgrade';
 import { GearAttribute } from './GearAttribute';
 import { GearReq } from './GearReq';
 import { addOptions, sumOptions } from './utils';
@@ -188,6 +206,20 @@ export class Gear {
   }
 
   /**
+   * 전체 업그레이드 가능 횟수
+   *
+   * 성공, 실패, 황금 망치 적용 여부를 무시한 장비의 기본 업그레이드 가능 횟수입니다.
+   */
+  get scrollTotalUpgradeableCount(): number {
+    return (
+      this.scrollUpgradeCount +
+      this.scrollUpgradeableCount +
+      this.scrollResilienceCount -
+      this.goldenHammer
+    );
+  }
+
+  /**
    * 강화 단계
    */
   get star(): number {
@@ -348,5 +380,113 @@ export class Gear {
   resetAddOption() {
     this.data.addOption = {};
     this.meta.add = [];
+  }
+
+  /**
+   * 주문서 강화를 지원하는지 여부
+   */
+  get canUpgrade(): boolean {
+    return canUpgrade(this);
+  }
+
+  /**
+   * 황금 망치를 적용할 수 있는지 여부
+   */
+  get canGoldenHammer(): boolean {
+    return canGoldenHammer(this);
+  }
+
+  /**
+   * 황금 망치를 적용합니다.
+   *
+   * @throws {@link TypeError}
+   * 황금 망치를 적용할 수 없는 상태일 경우.
+   */
+  applyGoldenHammer() {
+    applyGoldenHammer(this);
+  }
+
+  /**
+   * 주문서 실패를 적용할 수 있는지 여부
+   */
+  get canFailScroll(): boolean {
+    return canFailScroll(this);
+  }
+
+  /**
+   * 주문서 실패를 적용합니다.
+   *
+   * @throws {@link TypeError}
+   * 주문서 실패를 적용할 수 없는 상태일 경우.
+   */
+  failScroll() {
+    failScroll(this);
+  }
+
+  /**
+   * 주문서 실패로 차감된 업그레이드 가능 횟수를 복구할 수 있는지 여부
+   */
+  get canResileScroll(): boolean {
+    return canResileScroll(this);
+  }
+
+  /**
+   * 주문서 실패로 차감된 업그레이드 가능 횟수를 1회 복구합니다.
+   *
+   * @throws {@link TypeError}
+   * 업그레이드 가능 횟수를 복구할 수 없는 상태일 경우.
+   */
+  resileScroll() {
+    resileScroll(this);
+  }
+
+  /**
+   * 주문서 강화를 초기화할 수 있는지 여부
+   */
+  get canResetUpgrade(): boolean {
+    return canResetUpgrade(this);
+  }
+
+  /**
+   * 주문서 강화를 초기화합니다.
+   *
+   * @throws {@link TypeError}
+   * 주문서 강화를 초기화할 수 없는 장비일 경우.
+   */
+  resetUpgrade() {
+    resetUpgrade(this);
+  }
+
+  /**
+   * 주문서를 적용할 수 있는지 여부
+   */
+  get canApplyScroll(): boolean {
+    return canApplyScroll(this);
+  }
+
+  /**
+   * 주문서를 적용합니다.
+   * @param scroll 적용할 주문서.
+   *
+   * @throws {@link TypeError}
+   * 주문서를 적용할 수 없는 상태일 경우.
+   */
+  applyScroll(scroll: Scroll) {
+    applyScroll(this, scroll);
+  }
+
+  /**
+   * 주문의 흔적 강화를 적용합니다.
+   * @param type 주문의 흔적 종류.
+   * @param rate 주문의 흔적 성공 확률.
+   *
+   * @throws {@link TypeError}
+   * 주문서를 적용할 수 없는 상태일 경우.
+   *
+   * @throws {@link TypeError}
+   * 적용할 수 없는 주문의 흔적을 지정했을 경우.
+   */
+  applySpellTrace(type: SpellTraceType, rate: SpellTraceRate) {
+    applySpellTrace(this, type, rate);
   }
 }
