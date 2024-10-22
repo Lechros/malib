@@ -48,8 +48,8 @@ export function applyGoldenHammer(gear: Gear) {
   if (!canGoldenHammer(gear)) {
     throw TypeError(ErrorMessage.Upgrade_InvalidGoldenHammerGear);
   }
-  gear.data.goldenHammer += 1;
-  gear.data.scrollUpgradeableCount += 1;
+  gear.data.goldenHammer = gear.goldenHammer + 1;
+  gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount + 1;
 }
 
 /**
@@ -72,8 +72,8 @@ export function failScroll(gear: Gear) {
   if (!canFailScroll(gear)) {
     throw TypeError(ErrorMessage.Upgrade_InvalidFailScrollGear);
   }
-  gear.data.scrollUpgradeableCount -= 1;
-  gear.data.scrollResilienceCount += 1;
+  gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount - 1;
+  gear.data.scrollResilienceCount = gear.scrollResilienceCount + 1;
 }
 
 /**
@@ -96,8 +96,8 @@ export function resileScroll(gear: Gear) {
   if (!canResileScroll(gear)) {
     throw TypeError(ErrorMessage.Upgrade_InvalidResileScrollGear);
   }
-  gear.data.scrollResilienceCount -= 1;
-  gear.data.scrollUpgradeableCount += 1;
+  gear.data.scrollResilienceCount = gear.scrollResilienceCount - 1;
+  gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount + 1;
 }
 
 /**
@@ -121,12 +121,10 @@ export function resetUpgrade(gear: Gear) {
     throw TypeError(ErrorMessage.Upgrade_InvalidResetScrollGear);
   }
   gear.data.upgradeOption = {};
-  gear.data.scrollUpgradeableCount += gear.scrollUpgradeCount;
-  gear.data.scrollUpgradeCount = 0;
-  gear.data.scrollUpgradeableCount += gear.scrollResilienceCount;
-  gear.data.scrollResilienceCount = 0;
-  gear.data.scrollUpgradeableCount -= gear.goldenHammer;
-  gear.data.goldenHammer = 0;
+  gear.data.scrollUpgradeableCount = gear.scrollTotalUpgradeableCount;
+  gear.data.scrollUpgradeCount = undefined;
+  gear.data.scrollResilienceCount = undefined;
+  gear.data.goldenHammer = undefined;
 }
 
 /**
@@ -151,6 +149,6 @@ export function applyScroll(gear: Gear, scroll: Scroll) {
     throw TypeError(ErrorMessage.Upgrade_InvalidApplyScrollGear);
   }
   addOptions(gear.upgradeOption, scroll.option);
-  gear.data.scrollUpgradeableCount -= 1;
-  gear.data.scrollUpgradeCount += 1;
+  gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount - 1;
+  gear.data.scrollUpgradeCount = gear.scrollUpgradeCount + 1;
 }
