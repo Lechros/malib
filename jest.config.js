@@ -1,19 +1,23 @@
+import { readdirSync } from 'fs';
+
 /** @type {import('jest').Config} */
 const config = {
   projects: [
-    {
-      displayName: 'gear',
-      rootDir: 'packages/gear',
-      roots: ['src'],
-    },
+    ...readdirSync('packages').map((name) => ({
+      displayName: name,
+      roots: [`packages/${name}/src`],
+      testMatch: [
+        '**/__tests__/**/*.[jt]s?(x)',
+        '**/?(*.)+(spec|test).[tj]s?(x)',
+      ],
+      transform: {
+        '^.+\\.(t|j)sx?$': '@swc/jest',
+      },
+    })),
   ],
   collectCoverage: true,
   coverageProvider: 'v8',
   coverageReporters: ['text'],
-  testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
-  transform: {
-    '^.+\\.(t|j)sx?$': '@swc/jest',
-  },
 };
 
 export default config;
