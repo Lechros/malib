@@ -6,6 +6,7 @@ import {
   PotentialGrade,
 } from './data';
 import { AddOptionGrade, AddOptionType } from './enhance/addOption';
+import { SpellTraceType } from './enhance/spellTrace';
 import { Gear } from './Gear';
 
 describe('Gear constructor', () => {
@@ -387,6 +388,37 @@ describe('Gear', () => {
     });
   });
 
+  describe('scrollTotalUpgradeableCount', () => {
+    it('is 8', () => {
+      expect(gear.scrollTotalUpgradeableCount).toBe(8);
+    });
+
+    it('is 9 after scrollUpgradeCount += 1', () => {
+      gear.data.scrollUpgradeCount += 1;
+
+      expect(gear.scrollTotalUpgradeableCount).toBe(9);
+    });
+
+    it('is 9 after scrollResilienceCount += 1', () => {
+      gear.data.scrollResilienceCount += 1;
+
+      expect(gear.scrollTotalUpgradeableCount).toBe(9);
+    });
+
+    it('is 9 after scrollUpgradeableCount += 1', () => {
+      gear.data.scrollUpgradeableCount += 1;
+
+      expect(gear.scrollTotalUpgradeableCount).toBe(9);
+    });
+
+    it('is 8 after scrollUpgrabeableCount += 1, goldenHammer += 1', () => {
+      gear.data.scrollUpgradeableCount += 1;
+      gear.data.goldenHammer += 1;
+
+      expect(gear.scrollTotalUpgradeableCount).toBe(8);
+    });
+  });
+
   describe('star', () => {
     it('is 22', () => {
       expect(gear.star).toBe(22);
@@ -718,6 +750,165 @@ describe('Gear', () => {
       gear.resetAddOption();
 
       expect(gear.meta.add).toEqual([]);
+    });
+  });
+
+  describe('canUpgrade', () => {
+    it('is true', () => {
+      expect(gear.canUpgrade).toBe(true);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error
+      expect(() => (gear.canUpgrade = false)).toThrow();
+    });
+  });
+
+  describe('canGoldenHammer', () => {
+    it('is true', () => {
+      expect(gear.canGoldenHammer).toBe(true);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error
+      expect(() => (gear.canGoldenHammer = false)).toThrow();
+    });
+  });
+
+  describe('applyGoldenHammer', () => {
+    it('sets goldenHammer to 1', () => {
+      gear.applyGoldenHammer();
+
+      expect(gear.goldenHammer).toBe(1);
+    });
+  });
+
+  describe('canFailScroll', () => {
+    it('is false', () => {
+      expect(gear.canFailScroll).toBe(false);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error
+      expect(() => (gear.canFailScroll = true)).toThrow();
+    });
+  });
+
+  describe('failScroll', () => {
+    it('throws TypeError', () => {
+      expect(() => gear.failScroll()).toThrow();
+    });
+
+    it('sets scrollUpgradeableCount from 1 to 0', () => {
+      gear.data.scrollUpgradeableCount = 1;
+
+      gear.failScroll();
+
+      expect(gear.scrollUpgradeableCount).toBe(0);
+    });
+  });
+
+  describe('canResileScroll', () => {
+    it('is false', () => {
+      expect(gear.canResileScroll).toBe(false);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error
+      expect(() => (gear.canResileScroll = true)).toThrow();
+    });
+  });
+
+  describe('resileScroll', () => {
+    it('throws TypeError', () => {
+      expect(() => gear.resileScroll()).toThrow();
+    });
+
+    it('sets scrollResilienceCount from 1 to 0', () => {
+      gear.data.scrollResilienceCount = 1;
+
+      gear.resileScroll();
+
+      expect(gear.scrollResilienceCount).toBe(0);
+    });
+  });
+
+  describe('canResetUpgrade', () => {
+    it('is true', () => {
+      expect(gear.canResetUpgrade).toBe(true);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error
+      expect(() => (gear.canResetUpgrade = false)).toThrow();
+    });
+  });
+
+  describe('resetUpgrade', () => {
+    it('resets upgradeOption', () => {
+      gear.resetUpgrade();
+
+      expect(gear.upgradeOption).toEqual({});
+    });
+
+    it('sets scrollUpgradeCount to 0', () => {
+      gear.resetUpgrade();
+
+      expect(gear.scrollUpgradeCount).toBe(0);
+    });
+  });
+
+  describe('canApplyScroll', () => {
+    it('is false', () => {
+      expect(gear.canApplyScroll).toBe(false);
+    });
+
+    it('is true for scrollUpgradeableCount == 1', () => {
+      gear.data.scrollUpgradeableCount = 1;
+
+      expect(gear.canApplyScroll).toBe(true);
+    });
+  });
+
+  describe('applyScroll', () => {
+    it('throws TypeError', () => {
+      const scroll = { name: '', option: {} };
+
+      expect(() => gear.applyScroll(scroll)).toThrow();
+    });
+
+    it('adds int = 100 to upgradeOption for scrollUpgradeableCount == 1', () => {
+      gear.data.scrollUpgradeableCount = 1;
+      const scroll = { name: '', option: { int: 100 } };
+      const intBefore = gear.upgradeOption.int ?? 0;
+
+      gear.applyScroll(scroll);
+
+      expect(gear.upgradeOption.int).toBe(intBefore + 100);
+    });
+
+    it('sets scrollUpgradeCount from 8 to 9', () => {
+      gear.data.scrollUpgradeableCount = 1;
+      const scroll = { name: '', option: { int: 100 } };
+
+      gear.applyScroll(scroll);
+
+      expect(gear.scrollUpgradeCount).toBe(9);
+    });
+  });
+
+  describe('applySpellTrace', () => {
+    it('throws TypeError', () => {
+      expect(() => gear.applySpellTrace(SpellTraceType.dex, 30)).toThrow();
+    });
+
+    it('adds magicPower = 9 to upgradeOption for scrollUpgradeableCount == 1', () => {
+      gear.data.scrollUpgradeableCount = 1;
+      const magicPowerBefore = gear.upgradeOption.magicPower ?? 0;
+
+      gear.applySpellTrace(SpellTraceType.int, 15);
+
+      expect(gear.upgradeOption.magicPower).toBe(magicPowerBefore + 9);
     });
   });
 
