@@ -38,6 +38,7 @@ import {
   Scroll,
 } from './enhance/upgrade';
 import { GearAttribute } from './GearAttribute';
+import { toGearOption } from './gearOption';
 import { GearReq } from './GearReq';
 import { addOptions, sumOptions } from './utils';
 
@@ -137,44 +138,44 @@ export class Gear {
    * 익셉셔널 옵션은 미포함.
    */
   get totalOption(): Readonly<
-    Partial<
-      GearBaseOption | GearAddOption | GearUpgradeOption | GearStarforceOption
-    >
+    GearBaseOption | GearAddOption | GearUpgradeOption | GearStarforceOption
   > {
-    return sumOptions(
-      this.baseOption,
-      this.addOption,
-      this.upgradeOption,
-      this.starforceOption,
+    return toGearOption(
+      sumOptions(
+        this.baseOption,
+        this.addOption,
+        this.upgradeOption,
+        this.starforceOption,
+      ),
     );
   }
 
   /**
    * 장비 순수 옵션
    */
-  get baseOption(): Readonly<Partial<GearBaseOption>> {
-    return this.data.baseOption ?? {};
+  get baseOption(): Readonly<GearBaseOption> {
+    return toGearOption(this.data.baseOption ?? {});
   }
 
   /**
    * 장비 추가 옵션
    */
-  get addOption(): Readonly<Partial<GearAddOption>> {
-    return this.data.addOption ?? {};
+  get addOption(): Readonly<GearAddOption> {
+    return toGearOption(this.data.addOption ?? {});
   }
 
   /**
    * 장비 주문서 강화 옵션
    */
-  get upgradeOption(): Readonly<Partial<GearUpgradeOption>> {
-    return this.data.upgradeOption ?? {};
+  get upgradeOption(): Readonly<GearUpgradeOption> {
+    return toGearOption(this.data.upgradeOption ?? {});
   }
 
   /**
    * 장비 스타포스 옵션
    */
-  get starforceOption(): Readonly<Partial<GearStarforceOption>> {
-    return this.data.starforceOption ?? {};
+  get starforceOption(): Readonly<GearStarforceOption> {
+    return toGearOption(this.data.starforceOption ?? {});
   }
 
   /**
@@ -264,8 +265,8 @@ export class Gear {
   /**
    * 소울 충전 옵션
    */
-  get soulChargeOption(): Readonly<Partial<SoulChargeOption>> {
-    return this.data.soulChargeOption ?? {};
+  get soulChargeOption(): Readonly<SoulChargeOption> {
+    return toGearOption(this.data.soulChargeOption ?? {});
   }
 
   /**
@@ -315,8 +316,8 @@ export class Gear {
   /**
    * 장비 익셉셔널 옵션
    */
-  get exceptionalOption(): Readonly<Partial<GearExceptionalOption>> {
-    return this.data.exceptionalOption ?? {};
+  get exceptionalOption(): Readonly<GearExceptionalOption> {
+    return toGearOption(this.data.exceptionalOption ?? {});
   }
 
   /**
