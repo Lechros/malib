@@ -148,7 +148,10 @@ export function applyScroll(gear: Gear, scroll: Scroll) {
   if (!canApplyScroll(gear)) {
     throw TypeError(ErrorMessage.Upgrade_InvalidApplyScrollGear);
   }
-  addOptions(gear.upgradeOption, scroll.option);
+  if (gear.data.upgradeOption === undefined) {
+    gear.data.upgradeOption = {}
+  }
+  addOptions(gear.data.upgradeOption!, scroll.option);
   gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount - 1;
   gear.data.scrollUpgradeCount = gear.scrollUpgradeCount + 1;
 }
