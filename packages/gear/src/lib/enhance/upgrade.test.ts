@@ -357,6 +357,21 @@ describe('applyScroll', () => {
     expect(gear.scrollUpgradeableCount).toBe(1);
   });
 
+  it('adds option to upgradeOption == undefined gear', () => {
+    gear.data.upgradeOption = undefined;
+
+    applyScroll(gear, scroll);
+
+    expect(gear.upgradeOption).toEqual({
+      str: 1,
+      dex: 2,
+      int: 3,
+      luk: 4,
+      maxHp: 50,
+      magicPower: 10,
+    });
+  });
+
   it('adds option to upgradeOption', () => {
     gear.data.upgradeOption = {};
 
