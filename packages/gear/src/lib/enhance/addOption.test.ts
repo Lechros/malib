@@ -16,9 +16,9 @@ import {
   AddOptionContext,
   AddOptionGrade,
   AddOptionType,
-  canAddOption,
   getAddOption,
   getAddOptionValue,
+  supportsAddOption,
 } from './addOption';
 
 test.each(
@@ -72,7 +72,7 @@ test.each(
     GearType.ancientBow,
   ]),
 )('canAddOption(type=%d) returns %p', (gearType, expected) => {
-  const can = canAddOption(gearType);
+  const can = supportsAddOption(gearType);
 
   expect(can).toBe(expected);
 });

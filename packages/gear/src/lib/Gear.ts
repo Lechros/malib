@@ -15,8 +15,8 @@ import {
 import {
   AddOptionGrade,
   AddOptionType,
-  canAddOption,
   getAddOption,
+  supportsAddOption,
 } from './enhance/addOption';
 import {
   applySpellTrace,
@@ -40,11 +40,11 @@ import {
   canGoldenHammer,
   canResetUpgrade,
   canResileScroll,
-  canUpgrade,
   failScroll,
   resetUpgrade,
   resileScroll,
   Scroll,
+  supportsUpgrade,
 } from './enhance/upgrade';
 import { GearAttribute } from './GearAttribute';
 import { toGearOption } from './gearOption';
@@ -55,12 +55,14 @@ import { addOptions, sumOptions } from './utils';
  * 장비
  *
  * 장비 정보를 KMS과 동일한 방식으로 변경하는 기능을 제공합니다.
+ * - `supports...`: 장비가 특정 강화 방식을 지원하는지 여부입니다.
+ * - `can...`: 장비에 특정 강화를 적용할 수 있는 상태인지 여부입니다.
+ * - `apply...()`: 장비에 특정 강화를 적용합니다.
+ * - `reset...()`: 장비의 특정 강화에 관련된 속성을 초기화합니다.
  *
  * 생성자에 전달된 장비 정보와 `data` 속성 간에 엄격한 동등(`===`)을 보장합니다.
  *
  * 장비 정보의 모든 속성에 대해 읽기 전용 속성을 제공하고, 일부 속성은 장비 객체 자체에 또는 반환 객체의 속성에 쓰기가 가능합니다.
- * 쓰기가 지원되지 않는 속성은 장비 정보를 직접 변경하여 장비에 반영할 수 있습니다.
- * 단, 장비 정보를 직접 변경할 경우 이후의 기능이 올바르게 동작함이 보장되지 않습니다.
  */
 export class Gear {
   /** 장비 정보 */
@@ -239,8 +241,8 @@ export class Gear {
   /**
    * 최대 강화 단계
    *
-   * 장비의 기본 최대 강화 단계를 초과할 시 현재 강화 단계입니다.
-   * 놀라운 장비 강화 주문서가 사용되었을 경우 최대 15입니다.
+   * 장비의 현재 강화 단계가 최대 강화 단계를 초과할 시 현재 강화 단계입니다.
+   * 놀라운 장비 강화 주문서가 사용되었을 경우 최대 `15`입니다.
    */
   get maxStar(): number {
     const value = this.data.maxStar ?? 0;
@@ -358,7 +360,7 @@ export class Gear {
   }
 
   /**
-   * 장비의 외형을 제거합니다.
+   * 장비의 외형을 초기화합니다.
    */
   resetShape() {
     this.data.shapeName = undefined;
@@ -366,12 +368,12 @@ export class Gear {
   }
 
   /**
-   * 장비에 추가 옵션을 적용할 수 있는지 여부
+   * 장비가 추가 옵션을 지원하는지 여부
    *
    * '스칼렛 숄더', '보스 아레나 엠블렘'일 경우 `false`를 반환합니다. 해당 동작은 변경될 수 있습니다.
    */
-  get canAddOption(): boolean {
-    return canAddOption(this.type);
+  get supportsAddOption(): boolean {
+    return supportsAddOption(this.type);
   }
 
   /**
@@ -400,21 +402,21 @@ export class Gear {
   }
 
   /**
-   * 주문서 강화를 지원하는지 여부
+   * 장비가 주문서 강화를 지원하는지 여부
    */
-  get canUpgrade(): boolean {
-    return canUpgrade(this);
+  get supportsUpgrade(): boolean {
+    return supportsUpgrade(this);
   }
 
   /**
-   * 황금 망치를 적용할 수 있는지 여부
+   * 장비에 황금 망치를 적용할 수 있는 상태인지 여부
    */
-  get canGoldenHammer(): boolean {
+  get canApplyGoldenHammer(): boolean {
     return canGoldenHammer(this);
   }
 
   /**
-   * 황금 망치를 적용합니다.
+   * 장비에 황금 망치를 적용합니다.
    *
    * @throws {@link TypeError}
    * 황금 망치를 적용할 수 없는 상태일 경우.
@@ -424,48 +426,48 @@ export class Gear {
   }
 
   /**
-   * 주문서 실패를 적용할 수 있는지 여부
+   * 장비에 주문서 실패를 적용할 수 있는 상태인지 여부
    */
-  get canFailScroll(): boolean {
+  get canApplyFailScroll(): boolean {
     return canFailScroll(this);
   }
 
   /**
-   * 주문서 실패를 적용합니다.
+   * 장비에 주문서 실패를 1회 적용합니다.
    *
    * @throws {@link TypeError}
    * 주문서 실패를 적용할 수 없는 상태일 경우.
    */
-  failScroll() {
+  applyScrollFail() {
     failScroll(this);
   }
 
   /**
-   * 주문서 실패로 차감된 업그레이드 가능 횟수를 복구할 수 있는지 여부
+   * 장비의 주문서 실패로 차감된 업그레이드 가능 횟수를 복구할 수 있는 상태인지 여부
    */
-  get canResileScroll(): boolean {
+  get canApplyResileScroll(): boolean {
     return canResileScroll(this);
   }
 
   /**
-   * 주문서 실패로 차감된 업그레이드 가능 횟수를 1회 복구합니다.
+   * 장비의 주문서 실패로 차감된 업그레이드 가능 횟수를 1회 복구합니다.
    *
    * @throws {@link TypeError}
    * 업그레이드 가능 횟수를 복구할 수 없는 상태일 경우.
    */
-  resileScroll() {
+  applyScrollResile() {
     resileScroll(this);
   }
 
   /**
-   * 주문서 강화를 초기화할 수 있는지 여부
+   * 장비의 주문서 강화를 초기화할 수 있는 상태인지 여부
    */
   get canResetUpgrade(): boolean {
     return canResetUpgrade(this);
   }
 
   /**
-   * 주문서 강화를 초기화합니다.
+   * 장비의 주문서 강화를 초기화합니다.
    *
    * @throws {@link TypeError}
    * 주문서 강화를 초기화할 수 없는 장비일 경우.
@@ -475,14 +477,14 @@ export class Gear {
   }
 
   /**
-   * 주문서를 적용할 수 있는지 여부
+   * 장비에 주문서를 적용할 수 있는 상태인지 여부
    */
   get canApplyScroll(): boolean {
     return canApplyScroll(this);
   }
 
   /**
-   * 주문서를 적용합니다.
+   * 장비에 주문서를 1회 적용합니다.
    * @param scroll 적용할 주문서.
    *
    * @throws {@link TypeError}
@@ -493,7 +495,7 @@ export class Gear {
   }
 
   /**
-   * 주문의 흔적 강화를 적용합니다.
+   * 장비에 주문의 흔적 강화를 1회 적용합니다.
    * @param type 주문의 흔적 종류.
    * @param rate 주문의 흔적 성공 확률.
    *
@@ -517,7 +519,7 @@ export class Gear {
   /**
    * 장비에 스타포스 강화를 적용할 수 있는 상태인지 여부
    */
-  get canStarforce(): boolean {
+  get canApplyStarforce(): boolean {
     return canStarforce(this);
   }
 
@@ -527,14 +529,14 @@ export class Gear {
    * @throws {@link TypeError}
    * 스타포스 강화를 적용할 수 없는 경우.
    */
-  starforce() {
+  applyStarforce() {
     starforce(this);
   }
 
   /**
    * 장비에 최대 강화 단계를 무시하고 스타포스 강화를 적용할 수 있는 상태인지 여부
    */
-  get canStarforceIgnoringMaxStar(): boolean {
+  get canApplyStarforceIgnoringMaxStar(): boolean {
     return canStarforce(this, true);
   }
 
@@ -544,7 +546,7 @@ export class Gear {
    * @throws {@link TypeError}
    * 스타포스 강화를 적용할 수 없는 경우.
    */
-  starforceIgnoringMaxStar() {
+  applyStarforceIgnoringMaxStar() {
     starforce(this, true);
   }
 
