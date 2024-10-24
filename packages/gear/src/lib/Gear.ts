@@ -24,6 +24,15 @@ import {
   SpellTraceType,
 } from './enhance/spellTrace';
 import {
+  canResetStarforce,
+  canStarforce,
+  canStarScroll,
+  resetStarforce,
+  starforce,
+  starScroll,
+  supportsStarforce,
+} from './enhance/starforce';
+import {
   applyGoldenHammer,
   applyScroll,
   canApplyScroll,
@@ -229,9 +238,13 @@ export class Gear {
 
   /**
    * 최대 강화 단계
+   *
+   * 장비의 기본 최대 강화 단계를 초과할 시 현재 강화 단계입니다.
+   * 놀라운 장비 강화 주문서가 사용되었을 경우 최대 15입니다.
    */
   get maxStar(): number {
-    return this.data.maxStar ?? 0;
+    const value = this.data.maxStar ?? 0;
+    return Math.max(this.star, this.starScroll ? Math.min(15, value) : value);
   }
 
   /**
@@ -492,5 +505,96 @@ export class Gear {
    */
   applySpellTrace(type: SpellTraceType, rate: SpellTraceRate) {
     applySpellTrace(this, type, rate);
+  }
+
+  /**
+   * 장비가 스타포스 강화를 지원하는지 여부
+   */
+  get supportsStarforce(): boolean {
+    return supportsStarforce(this);
+  }
+
+  /**
+   * 장비에 스타포스 강화를 적용할 수 있는 상태인지 여부
+   */
+  get canStarforce(): boolean {
+    return canStarforce(this);
+  }
+
+  /**
+   * 장비에 스타포스 강화를 1회 적용합니다.
+   *
+   * @throws {@link TypeError}
+   * 스타포스 강화를 적용할 수 없는 경우.
+   */
+  starforce() {
+    starforce(this);
+  }
+
+  /**
+   * 장비에 최대 강화 단계를 무시하고 스타포스 강화를 적용할 수 있는 상태인지 여부
+   */
+  get canStarforceIgnoringMaxStar(): boolean {
+    return canStarforce(this, true);
+  }
+
+  /**
+   * 장비에 최대 강화 단계를 무시하고 스타포스 강화를 1회 적용합니다.
+   *
+   * @throws {@link TypeError}
+   * 스타포스 강화를 적용할 수 없는 경우.
+   */
+  starforceIgnoringMaxStar() {
+    starforce(this, true);
+  }
+
+  /**
+   * 장비에 놀라운 장비 강화 주문서를 적용할 수 있는 상태인지 여부
+   */
+  get canApplyStarScroll(): boolean {
+    return canStarScroll(this);
+  }
+
+  /**
+   * 장비에 놀라운 장비 강화 주문서를 1회 적용합니다.
+   * @param bonus 보너스 스탯 적용 여부.
+   *
+   * @throws {@link TypeError}
+   * 놀라운 장비 강화 주문서를 적용할 수 없는 경우.
+   */
+  applyStarScroll(bonus = false) {
+    starScroll(this, bonus);
+  }
+
+  /**
+   * 장비에 놀라운 장비 강화 주문서를 적용할 수 있는 상태인지 여부
+   */
+  get canApplyStarScrollIgnoringMaxStar(): boolean {
+    return canStarScroll(this, true);
+  }
+
+  /**
+   * 장비에 놀라운 장비 강화 주문서를 1회 적용합니다.
+   * @param bonus 보너스 스탯 적용 여부.
+   *
+   * @throws {@link TypeError}
+   * 놀라운 장비 강화 주문서를 적용할 수 없는 경우.
+   */
+  applyStarScrollIgnoringMaxStar(bonus = false) {
+    starScroll(this, bonus, true);
+  }
+
+  /**
+   * 장비의 스타포스 강화를 초기화할 수 있는지 여부
+   */
+  get canResetStarforce(): boolean {
+    return canResetStarforce(this);
+  }
+
+  /**
+   * 장비의 스타포스 강화를 초기화합니다.
+   */
+  resetStarforce() {
+    resetStarforce(this);
   }
 }
