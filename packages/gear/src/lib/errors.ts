@@ -15,4 +15,9 @@ export const enum ErrorMessage {
   Upgrade_InvalidApplyScrollGear = '주문서를 적용할 수 없는 상태의 장비입니다.',
   SpellTrace_InvalidSpellTrace = '주문의 흔적을 장비에 적용할 수 없습니다.',
   SpellTrace_InvalidGearType = '주문의 흔적을 적용할 수 없는 장비 분류입니다.',
+
+  Starforce_InvalidStarforceGear = '스타포스 강화를 적용할 수 없는 상태의 장비입니다.',
+  Starforce_InvalidReqLevelGear = '장비의 착용 가능 레벨은 0 이상이어야 합니다.',
+  StarScroll_InvalidStarScrollGear = '놀라운 장비 강화 주문서를 적용할 수 없는 상태의 장비입니다.',
+  Starforce_InvalidResetGear = '스타포스 강화를 초기화할 수 없는 장비입니다.'
 }

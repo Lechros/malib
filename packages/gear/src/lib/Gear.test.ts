@@ -880,6 +880,125 @@ describe('Gear', () => {
     });
   });
 
+  describe('supportsStarforce', () => {
+    it('is true', () => {
+      expect(gear.supportsStarforce).toBe(true);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error
+      expect(() => (gear.supportsStarforce = false)).toThrow();
+    });
+  });
+
+  describe('canStarforce', () => {
+    it('is true', () => {
+      expect(gear.canStarforce).toBe(true);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error
+      expect(() => (gear.canStarforce = false)).toThrow();
+    });
+  });
+
+  describe('starforce', () => {
+    it('sets star to 23', () => {
+      gear.starforce();
+
+      expect(gear.star).toBe(23);
+    });
+
+    it('modifies starforceOption', () => {
+      const original = { ...gear.starforceOption };
+
+      gear.starforce();
+
+      expect(gear.starforceOption).not.toEqual(original);
+    });
+  });
+
+  describe('canStarforceIgnoringMaxStar', () => {
+    it('is true', () => {
+      expect(gear.canStarforceIgnoringMaxStar).toBe(true);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error
+      expect(() => (gear.canStarforceIgnoringMaxStar = false)).toThrow();
+    });
+  });
+
+  describe('starforceIgnoringMaxStar', () => {
+    it('sets star to 23', () => {
+      gear.starforceIgnoringMaxStar();
+
+      expect(gear.star).toBe(23);
+    });
+
+    it('modifies starforceOption', () => {
+      const original = { ...gear.starforceOption };
+
+      gear.starforceIgnoringMaxStar();
+
+      expect(gear.starforceOption).not.toEqual(original);
+    });
+  });
+
+  describe('canStarScroll', () => {
+    it('is false', () => {
+      expect(gear.canApplyStarScroll).toBe(false);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error
+      expect(() => (gear.canApplyStarScroll = true)).toThrow();
+    });
+  });
+
+  describe('applyStarScroll', () => {
+    it('throws TypeError', () => {
+      expect(() => gear.applyStarScroll()).toThrow(TypeError);
+    });
+  });
+
+  describe('canStarScrollIgnoringMaxStar', () => {
+    it('is false', () => {
+      expect(gear.canApplyStarScrollIgnoringMaxStar).toBe(false);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error
+      expect(() => (gear.canApplyStarScrollIgnoringMaxStar = true)).toThrow();
+    });
+  });
+
+  describe('applyStarScrollIgnoringMaxStar', () => {
+    it('throws TypeError', () => {
+      expect(() => gear.applyStarScrollIgnoringMaxStar()).toThrow(TypeError);
+    });
+  });
+
+  describe('canResetStarforce', () => {
+    it('is true', () => {
+      expect(gear.canResetStarforce).toBe(true);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error
+      expect(() => (gear.canResetStarforce = true)).toThrow();
+    });
+  });
+
+  describe('resetStarforce', () => {
+    it('resets star and starforceOption', () => {
+      gear.resetStarforce();
+
+      expect(gear.star).toBe(0);
+      expect(gear.starforceOption).toEqual({});
+    });
+  });
+
   beforeEach(() => {
     gear = new Gear({
       meta: {
