@@ -20,7 +20,7 @@ export type Scroll = {
  * @param gear 확인할 장비.
  * @returns 지원할 경우 `true`; 아닐 경우 `false`.
  */
-export function canUpgrade(gear: Gear): boolean {
+export function supportsUpgrade(gear: Gear): boolean {
   return !gear.attributes.cannotUpgrade && gear.scrollTotalUpgradeableCount > 0;
 }
 
@@ -31,7 +31,7 @@ export function canUpgrade(gear: Gear): boolean {
  */
 export function canGoldenHammer(gear: Gear): boolean {
   return (
-    canUpgrade(gear) &&
+    supportsUpgrade(gear) &&
     !gear.attributes.blockGoldenHammer &&
     gear.goldenHammer === 0
   );
@@ -58,7 +58,7 @@ export function applyGoldenHammer(gear: Gear) {
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canFailScroll(gear: Gear): boolean {
-  return canUpgrade(gear) && gear.scrollUpgradeableCount > 0;
+  return supportsUpgrade(gear) && gear.scrollUpgradeableCount > 0;
 }
 
 /**
@@ -82,7 +82,7 @@ export function failScroll(gear: Gear) {
  * @returns 복구할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canResileScroll(gear: Gear): boolean {
-  return canUpgrade(gear) && gear.scrollResilienceCount > 0;
+  return supportsUpgrade(gear) && gear.scrollResilienceCount > 0;
 }
 
 /**
@@ -106,7 +106,7 @@ export function resileScroll(gear: Gear) {
  * @returns 초기화할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canResetUpgrade(gear: Gear): boolean {
-  return canUpgrade(gear);
+  return supportsUpgrade(gear);
 }
 
 /**
@@ -133,7 +133,7 @@ export function resetUpgrade(gear: Gear) {
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canApplyScroll(gear: Gear): boolean {
-  return canUpgrade(gear) && gear.scrollUpgradeableCount > 0;
+  return supportsUpgrade(gear) && gear.scrollUpgradeableCount > 0;
 }
 
 /**
@@ -149,7 +149,7 @@ export function applyScroll(gear: Gear, scroll: Scroll) {
     throw TypeError(ErrorMessage.Upgrade_InvalidApplyScrollGear);
   }
   if (gear.data.upgradeOption === undefined) {
-    gear.data.upgradeOption = {}
+    gear.data.upgradeOption = {};
   }
   addOptions(gear.data.upgradeOption!, scroll.option);
   gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount - 1;

@@ -633,7 +633,7 @@ describe('Gear', () => {
     ])('returns true for gearType %d', (gearType) => {
       gear.data.type = gearType;
 
-      const can = gear.canAddOption;
+      const can = gear.supportsAddOption;
 
       expect(can).toBe(true);
     });
@@ -643,7 +643,7 @@ describe('Gear', () => {
       (gearType) => {
         gear.data.type = gearType;
 
-        const can = gear.canAddOption;
+        const can = gear.supportsAddOption;
 
         expect(can).toBe(false);
       },
@@ -723,23 +723,23 @@ describe('Gear', () => {
 
   describe('canUpgrade', () => {
     it('is true', () => {
-      expect(gear.canUpgrade).toBe(true);
+      expect(gear.supportsUpgrade).toBe(true);
     });
 
     it('is readonly property', () => {
       // @ts-expect-error
-      expect(() => (gear.canUpgrade = false)).toThrow();
+      expect(() => (gear.supportsUpgrade = false)).toThrow();
     });
   });
 
   describe('canGoldenHammer', () => {
     it('is true', () => {
-      expect(gear.canGoldenHammer).toBe(true);
+      expect(gear.canApplyGoldenHammer).toBe(true);
     });
 
     it('is readonly property', () => {
       // @ts-expect-error
-      expect(() => (gear.canGoldenHammer = false)).toThrow();
+      expect(() => (gear.canApplyGoldenHammer = false)).toThrow();
     });
   });
 
@@ -753,24 +753,24 @@ describe('Gear', () => {
 
   describe('canFailScroll', () => {
     it('is false', () => {
-      expect(gear.canFailScroll).toBe(false);
+      expect(gear.canApplyFailScroll).toBe(false);
     });
 
     it('is readonly property', () => {
       // @ts-expect-error
-      expect(() => (gear.canFailScroll = true)).toThrow();
+      expect(() => (gear.canApplyFailScroll = true)).toThrow();
     });
   });
 
   describe('failScroll', () => {
     it('throws TypeError', () => {
-      expect(() => gear.failScroll()).toThrow();
+      expect(() => gear.applyScrollFail()).toThrow();
     });
 
     it('sets scrollUpgradeableCount from 1 to 0', () => {
       gear.data.scrollUpgradeableCount = 1;
 
-      gear.failScroll();
+      gear.applyScrollFail();
 
       expect(gear.scrollUpgradeableCount).toBe(0);
     });
@@ -778,24 +778,24 @@ describe('Gear', () => {
 
   describe('canResileScroll', () => {
     it('is false', () => {
-      expect(gear.canResileScroll).toBe(false);
+      expect(gear.canApplyResileScroll).toBe(false);
     });
 
     it('is readonly property', () => {
       // @ts-expect-error
-      expect(() => (gear.canResileScroll = true)).toThrow();
+      expect(() => (gear.canApplyResileScroll = true)).toThrow();
     });
   });
 
   describe('resileScroll', () => {
     it('throws TypeError', () => {
-      expect(() => gear.resileScroll()).toThrow();
+      expect(() => gear.applyScrollResile()).toThrow();
     });
 
     it('sets scrollResilienceCount from 1 to 0', () => {
       gear.data.scrollResilienceCount = 1;
 
-      gear.resileScroll();
+      gear.applyScrollResile();
 
       expect(gear.scrollResilienceCount).toBe(0);
     });
@@ -893,18 +893,18 @@ describe('Gear', () => {
 
   describe('canStarforce', () => {
     it('is true', () => {
-      expect(gear.canStarforce).toBe(true);
+      expect(gear.canApplyStarforce).toBe(true);
     });
 
     it('is readonly property', () => {
       // @ts-expect-error
-      expect(() => (gear.canStarforce = false)).toThrow();
+      expect(() => (gear.canApplyStarforce = false)).toThrow();
     });
   });
 
   describe('starforce', () => {
     it('sets star to 23', () => {
-      gear.starforce();
+      gear.applyStarforce();
 
       expect(gear.star).toBe(23);
     });
@@ -912,7 +912,7 @@ describe('Gear', () => {
     it('modifies starforceOption', () => {
       const original = { ...gear.starforceOption };
 
-      gear.starforce();
+      gear.applyStarforce();
 
       expect(gear.starforceOption).not.toEqual(original);
     });
@@ -920,18 +920,18 @@ describe('Gear', () => {
 
   describe('canStarforceIgnoringMaxStar', () => {
     it('is true', () => {
-      expect(gear.canStarforceIgnoringMaxStar).toBe(true);
+      expect(gear.canApplyStarforceIgnoringMaxStar).toBe(true);
     });
 
     it('is readonly property', () => {
       // @ts-expect-error
-      expect(() => (gear.canStarforceIgnoringMaxStar = false)).toThrow();
+      expect(() => (gear.canApplyStarforceIgnoringMaxStar = false)).toThrow();
     });
   });
 
   describe('starforceIgnoringMaxStar', () => {
     it('sets star to 23', () => {
-      gear.starforceIgnoringMaxStar();
+      gear.applyStarforceIgnoringMaxStar();
 
       expect(gear.star).toBe(23);
     });
@@ -939,7 +939,7 @@ describe('Gear', () => {
     it('modifies starforceOption', () => {
       const original = { ...gear.starforceOption };
 
-      gear.starforceIgnoringMaxStar();
+      gear.applyStarforceIgnoringMaxStar();
 
       expect(gear.starforceOption).not.toEqual(original);
     });

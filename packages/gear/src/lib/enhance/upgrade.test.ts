@@ -9,10 +9,10 @@ import {
   canGoldenHammer,
   canResetUpgrade,
   canResileScroll,
-  canUpgrade,
   failScroll,
   resetUpgrade,
   resileScroll,
+  supportsUpgrade,
 } from './upgrade';
 
 let gear: Gear;
@@ -25,7 +25,7 @@ describe('canUpgrade', () => {
   it('returns false for cannotUpgrade gear', () => {
     gear.data.attributes.cannotUpgrade = true;
 
-    expect(canUpgrade(gear)).toBe(false);
+    expect(supportsUpgrade(gear)).toBe(false);
   });
 
   it('returns false for scrollTotalUpgradeableCount == 0 gear', () => {
@@ -33,7 +33,7 @@ describe('canUpgrade', () => {
       .spyOn(gear, 'scrollTotalUpgradeableCount', 'get')
       .mockImplementation(() => 0);
 
-    expect(canUpgrade(gear)).toBe(false);
+    expect(supportsUpgrade(gear)).toBe(false);
   });
 
   it('returns true for scrollTotalUpgradeableCount > 0 gear', () => {
@@ -41,7 +41,7 @@ describe('canUpgrade', () => {
       .spyOn(gear, 'scrollTotalUpgradeableCount', 'get')
       .mockImplementation(() => 1);
 
-    expect(canUpgrade(gear)).toBe(true);
+    expect(supportsUpgrade(gear)).toBe(true);
   });
 });
 

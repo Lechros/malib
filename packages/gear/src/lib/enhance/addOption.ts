@@ -51,11 +51,11 @@ export const enum AddOptionType {
 export type AddOptionGrade = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 /**
- * 추가 옵션을 적용할 수 있는 장비 분류인지 여부를 반환합니다.
+ * 추가 옵션을 지원하는 장비 분류인지 확인합니다.
  * @param gearType 확인할 장비.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canAddOption(gearType: GearType): boolean {
+export function supportsAddOption(gearType: GearType): boolean {
   if (isWeapon(gearType)) {
     return true;
   }
