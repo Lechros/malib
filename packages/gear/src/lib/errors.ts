@@ -19,5 +19,10 @@ export const enum ErrorMessage {
   Starforce_InvalidStarforceGear = '스타포스 강화를 적용할 수 없는 상태의 장비입니다.',
   Starforce_InvalidReqLevelGear = '장비의 착용 가능 레벨은 0 이상이어야 합니다.',
   StarScroll_InvalidStarScrollGear = '놀라운 장비 강화 주문서를 적용할 수 없는 상태의 장비입니다.',
-  Starforce_InvalidResetGear = '스타포스 강화를 초기화할 수 없는 장비입니다.'
+  Starforce_InvalidResetGear = '스타포스 강화를 초기화할 수 없는 장비입니다.',
+
+  Soul_SetSoulUnenchanted = '소울웨폰 상태의 장비에만 소울을 장착할 수 있습니다.',
+  Soul_SetChargeUnenchanted = '소울웨폰 상태의 장비만 소울 충전량을 변경할 수 있습니다.',
+  Soul_InvalidSoulCharge = '소울 충전량은 0 이상 1000 이하의 값으로만 변경할 수 있습니다.',
+  Soul_AlreadyEnchanted = '소울웨폰은 중복해서 적용할 수 없습니다.',
 }
