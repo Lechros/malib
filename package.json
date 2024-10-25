@@ -11,7 +11,7 @@
   },
   "scripts": {
     "test": "jest",
-    "test:type": "tsc",
+    "test:type": "yarn workspaces foreach -Aptv run test:type",
     "watch": "jest --watch --coverage false"
   },
   "devDependencies": {
