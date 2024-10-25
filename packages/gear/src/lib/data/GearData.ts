@@ -4,7 +4,7 @@ import { GearOption } from './GearOption';
 import { GearType } from './GearType';
 import { PotentialData } from './PotentialData';
 import { PotentialGrade } from './PotentialGrade';
-import { SoulData } from './SoulData';
+import { SoulWeaponData } from './SoulData';
 
 /**
  * 장비 정보
@@ -54,14 +54,8 @@ export type GearData = {
   /** 놀라운 장비 강화 주문서 사용 여부 */
   starScroll?: boolean;
 
-  /** 소울 인챈트 */
-  soulEnchanted?: boolean;
-  /** 소울 */
-  soul?: SoulData;
-  /** 소울 충전량 */
-  soulCharge?: number;
-  /** 소울 충전 옵션 */
-  soulChargeOption?: Partial<SoulChargeOption>;
+  /** 소울 웨폰 정보 */
+  soulWeapon?: SoulWeaponData;
 
   /** 잠재능력 등급 */
   potentialGrade?: PotentialGrade;
@@ -221,8 +215,3 @@ export type GearExceptionalOption = Pick<
   | 'attackPower'
   | 'magicPower'
 >;
-
-/**
- * 소울 충전 옵션
- */
-export type SoulChargeOption = Pick<GearOption, 'attackPower' | 'magicPower'>;

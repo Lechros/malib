@@ -9,6 +9,7 @@ import {
   GearUpgradeOption,
   PotentialData,
   PotentialGrade,
+  ReadonlySoulData,
   SoulChargeOption,
   SoulData,
 } from './data';
@@ -46,9 +47,11 @@ import {
   Scroll,
   supportsUpgrade,
 } from './enhance/upgrade';
+import { ErrorMessage } from './errors';
 import { GearAttribute } from './GearAttribute';
 import { toGearOption } from './gearOption';
 import { GearReq } from './GearReq';
+import { isWeapon } from './gearType';
 import { addOptions, sumOptions } from './utils';
 
 /**
@@ -58,6 +61,7 @@ import { addOptions, sumOptions } from './utils';
  * - `supports...`: 장비가 특정 강화 방식을 지원하는지 여부입니다.
  * - `can...`: 장비에 특정 강화를 적용할 수 있는 상태인지 여부입니다.
  * - `apply...()`: 장비에 특정 강화를 적용합니다.
+ * - `set...()`: 장비의 특정 속성을 설정합니다.
  * - `reset...()`: 장비의 특정 강화에 관련된 속성을 초기화합니다.
  *
  * 생성자에 전달된 장비 정보와 `data` 속성 간에 엄격한 동등(`===`)을 보장합니다.
@@ -260,28 +264,34 @@ export class Gear {
    * 소울 인챈트 여부
    */
   get soulEnchanted(): boolean {
-    return this.data.soulEnchanted ?? false;
+    return this.data.soulWeapon !== undefined;
   }
 
   /**
    * 소울
    */
-  get soul(): SoulData | undefined {
-    return this.data.soul;
+  get soul(): ReadonlySoulData | undefined {
+    if (!this.data.soulWeapon?.soul) {
+      return undefined;
+    }
+    return {
+      ...this.data.soulWeapon.soul,
+      option: toGearOption(this.data.soulWeapon.soul.option),
+    };
   }
 
   /**
    * 소울 충전량
    */
   get soulCharge(): number {
-    return this.data.soulCharge ?? 0;
+    return this.data.soulWeapon?.charge ?? 0;
   }
 
   /**
    * 소울 충전 옵션
    */
   get soulChargeOption(): Readonly<SoulChargeOption> {
-    return toGearOption(this.data.soulChargeOption ?? {});
+    return toGearOption(this.data.soulWeapon?.chargeOption ?? {});
   }
 
   /**
@@ -598,5 +608,95 @@ export class Gear {
    */
   resetStarforce() {
     resetStarforce(this);
+  }
+
+  /**
+   * 장비가 소울웨폰을 지원하는지 여부
+   */
+  get supportsSoulWeapon(): boolean {
+    return isWeapon(this.type) && this.req.level >= 30;
+  }
+
+  /**
+   * 장비에 소울 인챈터를 적용할 수 있는 상태인지 여부
+   */
+  get canApplySoulEnchant(): boolean {
+    return !this.soulEnchanted;
+  }
+
+  /**
+   * 장비에 소울 인챈터를 적용합니다.
+   */
+  applySoulEnchant() {
+    if (!this.canApplySoulEnchant) {
+      throw TypeError(ErrorMessage.Soul_AlreadyEnchanted);
+    }
+    this.data.soulWeapon = {};
+  }
+
+  /**
+   * 장비에 소울을 장착할 수 있는지 여부
+   */
+  get canSetSoul(): boolean {
+    return this.soulEnchanted;
+  }
+
+  /**
+   * 장비에 소울을 장착합니다.
+   * @param soul 장착할 소울 아이템.
+   */
+  setSoul(soul: SoulData) {
+    if (!this.canSetSoul) {
+      throw TypeError(ErrorMessage.Soul_SetSoulUnenchanted);
+    }
+    this.data.soulWeapon!.soul = soul;
+    this.updateChargeOption();
+  }
+
+  get canSetSoulCharge(): boolean {
+    return this.soulEnchanted;
+  }
+
+  /**
+   * 장비의 소울 충전량을 설정합니다.
+   * @param charge 소울 충전량.
+   */
+  setSoulCharge(charge: number) {
+    if (!this.canSetSoulCharge) {
+      throw TypeError(ErrorMessage.Soul_SetChargeUnenchanted);
+    }
+    if (charge < 0 || charge > 1000) {
+      throw TypeError(ErrorMessage.Soul_InvalidSoulCharge);
+    }
+    this.data.soulWeapon!.charge = charge;
+    this.updateChargeOption();
+  }
+
+  private updateChargeOption() {
+    if (this.data.soulWeapon) {
+      let option: Partial<SoulChargeOption>;
+      if (this.soulCharge === 0) {
+        option = {};
+      } else {
+        const type =
+          this.baseOption.attackPower >= this.baseOption.magicPower
+            ? 'attackPower'
+            : 'magicPower';
+        const base = Math.min(5, Math.ceil(this.soulCharge / 100) - 1);
+        if (this.soul) {
+          option = { [type]: 10 + base * (this.soul.chargeFactor ?? 1) };
+        } else {
+          option = { [type]: 5 + base };
+        }
+      }
+      this.data.soulWeapon.chargeOption = option;
+    }
+  }
+
+  /**
+   * 장비의 소울웨폰을 초기화합니다.
+   */
+  resetSoulEnchant() {
+    this.data.soulWeapon = undefined;
   }
 }

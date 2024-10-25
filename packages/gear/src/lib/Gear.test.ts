@@ -8,6 +8,7 @@ import {
 import { AddOptionGrade, AddOptionType } from './enhance/addOption';
 import { SpellTraceType } from './enhance/spellTrace';
 import { Gear } from './Gear';
+import { defaultGear } from './testUtils';
 
 describe('Gear constructor', () => {
   it('should accept GearData', () => {
@@ -441,6 +442,7 @@ describe('Gear', () => {
         },
         optionDesc: '공격력 : +3%',
         skillName: '파멸의 검',
+        chargeFactor: 2,
       });
     });
 
@@ -999,6 +1001,201 @@ describe('Gear', () => {
     });
   });
 
+  describe('supportsSoulWeapon', () => {
+    it.each([
+      GearType.shiningRod,
+      GearType.ritualFan,
+      GearType.longSword,
+      GearType.tuner,
+      GearType.dagger,
+    ])('is true for weapon gears, type == %d', (type) => {
+      const gear = defaultGear({ type, req: { level: 120 } });
+
+      expect(gear.supportsSoulWeapon).toBe(true);
+    });
+
+    it.each([
+      GearType.cap,
+      GearType.pants,
+      GearType.cape,
+      GearType.belt,
+      GearType.pendant,
+      GearType.katara,
+      GearType.shield,
+    ])('is false for non weapon gears, type == %d', (type) => {
+      const gear = defaultGear({ type, req: { level: 120 } });
+
+      expect(gear.supportsSoulWeapon).toBe(false);
+    });
+
+    it.each([
+      [0, false],
+      [20, false],
+      [29, false],
+      [30, true],
+      [75, true],
+      [200, true],
+    ])('for reqLevel == %d is %p', (reqLevel, expected) => {
+      const gear = defaultGear({
+        type: GearType.thSword,
+        req: { level: reqLevel },
+      });
+
+      expect(gear.supportsSoulWeapon).toBe(expected);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error
+      expect(() => (gear.supportsSoulWeapon = true)).toThrow();
+    });
+  });
+
+  describe('canApplySoulEnchant', () => {
+    it('is false', () => {
+      expect(gear.canApplySoulEnchant).toBe(false);
+    });
+
+    it('is true for unenchanted gear', () => {
+      const gear = defaultGear({ type: GearType.tuner, req: { level: 120 } });
+
+      expect(gear.canApplySoulEnchant).toBe(true);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error
+      expect(() => (gear.canApplySoulEnchant = true)).toThrow();
+    });
+  });
+
+  describe('applySoulEnchant', () => {
+    it('throws TypeError', () => {
+      expect(() => gear.applySoulEnchant()).toThrow();
+    });
+
+    it('sets soulEnchanted to true', () => {
+      const gear = defaultGear({ type: GearType.bow, req: { level: 150 } });
+
+      gear.applySoulEnchant();
+
+      expect(gear.soulEnchanted).toBe(true);
+    });
+  });
+
+  describe('canSetSoul', () => {
+    it('is true', () => {
+      expect(gear.canSetSoul).toBe(true);
+    });
+
+    it('is false for unenchanted gear', () => {
+      const gear = defaultGear({ type: GearType.bow, req: { level: 150 } });
+
+      expect(gear.canSetSoul).toBe(false);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error
+      expect(() => (gear.canSetSoul = true)).toThrow();
+    });
+  });
+
+  describe('setSoul', () => {
+    it('sets soul name to 위대한 카링의 소울', () => {
+      gear.setSoul({
+        name: '위대한 카링의 소울',
+        title: '',
+        option: {},
+        optionDesc: '',
+        skillName: '',
+      });
+
+      expect(gear.soul?.name).toBe('위대한 카링의 소울');
+    });
+
+    it('sets soul charge option', () => {
+      gear.data.soulWeapon!.chargeOption = {};
+
+      gear.setSoul({
+        name: '위대한 카링의 소울',
+        title: '',
+        option: {},
+        optionDesc: '',
+        skillName: '',
+        chargeFactor: 2,
+      });
+
+      expect(gear.soulChargeOption).toEqual({ magicPower: 20 });
+    });
+
+    it('throws for unenchanted gear', () => {
+      const gear = defaultGear({ type: GearType.bow, req: { level: 150 } });
+      const soul = {
+        name: '위대한 카링의 소울',
+        title: '',
+        option: {},
+        optionDesc: '',
+        skillName: '',
+      };
+
+      expect(() => gear.setSoul(soul)).toThrow();
+    });
+  });
+
+  describe('setSoulCharge', () => {
+    it.each([0, 1, 100, 500, 999, 1000])('sets soul charge', (charge) => {
+      gear.setSoulCharge(charge);
+
+      expect(gear.soulCharge).toBe(charge);
+    });
+
+    it('sets soul charge option', () => {
+      gear.setSoulCharge(200);
+
+      expect(gear.soulChargeOption).toEqual({ magicPower: 12 });
+    });
+
+    it.each([-1000, -100, -1, 1001, 2000])(
+      'throws TypeError for charge == %d',
+      (charge) => {
+        expect(() => gear.setSoulCharge(charge)).toThrow();
+      },
+    );
+
+    it('throws TypeError for unenchanted gear', () => {
+      const gear = defaultGear({
+        type: GearType.ancientBow,
+        req: { level: 200 },
+      });
+
+      expect(() => gear.setSoulCharge(700)).toThrow();
+    });
+  });
+
+  describe('resetSoulEnchant', () => {
+    it('resets soulEnchanted', () => {
+      gear.resetSoulEnchant();
+
+      expect(gear.soulEnchanted).toBe(false);
+    });
+
+    it('resets soul', () => {
+      gear.resetSoulEnchant();
+
+      expect(gear.soul).toBeUndefined();
+    });
+
+    it('resets soulCharge', () => {
+      gear.resetSoulEnchant();
+
+      expect(gear.soulCharge).toBe(0);
+    });
+
+    it('resets soulChargeOption', () => {
+      gear.resetSoulEnchant();
+
+      expect(gear.soulChargeOption).toEqual({});
+    });
+  });
+
   beforeEach(() => {
     gear = new Gear({
       meta: {
@@ -1062,19 +1259,21 @@ describe('Gear', () => {
       maxStar: 25,
       starScroll: false,
 
-      soulEnchanted: true,
-      soul: {
-        name: '위대한 데미안의 소울',
-        title: '위대한 데미안의',
-        option: {
-          attackPowerRate: 3,
+      soulWeapon: {
+        soul: {
+          name: '위대한 데미안의 소울',
+          title: '위대한 데미안의',
+          option: {
+            attackPowerRate: 3,
+          },
+          optionDesc: '공격력 : +3%',
+          skillName: '파멸의 검',
+          chargeFactor: 2,
         },
-        optionDesc: '공격력 : +3%',
-        skillName: '파멸의 검',
-      },
-      soulCharge: 1000,
-      soulChargeOption: {
-        magicPower: 20,
+        charge: 1000,
+        chargeOption: {
+          magicPower: 20,
+        },
       },
 
       potentialGrade: PotentialGrade.Legendary,
