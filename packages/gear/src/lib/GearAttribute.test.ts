@@ -125,36 +125,38 @@ describe('GearAttribute', () => {
   });
 
   describe('potential', () => {
-    it('returns false by default', () => {
-      expect(attr.potential).toBe(PotentialCan.Can);
+    it('returns None by default', () => {
+      expect(attr.canPotential).toBe(PotentialCan.None);
     });
 
     it('returns Fixed', () => {
-      attr.data.potential = PotentialCan.Fixed;
+      attr.data.canPotential = PotentialCan.Fixed;
 
-      expect(attr.potential).toBe(PotentialCan.Fixed);
+      expect(attr.canPotential).toBe(PotentialCan.Fixed);
     });
 
     it('is readonly property', () => {
       // @ts-expect-error
-      expect(() => (attr.potential = PotentialCan.Fixed)).toThrow();
+      expect(() => (attr.canPotential = PotentialCan.Fixed)).toThrow();
     });
   });
 
   describe('additionalPotential', () => {
-    it('returns Can by default', () => {
-      expect(attr.additionalPotential).toBe(PotentialCan.Can);
+    it('returns None by default', () => {
+      expect(attr.canAdditionalPotential).toBe(PotentialCan.None);
     });
 
     it('returns Cannot', () => {
-      attr.data.additionalPotential = PotentialCan.Cannot;
+      attr.data.canAdditionalPotential = PotentialCan.Cannot;
 
-      expect(attr.additionalPotential).toBe(PotentialCan.Cannot);
+      expect(attr.canAdditionalPotential).toBe(PotentialCan.Cannot);
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
-      expect(() => (attr.additionalPotential = PotentialCan.Cannot)).toThrow();
+      expect(
+        // @ts-expect-error
+        () => (attr.canAdditionalPotential = PotentialCan.Cannot),
+      ).toThrow();
     });
   });
 

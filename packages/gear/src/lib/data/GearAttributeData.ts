@@ -18,10 +18,14 @@ export type GearAttributeData = {
 
   /** 강화불가 */
   cannotUpgrade?: boolean;
+  /** 추가 옵션 설정 가능 여부 */
+  canAddOption?: AddOptionCan;
   /** 잠재능력 설정 가능 여부 */
-  potential?: PotentialCan;
+  canPotential?: PotentialCan;
   /** 에디셔널 잠재능력 설정 가능 여부 */
-  additionalPotential?: PotentialCan;
+  canAdditionalPotential?: PotentialCan;
+  /** 스페셜 아이템 여부 */
+  specialGrade?: boolean;
 
   /** 착용 레벨 증가 */
   reqLevelIncrease?: number;
@@ -65,13 +69,24 @@ export const enum GearShare {
   AccountSharableOnce = 2,
 }
 
-export const enum PotentialCan {
+export const enum AddOptionCan {
+  /** 없음 (장비 분류를 따름) */
+  None = 0,
   /** 설정 가능 */
-  Can = 0,
+  Can = 1,
   /** 설정 불가 */
-  Cannot = 1,
+  Cannot = 2,
+}
+
+export const enum PotentialCan {
+  /** 없음 (장비 분류를 따름) */
+  None = 0,
+  /** 설정 가능 */
+  Can = 1,
+  /** 설정 불가 */
+  Cannot = 2,
   /** 재설정 불가 */
-  Fixed = 2,
+  Fixed = 3,
 }
 
 export const enum GearCuttable {

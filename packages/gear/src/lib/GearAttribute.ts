@@ -1,4 +1,5 @@
 import {
+  AddOptionCan,
   GearAttributeData,
   GearCuttable,
   GearIncline,
@@ -54,14 +55,24 @@ export class GearAttribute implements GearAttributeData {
     return this.data.cannotUpgrade ?? false;
   }
 
+  /** 추가옵션 설정 가능 여부 */
+  get canAddOption(): AddOptionCan {
+    return this.data.canAddOption ?? 0;
+  }
+
   /** 잠재능력 설정 가능 여부 */
-  get potential(): PotentialCan {
-    return this.data.potential ?? 0;
+  get canPotential(): PotentialCan {
+    return this.data.canPotential ?? 0;
   }
 
   /** 에디셔널 잠재능력 설정 가능 여부 */
-  get additionalPotential(): PotentialCan {
-    return this.data.additionalPotential ?? 0;
+  get canAdditionalPotential(): PotentialCan {
+    return this.data.canAdditionalPotential ?? 0;
+  }
+
+  /** 스페셜 아이템 여부 */
+  get specialGrade(): boolean {
+    return this.data.specialGrade ?? false;
   }
 
   /** 착용 레벨 증가 */
