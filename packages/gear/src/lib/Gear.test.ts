@@ -436,12 +436,10 @@ describe('Gear', () => {
     it('is 위대한 데미안의 소울 with 공격력 : +3%', () => {
       expect(gear.soul).toEqual({
         name: '위대한 데미안의 소울',
-        title: '위대한 데미안의',
+        skill: '파멸의 검',
         option: {
           attackPowerRate: 3,
         },
-        optionDesc: '공격력 : +3%',
-        skillName: '파멸의 검',
         chargeFactor: 2,
       });
     });
@@ -1102,24 +1100,20 @@ describe('Gear', () => {
     it('sets soul name to 위대한 카링의 소울', () => {
       gear.setSoul({
         name: '위대한 카링의 소울',
-        title: '',
+        skill: '',
         option: {},
-        optionDesc: '',
-        skillName: '',
       });
 
       expect(gear.soul?.name).toBe('위대한 카링의 소울');
     });
 
     it('sets soul charge option', () => {
-      gear.data.soulWeapon!.chargeOption = {};
+      gear.data.soulSlot!.chargeOption = {};
 
       gear.setSoul({
         name: '위대한 카링의 소울',
-        title: '',
+        skill: '',
         option: {},
-        optionDesc: '',
-        skillName: '',
         chargeFactor: 2,
       });
 
@@ -1130,10 +1124,8 @@ describe('Gear', () => {
       const gear = defaultGear({ type: GearType.bow, req: { level: 150 } });
       const soul = {
         name: '위대한 카링의 소울',
-        title: '',
+        skill: '',
         option: {},
-        optionDesc: '',
-        skillName: '',
       };
 
       expect(() => gear.setSoul(soul)).toThrow();
@@ -1259,15 +1251,13 @@ describe('Gear', () => {
       maxStar: 25,
       starScroll: false,
 
-      soulWeapon: {
+      soulSlot: {
         soul: {
           name: '위대한 데미안의 소울',
-          title: '위대한 데미안의',
+          skill: '파멸의 검',
           option: {
             attackPowerRate: 3,
           },
-          optionDesc: '공격력 : +3%',
-          skillName: '파멸의 검',
           chargeFactor: 2,
         },
         charge: 1000,

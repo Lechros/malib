@@ -264,19 +264,19 @@ export class Gear {
    * 소울 인챈트 여부
    */
   get soulEnchanted(): boolean {
-    return this.data.soulWeapon !== undefined;
+    return this.data.soulSlot !== undefined;
   }
 
   /**
    * 소울
    */
   get soul(): ReadonlySoulData | undefined {
-    if (!this.data.soulWeapon?.soul) {
+    if (!this.data.soulSlot?.soul) {
       return undefined;
     }
     return {
-      ...this.data.soulWeapon.soul,
-      option: toGearOption(this.data.soulWeapon.soul.option),
+      ...this.data.soulSlot.soul,
+      option: toGearOption(this.data.soulSlot.soul.option),
     };
   }
 
@@ -284,14 +284,14 @@ export class Gear {
    * 소울 충전량
    */
   get soulCharge(): number {
-    return this.data.soulWeapon?.charge ?? 0;
+    return this.data.soulSlot?.charge ?? 0;
   }
 
   /**
    * 소울 충전 옵션
    */
   get soulChargeOption(): Readonly<SoulChargeOption> {
-    return toGearOption(this.data.soulWeapon?.chargeOption ?? {});
+    return toGearOption(this.data.soulSlot?.chargeOption ?? {});
   }
 
   /**
@@ -631,7 +631,7 @@ export class Gear {
     if (!this.canApplySoulEnchant) {
       throw TypeError(ErrorMessage.Soul_AlreadyEnchanted);
     }
-    this.data.soulWeapon = {};
+    this.data.soulSlot = {};
   }
 
   /**
@@ -649,7 +649,7 @@ export class Gear {
     if (!this.canSetSoul) {
       throw TypeError(ErrorMessage.Soul_SetSoulUnenchanted);
     }
-    this.data.soulWeapon!.soul = soul;
+    this.data.soulSlot!.soul = soul;
     this.updateChargeOption();
   }
 
@@ -668,12 +668,12 @@ export class Gear {
     if (charge < 0 || charge > 1000) {
       throw TypeError(ErrorMessage.Soul_InvalidSoulCharge);
     }
-    this.data.soulWeapon!.charge = charge;
+    this.data.soulSlot!.charge = charge;
     this.updateChargeOption();
   }
 
   private updateChargeOption() {
-    if (this.data.soulWeapon) {
+    if (this.data.soulSlot) {
       let option: Partial<SoulChargeOption>;
       if (this.soulCharge === 0) {
         option = {};
@@ -689,7 +689,7 @@ export class Gear {
           option = { [type]: 5 + base };
         }
       }
-      this.data.soulWeapon.chargeOption = option;
+      this.data.soulSlot.chargeOption = option;
     }
   }
 
@@ -697,6 +697,10 @@ export class Gear {
    * 장비의 소울웨폰을 초기화합니다.
    */
   resetSoulEnchant() {
-    this.data.soulWeapon = undefined;
+    this.data.soulSlot = undefined;
+  }
+
+  get canApplyExceptional(): boolean {
+    return this.exceptionalUpgradeCount > 0;
   }
 }
