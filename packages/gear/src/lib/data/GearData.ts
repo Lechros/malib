@@ -4,7 +4,7 @@ import { GearOption } from './GearOption';
 import { GearType } from './GearType';
 import { PotentialData } from './PotentialData';
 import { PotentialGrade } from './PotentialGrade';
-import { SoulWeaponData } from './SoulData';
+import { SoulSlotData } from './SoulSlotData';
 
 /**
  * 장비 정보
@@ -55,7 +55,7 @@ export type GearData = {
   starScroll?: boolean;
 
   /** 소울 웨폰 정보 */
-  soulWeapon?: SoulWeaponData;
+  soulSlot?: SoulSlotData;
 
   /** 잠재능력 등급 */
   potentialGrade?: PotentialGrade;
