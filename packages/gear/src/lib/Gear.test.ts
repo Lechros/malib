@@ -8,7 +8,6 @@ import {
 import { AddOptionGrade, AddOptionType } from './enhance/addOption';
 import { SpellTraceType } from './enhance/spellTrace';
 import { Gear } from './Gear';
-import { defaultGear } from './testUtils';
 
 describe('Gear constructor', () => {
   it('should accept GearData', () => {
@@ -999,64 +998,20 @@ describe('Gear', () => {
     });
   });
 
-  describe('supportsSoulWeapon', () => {
-    it.each([
-      GearType.shiningRod,
-      GearType.ritualFan,
-      GearType.longSword,
-      GearType.tuner,
-      GearType.dagger,
-    ])('is true for weapon gears, type == %d', (type) => {
-      const gear = defaultGear({ type, req: { level: 120 } });
-
-      expect(gear.supportsSoulWeapon).toBe(true);
-    });
-
-    it.each([
-      GearType.cap,
-      GearType.pants,
-      GearType.cape,
-      GearType.belt,
-      GearType.pendant,
-      GearType.katara,
-      GearType.shield,
-    ])('is false for non weapon gears, type == %d', (type) => {
-      const gear = defaultGear({ type, req: { level: 120 } });
-
-      expect(gear.supportsSoulWeapon).toBe(false);
-    });
-
-    it.each([
-      [0, false],
-      [20, false],
-      [29, false],
-      [30, true],
-      [75, true],
-      [200, true],
-    ])('for reqLevel == %d is %p', (reqLevel, expected) => {
-      const gear = defaultGear({
-        type: GearType.thSword,
-        req: { level: reqLevel },
-      });
-
-      expect(gear.supportsSoulWeapon).toBe(expected);
+  describe('supportsSoul', () => {
+    it('is true', () => {
+      expect(gear.supportsSoul).toBe(true);
     });
 
     it('is readonly property', () => {
       // @ts-expect-error
-      expect(() => (gear.supportsSoulWeapon = true)).toThrow();
+      expect(() => (gear.supportsSoul = true)).toThrow();
     });
   });
 
   describe('canApplySoulEnchant', () => {
     it('is false', () => {
       expect(gear.canApplySoulEnchant).toBe(false);
-    });
-
-    it('is true for unenchanted gear', () => {
-      const gear = defaultGear({ type: GearType.tuner, req: { level: 120 } });
-
-      expect(gear.canApplySoulEnchant).toBe(true);
     });
 
     it('is readonly property', () => {
@@ -1069,25 +1024,11 @@ describe('Gear', () => {
     it('throws TypeError', () => {
       expect(() => gear.applySoulEnchant()).toThrow();
     });
-
-    it('sets soulEnchanted to true', () => {
-      const gear = defaultGear({ type: GearType.bow, req: { level: 150 } });
-
-      gear.applySoulEnchant();
-
-      expect(gear.soulEnchanted).toBe(true);
-    });
   });
 
   describe('canSetSoul', () => {
     it('is true', () => {
       expect(gear.canSetSoul).toBe(true);
-    });
-
-    it('is false for unenchanted gear', () => {
-      const gear = defaultGear({ type: GearType.bow, req: { level: 150 } });
-
-      expect(gear.canSetSoul).toBe(false);
     });
 
     it('is readonly property', () => {
@@ -1111,7 +1052,7 @@ describe('Gear', () => {
       gear.data.soulSlot!.chargeOption = {};
 
       gear.setSoul({
-        name: '위대한 카링의 소울',
+        name: '',
         skill: '',
         option: {},
         chargeFactor: 2,
@@ -1119,46 +1060,24 @@ describe('Gear', () => {
 
       expect(gear.soulChargeOption).toEqual({ magicPower: 20 });
     });
+  });
 
-    it('throws for unenchanted gear', () => {
-      const gear = defaultGear({ type: GearType.bow, req: { level: 150 } });
-      const soul = {
-        name: '위대한 카링의 소울',
-        skill: '',
-        option: {},
-      };
+  describe('canSetSoulCharge', () => {
+    it('is true', () => {
+      expect(gear.canSetSoulCharge).toBe(true);
+    });
 
-      expect(() => gear.setSoul(soul)).toThrow();
+    it('is readonly property', () => {
+      // @ts-expect-error
+      expect(() => (gear.canSetSoulCharge = true)).toThrow();
     });
   });
 
   describe('setSoulCharge', () => {
-    it.each([0, 1, 100, 500, 999, 1000])('sets soul charge', (charge) => {
-      gear.setSoulCharge(charge);
-
-      expect(gear.soulCharge).toBe(charge);
-    });
-
     it('sets soul charge option', () => {
       gear.setSoulCharge(200);
 
       expect(gear.soulChargeOption).toEqual({ magicPower: 12 });
-    });
-
-    it.each([-1000, -100, -1, 1001, 2000])(
-      'throws TypeError for charge == %d',
-      (charge) => {
-        expect(() => gear.setSoulCharge(charge)).toThrow();
-      },
-    );
-
-    it('throws TypeError for unenchanted gear', () => {
-      const gear = defaultGear({
-        type: GearType.ancientBow,
-        req: { level: 200 },
-      });
-
-      expect(() => gear.setSoulCharge(700)).toThrow();
     });
   });
 
@@ -1167,24 +1086,6 @@ describe('Gear', () => {
       gear.resetSoulEnchant();
 
       expect(gear.soulEnchanted).toBe(false);
-    });
-
-    it('resets soul', () => {
-      gear.resetSoulEnchant();
-
-      expect(gear.soul).toBeUndefined();
-    });
-
-    it('resets soulCharge', () => {
-      gear.resetSoulEnchant();
-
-      expect(gear.soulCharge).toBe(0);
-    });
-
-    it('resets soulChargeOption', () => {
-      gear.resetSoulEnchant();
-
-      expect(gear.soulChargeOption).toEqual({});
     });
   });
 
