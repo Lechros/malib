@@ -55,11 +55,19 @@ import {
   Scroll,
   supportsUpgrade,
 } from './enhance/upgrade';
-import { ErrorMessage } from './errors';
 import { GearAttribute } from './GearAttribute';
 import { toGearOption } from './gearOption';
 import { GearReq } from './GearReq';
-import { isWeapon } from './gearType';
+import {
+  applySoulEnchant,
+  canApplySoulEnchant,
+  canSetSoul,
+  canSetSoulCharge,
+  resetSoulEnchant,
+  setSoul,
+  setSoulCharge,
+  supportsSoul,
+} from './soulSlot';
 import { addOptions, sumOptions } from './utils';
 
 /**
@@ -628,91 +636,65 @@ export class Gear {
   /**
    * 장비가 소울웨폰을 지원하는지 여부
    */
-  get supportsSoulWeapon(): boolean {
-    return isWeapon(this.type) && this.req.level >= 30;
+  get supportsSoul(): boolean {
+    return supportsSoul(this);
   }
 
   /**
    * 장비에 소울 인챈터를 적용할 수 있는 상태인지 여부
    */
   get canApplySoulEnchant(): boolean {
-    return !this.soulEnchanted;
+    return canApplySoulEnchant(this);
   }
 
   /**
    * 장비에 소울 인챈터를 적용합니다.
    */
   applySoulEnchant() {
-    if (!this.canApplySoulEnchant) {
-      throw TypeError(ErrorMessage.Soul_AlreadyEnchanted);
-    }
-    this.data.soulSlot = {};
+    applySoulEnchant(this);
   }
 
   /**
    * 장비에 소울을 장착할 수 있는지 여부
    */
   get canSetSoul(): boolean {
-    return this.soulEnchanted;
+    return canSetSoul(this);
   }
 
   /**
    * 장비에 소울을 장착합니다.
    * @param soul 장착할 소울 아이템.
+   *
+   * @throws {@link TypeError}
+   * 소울을 장착할 수 없는 경우.
    */
   setSoul(soul: SoulData) {
-    if (!this.canSetSoul) {
-      throw TypeError(ErrorMessage.Soul_SetSoulUnenchanted);
-    }
-    this.data.soulSlot!.soul = soul;
-    this.updateChargeOption();
+    setSoul(this, soul);
   }
 
+  /**
+   * 장비의 소울 충전량을 설정할 수 있는지 여부
+   */
   get canSetSoulCharge(): boolean {
-    return this.soulEnchanted;
+    return canSetSoulCharge(this);
   }
 
   /**
    * 장비의 소울 충전량을 설정합니다.
    * @param charge 소울 충전량.
+   *
+   * @throws {@link TypeError}
+   * 소울 충전량을 설정할 수 없는 경우.
    */
   setSoulCharge(charge: number) {
-    if (!this.canSetSoulCharge) {
-      throw TypeError(ErrorMessage.Soul_SetChargeUnenchanted);
-    }
-    if (charge < 0 || charge > 1000) {
-      throw TypeError(ErrorMessage.Soul_InvalidSoulCharge);
-    }
-    this.data.soulSlot!.charge = charge;
-    this.updateChargeOption();
-  }
-
-  private updateChargeOption() {
-    if (this.data.soulSlot) {
-      let option: Partial<SoulChargeOption>;
-      if (this.soulCharge === 0) {
-        option = {};
-      } else {
-        const type =
-          this.baseOption.attackPower >= this.baseOption.magicPower
-            ? 'attackPower'
-            : 'magicPower';
-        const base = Math.min(5, Math.ceil(this.soulCharge / 100) - 1);
-        if (this.soul) {
-          option = { [type]: 10 + base * (this.soul.chargeFactor ?? 1) };
-        } else {
-          option = { [type]: 5 + base };
-        }
-      }
-      this.data.soulSlot.chargeOption = option;
-    }
+    setSoulCharge(this, charge);
   }
 
   /**
    * 장비의 소울웨폰을 초기화합니다.
    */
   resetSoulEnchant() {
-    this.data.soulSlot = undefined;
+    resetSoulEnchant(this);
   }
 
   /**
