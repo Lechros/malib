@@ -1,3 +1,4 @@
+import { ExceptionalHammer } from './../../dist/lib/enhance/exceptional.d';
 import {
   GearAddOption,
   GearBaseOption,
@@ -19,6 +20,13 @@ import {
   getAddOption,
   supportsAddOption,
 } from './enhance/addOption';
+import {
+  applyExceptional,
+  canApplyExceptional,
+  canResetExceptional,
+  resetExceptional,
+  supportsExceptional,
+} from './enhance/exceptional';
 import {
   applySpellTrace,
   SpellTraceRate,
@@ -357,6 +365,13 @@ export class Gear {
    */
   get exceptionalUpgradeableCount(): number {
     return this.data.exceptionalUpgradeableCount ?? 0;
+  }
+
+  /**
+   * 전체 익셉셔널 강화 가능 횟수
+   */
+  get exceptionalTotalUpgradeableCount(): number {
+    return this.exceptionalUpgradeCount + this.exceptionalUpgradeableCount;
   }
 
   /**
@@ -700,7 +715,45 @@ export class Gear {
     this.data.soulSlot = undefined;
   }
 
+  /**
+   * 장비가 익셉셔널 강화를 지원하는지 여부
+   */
+  get supportsExceptional(): boolean {
+    return supportsExceptional(this);
+  }
+
+  /**
+   * 장비에 익셉셔널 강화를 적용할 수 있는지 여부
+   */
   get canApplyExceptional(): boolean {
-    return this.exceptionalUpgradeCount > 0;
+    return canApplyExceptional(this);
+  }
+
+  /**
+   * 장비에 익셉셔널 강화를 적용합니다.
+   * @param exceptionalHammer 적용할 익셉셔널 해머.
+   *
+   * @throws {@link TypeError}
+   * 익셉셔널 강화를 적용할 수 없는 상태일 경우.
+   */
+  applyExceptional(exceptionalHammer: ExceptionalHammer) {
+    applyExceptional(this, exceptionalHammer);
+  }
+
+  /**
+   * 장비의 익셉셔널 강화를 초기화할 수 있는지 여부
+   */
+  get canResetExceptional(): boolean {
+    return canResetExceptional(this);
+  }
+
+  /**
+   * 장비의 익셉셔널 강화를 초기화합니다.
+   *
+   * @throws {@link TypeError}
+   * 익셉셔널 강화를 초기화할 수 없는 경우.
+   */
+  resetExceptional() {
+    resetExceptional(this);
   }
 }
