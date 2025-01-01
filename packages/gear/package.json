@@ -5,8 +5,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --build",
-    "test:type": "tsc -p tsconfig.lib.json && tsc -p tsconfig.test.json"
+    "build": "tsc --build tsconfig.lib.json",
+    "test:type": "tsc -p tsconfig.lib.json --noEmit && tsc -p tsconfig.test.json --noEmit"
   },
   "devDependencies": {
     "@types/jest": "^29.5.13"

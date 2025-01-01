@@ -1,4 +1,3 @@
-import { ExceptionalHammer } from './../../dist/lib/enhance/exceptional.d';
 import {
   GearAddOption,
   GearBaseOption,
@@ -24,6 +23,7 @@ import {
   applyExceptional,
   canApplyExceptional,
   canResetExceptional,
+  ExceptionalHammer,
   resetExceptional,
   supportsExceptional,
 } from './enhance/exceptional';
