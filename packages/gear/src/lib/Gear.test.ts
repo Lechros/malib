@@ -1188,6 +1188,58 @@ describe('Gear', () => {
     });
   });
 
+  describe('supportsExceptional', () => {
+    it('is false', () => {
+      expect(gear.supportsExceptional).toBe(false);
+    });
+
+    it('is true for exceptionalUpgradeCount === 1', () => {
+      gear.data.exceptionalUpgradeCount = 1;
+
+      expect(gear.supportsExceptional).toBe(true);
+    });
+  });
+
+  describe('canApplyExceptional', () => {
+    it('is false', () => {
+      expect(gear.canApplyExceptional).toBe(false);
+    });
+
+    it('is true for exceptionalUpgradeableCount === 1', () => {
+      gear.data.exceptionalUpgradeableCount = 1;
+
+      expect(gear.canApplyExceptional).toBe(true);
+    });
+  });
+
+  describe('applyExceptional', () => {
+    it('increments exceptionalUpgradeCount for exceptionalUpgradeableCount === 1', () => {
+      gear.data.exceptionalUpgradeableCount = 1;
+      const hammer = { name: '', option: {} };
+
+      gear.applyExceptional(hammer);
+
+      expect(gear.exceptionalUpgradeCount).toBe(1);
+    });
+  });
+
+  describe('canResetExceptional', () => {
+    it('is false', () => {
+      expect(gear.canResetExceptional).toBe(false);
+    });
+  });
+
+  describe('resetExceptional', () => {
+    it('resets exceptionalOption', () => {
+      gear.data.exceptionalUpgradeCount = 1;
+      gear.data.exceptionalOption = { dex: 1 };
+
+      gear.resetExceptional();
+
+      expect(gear.exceptionalOption).toEqual({});
+    });
+  });
+
   beforeEach(() => {
     gear = new Gear({
       meta: {

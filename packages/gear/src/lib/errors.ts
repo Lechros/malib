@@ -25,4 +25,7 @@ export const enum ErrorMessage {
   Soul_SetChargeUnenchanted = '소울웨폰 상태의 장비만 소울 충전량을 변경할 수 있습니다.',
   Soul_InvalidSoulCharge = '소울 충전량은 0 이상 1000 이하의 값으로만 변경할 수 있습니다.',
   Soul_AlreadyEnchanted = '소울웨폰은 중복해서 적용할 수 없습니다.',
+
+  Exceptional_InvalidEnhanceGear = '익셉셔널 강화를 적용할 수 없는 상태의 장비입니다.',
+  Exceptional_InvalidResetGear = '익셉셔널 강화를 초기화할 수 없는 장비입니다.',
 }
