@@ -806,6 +806,14 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@malib/gear@workspace:packages/gear":
+  version: 0.0.0-use.local
+  resolution: "@malib/gear@workspace:packages/gear"
+  dependencies:
+    vitest: "npm:^2.1.8"
+  languageName: unknown
+  linkType: soft
+
 "@manypkg/find-root@npm:^1.1.0":
   version: 1.1.0
   resolution: "@manypkg/find-root@npm:1.1.0"
@@ -2221,14 +2229,6 @@ __metadata:
   conditions: os=darwin
   languageName: node
   linkType: hard
-
-"gear@workspace:packages/gear":
-  version: 0.0.0-use.local
-  resolution: "gear@workspace:packages/gear"
-  dependencies:
-    vitest: "npm:^2.1.8"
-  languageName: unknown
-  linkType: soft
 
 "glob-parent@npm:^5.1.2":
   version: 5.1.2
