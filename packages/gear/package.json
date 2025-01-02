@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "main": "index.js",
+  "typings": "index.d.ts",
   "scripts": {
-    "build": "tsc --build tsconfig.lib.json",
     "test:type": "tsc -p tsconfig.lib.json --noEmit && tsc -p tsconfig.test.json --noEmit"
   },
   "devDependencies": {
