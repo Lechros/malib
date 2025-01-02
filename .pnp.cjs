@@ -15,14 +15,14 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:."\
     },\
     {\
-      "name": "gear",\
+      "name": "@malib/gear",\
       "reference": "workspace:packages/gear"\
     }\
   ],\
   "enableTopLevelFallback": true,\
   "ignorePatternData": "(^(?:\\\\.yarn\\\\/sdks(?:\\\\/(?!\\\\.{1,2}(?:\\\\/|$))(?:(?:(?!(?:^|\\\\/)\\\\.{1,2}(?:\\\\/|$)).)*?)|$))$)",\
   "fallbackExclusionList": [\
-    ["gear", ["workspace:packages/gear"]],\
+    ["@malib/gear", ["workspace:packages/gear"]],\
     ["malib", ["workspace:."]]\
   ],\
   "fallbackPool": [\
@@ -985,6 +985,16 @@ const RAW_RUNTIME_STATE =
           ["@jridgewell/sourcemap-codec", "npm:1.5.0"]\
         ],\
         "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@malib/gear", [\
+      ["workspace:packages/gear", {\
+        "packageLocation": "./packages/gear/",\
+        "packageDependencies": [\
+          ["@malib/gear", "workspace:packages/gear"],\
+          ["vitest", "virtual:6caaffd8d768f445c22425f34c690fbdb4841b381f12bc462fa2a7c1110aee892281e4da120e837f5985213114ed29ac5dcf2339e076bff839ce765f147f2b6a#npm:2.1.8"]\
+        ],\
+        "linkType": "SOFT"\
       }]\
     ]],\
     ["@manypkg/find-root", [\
@@ -2606,16 +2616,6 @@ const RAW_RUNTIME_STATE =
           ["node-gyp", "npm:10.2.0"]\
         ],\
         "linkType": "HARD"\
-      }]\
-    ]],\
-    ["gear", [\
-      ["workspace:packages/gear", {\
-        "packageLocation": "./packages/gear/",\
-        "packageDependencies": [\
-          ["gear", "workspace:packages/gear"],\
-          ["vitest", "virtual:6caaffd8d768f445c22425f34c690fbdb4841b381f12bc462fa2a7c1110aee892281e4da120e837f5985213114ed29ac5dcf2339e076bff839ce765f147f2b6a#npm:2.1.8"]\
-        ],\
-        "linkType": "SOFT"\
       }]\
     ]],\
     ["glob", [\
