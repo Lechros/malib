@@ -9,6 +9,6 @@
     "test:type": "tsc -p tsconfig.lib.json --noEmit && tsc -p tsconfig.test.json --noEmit"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.13"
+    "vitest": "^2.1.8"
   }
 }

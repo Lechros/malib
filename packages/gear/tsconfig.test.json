@@ -3,7 +3,7 @@
   "compilerOptions": {
     "noEmit": true,
     "tsBuildInfoFile": "tmp/test.tsbuildinfo",
-    "types": ["@types/jest"]
+    "types": ["vitest/globals"]
   },
   "include": ["src/**/*.test.ts"]
 }

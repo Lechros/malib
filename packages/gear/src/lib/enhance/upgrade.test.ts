@@ -18,7 +18,7 @@ import {
 let gear: Gear;
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vitest.restoreAllMocks();
 });
 
 describe('canUpgrade', () => {
@@ -29,7 +29,7 @@ describe('canUpgrade', () => {
   });
 
   it('returns false for scrollTotalUpgradeableCount == 0 gear', () => {
-    jest
+    vitest
       .spyOn(gear, 'scrollTotalUpgradeableCount', 'get')
       .mockImplementation(() => 0);
 
@@ -37,7 +37,7 @@ describe('canUpgrade', () => {
   });
 
   it('returns true for scrollTotalUpgradeableCount > 0 gear', () => {
-    jest
+    vitest
       .spyOn(gear, 'scrollTotalUpgradeableCount', 'get')
       .mockImplementation(() => 1);
 
@@ -53,7 +53,7 @@ describe('canGoldenHammer', () => {
   });
 
   it('returns false for scrollTotalUpgradeableCount == 0 gear', () => {
-    jest
+    vitest
       .spyOn(gear, 'scrollTotalUpgradeableCount', 'get')
       .mockImplementation(() => 0);
 
@@ -111,7 +111,7 @@ describe('canFailScroll', () => {
   });
 
   it('returns false for scrollTotalUpgradeableCount == 0 gear', () => {
-    jest
+    vitest
       .spyOn(gear, 'scrollTotalUpgradeableCount', 'get')
       .mockImplementation(() => 0);
 
@@ -171,7 +171,7 @@ describe('canResileScroll', () => {
   });
 
   it('returns false for scrollTotalUpgradeableCount == 0 gear', () => {
-    jest
+    vitest
       .spyOn(gear, 'scrollTotalUpgradeableCount', 'get')
       .mockImplementation(() => 0);
 
@@ -301,7 +301,7 @@ describe('canApplyScroll', () => {
   });
 
   it('returns false for scrollTotalUpgradeableCount == 0 gear', () => {
-    jest
+    vitest
       .spyOn(gear, 'scrollTotalUpgradeableCount', 'get')
       .mockImplementation(() => 0);
 
