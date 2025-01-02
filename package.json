@@ -13,7 +13,7 @@
     "test": "jest",
     "test:type": "yarn workspaces foreach -Aptv run test:type",
     "watch": "jest --watch --coverage false",
-    "build": "yarn workspaces foreach -Aptv run build"
+    "build": "node scripts/build.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.12.0",
