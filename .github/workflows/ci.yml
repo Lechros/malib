@@ -1,42 +1,24 @@
 name: CI
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-
-permissions:
-  actions: read
-  contents: read
+on: [pull_request]
 
 jobs:
-  main:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
         with:
-          fetch-depth: 0
-      
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-      
+          node-version: 20.x
 
-      # Connect your workspace on nx.app and uncomment this to enable task distribution.
-      # The "--stop-agents-after" is optional, but allows idle agents to shut down once the "build" targets have been requested
-      # - run: pnpm exec nx-cloud start-ci-run --distribute-on="5 linux-medium-js" --stop-agents-after="build"
+      - name: Install Dependencies
+        run: yarn --frozen-lockfile
 
-      # Cache node_modules
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
-      - uses: nrwl/nx-set-shas@v4
+      - name: Test Types
+        run: yarn test:type
 
-      - run: git branch --track main origin/main
-        if: ${{ github.event_name == 'pull_request' }}
-
-      - run: pnpm exec nx-cloud record -- nx format:check
-      - run: pnpm exec nx affected -t lint test build
+      - name: Test
+        run: yarn test
