@@ -1,7 +1,0 @@
-{
-  "$schema": "https://typedoc.org/schema.json",
-  "entryPointStrategy": "packages",
-  "entryPoints": ["./packages/gear", "./packages/create-gear"],
-  "name": "malib",
-  "out": "docs"
-}
