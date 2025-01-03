@@ -18,7 +18,7 @@ jobs:
         run: corepack enable
 
       - name: Install Dependencies
-        run: yarn --frozen-lockfile
+        run: yarn --immutable-cache
 
       - name: Test Types
         run: yarn test:type
