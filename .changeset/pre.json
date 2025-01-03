@@ -4,5 +4,7 @@
   "initialVersions": {
     "@malib/gear": "0.15.1"
   },
-  "changesets": []
+  "changesets": [
+    "eight-peas-enjoy"
+  ]
 }
