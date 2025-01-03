@@ -1,5 +1,6 @@
 {
   "name": "@malib/gear",
+  "description": "MapleStory gear logic simulator",
   "version": "0.15.1",
   "type": "module",
   "main": "dist/index.js",
