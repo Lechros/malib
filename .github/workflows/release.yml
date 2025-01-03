@@ -21,8 +21,11 @@ jobs:
         with:
           node-version: 20.x
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Install Dependencies
-        run: yarn --frozen-lockfile
+        run: yarn --immutable-cache
 
       - name: Build
         run: yarn build
