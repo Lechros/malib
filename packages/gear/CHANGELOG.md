@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 1.0.0-next.0
+
+### Major Changes
+
+- 99422d0: Major rewrite of gear package.
+
 ## 0.15.1
 
 ### Patch Changes
