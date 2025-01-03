@@ -1,0 +1,8 @@
+{
+  "mode": "pre",
+  "tag": "next",
+  "initialVersions": {
+    "@malib/gear": "0.15.1"
+  },
+  "changesets": []
+}
