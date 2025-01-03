@@ -7,7 +7,7 @@ import { applyScroll, Scroll } from './upgrade';
 /**
  * 주문의 흔적 종류
  */
-export const enum SpellTraceType {
+export enum SpellTraceType {
   /** STR */
   str = 'str',
   /** DEX */

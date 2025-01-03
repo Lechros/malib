@@ -3,7 +3,7 @@ import { ErrorMessage } from '../errors';
 import { Gear } from '../Gear';
 import { isAccessory, isArmor, isShield, isWeapon } from '../gearType';
 
-export const enum AddOptionType {
+export enum AddOptionType {
   /** STR */
   str = 'str',
   /** DEX */

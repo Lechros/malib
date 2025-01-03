@@ -1,4 +1,4 @@
-export const enum GearType {
+export enum GearType {
   /** 모자 */
   cap = 100,
   /** 얼굴장식 */

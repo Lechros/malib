@@ -1,4 +1,4 @@
-export const enum PotentialGrade {
+export enum PotentialGrade {
   Normal = 0,
   Rare = 1,
   Epic = 2,
