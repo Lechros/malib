@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 1.0.0-next.2
+
+### Minor Changes
+
+- d5fbf5f: fix: export enum as non-type to consumer
+
 ## 1.0.0-next.1
 
 ### Minor Changes
