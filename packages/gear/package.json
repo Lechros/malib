@@ -9,6 +9,11 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lechros/malib",
+    "directory": "packages/gear"
+  },
   "scripts": {
     "test:type": "tsc -p tsconfig.lib.json --noEmit && tsc -p tsconfig.test.json --noEmit"
   },

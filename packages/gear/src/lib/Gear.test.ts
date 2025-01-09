@@ -21,9 +21,6 @@ describe('Gear constructor', () => {
       type: GearType.cap,
       req: {},
       attributes: {},
-
-      potentials: [null, null, null],
-      additionalPotentials: [null, null, null],
     } satisfies GearData;
 
     const gear = new Gear(data);
@@ -509,9 +506,12 @@ describe('Gear', () => {
       ]);
     });
 
-    it('is readonly property', () => {
-      // @ts-expect-error
-      expect(() => (gear.potentials = [null, null, null])).toThrow();
+    it('is settable', () => {
+      const potentials = [{ title: '', option: {} }];
+
+      gear.potentials = potentials;
+
+      expect(gear.potentials).toEqual(potentials);
     });
   });
 
@@ -551,9 +551,12 @@ describe('Gear', () => {
       ]);
     });
 
-    it('is readonly property', () => {
-      // @ts-expect-error
-      expect(() => (gear.additionalPotentials = [null, null, null])).toThrow();
+    it('is settable', () => {
+      const potentials = [{ title: '', option: {} }];
+
+      gear.additionalPotentials = potentials;
+
+      expect(gear.additionalPotentials).toEqual(potentials);
     });
   });
 

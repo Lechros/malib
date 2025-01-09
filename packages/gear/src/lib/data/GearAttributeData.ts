@@ -51,7 +51,7 @@ export type GearAttributeData = {
   dateExpire?: string;
 };
 
-export const enum GearTrade {
+export enum GearTrade {
   /** 교환 가능 */
   Tradeable = 0,
   /** 교환 불가 */
@@ -60,7 +60,7 @@ export const enum GearTrade {
   EquipTradeBlock = 2,
 }
 
-export const enum GearShare {
+export enum GearShare {
   /** 없음 */
   None = 0,
   /** 월드 내 나의 캐릭터 간 이동 가능 */
@@ -69,7 +69,7 @@ export const enum GearShare {
   AccountSharableOnce = 2,
 }
 
-export const enum AddOptionCan {
+export enum AddOptionCan {
   /** 없음 (장비 분류를 따름) */
   None = 0,
   /** 설정 가능 */
@@ -78,7 +78,7 @@ export const enum AddOptionCan {
   Cannot = 2,
 }
 
-export const enum PotentialCan {
+export enum PotentialCan {
   /** 없음 (장비 분류를 따름) */
   None = 0,
   /** 설정 가능 */
@@ -89,7 +89,7 @@ export const enum PotentialCan {
   Fixed = 3,
 }
 
-export const enum GearCuttable {
+export enum GearCuttable {
   /** 없음 */
   None = 0,
   /** 카르마의 가위 또는 실버 카르마의 가위를 사용하면 1회 교환이 가능하게 할 수 있습니다. */
