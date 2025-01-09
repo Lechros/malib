@@ -5,6 +5,8 @@
     "@malib/gear": "0.15.1"
   },
   "changesets": [
-    "eight-peas-enjoy"
+    "cuddly-oranges-rescue",
+    "eight-peas-enjoy",
+    "thirty-snakes-serve"
   ]
 }

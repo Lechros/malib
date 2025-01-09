@@ -1,5 +1,15 @@
 # @malib/gear
 
+## 1.0.0-next.1
+
+### Minor Changes
+
+- bfeab46: feat: make potentials var-length and optional in GearData
+
+### Patch Changes
+
+- ba1f65f: refactor: replace const enum with enum
+
 ## 1.0.0-next.0
 
 ### Major Changes
