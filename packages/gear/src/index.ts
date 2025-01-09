@@ -1,11 +1,11 @@
 export {
   /* GearAttributeData */
   type GearAttributeData,
-  type GearTrade,
-  type GearShare,
-  type AddOptionCan,
-  type PotentialCan,
-  type GearCuttable,
+  GearTrade,
+  GearShare,
+  AddOptionCan,
+  PotentialCan,
+  GearCuttable,
   type GearIncline,
   /* GearData */
   type GearData,
@@ -19,12 +19,12 @@ export {
   /* GearOption */
   type GearOption,
   /* GearType */
-  type GearType,
+  GearType,
   /* PotentialData */
   type PotentialData,
   type PotentialOption,
   /* PotentialGrade */
-  type PotentialGrade,
+  PotentialGrade,
   /* SoulSlotData */
   type SoulSlotData,
   type SoulData,
@@ -33,7 +33,7 @@ export {
   type SoulOption,
 } from './lib/data';
 export {
-  type AddOptionType,
+  AddOptionType,
   type AddOptionGrade,
   supportsAddOption,
   getAddOption,
@@ -48,7 +48,7 @@ export {
   resetExceptional,
 } from './lib/enhance/exceptional';
 export {
-  type SpellTraceType,
+  SpellTraceType,
   type SpellTraceRate,
   type SpellTrace,
   applySpellTrace,
