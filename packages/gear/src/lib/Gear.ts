@@ -324,12 +324,12 @@ export class Gear {
   /**
    * 잠재능력 목록
    */
-  get potentials(): [
-    PotentialData | null,
-    PotentialData | null,
-    PotentialData | null,
-  ] {
-    return this.data.potentials;
+  get potentials(): Readonly<PotentialData[]> {
+    return this.data.potentials ?? [];
+  }
+
+  set potentials(value: PotentialData[]) {
+    this.data.potentials = value;
   }
 
   /**
@@ -346,12 +346,12 @@ export class Gear {
   /**
    * 에디셔널 잠재능력 목록
    */
-  get additionalPotentials(): [
-    PotentialData | null,
-    PotentialData | null,
-    PotentialData | null,
-  ] {
-    return this.data.additionalPotentials;
+  get additionalPotentials(): Readonly<PotentialData[]> {
+    return this.data.additionalPotentials ?? [];
+  }
+
+  set additionalPotentials(value: PotentialData[]) {
+    this.data.additionalPotentials = value;
   }
 
   /**

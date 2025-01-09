@@ -12,8 +12,6 @@ export function defaultGear(data: Partial<GearData>): Gear {
     type: GearType.cap,
     req: {},
     attributes: {},
-    potentials: [null, null, null],
-    additionalPotentials: [null, null, null],
 
     ...data,
   });

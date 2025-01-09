@@ -60,19 +60,11 @@ export type GearData = {
   /** 잠재능력 등급 */
   potentialGrade?: PotentialGrade;
   /** 잠재능력 목록 */
-  potentials: [
-    PotentialData | null,
-    PotentialData | null,
-    PotentialData | null,
-  ];
+  potentials?: PotentialData[];
   /** 에디셔널 잠재능력 등급 */
   additionalPotentialGrade?: PotentialGrade;
   /** 에디셔널 잠재능력 목록 */
-  additionalPotentials: [
-    PotentialData | null,
-    PotentialData | null,
-    PotentialData | null,
-  ];
+  additionalPotentials?: PotentialData[];
 
   /** 장비 익셉셔널 옵션 */
   exceptionalOption?: Partial<GearExceptionalOption>;
