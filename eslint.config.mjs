@@ -1,8 +1,12 @@
 // @ts-check
 
 import eslint from '@eslint/js';
-import tseslint, { parser } from 'typescript-eslint';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import { dirname } from 'path';
+import tseslint, { parser } from 'typescript-eslint';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default tseslint.config(
   {
@@ -15,7 +19,9 @@ export default tseslint.config(
     languageOptions: {
       parser: parser,
       parserOptions: {
-        project: ['tsconfig.base.json', 'packages/*/tsconfig.*.json'],
+        project: ['tsconfig.json', 'packages/*/tsconfig.*.json'],
+        tsconfigRootDir: __dirname,
+        sourceType: 'module',
       },
     },
   },
