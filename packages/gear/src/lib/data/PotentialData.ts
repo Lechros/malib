@@ -1,11 +1,11 @@
 import { GearOption } from './GearOption';
 
-export type PotentialData = {
+export interface PotentialData {
   /** 장비에 표시되는 이름 */
   title: string;
   /** 잠재능력 옵션 */
   option: Partial<PotentialOption>;
-};
+}
 
 export type PotentialOption = Pick<
   GearOption,

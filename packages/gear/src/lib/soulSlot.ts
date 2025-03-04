@@ -56,6 +56,7 @@ export function setSoul(gear: Gear, soul: SoulData) {
   if (!canSetSoul(gear)) {
     throw TypeError(ErrorMessage.Soul_SetSoulUnenchanted);
   }
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   gear.data.soulSlot!.soul = soul;
   _updateChargeOption(gear);
 }
@@ -84,6 +85,7 @@ export function setSoulCharge(gear: Gear, charge: number) {
   if (charge < 0 || charge > 1000) {
     throw TypeError(ErrorMessage.Soul_InvalidSoulCharge);
   }
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   gear.data.soulSlot!.charge = charge;
   _updateChargeOption(gear);
 }
@@ -111,5 +113,6 @@ export function _updateChargeOption(gear: Gear) {
       option = { [type]: 5 + base };
     }
   }
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   gear.data.soulSlot!.chargeOption = option;
 }

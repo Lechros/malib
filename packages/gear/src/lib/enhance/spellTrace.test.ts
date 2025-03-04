@@ -1,6 +1,5 @@
 import { GearData, GearReqData, GearType } from '../data';
 import { Gear } from '../Gear';
-import { Scroll } from './upgrade';
 import {
   _getAccSpellTrace,
   _getArmorSpellTrace,
@@ -11,6 +10,7 @@ import {
   SpellTraceRate,
   SpellTraceType,
 } from './spellTrace';
+import { Scroll } from './upgrade';
 
 describe('getSpellTraceScroll', () => {
   it.each([
@@ -544,7 +544,11 @@ describe('_getHeartSpellTrace', () => {
       ['int', 30, scr('30% 마력 주문서', { magicPower: 3 }, 'int', 30)],
       ['luk', 30, scr('30% 공격력 주문서', { attackPower: 3 }, 'luk', 30)],
       ['maxHp', 30, scr('30% 공격력 주문서', { attackPower: 3 }, 'maxHp', 30)],
-      ['allStat', 30, scr('30% 공격력 주문서', { attackPower: 3 }, 'allStat', 30)],
+      [
+        'allStat',
+        30,
+        scr('30% 공격력 주문서', { attackPower: 3 }, 'allStat', 30),
+      ],
     ]),
     ...withGear(mockGear(GearType.glove, { level: 90 }), [
       ['str', 100, scr('100% 공격력 주문서', { attackPower: 2 }, 'str', 100)],

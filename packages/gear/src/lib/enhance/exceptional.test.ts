@@ -101,7 +101,9 @@ describe('applyExceptional', () => {
     const gear = defaultGear({});
     const hammer: ExceptionalHammer = { name: '', option: {} };
 
-    expect(() => applyExceptional(gear, hammer)).toThrow(TypeError);
+    expect(() => {
+      applyExceptional(gear, hammer);
+    }).toThrow(TypeError);
   });
 });
 

@@ -1,4 +1,5 @@
 import { GearType } from './data';
+/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
 
 /**
  * 장비 분류가 주무기인지 여부를 확인합니다. 블레이드(`katara`)는 포함되지 않습니다.

@@ -4,6 +4,7 @@ import {
   GearData,
   GearExceptionalOption,
   GearMetadata,
+  GearShapeData,
   GearStarforceOption,
   GearType,
   GearUpgradeOption,
@@ -36,6 +37,7 @@ import {
   canResetStarforce,
   canStarforce,
   canStarScroll,
+  MAX_STARSCROLL,
   resetStarforce,
   starforce,
   starScroll,
@@ -70,6 +72,8 @@ import {
 } from './soulSlot';
 import { addOptions, sumOptions } from './utils';
 
+type _Gear = GearData;
+
 /**
  * 장비
  *
@@ -84,7 +88,7 @@ import { addOptions, sumOptions } from './utils';
  *
  * 장비 정보의 모든 속성에 대해 읽기 전용 속성을 제공하고, 일부 속성은 장비 객체 자체에 또는 반환 객체의 속성에 쓰기가 가능합니다.
  */
-export class Gear {
+export class Gear implements _Gear {
   /** 장비 정보 */
   data: GearData;
 
@@ -127,17 +131,21 @@ export class Gear {
   /**
    * 장비 외형
    */
-  get shapeName(): string | undefined {
-    return this.data.shapeName;
+  get shape(): Readonly<GearShapeData> | undefined {
+    return this.data.shape;
+  }
+
+  set shape(shape: GearShapeData | undefined) {
+    this.data.shape = shape;
   }
 
   /**
    * 장비 외형 아이콘
    *
-   * `shapeIcon`을 설정하지 않았을 경우 장비의 기본 아이콘.
+   * 장비 외형이 설정되었을 경우 장비 외형 아이콘, 그렇지 않을 경우 장비 아이콘.
    */
   get shapeIcon(): string {
-    return this.data.shapeIcon || this.icon;
+    return this.shape?.icon ?? this.icon;
   }
 
   /**
@@ -151,14 +159,14 @@ export class Gear {
    * 장비 착용 제한
    */
   get req(): GearReq {
-    return new GearReq(this.data.req ?? {});
+    return new GearReq(this.data.req);
   }
 
   /**
    * 장비 속성
    */
   get attributes(): GearAttribute {
-    return new GearAttribute(this.data.attributes ?? {});
+    return new GearAttribute(this.data.attributes);
   }
 
   /**
@@ -266,7 +274,10 @@ export class Gear {
    */
   get maxStar(): number {
     const value = this.data.maxStar ?? 0;
-    return Math.max(this.star, this.starScroll ? Math.min(15, value) : value);
+    return Math.max(
+      this.star,
+      this.starScroll ? Math.min(MAX_STARSCROLL, value) : value,
+    );
   }
 
   /**
@@ -324,12 +335,15 @@ export class Gear {
   /**
    * 잠재능력 목록
    */
-  get potentials(): Readonly<PotentialData[]> {
-    return this.data.potentials ?? [];
+  get potentials(): PotentialData[] {
+    if (this.data.potentials === undefined) {
+      this.data.potentials = [];
+    }
+    return this.data.potentials;
   }
 
-  set potentials(value: PotentialData[]) {
-    this.data.potentials = value;
+  set potentials(value) {
+    this.data.potentials = [...value];
   }
 
   /**
@@ -346,11 +360,14 @@ export class Gear {
   /**
    * 에디셔널 잠재능력 목록
    */
-  get additionalPotentials(): Readonly<PotentialData[]> {
-    return this.data.additionalPotentials ?? [];
+  get additionalPotentials(): PotentialData[] {
+    if (this.data.additionalPotentials === undefined) {
+      this.data.additionalPotentials = [];
+    }
+    return this.data.additionalPotentials;
   }
 
-  set additionalPotentials(value: PotentialData[]) {
+  set additionalPotentials(value) {
     this.data.additionalPotentials = value;
   }
 
@@ -380,24 +397,6 @@ export class Gear {
    */
   get exceptionalTotalUpgradeableCount(): number {
     return this.exceptionalUpgradeCount + this.exceptionalUpgradeableCount;
-  }
-
-  /**
-   * 장비의 외형을 설정합니다.
-   * @param name 외형 장비명.
-   * @param icon 외형 아이콘.
-   */
-  setShape(name: string, icon: string) {
-    this.data.shapeName = name;
-    this.data.shapeIcon = icon;
-  }
-
-  /**
-   * 장비의 외형을 초기화합니다.
-   */
-  resetShape() {
-    this.data.shapeName = undefined;
-    this.data.shapeIcon = undefined;
   }
 
   /**

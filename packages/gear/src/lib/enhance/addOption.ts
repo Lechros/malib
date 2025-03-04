@@ -88,7 +88,7 @@ export function getAddOption(
 ): Partial<GearAddOption> {
   const keys = _getAddOptionKeys(type);
   const value = getAddOptionValue(gear, type, grade);
-  const entries = keys.map((key) => [key, value]);
+  const entries = keys.map((key) => [key, value] as const);
 
   return Object.fromEntries(entries);
 }
@@ -112,9 +112,9 @@ export function getAddOptionValue(
     type,
     reqLevel: gear.req.level,
     gearType: gear.type,
-    bossReward: gear.attributes.bossReward ?? false,
-    attackPower: gear.baseOption.attackPower ?? 0,
-    magicPower: gear.baseOption.magicPower ?? 0,
+    bossReward: gear.attributes.bossReward,
+    attackPower: gear.baseOption.attackPower,
+    magicPower: gear.baseOption.magicPower,
   };
 
   switch (type) {
@@ -153,14 +153,14 @@ export function getAddOptionValue(
   }
 }
 
-export type AddOptionContext = {
+export interface AddOptionContext {
   type: AddOptionType;
   reqLevel: number;
   gearType: GearType;
   bossReward: boolean;
   attackPower: number;
   magicPower: number;
-};
+}
 
 export function _getSingleStatValue(
   grade: AddOptionGrade,

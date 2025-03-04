@@ -14,7 +14,7 @@ describe('GearReq', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'level' because it is a read-only property.
       expect(() => (req.level = 250)).toThrow();
     });
   });
@@ -30,7 +30,7 @@ describe('GearReq', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'str' because it is a read-only property.
       expect(() => (req.str = 500)).toThrow();
     });
   });
@@ -46,7 +46,7 @@ describe('GearReq', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'dex' because it is a read-only property.
       expect(() => (req.dex = 500)).toThrow();
     });
   });
@@ -62,7 +62,7 @@ describe('GearReq', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'int' because it is a read-only property.
       expect(() => (req.int = 500)).toThrow();
     });
   });
@@ -78,7 +78,7 @@ describe('GearReq', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'luk' because it is a read-only property.
       expect(() => (req.luk = 500)).toThrow();
     });
   });
@@ -94,7 +94,7 @@ describe('GearReq', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'job' because it is a read-only property.
       expect(() => (req.job = 16)).toThrow();
     });
   });
@@ -110,7 +110,7 @@ describe('GearReq', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'class' because it
       expect(() => (req.class = 16)).toThrow();
     });
   });

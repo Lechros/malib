@@ -97,7 +97,9 @@ describe('applySoulEnchant', () => {
       req: { level: 150 },
     });
 
-    expect(() => applySoulEnchant(gear)).toThrow();
+    expect(() => {
+      applySoulEnchant(gear);
+    }).toThrow();
   });
 
   it('throws TypeError for already soul enchanted gears', () => {
@@ -107,7 +109,9 @@ describe('applySoulEnchant', () => {
       soulSlot: {},
     });
 
-    expect(() => applySoulEnchant(gear)).toThrow();
+    expect(() => {
+      applySoulEnchant(gear);
+    }).toThrow();
   });
 });
 
@@ -209,7 +213,9 @@ describe('setSoul', () => {
       option: {},
     };
 
-    expect(() => setSoul(gear, soul)).toThrow();
+    expect(() => {
+      setSoul(gear, soul);
+    }).toThrow();
   });
 });
 
@@ -259,7 +265,9 @@ describe('setSoulCharge', () => {
         soulSlot: {},
       });
 
-      expect(() => setSoulCharge(gear, charge)).toThrow();
+      expect(() => {
+        setSoulCharge(gear, charge);
+      }).toThrow();
     },
   );
 
@@ -269,7 +277,9 @@ describe('setSoulCharge', () => {
       req: { level: 150 },
     });
 
-    expect(() => setSoulCharge(gear, 700)).toThrow();
+    expect(() => {
+      setSoulCharge(gear, 700);
+    }).toThrow();
   });
 });
 

@@ -6,14 +6,14 @@ import { addOptions } from '../utils';
 /**
  * 익셉셔널 해머
  */
-export type ExceptionalHammer = {
+export interface ExceptionalHammer {
   /** 익셉셔널 해머 이름 */
   name: string;
   /** 익셉셔널 해머 아이콘 */
   icon?: string;
   /** 익셉셔널 해머 옵션 */
   option: Partial<GearUpgradeOption>;
-};
+}
 
 /**
  * 장비가 익셉셔널 강화를 지원하는지 여부를 확인합니다.
@@ -51,7 +51,7 @@ export function applyExceptional(
   if (gear.data.exceptionalOption === undefined) {
     gear.data.exceptionalOption = {};
   }
-  addOptions(gear.data.exceptionalOption!, exceptionalHammer.option);
+  addOptions(gear.data.exceptionalOption, exceptionalHammer.option);
   gear.data.exceptionalUpgradeableCount = gear.exceptionalUpgradeableCount - 1;
   gear.data.exceptionalUpgradeCount = gear.exceptionalUpgradeCount + 1;
 }

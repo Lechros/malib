@@ -16,7 +16,7 @@ describe('GearAttribute', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'only' because it is a read-only property.
       expect(() => (attr.only = true)).toThrow();
     });
   });
@@ -51,7 +51,7 @@ describe('GearAttribute', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'onlyEquip' because it is a read-only property.
       expect(() => (attr.onlyEquip = true)).toThrow();
     });
   });
@@ -68,7 +68,7 @@ describe('GearAttribute', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'share' because it is a read-only property.
       expect(() => (attr.share = GearShare.AccountSharable)).toThrow();
     });
   });
@@ -85,7 +85,7 @@ describe('GearAttribute', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'blockGoldenHammer' because it is a read-only property.
       expect(() => (attr.blockGoldenHammer = true)).toThrow();
     });
   });
@@ -102,8 +102,25 @@ describe('GearAttribute', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'superior' because it is a read-only property.
       expect(() => (attr.superior = true)).toThrow();
+    });
+  });
+
+  describe('attackSpeed', () => {
+    it('returns undefined by default', () => {
+      expect(attr.attackSpeed).toBe(undefined);
+    });
+
+    it('returns 6', () => {
+      attr.data.attackSpeed = 6;
+
+      expect(attr.attackSpeed).toBe(6);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'attackSpeed' because it is a read-only property.
+      expect(() => (attr.attackSpeed = 5)).toThrow();
     });
   });
 
@@ -119,7 +136,7 @@ describe('GearAttribute', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'cannotUpgrade' because it is a read-only property.
       expect(() => (attr.cannotUpgrade = true)).toThrow();
     });
   });
@@ -136,7 +153,7 @@ describe('GearAttribute', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'canPotential' because it is a read-only property.
       expect(() => (attr.canPotential = PotentialCan.Fixed)).toThrow();
     });
   });
@@ -154,7 +171,7 @@ describe('GearAttribute', () => {
 
     it('is readonly property', () => {
       expect(
-        // @ts-expect-error
+        // @ts-expect-error: Cannot assign to 'canAdditionalPotential' because it is a read-only property.
         () => (attr.canAdditionalPotential = PotentialCan.Cannot),
       ).toThrow();
     });
@@ -172,7 +189,7 @@ describe('GearAttribute', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'reqLevelIncrease' because it is a read-only property.
       expect(() => (attr.reqLevelIncrease = 10)).toThrow();
     });
   });
@@ -189,7 +206,7 @@ describe('GearAttribute', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'cuttable' because it is a read-only property.
       expect(() => (attr.cuttable = GearCuttable.Platinum)).toThrow();
     });
   });
@@ -224,7 +241,7 @@ describe('GearAttribute', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'accountShareTag' because it is a read-only property.
       expect(() => (attr.accountShareTag = true)).toThrow();
     });
   });
@@ -241,7 +258,7 @@ describe('GearAttribute', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'lucky' because it is a read-only property.
       expect(() => (attr.lucky = true)).toThrow();
     });
   });
@@ -290,7 +307,7 @@ describe('GearAttribute', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'bossReward' because it is a read-only property.
       expect(() => (attr.bossReward = true)).toThrow();
     });
   });

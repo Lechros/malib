@@ -6,7 +6,7 @@ export function addOptions(
 ): void {
   const sum: Record<string, number> = option;
   for (const option of options) {
-    for (const [stat, value] of Object.entries(option)) {
+    for (const [stat, value] of Object.entries<number>(option)) {
       if (stat in sum) {
         sum[stat] += value;
       } else {

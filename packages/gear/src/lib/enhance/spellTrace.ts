@@ -100,6 +100,7 @@ export function _getWeaponSpellTrace(
     throw TypeError(ErrorMessage.SpellTrace_InvalidSpellTrace);
   }
   const tier = _getTier(gear);
+  // eslint-disable-next-line prefer-const
   let [power, stat] = weaponPowerStat[rate][tier];
   if (type === SpellTraceType.maxHp) {
     stat *= 50;
@@ -108,10 +109,10 @@ export function _getWeaponSpellTrace(
   const powerType = _getPowerType(type);
   let name: string, option: SpellTrace['option'];
   if (stat === 0) {
-    name = `${rate}% ${_getTypeName(powerType)} 주문서`;
+    name = _createScrollName(rate, _getTypeName(powerType));
     option = { [powerType]: power };
   } else {
-    name = `${rate}% ${_getTypeName(powerType)}(${_getTypeName(type)}) 주문서`;
+    name = _createScrollName(rate, _getTypeName(powerType), _getTypeName(type));
     option = { [powerType]: power, [type]: stat };
   }
   return { name, option, type, rate };
@@ -127,11 +128,11 @@ export function _getGloveSpellTrace(
 
   let name: string, option: SpellTrace['option'];
   if (power === 0) {
-    name = `${rate}% 방어력 주문서`;
+    name = _createScrollName(rate, '방어력');
     option = { armor: 3 };
   } else {
     const powerType = _getPowerType(type);
-    name = `${rate}% ${_getTypeName(powerType)} 주문서`;
+    name = _createScrollName(rate, _getTypeName(powerType));
     option = { [powerType]: power };
   }
   return { name, option, rate, type };
@@ -154,19 +155,22 @@ export function _getArmorSpellTrace(
       option[type] = stat;
       break;
     case SpellTraceType.maxHp:
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       option.maxHp! += stat * 50;
       break;
-    case SpellTraceType.allStat:
+    case SpellTraceType.allStat: {
       if (!(rate in armorAllStat)) {
         throw TypeError(ErrorMessage.SpellTrace_InvalidSpellTrace);
       }
       // @ts-expect-error: rate is checked above
-      const allStat = armorAllStat[rate][tier];
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      const allStat: number = armorAllStat[rate][tier];
       option.str = allStat;
       option.dex = allStat;
       option.int = allStat;
       option.luk = allStat;
       break;
+    }
   }
 
   if (gear.scrollUpgradeCount === 3) {
@@ -180,7 +184,7 @@ export function _getArmorSpellTrace(
     }
   }
 
-  const name = `${rate}% ${_getTypeName(type)} 주문서`;
+  const name = _createScrollName(rate, _getTypeName(type));
   return { name, option, type, rate };
 }
 
@@ -194,7 +198,8 @@ export function _getAccSpellTrace(
   }
   const tier = _getTier(gear);
   // @ts-expect-error: rate is checked above
-  const stat = accStat[rate][tier];
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+  const stat: number = accStat[rate][tier];
 
   const option: SpellTrace['option'] = {};
   switch (type) {
@@ -207,20 +212,22 @@ export function _getAccSpellTrace(
     case SpellTraceType.maxHp:
       option.maxHp = stat * 50;
       break;
-    case SpellTraceType.allStat:
+    case SpellTraceType.allStat: {
       if (!(rate in accAllStat)) {
         throw TypeError(ErrorMessage.SpellTrace_InvalidSpellTrace);
       }
       // @ts-expect-error: rate is checked above
-      const allStat = accAllStat[rate][tier];
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      const allStat: number = accAllStat[rate][tier];
       option.str = allStat;
       option.dex = allStat;
       option.int = allStat;
       option.luk = allStat;
       break;
+    }
   }
 
-  const name = `${rate}% ${_getTypeName(type)} 주문서`;
+  const name = _createScrollName(rate, _getTypeName(type));
   return { name, option, type, rate };
 }
 
@@ -234,12 +241,23 @@ export function _getHeartSpellTrace(
   }
   const tier = _getTier(gear);
   // @ts-expect-error: rate is checked above
-  const power = heartPower[rate][tier];
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+  const power: number = heartPower[rate][tier];
 
   const powerType = _getPowerType(type);
-  const name = `${rate}% ${_getTypeName(powerType)} 주문서`;
+  const name = _createScrollName(rate, _getTypeName(powerType));
   const option = { [powerType]: power };
   return { name, option, type, rate };
+}
+
+function _createScrollName(
+  rate: SpellTraceRate,
+  typeName: string,
+  subTypeName?: string,
+): string {
+  if (subTypeName)
+    return `${rate.toString()}% ${typeName}(${subTypeName}) 주문서`;
+  else return `${rate.toString()}% ${typeName} 주문서`;
 }
 
 function _getTypeName(
@@ -322,7 +340,7 @@ const armorStatMaxHpArmor = {
 const armorAllStat = {
   30: [1, 2, 3],
   15: [2, 3, 4],
-};
+} as const;
 
 const glovePower = {
   100: [0, 1, 1],
@@ -335,7 +353,7 @@ const accStat = {
   100: [1, 1, 2],
   70: [2, 2, 3],
   30: [3, 4, 5],
-};
+} as const;
 
 const accAllStat = {
   30: [1, 2, 3],

@@ -23,18 +23,9 @@ export function supportsStarforce(gear: Gear): boolean {
  *
  * 업그레이드가 완료되지 않은 장비, 놀라운 장비강화 주문서가 적용된 장비에도 적용할 수 있습니다.
  * @param gear 확인할 장비.
- * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
- */
-export function canStarforce(gear: Gear): boolean;
-/**
- * 장비에 스타포스 강화를 적용할 수 있는 상태인지 여부를 확인합니다.
- *
- * 업그레이드가 완료되지 않은 장비, 놀라운 장비강화 주문서가 적용된 장비에도 적용할 수 있습니다.
- * @param gear 확인할 장비.
  * @param exceedMaxStar 장비의 최대 강화 단계를 초과하여 강화할 지 여부.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canStarforce(gear: Gear, exceedMaxStar: boolean): boolean;
 export function canStarforce(gear: Gear, exceedMaxStar = false): boolean {
   if (!supportsStarforce(gear)) {
     return false;
@@ -54,22 +45,11 @@ export function canStarforce(gear: Gear, exceedMaxStar = false): boolean {
  *
  * 업그레이드가 완료되지 않은 장비, 놀라운 장비강화 주문서가 적용된 장비에도 적용할 수 있습니다.
  * @param gear 적용할 장비.
- *
- * @throws {@link TypeError}
- * 스타포스 강화를 적용할 수 없는 경우.
- */
-export function starforce(gear: Gear): void;
-/**
- * 장비에 스타포스 강화를 1회 적용합니다.
- *
- * 업그레이드가 완료되지 않은 장비, 놀라운 장비강화 주문서가 적용된 장비에도 적용할 수 있습니다.
- * @param gear 적용할 장비.
  * @param exceedMaxStar 장비의 최대 강화 단계를 초과하여 강화할 지 여부.
  *
  * @throws {@link TypeError}
  * 스타포스 강화를 적용할 수 없는 경우.
  */
-export function starforce(gear: Gear, exceedMaxStar: boolean): void;
 export function starforce(gear: Gear, exceedMaxStar = false) {
   if (!canStarforce(gear, exceedMaxStar)) {
     throw TypeError(ErrorMessage.Starforce_InvalidStarforceGear);
@@ -92,20 +72,9 @@ export function starforce(gear: Gear, exceedMaxStar = false) {
  * 업그레이드가 완료되지 않은 장비, 놀라운 장비강화 주문서가 적용된 장비에도 적용할 수 있습니다.
  * 슈페리얼 장비에는 적용할 수 없습니다.
  * @param gear 확인할 장비.
- * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
- */
-export function canStarScroll(gear: Gear): boolean;
-/**
- * 장비에 놀라운 장비 강화 주문서를 적용할 수 있는 상태인지 여부를 확인합니다.
- *
- * 착용 가능 레벨 150 이하의 장비에만 적용할 수 있습니다.
- * 업그레이드가 완료되지 않은 장비, 놀라운 장비강화 주문서가 적용된 장비에도 적용할 수 있습니다.
- * 슈페리얼 장비에는 적용할 수 없습니다.
- * @param gear 확인할 장비.
  * @param exceedMaxStar 장비의 최대 강화 단계를 초과하여 강화할 지 여부.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canStarScroll(gear: Gear, exceedMaxStar: boolean): boolean;
 export function canStarScroll(gear: Gear, exceedMaxStar = false): boolean {
   if (!supportsStarforce(gear)) {
     return false;
@@ -128,36 +97,6 @@ export function canStarScroll(gear: Gear, exceedMaxStar = false): boolean {
  * 착용 가능 레벨 150 이하의 장비에만 적용할 수 있습니다.
  * 업그레이드가 완료되지 않은 장비, 스타포스 강화가 적용된 장비에도 적용할 수 있습니다.
  * 슈페리얼 장비에는 적용할 수 없습니다.
- * @param gear 적용할 장비.
- *
- * @throws {@link TypeError}
- * 놀라운 장비 강화 주문서를 적용할 수 없는 경우.
- */
-export function starScroll(gear: Gear): void;
-/**
- * 장비에 놀라운 장비 강화 주문서를 1회 적용합니다.
- *
- * 착용 가능 레벨 150 이하의 장비에만 적용할 수 있습니다.
- * 업그레이드가 완료되지 않은 장비, 스타포스 강화가 적용된 장비에도 적용할 수 있습니다.
- * 슈페리얼 장비에는 적용할 수 없습니다.
- *
- * 보너스 스탯은 장비 분류에 따라 결정됩니다.
- * - 방어구(방패 제외): 최대 HP +50
- * - 장신구: 올스탯 +1 ~ +2
- * - 무기/블레이드/방패: 공격력/마력 +1
- * @param gear 적용할 장비.
- * @param bonus 보너스 스탯 적용 여부.
- *
- * @throws {@link TypeError}
- * 놀라운 장비 강화 주문서를 적용할 수 없는 경우.
- */
-export function starScroll(gear: Gear, bonus: boolean): void;
-/**
- * 장비에 놀라운 장비 강화 주문서를 1회 적용합니다.
- *
- * 착용 가능 레벨 150 이하의 장비에만 적용할 수 있습니다.
- * 업그레이드가 완료되지 않은 장비, 스타포스 강화가 적용된 장비에도 적용할 수 있습니다.
- * 슈페리얼 장비에는 적용할 수 없습니다.
  *
  * 보너스 스탯은 장비 분류에 따라 결정됩니다.
  * - 방어구(방패 제외): 최대 HP +50
@@ -170,11 +109,6 @@ export function starScroll(gear: Gear, bonus: boolean): void;
  * @throws {@link TypeError}
  * 놀라운 장비 강화 주문서를 적용할 수 없는 경우.
  */
-export function starScroll(
-  gear: Gear,
-  bonus: boolean,
-  exceedMaxStar: boolean,
-): void;
 export function starScroll(
   gear: Gear,
   bonus = false,

@@ -81,19 +81,25 @@ describe('applyGoldenHammer', () => {
   it('throws TypeError for cannotUpgrade gear', () => {
     gear.data.attributes.cannotUpgrade = true;
 
-    expect(() => applyGoldenHammer(gear)).toThrow(TypeError);
+    expect(() => {
+      applyGoldenHammer(gear);
+    }).toThrow(TypeError);
   });
 
   it('throws TypeError for blockGoldenHammer gear', () => {
     gear.data.attributes.blockGoldenHammer = true;
 
-    expect(() => applyGoldenHammer(gear)).toThrow(TypeError);
+    expect(() => {
+      applyGoldenHammer(gear);
+    }).toThrow(TypeError);
   });
 
   it('throws TypeError for goldenHammer > 0 gear', () => {
     gear.data.goldenHammer = 1;
 
-    expect(() => applyGoldenHammer(gear)).toThrow(TypeError);
+    expect(() => {
+      applyGoldenHammer(gear);
+    }).toThrow(TypeError);
   });
 
   it('sets goldenHammer to 1', () => {
@@ -135,13 +141,17 @@ describe('failScroll', () => {
   it('throws TypeError for cannotUpgrade gear', () => {
     gear.data.attributes.cannotUpgrade = true;
 
-    expect(() => failScroll(gear)).toThrow(TypeError);
+    expect(() => {
+      failScroll(gear);
+    }).toThrow(TypeError);
   });
 
   it('throws TypeError for scrollUpgradeableCount == 0 gear', () => {
     gear.data.scrollUpgradeableCount = 0;
 
-    expect(() => failScroll(gear)).toThrow(TypeError);
+    expect(() => {
+      failScroll(gear);
+    }).toThrow(TypeError);
   });
 
   it('increments scrollResilienceCount by 1', () => {
@@ -195,13 +205,17 @@ describe('resileScroll', () => {
   it('throws TypeError for cannotUpgrade gear', () => {
     gear.data.attributes.cannotUpgrade = true;
 
-    expect(() => resileScroll(gear)).toThrow(TypeError);
+    expect(() => {
+      resileScroll(gear);
+    }).toThrow(TypeError);
   });
 
   it('throws TypeError for scrollResilienceCount == 0 gear', () => {
     gear.data.scrollResilienceCount = 0;
 
-    expect(() => resileScroll(gear)).toThrow(TypeError);
+    expect(() => {
+      resileScroll(gear);
+    }).toThrow(TypeError);
   });
 
   it('increments scrollUpgradeableCount by 1', () => {
@@ -245,7 +259,9 @@ describe('resetUpgrade', () => {
   it('throws TypeError for cannotUpgrade gear', () => {
     gear.data.attributes.cannotUpgrade = true;
 
-    expect(() => resetUpgrade(gear)).toThrow(TypeError);
+    expect(() => {
+      resetUpgrade(gear);
+    }).toThrow(TypeError);
   });
 
   it('resets goldenHammer', () => {
@@ -330,13 +346,17 @@ describe('applyScroll', () => {
   it('throws TypeError for cannotUpgrade gear', () => {
     gear.data.attributes.cannotUpgrade = true;
 
-    expect(() => applyScroll(gear, scroll)).toThrow(TypeError);
+    expect(() => {
+      applyScroll(gear, scroll);
+    }).toThrow(TypeError);
   });
 
   it('throws TypeError for scrollUpgradeableCount == 0 gear', () => {
     gear.data.scrollUpgradeableCount = 0;
 
-    expect(() => applyScroll(gear, scroll)).toThrow(TypeError);
+    expect(() => {
+      applyScroll(gear, scroll);
+    }).toThrow(TypeError);
   });
 
   it('increments scrollUpgradeCount by 1', () => {

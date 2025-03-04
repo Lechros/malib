@@ -9,7 +9,7 @@ import { SoulSlotData } from './SoulSlotData';
 /**
  * 장비 정보
  */
-export type GearData = {
+export interface GearData {
   /** 장비 메타데이터 */
   meta: GearMetadata;
   /** 장비명 */
@@ -19,9 +19,7 @@ export type GearData = {
   /** 장비 설명 */
   desc?: string;
   /** 장비 외형 */
-  shapeName?: string;
-  /** 장비 외형 아이콘 */
-  shapeIcon?: string;
+  shape?: GearShapeData;
   /** 장비 분류 */
   type: GearType;
   /** 장비 착용 제한 */
@@ -72,7 +70,7 @@ export type GearData = {
   exceptionalUpgradeCount?: number;
   /** 익셉셔널 강화 가능 횟수 */
   exceptionalUpgradeableCount?: number;
-};
+}
 
 /**
  * 장비 메타데이터
@@ -81,19 +79,29 @@ export type GearData = {
  * 커스텀 속성은 해당 라이브러리가 임의로 변경하지 않습니다.
  * 충돌을 방지하기 위해 커스텀 속성명은 하나의 `_`으로 시작해야 합니다.
  */
-export type GearMetadata = {
+export interface GearMetadata {
   /** 아이템 ID */
   id: number;
   /** 장비 정보 버전 */
   version: 1;
   /** 추가 옵션 적용 기록 */
   add: [AddOptionType, AddOptionGrade][];
-};
+}
+
+/**
+ * 장비 외형 정보
+ */
+export interface GearShapeData {
+  /** 장비 외형 이름 */
+  name: string;
+  /** 장비 외형 아이콘 */
+  icon: string;
+}
 
 /**
  * 장비 착용 제한 정보
  */
-export type GearReqData = {
+export interface GearReqData {
   /** 착용 가능 레벨 */
   level?: number;
   /** 착용 가능 STR */
@@ -108,7 +116,7 @@ export type GearReqData = {
   job?: number;
   /** 착용 가능 직업 */
   class?: number;
-};
+}
 
 /**
  * 장비 기본 옵션

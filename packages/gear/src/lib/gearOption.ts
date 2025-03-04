@@ -10,12 +10,12 @@ const PROXY_KEY = '__GearOption_s87Ns2aQ';
  * @returns 장비 옵션 프록시.
  */
 export function toGearOption(option: Partial<GearOption>): GearOption {
-  if ((option as any)[PROXY_KEY]) {
+  if (PROXY_KEY in option) {
     return option as GearOption;
   }
   return new Proxy(option, {
     get(target, p: keyof typeof defaultGearOption) {
-      if ((p as any) === PROXY_KEY) {
+      if ((p as string) === PROXY_KEY) {
         return true;
       }
       if (p in defaultGearOption) {
@@ -51,6 +51,7 @@ const defaultGearOption = {
   maxMp: 0,
   maxHpRate: 0,
   maxMpRate: 0,
+  maxDemonForce: 0,
   attackPower: 0,
   magicPower: 0,
   attackPowerRate: 0,
@@ -59,7 +60,9 @@ const defaultGearOption = {
   armorRate: 0,
   speed: 0,
   jump: 0,
+  knockback: 0,
   bossDamage: 0,
+  normalDamage: 0,
   ignoreMonsterArmor: 0,
   allStat: 0,
   damage: 0,
