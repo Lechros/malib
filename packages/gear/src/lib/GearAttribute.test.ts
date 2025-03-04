@@ -107,6 +107,23 @@ describe('GearAttribute', () => {
     });
   });
 
+  describe('attackSpeed', () => {
+    it('returns undefined by default', () => {
+      expect(attr.attackSpeed).toBe(undefined);
+    });
+
+    it('returns 6', () => {
+      attr.data.attackSpeed = 6;
+
+      expect(attr.attackSpeed).toBe(6);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error
+      expect(() => (attr.attackSpeed = 5)).toThrow();
+    });
+  });
+
   describe('cannotUpgrade', () => {
     it('returns false by default', () => {
       expect(attr.cannotUpgrade).toBe(false);

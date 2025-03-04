@@ -8,7 +8,17 @@ import {
   PotentialCan,
 } from './data';
 
-export class GearAttribute implements GearAttributeData {
+export class GearAttribute
+  implements
+    Omit<
+      Required<GearAttributeData>,
+      | 'attackSpeed'
+      | 'cuttableCount'
+      | 'growthExp'
+      | 'growthLevel'
+      | 'dateExpire'
+    >
+{
   /** 장비 속성 정보 */
   data: GearAttributeData;
 
@@ -48,6 +58,11 @@ export class GearAttribute implements GearAttributeData {
   /** 슈페리얼 */
   get superior(): boolean {
     return this.data.superior ?? false;
+  }
+
+  /** 공격 속도 */
+  get attackSpeed(): number | undefined {
+    return this.data.attackSpeed;
   }
 
   /** 강화불가 */

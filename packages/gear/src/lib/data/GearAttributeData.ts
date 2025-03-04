@@ -15,6 +15,8 @@ export type GearAttributeData = {
 
   /** 슈페리얼 */
   superior?: boolean;
+  /** 공격 속도 */
+  attackSpeed?: number;
 
   /** 강화불가 */
   cannotUpgrade?: boolean;
