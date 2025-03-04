@@ -10,6 +10,7 @@ export {
   /* GearData */
   type GearData,
   type GearMetadata,
+  type GearShapeData,
   type GearReqData,
   type GearBaseOption,
   type GearAddOption,

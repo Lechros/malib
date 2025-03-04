@@ -19,9 +19,7 @@ export type GearData = {
   /** 장비 설명 */
   desc?: string;
   /** 장비 외형 */
-  shapeName?: string;
-  /** 장비 외형 아이콘 */
-  shapeIcon?: string;
+  shape?: GearShapeData;
   /** 장비 분류 */
   type: GearType;
   /** 장비 착용 제한 */
@@ -88,6 +86,16 @@ export type GearMetadata = {
   version: 1;
   /** 추가 옵션 적용 기록 */
   add: [AddOptionType, AddOptionGrade][];
+};
+
+/**
+ * 장비 외형 정보
+ */
+export type GearShapeData = {
+  /** 장비 외형 이름 */
+  name: string;
+  /** 장비 외형 아이콘 */
+  icon: string;
 };
 
 /**

@@ -88,20 +88,33 @@ describe('Gear', () => {
     });
   });
 
-  describe('shapeName', () => {
-    it('is 모루 아이템', () => {
-      expect(gear.shapeName).toBe('모루 아이템');
+  describe('shape', () => {
+    it('is { name: 모루 아이템, icon: 1010101 }', () => {
+      expect(gear.shape).toEqual({ name: '모루 아이템', icon: '1010101' });
     });
 
-    it('is readonly property', () => {
-      // @ts-expect-error
-      expect(() => (gear.shapeName = '모루 이름')).toThrow();
+    it('is settable', () => {
+      gear.shape = { name: '모루 아이템 2', icon: '1212121' };
+
+      expect(gear.shape).toEqual({ name: '모루 아이템 2', icon: '1212121' });
+    });
+
+    it('is settable to undefined', () => {
+      gear.shape = undefined;
+
+      expect(gear.shape).toBeUndefined();
     });
   });
 
   describe('shapeIcon', () => {
     it('is 1010101', () => {
       expect(gear.shapeIcon).toBe('1010101');
+    });
+
+    it('is icon if shape is undefined', () => {
+      gear.shape = undefined;
+
+      expect(gear.shapeIcon).toBe('1212128');
     });
 
     it('is readonly property', () => {
@@ -595,34 +608,6 @@ describe('Gear', () => {
     it('is readonly property', () => {
       // @ts-expect-error
       expect(() => (gear.exceptionalUpgradeableCount = 1)).toThrow();
-    });
-  });
-
-  describe('setShape', () => {
-    it('sets shapeName', () => {
-      gear.setShape('외형 이름', '');
-
-      expect(gear.shapeName).toBe('외형 이름');
-    });
-
-    it('sets shapeIcon', () => {
-      gear.setShape('', '1515151');
-
-      expect(gear.shapeIcon).toBe('1515151');
-    });
-  });
-
-  describe('resetShape', () => {
-    it('resets shapeName', () => {
-      gear.resetShape();
-
-      expect(gear.shapeName).toBeUndefined();
-    });
-
-    it('resets shapeIcon', () => {
-      gear.resetShape();
-
-      expect(gear.shapeIcon).toBe('1212128');
     });
   });
 
@@ -1154,8 +1139,10 @@ describe('Gear', () => {
       name: '제네시스 샤이닝로드',
       icon: '1212128',
       desc: '해방 무기',
-      shapeName: '모루 아이템',
-      shapeIcon: '1010101',
+      shape: {
+        name: '모루 아이템',
+        icon: '1010101',
+      },
       type: GearType.shiningRod,
       req: {
         level: 200,

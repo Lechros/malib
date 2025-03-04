@@ -4,6 +4,7 @@ import {
   GearData,
   GearExceptionalOption,
   GearMetadata,
+  GearShapeData,
   GearStarforceOption,
   GearType,
   GearUpgradeOption,
@@ -127,17 +128,21 @@ export class Gear {
   /**
    * 장비 외형
    */
-  get shapeName(): string | undefined {
-    return this.data.shapeName;
+  get shape(): Readonly<GearShapeData> | undefined {
+    return this.data.shape;
+  }
+
+  set shape(shape: GearShapeData | undefined) {
+    this.data.shape = shape;
   }
 
   /**
    * 장비 외형 아이콘
    *
-   * `shapeIcon`을 설정하지 않았을 경우 장비의 기본 아이콘.
+   * 장비 외형이 설정되었을 경우 장비 외형 아이콘, 그렇지 않을 경우 장비 아이콘.
    */
   get shapeIcon(): string {
-    return this.data.shapeIcon || this.icon;
+    return this.shape?.icon ?? this.icon;
   }
 
   /**
@@ -380,24 +385,6 @@ export class Gear {
    */
   get exceptionalTotalUpgradeableCount(): number {
     return this.exceptionalUpgradeCount + this.exceptionalUpgradeableCount;
-  }
-
-  /**
-   * 장비의 외형을 설정합니다.
-   * @param name 외형 장비명.
-   * @param icon 외형 아이콘.
-   */
-  setShape(name: string, icon: string) {
-    this.data.shapeName = name;
-    this.data.shapeIcon = icon;
-  }
-
-  /**
-   * 장비의 외형을 초기화합니다.
-   */
-  resetShape() {
-    this.data.shapeName = undefined;
-    this.data.shapeIcon = undefined;
   }
 
   /**
