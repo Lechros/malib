@@ -537,7 +537,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:*, @eslint/js@npm:9.21.0, @eslint/js@npm:^9.21.0":
+"@eslint/js@npm:9.21.0, @eslint/js@npm:^9.21.0":
   version: 9.21.0
   resolution: "@eslint/js@npm:9.21.0"
   checksum: 10c0/86c24a2668808995037e3f40c758335df2ae277c553ac0cf84381a1a8698f3099d8a22dd9c388947e6b7f93fcc1142f62406072faaa2b83c43ca79993fc01bb3
@@ -889,15 +889,6 @@ __metadata:
   version: 4.34.9
   resolution: "@rollup/rollup-win32-x64-msvc@npm:4.34.9"
   conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@types/eslint__js@npm:^9.14.0":
-  version: 9.14.0
-  resolution: "@types/eslint__js@npm:9.14.0"
-  dependencies:
-    "@eslint/js": "npm:*"
-  checksum: 10c0/da5e315aaf17a3e038eff3a4e1b90e360d9d22319653f43f746ad4b7f90dca2d1f8e0ea08f4d02b1b426e7baeb15610be4a30b64d28d16ef06d2feb75c549dc1
   languageName: node
   linkType: hard
 
@@ -2539,7 +2530,6 @@ __metadata:
   dependencies:
     "@changesets/cli": "npm:^2.28.1"
     "@eslint/js": "npm:^9.21.0"
-    "@types/eslint__js": "npm:^9.14.0"
     "@vitest/coverage-v8": "npm:^3.0.7"
     esbuild: "npm:^0.25.0"
     eslint: "npm:^9.21.0"
