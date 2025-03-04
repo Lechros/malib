@@ -26,6 +26,8 @@ export type GearOption = {
   maxHpRate: number;
   /** 최대 MP(%) */
   maxMpRate: number;
+  /** MaxDF */
+  maxDemonForce: number;
   /** 공격력 */
   attackPower: number;
   /** 마력 */
@@ -42,8 +44,12 @@ export type GearOption = {
   speed: number;
   /** 점프력 */
   jump: number;
+  /** %의 확률로 넉백 */
+  knockback: number;
   /** 보스 공격 시 데미지 증가(%) */
   bossDamage: number;
+  /** 일반 몬스터 데미지(%) */
+  normalDamage: number;
   /** 몬스터 방어율 무시(%) */
   ignoreMonsterArmor: number;
   /** 올스탯(%) */
