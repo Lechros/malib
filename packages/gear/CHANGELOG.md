@@ -1,5 +1,18 @@
 # @malib/gear
 
+## 1.0.0-next.3
+
+### Minor Changes
+
+- 7013d3a: feat: add maxDemonForce, knockback, and normalDamage properties to GearOption
+- ea9724c: feat: refactor gear shape to use value object
+- 2f199cb: feat: add attackSpeed property to GearAttribute with tests
+- f4a1bef: feat: return mutable gear potentials
+
+### Patch Changes
+
+- 6f3e05f: feat: implement stronger type check in Gear and GearAttribute classes
+
 ## 1.0.0-next.2
 
 ### Minor Changes
