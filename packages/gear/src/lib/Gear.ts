@@ -71,6 +71,12 @@ import {
 } from './soulSlot';
 import { addOptions, sumOptions } from './utils';
 
+type ReadonlyProperty = 'potentials' | 'additionalPotentials';
+
+type _Gear = Omit<GearData, ReadonlyProperty> & {
+  [K in ReadonlyProperty]: Readonly<GearData[K]>;
+};
+
 /**
  * 장비
  *
@@ -85,7 +91,7 @@ import { addOptions, sumOptions } from './utils';
  *
  * 장비 정보의 모든 속성에 대해 읽기 전용 속성을 제공하고, 일부 속성은 장비 객체 자체에 또는 반환 객체의 속성에 쓰기가 가능합니다.
  */
-export class Gear {
+export class Gear implements _Gear {
   /** 장비 정보 */
   data: GearData;
 

@@ -8,17 +8,17 @@ import {
   PotentialCan,
 } from './data';
 
-export class GearAttribute
-  implements
-    Omit<
-      Required<GearAttributeData>,
-      | 'attackSpeed'
-      | 'cuttableCount'
-      | 'growthExp'
-      | 'growthLevel'
-      | 'dateExpire'
-    >
-{
+type OptionalProperty =
+  | 'attackSpeed'
+  | 'cuttableCount'
+  | 'growthExp'
+  | 'growthLevel'
+  | 'dateExpire';
+
+type _GearAttribute = Omit<Required<GearAttributeData>, OptionalProperty> &
+  Pick<GearAttributeData, OptionalProperty>;
+
+export class GearAttribute implements _GearAttribute {
   /** 장비 속성 정보 */
   data: GearAttributeData;
 
