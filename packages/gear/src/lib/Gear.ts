@@ -37,6 +37,7 @@ import {
   canResetStarforce,
   canStarforce,
   canStarScroll,
+  MAX_STARSCROLL,
   resetStarforce,
   starforce,
   starScroll,
@@ -71,11 +72,7 @@ import {
 } from './soulSlot';
 import { addOptions, sumOptions } from './utils';
 
-type ReadonlyProperty = 'potentials' | 'additionalPotentials';
-
-type _Gear = Omit<GearData, ReadonlyProperty> & {
-  [K in ReadonlyProperty]: Readonly<GearData[K]>;
-};
+type _Gear = GearData;
 
 /**
  * 장비
@@ -277,7 +274,10 @@ export class Gear implements _Gear {
    */
   get maxStar(): number {
     const value = this.data.maxStar ?? 0;
-    return Math.max(this.star, this.starScroll ? Math.min(15, value) : value);
+    return Math.max(
+      this.star,
+      this.starScroll ? Math.min(MAX_STARSCROLL, value) : value,
+    );
   }
 
   /**
@@ -335,12 +335,15 @@ export class Gear implements _Gear {
   /**
    * 잠재능력 목록
    */
-  get potentials(): readonly PotentialData[] {
-    return this.data.potentials ?? [];
+  get potentials(): PotentialData[] {
+    if (this.data.potentials === undefined) {
+      this.data.potentials = [];
+    }
+    return this.data.potentials;
   }
 
-  set potentials(value: PotentialData[]) {
-    this.data.potentials = value;
+  set potentials(value) {
+    this.data.potentials = [...value];
   }
 
   /**
@@ -357,11 +360,14 @@ export class Gear implements _Gear {
   /**
    * 에디셔널 잠재능력 목록
    */
-  get additionalPotentials(): readonly PotentialData[] {
-    return this.data.additionalPotentials ?? [];
+  get additionalPotentials(): PotentialData[] {
+    if (this.data.additionalPotentials === undefined) {
+      this.data.additionalPotentials = [];
+    }
+    return this.data.additionalPotentials;
   }
 
-  set additionalPotentials(value: PotentialData[]) {
+  set additionalPotentials(value) {
     this.data.additionalPotentials = value;
   }
 
