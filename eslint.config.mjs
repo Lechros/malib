@@ -2,6 +2,7 @@
 
 import eslint from '@eslint/js';
 import tseslint, { parser } from 'typescript-eslint';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default tseslint.config(
   {
@@ -22,6 +23,7 @@ export default tseslint.config(
     files: ['**/*.js', '**/*.jsx'],
     extends: [eslint.configs.recommended],
   },
+  eslintPluginPrettierRecommended,
   {
     ignores: ['**/dist/*', '**/coverage/*', '**/.*'],
   },
