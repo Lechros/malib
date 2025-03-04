@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "noEmit": true,
+    "composite": true,
     "tsBuildInfoFile": "tmp/test.tsbuildinfo",
     "types": ["vitest/globals"]
   },
