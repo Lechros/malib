@@ -14,7 +14,8 @@
     "test:type": "yarn workspaces foreach -Aptv run test:type",
     "watch": "vitest watch",
     "build": "node scripts/build.mjs",
-    "lint": "eslint ."
+    "lint": "prettier . --check && eslint .",
+    "format": "prettier . --write"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.11",
