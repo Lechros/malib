@@ -5,9 +5,14 @@
     "@malib/gear": "0.15.1"
   },
   "changesets": [
+    "big-ways-live",
     "cuddly-oranges-rescue",
     "eight-peas-enjoy",
+    "giant-pens-sneeze",
+    "healthy-apes-flash",
     "red-dryers-bow",
+    "shaggy-dingos-sniff",
+    "tame-sides-work",
     "thirty-snakes-serve"
   ]
 }
