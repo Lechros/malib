@@ -813,9 +813,9 @@ test.each([
 function createGear(
   gearType: GearType,
   reqLevel: number,
-  attackPower: number = 0,
-  magicPower: number = 0,
-  bossReward: boolean = false,
+  attackPower = 0,
+  magicPower = 0,
+  bossReward = false,
 ): Gear {
   return defaultGear({
     type: gearType,

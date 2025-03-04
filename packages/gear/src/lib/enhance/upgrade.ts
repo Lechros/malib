@@ -6,14 +6,14 @@ import { addOptions } from '../utils';
 /**
  * 주문서
  */
-export type Scroll = {
+export interface Scroll {
   /** 주문서 이름 */
   name: string;
   /** 주문서 아이콘 */
   icon?: string;
   /** 주문서 옵션 */
   option: Partial<GearUpgradeOption>;
-};
+}
 
 /**
  * 장비가 주문서 강화를 지원하는지 여부를 확인합니다.
@@ -151,7 +151,7 @@ export function applyScroll(gear: Gear, scroll: Scroll) {
   if (gear.data.upgradeOption === undefined) {
     gear.data.upgradeOption = {};
   }
-  addOptions(gear.data.upgradeOption!, scroll.option);
+  addOptions(gear.data.upgradeOption, scroll.option);
   gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount - 1;
   gear.data.scrollUpgradeCount = gear.scrollUpgradeCount + 1;
 }

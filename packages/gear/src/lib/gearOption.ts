@@ -10,12 +10,12 @@ const PROXY_KEY = '__GearOption_s87Ns2aQ';
  * @returns 장비 옵션 프록시.
  */
 export function toGearOption(option: Partial<GearOption>): GearOption {
-  if ((option as any)[PROXY_KEY]) {
+  if (PROXY_KEY in option) {
     return option as GearOption;
   }
   return new Proxy(option, {
     get(target, p: keyof typeof defaultGearOption) {
-      if ((p as any) === PROXY_KEY) {
+      if ((p as string) === PROXY_KEY) {
         return true;
       }
       if (p in defaultGearOption) {

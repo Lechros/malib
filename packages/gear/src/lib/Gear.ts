@@ -162,14 +162,14 @@ export class Gear implements _Gear {
    * 장비 착용 제한
    */
   get req(): GearReq {
-    return new GearReq(this.data.req ?? {});
+    return new GearReq(this.data.req);
   }
 
   /**
    * 장비 속성
    */
   get attributes(): GearAttribute {
-    return new GearAttribute(this.data.attributes ?? {});
+    return new GearAttribute(this.data.attributes);
   }
 
   /**
@@ -335,7 +335,7 @@ export class Gear implements _Gear {
   /**
    * 잠재능력 목록
    */
-  get potentials(): Readonly<PotentialData[]> {
+  get potentials(): readonly PotentialData[] {
     return this.data.potentials ?? [];
   }
 
@@ -357,7 +357,7 @@ export class Gear implements _Gear {
   /**
    * 에디셔널 잠재능력 목록
    */
-  get additionalPotentials(): Readonly<PotentialData[]> {
+  get additionalPotentials(): readonly PotentialData[] {
     return this.data.additionalPotentials ?? [];
   }
 

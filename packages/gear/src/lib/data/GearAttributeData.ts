@@ -1,7 +1,7 @@
 /**
  * 장비 속성 정보
  */
-export type GearAttributeData = {
+export interface GearAttributeData {
   /** 고유 아이템 */
   only?: boolean;
   /** 교환 가능 여부 */
@@ -51,7 +51,7 @@ export type GearAttributeData = {
   growthLevel?: number;
   /** 장비 유효 기간(KST) */
   dateExpire?: string;
-};
+}
 
 export enum GearTrade {
   /** 교환 가능 */
@@ -100,7 +100,7 @@ export enum GearCuttable {
   Platinum = 2,
 }
 
-export type GearIncline = {
+export interface GearIncline {
   /** 카리스마 */
   charisma: number;
   /** 통찰력 */
@@ -113,4 +113,4 @@ export type GearIncline = {
   sense: number;
   /** 매력 */
   charm: number;
-};
+}

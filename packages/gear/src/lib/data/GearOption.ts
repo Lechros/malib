@@ -1,7 +1,7 @@
 /**
  * 장비 옵션
  */
-export type GearOption = {
+export interface GearOption {
   /** STR */
   str: number;
   /** DEX */
@@ -72,4 +72,4 @@ export type GearOption = {
   intLv: number;
   /** 캐릭터 기준 9레벨 당 LUK */
   lukLv: number;
-};
+}

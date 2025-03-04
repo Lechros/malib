@@ -48,7 +48,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'id' because it is a read-only property.
       expect(() => (gear.meta = { id: 0, version: 1 })).toThrow();
     });
   });
@@ -59,7 +59,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'name' because it is a read-only property.
       expect(() => (gear.name = '제네시스 스태프')).toThrow();
     });
   });
@@ -70,7 +70,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'icon' because it is a read-only property.
       expect(() => (gear.icon = '1234567')).toThrow();
     });
   });
@@ -81,9 +81,9 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'desc' because it is a read-only property.
       expect(() => (gear.desc = '설명')).toThrow();
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'desc' because it is a read-only property.
       expect(() => (gear.desc = undefined)).toThrow();
     });
   });
@@ -118,7 +118,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'shapeIcon' because it is a read-only property.
       expect(() => (gear.shapeIcon = '1234567')).toThrow();
     });
   });
@@ -129,7 +129,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'type' because it is a read-only property.
       expect(() => (gear.type = GearType.staff)).toThrow();
     });
   });
@@ -166,7 +166,7 @@ describe('Gear', () => {
     it('is readonly property', () => {
       expect(
         () =>
-          // @ts-expect-error
+          // @ts-expect-error: Cannot assign to 'req' because it is a read-only property.
           (gear.req = {
             level: 100,
             str: 0,
@@ -205,7 +205,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'attributes' because it is a read-only property.
       expect(() => (gear.attributes = {})).toThrow();
     });
   });
@@ -226,12 +226,12 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'totalOption' because it is a read-only property.
       expect(() => (gear.totalOption = {})).toThrow();
     });
 
     it('is readonly object', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'int' because it is a read-only property.
       expect(() => (gear.totalOption.int = 3)).not.toThrow();
     });
   });
@@ -249,12 +249,12 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'baseOption' because it is a read-only property.
       expect(() => (gear.baseOption = {})).toThrow();
     });
 
     it('is readonly object', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'int' because it is a read-only property.
       expect(() => (gear.baseOption.int = 3)).not.toThrow();
     });
   });
@@ -270,12 +270,12 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'addOption' because it is a read-only property.
       expect(() => (gear.addOption = {})).toThrow();
     });
 
     it('is readonly object', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'int' because it is a read-only property.
       expect(() => (gear.addOption.int = 3)).not.toThrow();
     });
   });
@@ -289,12 +289,12 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'upgradeOption' because it is a read-only property.
       expect(() => (gear.upgradeOption = {})).toThrow();
     });
 
     it('is readonly object', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'int' because it is a read-only property.
       expect(() => (gear.upgradeOption.int = 3)).not.toThrow();
     });
   });
@@ -312,12 +312,12 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'starforceOption' because it is a read-only property.
       expect(() => (gear.starforceOption = {})).toThrow();
     });
 
     it('is readonly object', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'int' because it is a read-only property.
       expect(() => (gear.starforceOption.int = 3)).not.toThrow();
     });
   });
@@ -328,7 +328,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'scrollUpgradeCount' because it is a read-only property.
       expect(() => (gear.scrollUpgradeCount = 7)).toThrow();
     });
   });
@@ -339,7 +339,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'scrollResilienceCount' because it is a read-only property.
       expect(() => (gear.scrollResilienceCount = 1)).toThrow();
     });
   });
@@ -350,7 +350,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'scrollUpgradeableCount' because it is a read-only property.
       expect(() => (gear.scrollUpgradeableCount = 1)).toThrow();
     });
   });
@@ -361,7 +361,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'goldenHammer' because it is a read-only property.
       expect(() => (gear.goldenHammer = 1)).toThrow();
     });
   });
@@ -403,7 +403,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'star' because it is a read-only property.
       expect(() => (gear.star = 23)).toThrow();
     });
   });
@@ -414,7 +414,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'maxStar' because it is a read-only property.
       expect(() => (gear.maxStar = 20)).toThrow();
     });
   });
@@ -425,7 +425,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'starScroll' because it is a read-only property.
       expect(() => (gear.starScroll = true)).toThrow();
     });
   });
@@ -436,7 +436,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'soulEnchanted' because it is a read-only property.
       expect(() => (gear.soulEnchanted = false)).toThrow();
     });
   });
@@ -454,7 +454,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'soul' because it is a read-only property.
       expect(() => (gear.soul = undefined)).toThrow();
     });
   });
@@ -465,7 +465,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'soulCharge' because it is a read-only property.
       expect(() => (gear.soulCharge = undefined)).toThrow();
     });
   });
@@ -478,7 +478,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'soulChargeOption' because it is a read-only property.
       expect(() => (gear.soulChargeOption = undefined)).toThrow();
     });
   });
@@ -579,12 +579,12 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'exceptionalOption' because it is a read-only property.
       expect(() => (gear.exceptionalOption = {})).toThrow();
     });
 
     it('is readonly object', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'int' because it is a read-only property.
       expect(() => (gear.exceptionalOption.int = 3)).not.toThrow();
     });
   });
@@ -595,7 +595,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'exceptionalUpgradeCount' because it is a read-only property.
       expect(() => (gear.exceptionalUpgradeCount = 1)).toThrow();
     });
   });
@@ -606,7 +606,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'exceptionalUpgradeableCount' because it is a read-only property.
       expect(() => (gear.exceptionalUpgradeableCount = 1)).toThrow();
     });
   });
@@ -714,7 +714,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'supportsUpgrade' because it is a read-only property.
       expect(() => (gear.supportsUpgrade = false)).toThrow();
     });
   });
@@ -725,7 +725,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'canApplyGoldenHammer' because it is a read-only property.
       expect(() => (gear.canApplyGoldenHammer = false)).toThrow();
     });
   });
@@ -744,14 +744,16 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'canApplyFailScroll' because it is a read-only property.
       expect(() => (gear.canApplyFailScroll = true)).toThrow();
     });
   });
 
   describe('failScroll', () => {
     it('throws TypeError', () => {
-      expect(() => gear.applyScrollFail()).toThrow();
+      expect(() => {
+        gear.applyScrollFail();
+      }).toThrow();
     });
 
     it('sets scrollUpgradeableCount from 1 to 0', () => {
@@ -769,14 +771,16 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'canApplyResileScroll' because it is a read-only property.
       expect(() => (gear.canApplyResileScroll = true)).toThrow();
     });
   });
 
   describe('resileScroll', () => {
     it('throws TypeError', () => {
-      expect(() => gear.applyScrollResile()).toThrow();
+      expect(() => {
+        gear.applyScrollResile();
+      }).toThrow();
     });
 
     it('sets scrollResilienceCount from 1 to 0', () => {
@@ -794,7 +798,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'canResetUpgrade' because it is a read-only property.
       expect(() => (gear.canResetUpgrade = false)).toThrow();
     });
   });
@@ -829,13 +833,15 @@ describe('Gear', () => {
     it('throws TypeError', () => {
       const scroll = { name: '', option: {} };
 
-      expect(() => gear.applyScroll(scroll)).toThrow();
+      expect(() => {
+        gear.applyScroll(scroll);
+      }).toThrow();
     });
 
     it('adds int = 100 to upgradeOption for scrollUpgradeableCount == 1', () => {
       gear.data.scrollUpgradeableCount = 1;
       const scroll = { name: '', option: { int: 100 } };
-      const intBefore = gear.upgradeOption.int ?? 0;
+      const intBefore = gear.upgradeOption.int;
 
       gear.applyScroll(scroll);
 
@@ -854,12 +860,14 @@ describe('Gear', () => {
 
   describe('applySpellTrace', () => {
     it('throws TypeError', () => {
-      expect(() => gear.applySpellTrace(SpellTraceType.dex, 30)).toThrow();
+      expect(() => {
+        gear.applySpellTrace(SpellTraceType.dex, 30);
+      }).toThrow();
     });
 
     it('adds magicPower = 9 to upgradeOption for scrollUpgradeableCount == 1', () => {
       gear.data.scrollUpgradeableCount = 1;
-      const magicPowerBefore = gear.upgradeOption.magicPower ?? 0;
+      const magicPowerBefore = gear.upgradeOption.magicPower;
 
       gear.applySpellTrace(SpellTraceType.int, 15);
 
@@ -873,7 +881,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'supportsStarforce' because it is a read-only property.
       expect(() => (gear.supportsStarforce = false)).toThrow();
     });
   });
@@ -884,7 +892,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'canApplyStarforce' because it is a read-only property.
       expect(() => (gear.canApplyStarforce = false)).toThrow();
     });
   });
@@ -911,7 +919,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'canApplyStarforceIgnoringMaxStar' because it is a read-only property.
       expect(() => (gear.canApplyStarforceIgnoringMaxStar = false)).toThrow();
     });
   });
@@ -938,14 +946,16 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'canApplyStarScroll' because it is a read-only property.
       expect(() => (gear.canApplyStarScroll = true)).toThrow();
     });
   });
 
   describe('applyStarScroll', () => {
     it('throws TypeError', () => {
-      expect(() => gear.applyStarScroll()).toThrow(TypeError);
+      expect(() => {
+        gear.applyStarScroll();
+      }).toThrow(TypeError);
     });
   });
 
@@ -955,14 +965,16 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'canApplyStarScrollIgnoringMaxStar' because it is a read-only property.
       expect(() => (gear.canApplyStarScrollIgnoringMaxStar = true)).toThrow();
     });
   });
 
   describe('applyStarScrollIgnoringMaxStar', () => {
     it('throws TypeError', () => {
-      expect(() => gear.applyStarScrollIgnoringMaxStar()).toThrow(TypeError);
+      expect(() => {
+        gear.applyStarScrollIgnoringMaxStar();
+      }).toThrow(TypeError);
     });
   });
 
@@ -972,7 +984,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'canResetStarforce' because it is a read-only property.
       expect(() => (gear.canResetStarforce = true)).toThrow();
     });
   });
@@ -992,7 +1004,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'supportsSoul' because it is a read-only property.
       expect(() => (gear.supportsSoul = true)).toThrow();
     });
   });
@@ -1003,14 +1015,16 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'canApplySoulEnchant' because it is a read-only property.
       expect(() => (gear.canApplySoulEnchant = true)).toThrow();
     });
   });
 
   describe('applySoulEnchant', () => {
     it('throws TypeError', () => {
-      expect(() => gear.applySoulEnchant()).toThrow();
+      expect(() => {
+        gear.applySoulEnchant();
+      }).toThrow();
     });
   });
 
@@ -1020,7 +1034,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'canSetSoul' because it is a read-only property.
       expect(() => (gear.canSetSoul = true)).toThrow();
     });
   });
@@ -1037,6 +1051,7 @@ describe('Gear', () => {
     });
 
     it('sets soul charge option', () => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       gear.data.soulSlot!.chargeOption = {};
 
       gear.setSoul({
@@ -1056,7 +1071,7 @@ describe('Gear', () => {
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error
+      // @ts-expect-error: Cannot assign to 'canSetSoulCharge' because it is a read-only property.
       expect(() => (gear.canSetSoulCharge = true)).toThrow();
     });
   });

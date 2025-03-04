@@ -27,8 +27,8 @@ describe('toGearOption', () => {
 
     const option = toGearOption(original);
 
-    // @ts-expect-error
-    expect(option.alskdjf).toBeUndefined();
+    // @ts-expect-error: unknown key test
+    expect(option.unknownKey).toBeUndefined();
   });
 
   it('sets dex to 2, luk to 3', () => {
