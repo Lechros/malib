@@ -14,7 +14,7 @@ import { isDragonGear, isMechanicGear, isSubWeapon } from '../gearType';
  */
 export interface ReadonlyPotential extends Readonly<PotentialData> {
   /** 장비에 표시되는 이름 */
-  title: string;
+  summary: string;
   /** 잠재능력 옵션 */
   option: Readonly<PotentialOption>;
 }

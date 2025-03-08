@@ -158,7 +158,7 @@ describe('setPotential', () => {
       },
     });
 
-    setPotential(gear, PotentialGrade.Unique, [{ title: '', option: {} }]);
+    setPotential(gear, PotentialGrade.Unique, [{ summary: '', option: {} }]);
 
     expect(gear.potentialGrade).toBe(PotentialGrade.Unique);
   });
@@ -171,13 +171,13 @@ describe('setPotential', () => {
     });
 
     setPotential(gear, PotentialGrade.Unique, [
-      { title: 'test1', option: {} },
-      { title: 'test2', option: {} },
+      { summary: 'test1', option: {} },
+      { summary: 'test2', option: {} },
     ]);
 
     expect(gear.potentials).toEqual([
-      { title: 'test1', option: {} },
-      { title: 'test2', option: {} },
+      { summary: 'test1', option: {} },
+      { summary: 'test2', option: {} },
     ]);
   });
 
@@ -189,7 +189,7 @@ describe('setPotential', () => {
     });
 
     expect(() => {
-      setPotential(gear, PotentialGrade.Unique, [{ title: '', option: {} }]);
+      setPotential(gear, PotentialGrade.Unique, [{ summary: '', option: {} }]);
     }).toThrow();
   });
 
@@ -201,7 +201,7 @@ describe('setPotential', () => {
     });
 
     expect(() => {
-      setPotential(gear, PotentialGrade.Normal, [{ title: '', option: {} }]);
+      setPotential(gear, PotentialGrade.Normal, [{ summary: '', option: {} }]);
     }).toThrow();
   });
 
@@ -226,10 +226,10 @@ describe('setPotential', () => {
 
     expect(() => {
       setPotential(gear, PotentialGrade.Unique, [
-        { title: '', option: {} },
-        { title: '', option: {} },
-        { title: '', option: {} },
-        { title: '', option: {} },
+        { summary: '', option: {} },
+        { summary: '', option: {} },
+        { summary: '', option: {} },
+        { summary: '', option: {} },
       ]);
     }).toThrow();
   });
@@ -242,7 +242,7 @@ describe('resetPotential', () => {
         canPotential: PotentialCan.Can,
       },
       potentialGrade: PotentialGrade.Unique,
-      potentials: [{ title: '', option: {} }],
+      potentials: [{ summary: '', option: {} }],
     });
 
     resetPotential(gear);
@@ -256,7 +256,7 @@ describe('resetPotential', () => {
         canPotential: PotentialCan.Can,
       },
       potentialGrade: PotentialGrade.Unique,
-      potentials: [{ title: '', option: {} }],
+      potentials: [{ summary: '', option: {} }],
     });
 
     resetPotential(gear);
@@ -413,7 +413,7 @@ describe('setAdditionalPotential', () => {
     });
 
     setAdditionalPotential(gear, PotentialGrade.Unique, [
-      { title: '', option: {} },
+      { summary: '', option: {} },
     ]);
 
     expect(gear.additionalPotentialGrade).toBe(PotentialGrade.Unique);
@@ -427,13 +427,13 @@ describe('setAdditionalPotential', () => {
     });
 
     setAdditionalPotential(gear, PotentialGrade.Unique, [
-      { title: 'test1', option: {} },
-      { title: 'test2', option: {} },
+      { summary: 'test1', option: {} },
+      { summary: 'test2', option: {} },
     ]);
 
     expect(gear.additionalPotentials).toEqual([
-      { title: 'test1', option: {} },
-      { title: 'test2', option: {} },
+      { summary: 'test1', option: {} },
+      { summary: 'test2', option: {} },
     ]);
   });
 
@@ -446,7 +446,7 @@ describe('setAdditionalPotential', () => {
 
     expect(() => {
       setAdditionalPotential(gear, PotentialGrade.Unique, [
-        { title: '', option: {} },
+        { summary: '', option: {} },
       ]);
     }).toThrow();
   });
@@ -460,7 +460,7 @@ describe('setAdditionalPotential', () => {
 
     expect(() => {
       setAdditionalPotential(gear, PotentialGrade.Normal, [
-        { title: '', option: {} },
+        { summary: '', option: {} },
       ]);
     }).toThrow();
   });
@@ -486,10 +486,10 @@ describe('setAdditionalPotential', () => {
 
     expect(() => {
       setAdditionalPotential(gear, PotentialGrade.Unique, [
-        { title: '', option: {} },
-        { title: '', option: {} },
-        { title: '', option: {} },
-        { title: '', option: {} },
+        { summary: '', option: {} },
+        { summary: '', option: {} },
+        { summary: '', option: {} },
+        { summary: '', option: {} },
       ]);
     }).toThrow();
   });
@@ -502,7 +502,7 @@ describe('resetAdditionalPotential', () => {
         canAdditionalPotential: PotentialCan.Can,
       },
       additionalPotentialGrade: PotentialGrade.Unique,
-      additionalPotentials: [{ title: '', option: {} }],
+      additionalPotentials: [{ summary: '', option: {} }],
     });
 
     resetAdditionalPotential(gear);
@@ -516,7 +516,7 @@ describe('resetAdditionalPotential', () => {
         canAdditionalPotential: PotentialCan.Can,
       },
       additionalPotentialGrade: PotentialGrade.Unique,
-      additionalPotentials: [{ title: '', option: {} }],
+      additionalPotentials: [{ summary: '', option: {} }],
     });
 
     resetAdditionalPotential(gear);

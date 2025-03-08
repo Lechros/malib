@@ -498,19 +498,19 @@ describe('Gear', () => {
     it('is equal to input value', () => {
       expect(gear.potentials).toEqual([
         {
-          title: '보스 몬스터 공격 시 데미지 : +40%',
+          summary: '보스 몬스터 공격 시 데미지 : +40%',
           option: {
             bossDamage: 40,
           },
         },
         {
-          title: '마력 : +12%',
+          summary: '마력 : +12%',
           option: {
             magicPowerRate: 12,
           },
         },
         {
-          title: '마력 : +9%',
+          summary: '마력 : +9%',
           option: {
             magicPowerRate: 9,
           },
@@ -525,7 +525,7 @@ describe('Gear', () => {
 
     it('is readonly array', () => {
       // @ts-expect-error: Cannot mutate 'potentials' because it is a readonly array.
-      gear.potentials[0] = { title: '', option: {} };
+      gear.potentials[0] = { summary: '', option: {} };
     });
 
     it('is deeply readonly', () => {
@@ -551,19 +551,19 @@ describe('Gear', () => {
     it('is equal to input value', () => {
       expect(gear.additionalPotentials).toEqual([
         {
-          title: '마력 : +9%',
+          summary: '마력 : +9%',
           option: {
             magicPowerRate: 9,
           },
         },
         {
-          title: '마력 : +9%',
+          summary: '마력 : +9%',
           option: {
             magicPowerRate: 9,
           },
         },
         {
-          title: '크리티컬 확률 : +6%',
+          summary: '크리티컬 확률 : +6%',
           option: {
             criticalRate: 6,
           },
@@ -578,7 +578,7 @@ describe('Gear', () => {
 
     it('is readonly array', () => {
       // @ts-expect-error: Cannot mutate 'potentials' because it is a readonly array.
-      gear.additionalPotentials[0] = { title: '', option: {} };
+      gear.additionalPotentials[0] = { summary: '', option: {} };
     });
 
     it('is deeply readonly', () => {
@@ -1036,18 +1036,18 @@ describe('Gear', () => {
 
   describe('setPotential', () => {
     it('sets potentialGrade to Unique', () => {
-      gear.setPotential(PotentialGrade.Unique, [{ title: '', option: {} }]);
+      gear.setPotential(PotentialGrade.Unique, [{ summary: '', option: {} }]);
 
       expect(gear.potentialGrade).toBe(PotentialGrade.Unique);
     });
 
     it('sets potentials', () => {
       gear.setPotential(PotentialGrade.Unique, [
-        { title: '마력 : +12%', option: { magicPowerRate: 12 } },
+        { summary: '마력 : +12%', option: { magicPowerRate: 12 } },
       ]);
 
       expect(gear.potentials).toEqual([
-        { title: '마력 : +12%', option: { magicPowerRate: 12 } },
+        { summary: '마력 : +12%', option: { magicPowerRate: 12 } },
       ]);
     });
   });
@@ -1091,7 +1091,7 @@ describe('Gear', () => {
   describe('setAdditionalPotential', () => {
     it('sets additionalPotentialGrade to Legendary', () => {
       gear.setAdditionalPotential(PotentialGrade.Legendary, [
-        { title: '', option: {} },
+        { summary: '', option: {} },
       ]);
 
       expect(gear.additionalPotentialGrade).toBe(PotentialGrade.Legendary);
@@ -1099,11 +1099,11 @@ describe('Gear', () => {
 
     it('sets additionalPotentials', () => {
       gear.setAdditionalPotential(PotentialGrade.Legendary, [
-        { title: '마력 : +12%', option: { magicPowerRate: 12 } },
+        { summary: '마력 : +12%', option: { magicPowerRate: 12 } },
       ]);
 
       expect(gear.additionalPotentials).toEqual([
-        { title: '마력 : +12%', option: { magicPowerRate: 12 } },
+        { summary: '마력 : +12%', option: { magicPowerRate: 12 } },
       ]);
     });
   });
@@ -1351,19 +1351,19 @@ describe('Gear', () => {
       potentialGrade: PotentialGrade.Legendary,
       potentials: [
         {
-          title: '보스 몬스터 공격 시 데미지 : +40%',
+          summary: '보스 몬스터 공격 시 데미지 : +40%',
           option: {
             bossDamage: 40,
           },
         },
         {
-          title: '마력 : +12%',
+          summary: '마력 : +12%',
           option: {
             magicPowerRate: 12,
           },
         },
         {
-          title: '마력 : +9%',
+          summary: '마력 : +9%',
           option: {
             magicPowerRate: 9,
           },
@@ -1372,19 +1372,19 @@ describe('Gear', () => {
       additionalPotentialGrade: PotentialGrade.Unique,
       additionalPotentials: [
         {
-          title: '마력 : +9%',
+          summary: '마력 : +9%',
           option: {
             magicPowerRate: 9,
           },
         },
         {
-          title: '마력 : +9%',
+          summary: '마력 : +9%',
           option: {
             magicPowerRate: 9,
           },
         },
         {
-          title: '크리티컬 확률 : +6%',
+          summary: '크리티컬 확률 : +6%',
           option: {
             criticalRate: 6,
           },

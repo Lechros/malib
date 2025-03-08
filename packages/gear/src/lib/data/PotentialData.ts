@@ -5,7 +5,7 @@ import { GearOption } from './GearOption';
  */
 export interface PotentialData {
   /** 장비에 표시되는 이름 */
-  title: string;
+  summary: string;
   /** 잠재능력 옵션 */
   option: Partial<PotentialOption>;
 }
