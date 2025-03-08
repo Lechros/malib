@@ -1,8 +1,11 @@
 import { GearOption } from './GearOption';
 
+/**
+ * 잠재옵션 정보
+ */
 export interface PotentialData {
   /** 장비에 표시되는 이름 */
-  title: string;
+  summary: string;
   /** 잠재능력 옵션 */
   option: Partial<PotentialOption>;
 }
@@ -30,6 +33,7 @@ export type PotentialOption = Pick<
   | 'speed'
   | 'jump'
   | 'bossDamage'
+  | 'normalDamage'
   | 'ignoreMonsterArmor'
   | 'damage'
   | 'criticalRate'

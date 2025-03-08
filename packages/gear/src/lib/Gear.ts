@@ -29,6 +29,17 @@ import {
   supportsExceptional,
 } from './enhance/exceptional';
 import {
+  canSetAdditionalPotential,
+  canSetPotential,
+  ReadonlyPotential,
+  resetAdditionalPotential,
+  resetPotential,
+  setAdditionalPotential,
+  setPotential,
+  supportsAdditionalPotential,
+  supportsPotential,
+} from './enhance/potential';
+import {
   applySpellTrace,
   SpellTraceRate,
   SpellTraceType,
@@ -72,7 +83,10 @@ import {
 } from './soulSlot';
 import { addOptions, sumOptions } from './utils';
 
-type _Gear = GearData;
+type _Gear = Omit<GearData, 'potentials' | 'additionalPotentials'> & {
+  potentials: readonly ReadonlyPotential[];
+  additionalPotentials: readonly ReadonlyPotential[];
+};
 
 /**
  * 장비
@@ -328,22 +342,17 @@ export class Gear implements _Gear {
     return this.data.potentialGrade ?? PotentialGrade.Normal;
   }
 
-  set potentialGrade(value) {
-    this.data.potentialGrade = value;
-  }
-
   /**
    * 잠재능력 목록
    */
-  get potentials(): PotentialData[] {
-    if (this.data.potentials === undefined) {
-      this.data.potentials = [];
+  get potentials(): readonly ReadonlyPotential[] {
+    if (!this.data.potentials) {
+      return [];
     }
-    return this.data.potentials;
-  }
-
-  set potentials(value) {
-    this.data.potentials = [...value];
+    return this.data.potentials.map((potential) => ({
+      ...potential,
+      option: toGearOption(potential.option),
+    }));
   }
 
   /**
@@ -353,22 +362,17 @@ export class Gear implements _Gear {
     return this.data.additionalPotentialGrade ?? PotentialGrade.Normal;
   }
 
-  set additionalPotentialGrade(value) {
-    this.data.additionalPotentialGrade = value;
-  }
-
   /**
    * 에디셔널 잠재능력 목록
    */
-  get additionalPotentials(): PotentialData[] {
-    if (this.data.additionalPotentials === undefined) {
-      this.data.additionalPotentials = [];
+  get additionalPotentials(): readonly Readonly<ReadonlyPotential>[] {
+    if (!this.data.additionalPotentials) {
+      return [];
     }
-    return this.data.additionalPotentials;
-  }
-
-  set additionalPotentials(value) {
-    this.data.additionalPotentials = value;
+    return this.data.additionalPotentials.map((potential) => ({
+      ...potential,
+      option: toGearOption(potential.option),
+    }));
   }
 
   /**
@@ -630,6 +634,100 @@ export class Gear implements _Gear {
    */
   resetStarforce() {
     resetStarforce(this);
+  }
+
+  /**
+   * 장비가 잠재능력을 지원하는지 여부
+   */
+  get supportsPotential(): boolean {
+    return supportsPotential(this);
+  }
+
+  /**
+   * 장비의 잠재능력을 설정할 수 있는지 여부
+   */
+  get canSetPotential(): boolean {
+    return canSetPotential(this);
+  }
+
+  /**
+   * 장비의 잠재능력을 설정합니다.
+   *
+   * `grade`는 `PotentialGrade.Normal`일 수 없습니다.
+   *
+   * `options`에 포함된 잠재옵션은 1개 이상 3개 이하여야 합니다.
+   * @param grade 잠재능력 등급.
+   * @param options 잠재옵션 목록.
+   *
+   * @throws {@link TypeError}
+   * 잠재능력을 설정할 수 없는 경우.
+   *
+   * @throws {@link TypeError}
+   * 설정하려는 잠재능력 등급이 Normal일 경우.
+   *
+   * @throws {@link TypeError}
+   * 잘못된 잠재옵션 목록을 지정했을 경우.
+   */
+  setPotential(grade: PotentialGrade, options: PotentialData[]) {
+    setPotential(this, grade, options);
+  }
+
+  /**
+   * 장비의 잠재능력을 초기화합니다.
+   *
+   * 에디셔널 잠재능력은 변경되지 않습니다.
+   *
+   * @throws {@link TypeError}
+   * 잠재능력을 초기화할 수 없는 경우.
+   */
+  resetPotential() {
+    resetPotential(this);
+  }
+
+  /**
+   * 장비가 에디셔널 잠재능력을 지원하는지 여부
+   */
+  get supportsAdditionalPotential(): boolean {
+    return supportsAdditionalPotential(this);
+  }
+
+  /**
+   * 장비의 에디셔널 잠재능력을 설정할 수 있는지 여부
+   */
+  get canSetAdditionalPotential(): boolean {
+    return canSetAdditionalPotential(this);
+  }
+
+  /**
+   * 장비의 에디셔널 잠재능력을 설정합니다.
+   *
+   * `grade`는 `PotentialGrade.Normal`일 수 없습니다.
+   *
+   * `options`에 포함된 에디셔널 잠재옵션은 1개 이상 3개 이하여야 합니다.
+   * @param grade 에디셔널 잠재능력 등급.
+   * @param options 에디셔널 잠재옵션 목록.
+   *
+   * @throws {@link TypeError}
+   * 에디셔널 잠재능력을 설정할 수 없는 경우.
+   *
+   * @throws {@link TypeError}
+   * 설정하려는 에디셔널 잠재능력 등급이 Normal일 경우.
+   *
+   * @throws {@link TypeError}
+   * 잘못된 에디셔널 잠재옵션 목록을 지정했을 경우.
+   */
+  setAdditionalPotential(grade: PotentialGrade, options: PotentialData[]) {
+    setAdditionalPotential(this, grade, options);
+  }
+
+  /**
+   * 장비의 에디셔널 잠재능력을 초기화합니다.
+   *
+   * @throws {@link TypeError}
+   * 에디셔널 잠재능력을 초기화할 수 없는 경우.
+   */
+  resetAdditionalPotential() {
+    resetAdditionalPotential(this);
   }
 
   /**

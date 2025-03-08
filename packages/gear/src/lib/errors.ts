@@ -21,6 +21,13 @@ export const enum ErrorMessage {
   StarScroll_InvalidStarScrollGear = '놀라운 장비 강화 주문서를 적용할 수 없는 상태의 장비입니다.',
   Starforce_InvalidResetGear = '스타포스 강화를 초기화할 수 없는 장비입니다.',
 
+  Potential_InvalidPotentialGear = '잠재능력을 적용할 수 없는 상태의 장비입니다.',
+  Potential_InvalidPotentialOptions = '잠재옵션 개수는 1개에서 3개 사이여야 합니다.',
+  Potential_InvalidPotentialGrade = '잠재능력 등급을 Normal로 설정할 수 없습니다. (잠재능력을 초기화하려면 resetPotential을 사용하세요.)',
+  Potential_InvalidAdditionalPotentialGear = '에디셔널 잠재능력을 적용할 수 없는 상태의 장비입니다.',
+  Potential_InvalidAdditionalPotentialOptions = '에디셔널 잠재옵션 개수는 1개에서 3개 사이여야 합니다.',
+  Potential_InvalidAdditionalPotentialGrade = '에디셔널 잠재능력 등급을 Normal로 설정할 수 없습니다. (에디셔널 잠재능력을 초기화하려면 resetAdditionalPotential을 사용하세요.)',
+
   Soul_SetSoulUnenchanted = '소울웨폰 상태의 장비에만 소울을 장착할 수 있습니다.',
   Soul_SetChargeUnenchanted = '소울웨폰 상태의 장비만 소울 충전량을 변경할 수 있습니다.',
   Soul_InvalidSoulCharge = '소울 충전량은 0 이상 1000 이하의 값으로만 변경할 수 있습니다.',
