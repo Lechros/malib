@@ -1,4 +1,4 @@
-import { GearAddOption, GearType } from '../data';
+import { AddOptionCan, GearAddOption, GearType } from '../data';
 import { ErrorMessage } from '../errors';
 import { Gear } from '../Gear';
 import { isAccessory, isArmor, isShield, isWeapon } from '../gearType';
@@ -51,21 +51,27 @@ export enum AddOptionType {
 export type AddOptionGrade = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 /**
- * 추가 옵션을 지원하는 장비 분류인지 확인합니다.
- * @param gearType 확인할 장비.
+ * 장비가 추가 옵션을 지원하는지 확인합니다.
+ * @param gear 확인할 장비.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function supportsAddOption(gearType: GearType): boolean {
-  if (isWeapon(gearType)) {
+export function supportsAddOption(gear: Gear): boolean {
+  if (gear.attributes.canAddOption === AddOptionCan.Can) {
     return true;
   }
-  if (isArmor(gearType)) {
-    return !isShield(gearType);
+  if (gear.attributes.canAddOption === AddOptionCan.Cannot) {
+    return false;
   }
-  if (isAccessory(gearType)) {
-    return ![GearType.ring, GearType.shoulder].includes(gearType);
+  if (isWeapon(gear.type)) {
+    return true;
   }
-  if (gearType === GearType.pocket) {
+  if (isArmor(gear.type)) {
+    return !isShield(gear.type);
+  }
+  if (isAccessory(gear.type)) {
+    return ![GearType.ring, GearType.shoulder].includes(gear.type);
+  }
+  if (gear.type === GearType.pocket) {
     return true;
   }
   return false;

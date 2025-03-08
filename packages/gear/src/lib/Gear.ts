@@ -191,7 +191,7 @@ export class Gear implements _Gear {
    * 익셉셔널 옵션은 미포함.
    */
   get totalOption(): Readonly<
-    GearBaseOption | GearAddOption | GearUpgradeOption | GearStarforceOption
+    GearBaseOption & GearAddOption & GearUpgradeOption & GearStarforceOption
   > {
     return toGearOption(
       sumOptions(
@@ -405,11 +405,9 @@ export class Gear implements _Gear {
 
   /**
    * 장비가 추가 옵션을 지원하는지 여부
-   *
-   * '스칼렛 숄더', '보스 아레나 엠블렘'일 경우 `false`를 반환합니다. 해당 동작은 변경될 수 있습니다.
    */
   get supportsAddOption(): boolean {
-    return supportsAddOption(this.type);
+    return supportsAddOption(this);
   }
 
   /**
