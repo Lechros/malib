@@ -1,4 +1,4 @@
-import { GearAddOption, GearType } from '../data';
+import { AddOptionCan, GearAddOption, GearType } from '../data';
 import { Gear } from '../Gear';
 import { defaultGear, getGearTypeContains } from '../testUtils';
 import {
@@ -72,9 +72,28 @@ test.each(
     GearType.ancientBow,
   ]),
 )('canAddOption(type=%d) returns %p', (gearType, expected) => {
-  const can = supportsAddOption(gearType);
+  const gear = defaultGear({ type: gearType });
+  const can = supportsAddOption(gear);
 
   expect(can).toBe(expected);
+});
+
+describe('canAddOption', () => {
+  it('returns true for canAddOption === Can', () => {
+    const gear = defaultGear({
+      attributes: { canAddOption: AddOptionCan.Can },
+    });
+
+    expect(supportsAddOption(gear)).toBe(true);
+  });
+
+  it('returns false for canAddOption === Cannot', () => {
+    const gear = defaultGear({
+      attributes: { canAddOption: AddOptionCan.Cannot },
+    });
+
+    expect(supportsAddOption(gear)).toBe(false);
+  });
 });
 
 test.each([
