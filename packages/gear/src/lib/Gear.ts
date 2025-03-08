@@ -191,7 +191,7 @@ export class Gear implements _Gear {
    * 익셉셔널 옵션은 미포함.
    */
   get totalOption(): Readonly<
-    GearBaseOption | GearAddOption | GearUpgradeOption | GearStarforceOption
+    GearBaseOption & GearAddOption & GearUpgradeOption & GearStarforceOption
   > {
     return toGearOption(
       sumOptions(
