@@ -1,5 +1,19 @@
 # @malib/gear
 
+## 1.0.0-next.4
+
+### Minor Changes
+
+- bbf5207: fix: add maxDemonForce and knockback to GearBaseOption type
+- bbf5207: refactor: rename 'title' to 'summary' in PotentialData
+- bbf5207: feat: implement potential and additional potential management in Gear class
+
+### Patch Changes
+
+- bbf5207: feat: add normalDamage to PotentialOption
+- 9fc45e7: fix: correct type union to intersection for totalOption in Gear class
+- d8a8d2c: fix: respect canAddOption attribute in supportsAddOption
+
 ## 1.0.0-next.3
 
 ### Minor Changes
