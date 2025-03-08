@@ -488,10 +488,9 @@ describe('Gear', () => {
       expect(gear.potentialGrade).toBe(PotentialGrade.Legendary);
     });
 
-    it('is settable to Unique', () => {
-      gear.potentialGrade = PotentialGrade.Unique;
-
-      expect(gear.potentialGrade).toBe(PotentialGrade.Unique);
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'potentialGrade' because it is a read-only property.
+      expect(() => (gear.potentialGrade = PotentialGrade.Unique)).toThrow();
     });
   });
 
@@ -519,12 +518,19 @@ describe('Gear', () => {
       ]);
     });
 
-    it('is settable', () => {
-      const potentials = [{ title: '', option: {} }];
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'potentials' because it is a read-only property.
+      expect(() => (gear.potentials = [])).toThrow();
+    });
 
-      gear.potentials = potentials;
+    it('is readonly array', () => {
+      // @ts-expect-error: Cannot mutate 'potentials' because it is a readonly array.
+      gear.potentials[0] = { title: '', option: {} };
+    });
 
-      expect(gear.potentials).toEqual(potentials);
+    it('is deeply readonly', () => {
+      // @ts-expect-error: Cannot assign to 'potentials' element because it is a read-only property
+      gear.potentials[0].option.bossDamage = 50;
     });
   });
 
@@ -533,10 +539,11 @@ describe('Gear', () => {
       expect(gear.additionalPotentialGrade).toBe(PotentialGrade.Unique);
     });
 
-    it('is settable to Epic', () => {
-      gear.additionalPotentialGrade = PotentialGrade.Epic;
-
-      expect(gear.additionalPotentialGrade).toBe(PotentialGrade.Epic);
+    it('is readonly property', () => {
+      expect(
+        // @ts-expect-error: Cannot assign to 'additionalPotentialGrade' because it is a read-only property.
+        () => (gear.additionalPotentialGrade = PotentialGrade.Epic),
+      ).toThrow();
     });
   });
 
@@ -564,12 +571,19 @@ describe('Gear', () => {
       ]);
     });
 
-    it('is settable', () => {
-      const potentials = [{ title: '', option: {} }];
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'potentials' because it is a read-only property.
+      expect(() => (gear.additionalPotentials = [])).toThrow();
+    });
 
-      gear.additionalPotentials = potentials;
+    it('is readonly array', () => {
+      // @ts-expect-error: Cannot mutate 'potentials' because it is a readonly array.
+      gear.additionalPotentials[0] = { title: '', option: {} };
+    });
 
-      expect(gear.additionalPotentials).toEqual(potentials);
+    it('is deeply readonly', () => {
+      // @ts-expect-error: Cannot assign to 'potentials' element because it is a read-only property
+      gear.additionalPotentials[0].option.bossDamage = 50;
     });
   });
 
@@ -995,6 +1009,116 @@ describe('Gear', () => {
 
       expect(gear.star).toBe(0);
       expect(gear.starforceOption).toEqual({});
+    });
+  });
+
+  describe('supportsPotential', () => {
+    it('is true', () => {
+      expect(gear.supportsPotential).toBe(true);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'supportsPotential' because it is a read-only property.
+      expect(() => (gear.supportsPotential = false)).toThrow();
+    });
+  });
+
+  describe('canSetPotential', () => {
+    it('is true', () => {
+      expect(gear.canSetPotential).toBe(true);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'canSetPotential' because it is a read-only property.
+      expect(() => (gear.canSetPotential = false)).toThrow();
+    });
+  });
+
+  describe('setPotential', () => {
+    it('sets potentialGrade to Unique', () => {
+      gear.setPotential(PotentialGrade.Unique, [{ title: '', option: {} }]);
+
+      expect(gear.potentialGrade).toBe(PotentialGrade.Unique);
+    });
+
+    it('sets potentials', () => {
+      gear.setPotential(PotentialGrade.Unique, [
+        { title: '마력 : +12%', option: { magicPowerRate: 12 } },
+      ]);
+
+      expect(gear.potentials).toEqual([
+        { title: '마력 : +12%', option: { magicPowerRate: 12 } },
+      ]);
+    });
+  });
+
+  describe('resetPotential', () => {
+    it('resets potentialGrade to Normal', () => {
+      gear.resetPotential();
+
+      expect(gear.potentialGrade).toBe(PotentialGrade.Normal);
+    });
+
+    it('resets potentials', () => {
+      gear.resetPotential();
+
+      expect(gear.potentials).toEqual([]);
+    });
+  });
+
+  describe('supportsAdditionalPotential', () => {
+    it('is true', () => {
+      expect(gear.supportsAdditionalPotential).toBe(true);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'supportsAdditionalPotential' because it is a read-only property.
+      expect(() => (gear.supportsAdditionalPotential = false)).toThrow();
+    });
+  });
+
+  describe('canSetAdditionalPotential', () => {
+    it('is true', () => {
+      expect(gear.canSetAdditionalPotential).toBe(true);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'canSetAdditionalPotential' because it is a read-only property.
+      expect(() => (gear.canSetAdditionalPotential = false)).toThrow();
+    });
+  });
+
+  describe('setAdditionalPotential', () => {
+    it('sets additionalPotentialGrade to Legendary', () => {
+      gear.setAdditionalPotential(PotentialGrade.Legendary, [
+        { title: '', option: {} },
+      ]);
+
+      expect(gear.additionalPotentialGrade).toBe(PotentialGrade.Legendary);
+    });
+
+    it('sets additionalPotentials', () => {
+      gear.setAdditionalPotential(PotentialGrade.Legendary, [
+        { title: '마력 : +12%', option: { magicPowerRate: 12 } },
+      ]);
+
+      expect(gear.additionalPotentials).toEqual([
+        { title: '마력 : +12%', option: { magicPowerRate: 12 } },
+      ]);
+    });
+  });
+
+  describe('resetAdditionalPotential', () => {
+    it('resets additionalPotentialGrade to Normal', () => {
+      gear.resetAdditionalPotential();
+
+      expect(gear.additionalPotentialGrade).toBe(PotentialGrade.Normal);
+    });
+
+    it('resets additionalPotentials', () => {
+      gear.resetAdditionalPotential();
+
+      expect(gear.additionalPotentials).toEqual([]);
     });
   });
 
