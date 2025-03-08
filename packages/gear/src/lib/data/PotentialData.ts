@@ -33,6 +33,7 @@ export type PotentialOption = Pick<
   | 'speed'
   | 'jump'
   | 'bossDamage'
+  | 'normalDamage'
   | 'ignoreMonsterArmor'
   | 'damage'
   | 'criticalRate'
