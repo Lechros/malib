@@ -49,6 +49,17 @@ export {
   resetExceptional,
 } from './lib/enhance/exceptional';
 export {
+  type ReadonlyPotential,
+  supportsPotential,
+  canSetPotential,
+  setPotential,
+  resetPotential,
+  supportsAdditionalPotential,
+  canSetAdditionalPotential,
+  setAdditionalPotential,
+  resetAdditionalPotential,
+} from './lib/enhance/potential';
+export {
   SpellTraceType,
   type SpellTraceRate,
   type SpellTrace,
