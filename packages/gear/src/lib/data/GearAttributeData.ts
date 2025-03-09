@@ -78,6 +78,8 @@ export enum AddOptionCan {
   Can = 1,
   /** 설정 불가 */
   Cannot = 2,
+  /** 재설정 불가 */
+  Fixed = 3,
 }
 
 export enum PotentialCan {
