@@ -24,34 +24,6 @@ export class GearReq implements GearReqData {
   }
 
   /**
-   * 착용 가능 STR
-   */
-  get str(): number {
-    return this.data.str ?? 0;
-  }
-
-  /**
-   * 착용 가능 DEX
-   */
-  get dex(): number {
-    return this.data.dex ?? 0;
-  }
-
-  /**
-   * 착용 가능 INT
-   */
-  get int(): number {
-    return this.data.int ?? 0;
-  }
-
-  /**
-   * 착용 가능 LUK
-   */
-  get luk(): number {
-    return this.data.luk ?? 0;
-  }
-
-  /**
    * 착용 가능 직업 분류
    * */
   get job(): number {

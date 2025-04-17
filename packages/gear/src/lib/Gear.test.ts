@@ -139,22 +139,6 @@ describe('Gear', () => {
       expect(gear.req.level).toBe(200);
     });
 
-    it('str is 0', () => {
-      expect(gear.req.str).toBe(0);
-    });
-
-    it('dex is 0', () => {
-      expect(gear.req.dex).toBe(0);
-    });
-
-    it('int is 600', () => {
-      expect(gear.req.int).toBe(600);
-    });
-
-    it('luk is 0', () => {
-      expect(gear.req.luk).toBe(0);
-    });
-
     it('job is 2', () => {
       expect(gear.req.job).toBe(2);
     });
@@ -1285,10 +1269,6 @@ describe('Gear', () => {
       type: GearType.shiningRod,
       req: {
         level: 200,
-        str: 0,
-        luk: 0,
-        dex: 0,
-        int: 600,
         job: 2,
       },
       attributes: {
