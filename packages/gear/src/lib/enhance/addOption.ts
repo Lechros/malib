@@ -13,17 +13,17 @@ export enum AddOptionType {
   /** LUK */
   luk = 'luk',
   /** STR, DEX */
-  str_dex = 'str&dex',
+  str_dex = 'str,dex',
   /** STR, INT */
-  str_int = 'str&int',
+  str_int = 'str,int',
   /** STR, LUK */
-  str_luk = 'str&luk',
+  str_luk = 'str,luk',
   /** DEX, INT */
-  dex_int = 'dex&int',
+  dex_int = 'dex,int',
   /** DEX, LUK */
-  dex_luk = 'dex&luk',
+  dex_luk = 'dex,luk',
   /** INT, LUK */
-  int_luk = 'int&luk',
+  int_luk = 'int,luk',
   /** 최대 HP */
   maxHp = 'maxHp',
   /** 최대 MP */
@@ -330,5 +330,5 @@ export function _getReqLevelDecreaseValue(
 export function _getAddOptionKeys(
   type: AddOptionType,
 ): (keyof GearAddOption)[] {
-  return type.split('&') as (keyof GearAddOption)[];
+  return type.split(',') as (keyof GearAddOption)[];
 }
