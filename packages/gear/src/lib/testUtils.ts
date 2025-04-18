@@ -6,7 +6,6 @@ export function defaultGear(data: Partial<GearData>): Gear {
     meta: {
       id: 1234567,
       version: 1,
-      add: [],
     },
     name: '',
     type: GearType.cap,

@@ -5,7 +5,7 @@ import {
   GearType,
   PotentialGrade,
 } from './data';
-import { AddOptionGrade, AddOptionType } from './enhance/addOption';
+import { AddOptionGrade, AddOptionType } from './data';
 import { SpellTraceType } from './enhance/spellTrace';
 import { Gear } from './Gear';
 
@@ -15,7 +15,6 @@ describe('Gear constructor', () => {
       meta: {
         id: 0,
         version: 1,
-        add: [],
       },
       name: '',
       type: GearType.cap,
@@ -665,22 +664,20 @@ describe('Gear', () => {
       expect(gear.addOption).toEqual({ str: 19, dex: 20 });
     });
 
-    it('sets meta add property', () => {
+    it('sets addOptions property', () => {
       gear.data.type = GearType.cap;
       gear.data.req.level = 160;
 
       gear.applyAddOption(AddOptionType.str, 2);
       gear.applyAddOption(AddOptionType.str, 3);
-      gear.applyAddOption(AddOptionType.str, 2);
       gear.applyAddOption(AddOptionType.dex, 5);
       gear.applyAddOption(AddOptionType.allStat, 7);
 
-      expect(gear.meta.add).toEqual([
-        [AddOptionType.str, 2],
-        [AddOptionType.str, 3],
-        [AddOptionType.str, 2],
-        [AddOptionType.dex, 5],
-        [AddOptionType.allStat, 7],
+      expect(gear.addOptions).toEqual([
+        { type: AddOptionType.str, grade: 2, value: 18 },
+        { type: AddOptionType.str, grade: 3, value: 27 },
+        { type: AddOptionType.dex, grade: 5, value: 45 },
+        { type: AddOptionType.allStat, grade: 7, value: 7 },
       ]);
     });
   });
@@ -695,14 +692,14 @@ describe('Gear', () => {
     });
 
     it('resets meta add property', () => {
-      gear.meta.add = [
-        [AddOptionType.luk, 5],
-        [AddOptionType.armor, 3],
+      gear.data.addOptions = [
+        { type: AddOptionType.luk, grade: 5, value: 10 },
+        { type: AddOptionType.armor, grade: 3, value: 20 },
       ];
 
       gear.resetAddOption();
 
-      expect(gear.meta.add).toEqual([]);
+      expect(gear.addOptions).toEqual([]);
     });
   });
 
@@ -1257,7 +1254,6 @@ describe('Gear', () => {
       meta: {
         id: 1212128,
         version: 1,
-        add: [],
       },
       name: '제네시스 샤이닝로드',
       icon: '1212128',

@@ -1,4 +1,6 @@
 export const enum ErrorMessage {
+  AddOption_InvalidApplyGear = '추가 옵션을 적용할 수 없는 상태의 장비입니다.',
+  AddOption_InvalidResetGear = '추가 옵션을 초기화할 수 없는 상태의 장비입니다.',
   AddOption_InvalidAttackPowerGear = '공격력/마력 추가 옵션은 착용 가능 레벨 60 이상의 무기 장비에만 부여할 수 있습니다.',
   AddOption_UnknownLongSwordGear = '공격력/마력 추가 옵션을 부여할 수 없는 태도 장비입니다. (Please submit issue with the gear info)',
   AddOption_InvalidSpeedGear = '이동속도 추가 옵션은 무기가 아닌 장비에만 부여할 수 있습니다.',

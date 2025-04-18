@@ -1,4 +1,4 @@
-import { AddOptionGrade, AddOptionType } from '../enhance/addOption';
+import { AddOptionData } from './AddOptionData';
 import { GearAttributeData } from './GearAttributeData';
 import { GearOption } from './GearOption';
 import { GearType } from './GearType';
@@ -35,6 +35,9 @@ export interface GearData {
   upgradeOption?: Partial<GearUpgradeOption>;
   /** 장비 스타포스 옵션 */
   starforceOption?: Partial<GearStarforceOption>;
+
+  /** 추가 옵션 목록 */
+  addOptions?: AddOptionData[];
 
   /** 업그레이드 횟수 */
   scrollUpgradeCount?: number;
@@ -84,8 +87,6 @@ export interface GearMetadata {
   id: number;
   /** 장비 정보 버전 */
   version: 1;
-  /** 추가 옵션 적용 기록 */
-  add: [AddOptionType, AddOptionGrade][];
 }
 
 /**

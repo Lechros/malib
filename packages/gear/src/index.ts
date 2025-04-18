@@ -1,4 +1,8 @@
 export {
+  /* AddOptionData */
+  AddOptionType,
+  type AddOptionGrade,
+  type AddOptionData,
   /* GearAttributeData */
   type GearAttributeData,
   GearTrade,
@@ -34,9 +38,11 @@ export {
   type SoulOption,
 } from './lib/data';
 export {
-  AddOptionType,
-  type AddOptionGrade,
   supportsAddOption,
+  canApplyAddOption,
+  applyAddOption,
+  canResetAddOption,
+  resetAddOption,
   getAddOption,
   getAddOptionValue,
 } from './lib/enhance/addOption';

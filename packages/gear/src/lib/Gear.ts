@@ -1,4 +1,7 @@
 import {
+  AddOptionData,
+  AddOptionGrade,
+  AddOptionType,
   GearAddOption,
   GearBaseOption,
   GearData,
@@ -15,9 +18,9 @@ import {
   SoulData,
 } from './data';
 import {
-  AddOptionGrade,
-  AddOptionType,
-  getAddOption,
+  applyAddOption,
+  canResetAddOption,
+  resetAddOption,
   supportsAddOption,
 } from './enhance/addOption';
 import {
@@ -81,9 +84,13 @@ import {
   setSoulCharge,
   supportsSoul,
 } from './soulSlot';
-import { addOptions, sumOptions } from './utils';
+import { sumOptions } from './utils';
 
-type _Gear = Omit<GearData, 'potentials' | 'additionalPotentials'> & {
+type _Gear = Omit<
+  GearData,
+  'potentials' | 'additionalPotentials' | 'addOptions'
+> & {
+  addOptions: readonly Readonly<AddOptionData>[];
   potentials: readonly ReadonlyPotential[];
   additionalPotentials: readonly ReadonlyPotential[];
 };
@@ -229,6 +236,13 @@ export class Gear implements _Gear {
    */
   get starforceOption(): Readonly<GearStarforceOption> {
     return toGearOption(this.data.starforceOption ?? {});
+  }
+
+  /**
+   * 추가 옵션 목록
+   */
+  get addOptions(): readonly Readonly<AddOptionData>[] {
+    return this.data.addOptions ?? [];
   }
 
   /**
@@ -411,28 +425,42 @@ export class Gear implements _Gear {
   }
 
   /**
+   * 장비에 추가 옵션을 적용할 수 있는 상태인지 여부
+   */
+  get canApplyAddOption(): boolean {
+    return supportsAddOption(this);
+  }
+
+  /**
    * 장비에 추가 옵션을 적용합니다.
    * @param type 추가 옵션 종류.
-   * @param grade 추가 옵션 등급.
+   * @param grade 추가 옵션 단계.
    *
    * @throws {@link TypeError}
-   * 장비에 부여할 수 없는 추가 옵션을 지정했을 경우.
+   * 추가 옵션을 적용할 수 없는 상태일 경우.
+   *
+   * @throws {@link TypeError}
+   * 부여할 수 없는 추가 옵션을 지정했을 경우.
    */
   applyAddOption(type: AddOptionType, grade: AddOptionGrade) {
-    const addOption = getAddOption(this, type, grade);
-    if (!this.data.addOption) {
-      this.data.addOption = {};
-    }
-    addOptions(this.data.addOption, addOption);
-    this.meta.add.push([type, grade]);
+    applyAddOption(this, type, grade);
+  }
+
+  /**
+   * 장비의 추가 옵션을 초기화할 수 있는 상태인지 여부
+   */
+  get canResetAddOption(): boolean {
+    return canResetAddOption(this);
   }
 
   /**
    * 장비의 추가 옵션을 초기화합니다.
+   *
+   * @throws {@link TypeError}
+   * 추가 옵션을 초기화할 수 없는 상태의 장비일 경우.
    */
   resetAddOption() {
-    this.data.addOption = undefined;
-    this.meta.add = [];
+    resetAddOption(this);
   }
 
   /**
