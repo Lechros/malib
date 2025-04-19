@@ -19,8 +19,7 @@ export function convert(info: WzGear): GearData {
     meta: {
       id: info.id,
       version: 1,
-      add: [],
-    } as GearMetadata,
+    },
     name: info.name,
     icon: info.icon,
     type: getGearType(info.id),
@@ -30,22 +29,6 @@ export function convert(info: WzGear): GearData {
 
   if (info.desc) {
     data.desc = info.desc;
-  }
-
-  if (info.potentials) {
-    data.potentials = info.potentials.map((pot) =>
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      pot
-        ? {
-            title: pot.title,
-            option: pot.option,
-          }
-        : null,
-    ) as never;
-  }
-
-  if (info.attackSpeed) {
-    data.attributes.attackSpeed = info.attackSpeed;
   }
 
   // BaseOption
@@ -140,13 +123,16 @@ export function convert(info: WzGear): GearData {
   }
   if (info.CuttableCount) {
     data.attributes.cuttableCount = info.CuttableCount;
-    // data.attributes.totalCuttableCount = info.CuttableCount;
+    data.attributes.totalCuttableCount = info.CuttableCount;
   }
   if (info.accountShareTag) {
     data.attributes.accountShareTag = true;
   }
 
   // Etc
+  if (info.attackSpeed) {
+    data.attributes.attackSpeed = info.attackSpeed;
+  }
   if (info.jokerToSetItem) {
     data.attributes.lucky = true;
   }
@@ -242,6 +228,17 @@ export function convert(info: WzGear): GearData {
   const maxStar = getGearMaxStar(new Gear(data), (info.onlyUpgrade ?? 0) > 0);
   if (maxStar) {
     data.maxStar = maxStar;
+  }
+
+  if (info.potentials) {
+    data.potentials = info.potentials.map((pot) => ({
+      grade:
+        pot.grade === 6 && data.potentialGrade
+          ? data.potentialGrade
+          : pot.grade,
+      summary: pot.summary,
+      option: pot.option,
+    }));
   }
 
   return data;

@@ -81,6 +81,6 @@ export interface WzGear {
 
 export interface WzPotential {
   grade: number;
-  title: string;
+  summary: string;
   option: Partial<GearOption>;
 }
