@@ -73,23 +73,6 @@ describe('GearAttribute', () => {
     });
   });
 
-  describe('blockGoldenHammer', () => {
-    it('returns false by default', () => {
-      expect(attr.blockGoldenHammer).toBe(false);
-    });
-
-    it('returns true', () => {
-      attr.data.blockGoldenHammer = true;
-
-      expect(attr.blockGoldenHammer).toBe(true);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'blockGoldenHammer' because it is a read-only property.
-      expect(() => (attr.blockGoldenHammer = true)).toThrow();
-    });
-  });
-
   describe('superior', () => {
     it('returns false by default', () => {
       expect(attr.superior).toBe(false);
@@ -226,6 +209,23 @@ describe('GearAttribute', () => {
       attr.cuttableCount = 20;
 
       expect(attr.data.cuttableCount).toBe(20);
+    });
+  });
+
+  describe('totalCuttableCount', () => {
+    it('returns undefined by default', () => {
+      expect(attr.totalCuttableCount).toBe(undefined);
+    });
+
+    it('returns 10', () => {
+      attr.data.totalCuttableCount = 10;
+
+      expect(attr.totalCuttableCount).toBe(10);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'totalCuttableCount' because it is a read-only property.
+      expect(() => (attr.totalCuttableCount = 20)).toThrow();
     });
   });
 

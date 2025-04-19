@@ -58,11 +58,9 @@ import {
   supportsStarforce,
 } from './enhance/starforce';
 import {
-  applyGoldenHammer,
   applyScroll,
   canApplyScroll,
   canFailScroll,
-  canGoldenHammer,
   canResetUpgrade,
   canResileScroll,
   failScroll,
@@ -267,13 +265,6 @@ export class Gear implements _Gear {
   }
 
   /**
-   * 황금 망치 재련 적용
-   */
-  get goldenHammer(): number {
-    return this.data.goldenHammer ?? 0;
-  }
-
-  /**
    * 전체 업그레이드 가능 횟수
    *
    * 성공, 실패, 황금 망치 적용 여부를 무시한 장비의 기본 업그레이드 가능 횟수입니다.
@@ -282,8 +273,7 @@ export class Gear implements _Gear {
     return (
       this.scrollUpgradeCount +
       this.scrollUpgradeableCount +
-      this.scrollResilienceCount -
-      this.goldenHammer
+      this.scrollResilienceCount
     );
   }
 
@@ -468,23 +458,6 @@ export class Gear implements _Gear {
    */
   get supportsUpgrade(): boolean {
     return supportsUpgrade(this);
-  }
-
-  /**
-   * 장비에 황금 망치를 적용할 수 있는 상태인지 여부
-   */
-  get canApplyGoldenHammer(): boolean {
-    return canGoldenHammer(this);
-  }
-
-  /**
-   * 장비에 황금 망치를 적용합니다.
-   *
-   * @throws {@link TypeError}
-   * 황금 망치를 적용할 수 없는 상태일 경우.
-   */
-  applyGoldenHammer() {
-    applyGoldenHammer(this);
   }
 
   /**

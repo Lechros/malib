@@ -338,17 +338,6 @@ describe('Gear', () => {
     });
   });
 
-  describe('goldenHammer', () => {
-    it('is 0', () => {
-      expect(gear.goldenHammer).toBe(0);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'goldenHammer' because it is a read-only property.
-      expect(() => (gear.goldenHammer = 1)).toThrow();
-    });
-  });
-
   describe('scrollTotalUpgradeableCount', () => {
     it('is 8', () => {
       expect(gear.scrollTotalUpgradeableCount).toBe(8);
@@ -370,13 +359,6 @@ describe('Gear', () => {
       gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount + 1;
 
       expect(gear.scrollTotalUpgradeableCount).toBe(9);
-    });
-
-    it('is 8 after scrollUpgrabeableCount += 1, goldenHammer += 1', () => {
-      gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount + 1;
-      gear.data.goldenHammer = gear.goldenHammer + 1;
-
-      expect(gear.scrollTotalUpgradeableCount).toBe(8);
     });
   });
 
@@ -711,25 +693,6 @@ describe('Gear', () => {
     it('is readonly property', () => {
       // @ts-expect-error: Cannot assign to 'supportsUpgrade' because it is a read-only property.
       expect(() => (gear.supportsUpgrade = false)).toThrow();
-    });
-  });
-
-  describe('canGoldenHammer', () => {
-    it('is true', () => {
-      expect(gear.canApplyGoldenHammer).toBe(true);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'canApplyGoldenHammer' because it is a read-only property.
-      expect(() => (gear.canApplyGoldenHammer = false)).toThrow();
-    });
-  });
-
-  describe('applyGoldenHammer', () => {
-    it('sets goldenHammer to 1', () => {
-      gear.applyGoldenHammer();
-
-      expect(gear.goldenHammer).toBe(1);
     });
   });
 
@@ -1303,7 +1266,6 @@ describe('Gear', () => {
       scrollUpgradeCount: 8,
       scrollResilienceCount: 0,
       scrollUpgradeableCount: 0,
-      goldenHammer: 0,
 
       star: 22,
       maxStar: 30,

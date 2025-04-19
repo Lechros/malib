@@ -25,34 +25,6 @@ export function supportsUpgrade(gear: Gear): boolean {
 }
 
 /**
- * 장비에 황금 망치를 적용할 수 있는 상태인지 여부를 확인합니다.
- * @param gear 확인할 장비.
- * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
- */
-export function canGoldenHammer(gear: Gear): boolean {
-  return (
-    supportsUpgrade(gear) &&
-    !gear.attributes.blockGoldenHammer &&
-    gear.goldenHammer === 0
-  );
-}
-
-/**
- * 장비에 황금 망치를 적용합니다.
- * @param gear 적용할 장비.
- *
- * @throws {@link TypeError}
- * 황금 망치를 적용할 수 없는 상태의 장비일 경우.
- */
-export function applyGoldenHammer(gear: Gear) {
-  if (!canGoldenHammer(gear)) {
-    throw TypeError(ErrorMessage.Upgrade_InvalidGoldenHammerGear);
-  }
-  gear.data.goldenHammer = gear.goldenHammer + 1;
-  gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount + 1;
-}
-
-/**
  * 장비에 주문서 실패를 적용할 수 있는 상태인지 여부를 확인합니다.
  * @param gear 확인할 장비.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
@@ -124,7 +96,6 @@ export function resetUpgrade(gear: Gear) {
   gear.data.scrollUpgradeableCount = gear.scrollTotalUpgradeableCount;
   gear.data.scrollUpgradeCount = undefined;
   gear.data.scrollResilienceCount = undefined;
-  gear.data.goldenHammer = undefined;
 }
 
 /**

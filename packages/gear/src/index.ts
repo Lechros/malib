@@ -84,8 +84,6 @@ export {
 export {
   type Scroll,
   supportsUpgrade,
-  canGoldenHammer,
-  applyGoldenHammer,
   canFailScroll,
   failScroll,
   canResileScroll,

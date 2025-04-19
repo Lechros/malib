@@ -45,8 +45,6 @@ export interface GearData {
   scrollResilienceCount?: number;
   /** 업그레이드 가능 횟수 */
   scrollUpgradeableCount?: number;
-  /** 황금 망치 재련 적용 */
-  goldenHammer?: number;
 
   /** 강화 단계 */
   star?: number;
