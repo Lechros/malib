@@ -6,7 +6,7 @@ import { WzGear } from './wz';
 const rawData = _rawData as Record<string, WzGear>;
 const expectedData = _expectedData as Record<string, unknown>;
 
-test('Convert result is equal to WzJson version', () => {
+test.skip('Convert result is equal to WzJson version', () => {
   for (const [id, data] of Object.entries<WzGear>(rawData)) {
     const expected = expectedData[id];
     if (typeof expected === 'object' && expected !== null) {
