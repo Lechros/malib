@@ -662,10 +662,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@malib/gear@workspace:packages/gear":
+"@malib/gear@workspace:^, @malib/gear@workspace:packages/gear":
   version: 0.0.0-use.local
   resolution: "@malib/gear@workspace:packages/gear"
   dependencies:
+    vitest: "npm:^3.0.7"
+  languageName: unknown
+  linkType: soft
+
+"@malib/wz-gear@workspace:packages/wz-gear":
+  version: 0.0.0-use.local
+  resolution: "@malib/wz-gear@workspace:packages/wz-gear"
+  dependencies:
+    "@malib/gear": "workspace:^"
     vitest: "npm:^3.0.7"
   languageName: unknown
   linkType: soft
