@@ -4,7 +4,6 @@ import {
   GearBaseOption,
   GearData,
   GearIncline,
-  GearMetadata,
   GearShare,
   GearTrade,
   isDragonGear,
