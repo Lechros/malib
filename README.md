@@ -128,10 +128,6 @@ const premiumAttackScroll = {
 gear.data.scrollUpgradeableCount = 1;
 
 if (gear.supportsUpgrade) {
-  if (gear.canApplyGoldenHammer) {
-    gear.applyGoldenHammer();
-  }
-
   if (gear.canApplyScroll) {
     gear.applyScroll(premiumAttackScroll);
   }
