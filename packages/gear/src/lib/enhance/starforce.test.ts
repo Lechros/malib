@@ -1,4 +1,4 @@
-import { GearType } from '../data';
+import { GearOption, GearType } from '../data';
 import { defaultGear } from '../testUtils';
 import {
   canResetStarforce,
@@ -66,7 +66,11 @@ describe('canStarforce', () => {
     [24, 25, true],
     [25, 25, false],
     [25, 20, false],
-    [25, 30, false],
+    [29, 30, true],
+    [25, 30, true],
+    [30, 30, false],
+    [30, 30, false],
+    [30, 35, false],
   ])('star = %d, maxStar = %d is %p', (star, maxStar, expected) => {
     const gear = defaultGear({ star, maxStar });
 
@@ -82,9 +86,13 @@ describe('canStarforce', () => {
     [11, 10, true],
     [15, 25, true],
     [24, 25, true],
-    [25, 25, false],
-    [25, 20, false],
-    [25, 30, false],
+    [25, 25, true],
+    [25, 20, true],
+    [25, 30, true],
+    [29, 30, true],
+    [30, 25, false],
+    [30, 30, false],
+    [30, 35, false],
   ])(
     'star = %d, maxStar = %d, ignoreMaxStar is %p',
     (star, maxStar, expected) => {
@@ -185,7 +193,7 @@ describe('starforce', () => {
             speed: 10,
             jump: 7,
           },
-          maxStar: 25,
+          maxStar: 30,
         },
         {
           5: { dex: 10, luk: 10, armor: 44, speed: 3, jump: 3 },
@@ -229,7 +237,7 @@ describe('starforce', () => {
             attackPower: 1,
             armor: 120,
           },
-          maxStar: 25,
+          maxStar: 30,
         },
         {
           5: { dex: 10, luk: 10, armor: 77, speed: 3, jump: 3 },
@@ -269,7 +277,7 @@ describe('starforce', () => {
             magicPower: 9,
             armor: 600,
           },
-          maxStar: 25,
+          maxStar: 30,
         },
         {
           16: {
@@ -357,10 +365,21 @@ describe('starforce', () => {
             magicPower: 6,
             armor: 150,
           },
-          maxStar: 25,
+          upgradeOption: {
+            str: 24,
+            dex: 9,
+            int: 2,
+            luk: 9,
+            maxHp: 130,
+            maxMp: 90,
+            attackPower: 24,
+            magicPower: 4,
+            armor: 7,
+          },
+          maxStar: 30,
         },
         {
-          15: { str: 40, dex: 40, int: 40, luk: 40, maxHp: 255, armor: 172 },
+          15: { str: 40, dex: 40, int: 40, luk: 40, maxHp: 255, armor: 181 },
           22: {
             str: 145,
             dex: 145,
@@ -369,7 +388,7 @@ describe('starforce', () => {
             maxHp: 255,
             attackPower: 106,
             magicPower: 106,
-            armor: 306,
+            armor: 321,
           },
           24: {
             str: 145,
@@ -379,7 +398,17 @@ describe('starforce', () => {
             maxHp: 255,
             attackPower: 150,
             magicPower: 150,
-            armor: 353,
+            armor: 371,
+          },
+          28: {
+            str: 145,
+            dex: 145,
+            int: 145,
+            luk: 145,
+            maxHp: 255,
+            attackPower: 256,
+            magicPower: 256,
+            armor: 487,
           },
         },
       ],
@@ -397,7 +426,7 @@ describe('starforce', () => {
             attackPower: 5,
             magicPower: 5,
           },
-          maxStar: 25,
+          maxStar: 30,
         },
         {
           1: {
@@ -520,7 +549,7 @@ describe('starforce', () => {
             attackPower: 15,
             magicPower: 15,
           },
-          maxStar: 25,
+          maxStar: 30,
         },
         {
           22: {
@@ -619,7 +648,7 @@ describe('starforce', () => {
             dex: 32,
             attackPower: 72,
           },
-          maxStar: 25,
+          maxStar: 30,
         },
         {
           22: {
@@ -628,6 +657,33 @@ describe('starforce', () => {
             maxHp: 255,
             maxMp: 255,
             attackPower: 246,
+          },
+        },
+      ],
+      [
+        {
+          type: GearType.longSword,
+          req: { level: 200, job: 1 },
+          baseOption: {
+            str: 100,
+            dex: 100,
+            attackPower: 293,
+            bossDamage: 30,
+            ignoreMonsterArmor: 20,
+          },
+          upgradeOption: {
+            str: 36,
+            attackPower: 81,
+          },
+          maxStar: 30,
+        },
+        {
+          28: {
+            str: 145,
+            dex: 145,
+            maxHp: 255,
+            maxMp: 255,
+            attackPower: 459,
           },
         },
       ],
@@ -891,6 +947,29 @@ describe('starforce', () => {
       }
     });
   });
+
+  it.each([
+    [GearType.glove, 'attackPower', 322],
+    [GearType.cap, 'int', 145],
+    [GearType.tuner, 'attackPower', 417],
+    [GearType.bow, 'maxHp', 255],
+    [GearType.shoes, 'speed', 18],
+  ] satisfies [GearType, keyof GearOption, number][])(
+    '%p starforce to 30 has %p = %p',
+    (type, key, expected) => {
+      const gear = defaultGear({
+        type,
+        req: { level: 200 },
+        maxStar: 30,
+      });
+
+      for (let i = 0; i < 30; i++) {
+        starforce(gear);
+      }
+
+      expect(gear.starforceOption).toHaveProperty(key, expected);
+    },
+  );
 });
 
 describe('canStarScroll', () => {
@@ -1087,7 +1166,7 @@ describe('starScroll', () => {
             magicPower: 2,
             armor: 100,
           },
-          maxStar: 25,
+          maxStar: 30,
         },
         {
           12: {

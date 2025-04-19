@@ -392,8 +392,8 @@ describe('Gear', () => {
   });
 
   describe('maxStar', () => {
-    it('is 25', () => {
-      expect(gear.maxStar).toBe(25);
+    it('is 30', () => {
+      expect(gear.maxStar).toBe(30);
     });
 
     it('is readonly property', () => {
@@ -1306,7 +1306,7 @@ describe('Gear', () => {
       goldenHammer: 0,
 
       star: 22,
-      maxStar: 25,
+      maxStar: 30,
       starScroll: false,
 
       soulSlot: {
