@@ -11,6 +11,7 @@ import {
 type OptionalProperty =
   | 'attackSpeed'
   | 'cuttableCount'
+  | 'totalCuttableCount'
   | 'growthExp'
   | 'growthLevel'
   | 'dateExpire';
@@ -48,11 +49,6 @@ export class GearAttribute implements _GearAttribute {
   /** 월드 내 나의 캐릭터 간 이동 가능 여부 */
   get share(): GearShare {
     return this.data.share ?? 0;
-  }
-
-  /** 황금망치 사용 불가 */
-  get blockGoldenHammer(): boolean {
-    return this.data.blockGoldenHammer ?? false;
   }
 
   /** 슈페리얼 */
@@ -107,6 +103,11 @@ export class GearAttribute implements _GearAttribute {
 
   set cuttableCount(value) {
     this.data.cuttableCount = value;
+  }
+
+  /** 최대 가위 사용 가능 횟수 */
+  get totalCuttableCount(): number | undefined {
+    return this.data.totalCuttableCount;
   }
 
   /** 쉐어 네임 텍을 사용 가능 여부 */

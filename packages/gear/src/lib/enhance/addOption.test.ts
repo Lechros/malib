@@ -1,4 +1,10 @@
-import { AddOptionCan, GearAddOption, GearType } from '../data';
+import {
+  AddOptionCan,
+  AddOptionGrade,
+  AddOptionType,
+  GearAddOption,
+  GearType,
+} from '../data';
 import { Gear } from '../Gear';
 import { defaultGear, getGearTypeContains } from '../testUtils';
 import {
@@ -14,10 +20,11 @@ import {
   _getSingleStatValue,
   _getSpeedValue,
   AddOptionContext,
-  AddOptionGrade,
-  AddOptionType,
+  applyAddOption,
+  canResetAddOption,
   getAddOption,
   getAddOptionValue,
+  resetAddOption,
   supportsAddOption,
 } from './addOption';
 
@@ -71,14 +78,14 @@ test.each(
     GearType.gauntletRevolver,
     GearType.ancientBow,
   ]),
-)('canAddOption(type=%d) returns %p', (gearType, expected) => {
+)('supportsAddOption(type=%d) returns %p', (gearType, expected) => {
   const gear = defaultGear({ type: gearType });
-  const can = supportsAddOption(gear);
+  const actual = supportsAddOption(gear);
 
-  expect(can).toBe(expected);
+  expect(actual).toBe(expected);
 });
 
-describe('canAddOption', () => {
+describe('supportsAddOption', () => {
   it('returns true for canAddOption === Can', () => {
     const gear = defaultGear({
       attributes: { canAddOption: AddOptionCan.Can },
@@ -93,6 +100,146 @@ describe('canAddOption', () => {
     });
 
     expect(supportsAddOption(gear)).toBe(false);
+  });
+});
+
+describe('canApplyAddOption', () => {
+  it('returns true for canAddOption === Can', () => {
+    const gear = defaultGear({
+      attributes: { canAddOption: AddOptionCan.Can },
+    });
+
+    expect(supportsAddOption(gear)).toBe(true);
+  });
+
+  it('returns false for canAddOption === Cannot', () => {
+    const gear = defaultGear({
+      attributes: { canAddOption: AddOptionCan.Cannot },
+    });
+
+    expect(supportsAddOption(gear)).toBe(false);
+  });
+});
+
+describe('applyAddOption', () => {
+  it('throws TypeError for canAddOption === Cannot', () => {
+    const gear = defaultGear({
+      attributes: { canAddOption: AddOptionCan.Cannot },
+    });
+
+    expect(() => {
+      applyAddOption(gear, AddOptionType.attackPower, 1);
+    }).toThrow(TypeError);
+  });
+
+  it('adds option to addOption', () => {
+    const gear = defaultGear({
+      attributes: { canAddOption: AddOptionCan.Can },
+      addOption: {
+        str: 1,
+      },
+    });
+
+    applyAddOption(gear, AddOptionType.str, 1);
+
+    expect(gear.addOption).toHaveProperty('str', 2);
+  });
+
+  it('adds multiple options to addOption', () => {
+    const gear = defaultGear({
+      attributes: { canAddOption: AddOptionCan.Can },
+    });
+
+    applyAddOption(gear, AddOptionType.str_dex, 1);
+
+    expect(gear.addOption).toEqual({
+      str: 1,
+      dex: 1,
+    });
+  });
+
+  it('adds entry to addOptions', () => {
+    const gear = defaultGear({
+      attributes: { canAddOption: AddOptionCan.Can },
+    });
+
+    applyAddOption(gear, AddOptionType.str, 1);
+
+    expect(gear.addOptions).toHaveLength(1);
+    expect(gear.addOptions[0]).toEqual({
+      type: AddOptionType.str,
+      grade: 1,
+      value: 1,
+    });
+  });
+});
+
+describe('canResetAddOption', () => {
+  it('returns true for canAddOption === Can', () => {
+    const gear = defaultGear({
+      attributes: { canAddOption: AddOptionCan.Can },
+    });
+
+    expect(canResetAddOption(gear)).toBe(true);
+  });
+
+  it('returns false for canAddOption === Cannot', () => {
+    const gear = defaultGear({
+      attributes: { canAddOption: AddOptionCan.Cannot },
+    });
+
+    expect(canResetAddOption(gear)).toBe(false);
+  });
+
+  it('returns true for addOptions length === 0', () => {
+    const gear = defaultGear({
+      attributes: { canAddOption: AddOptionCan.Can },
+      addOptions: [],
+    });
+
+    expect(canResetAddOption(gear)).toBe(true);
+  });
+});
+
+describe('resetAddOption', () => {
+  it('throws TypeError for canAddOption === Cannot', () => {
+    const gear = defaultGear({
+      attributes: { canAddOption: AddOptionCan.Cannot },
+    });
+
+    expect(() => {
+      resetAddOption(gear);
+    }).toThrow(TypeError);
+  });
+
+  it('resets addOption', () => {
+    const gear = defaultGear({
+      attributes: { canAddOption: AddOptionCan.Can },
+      addOption: {
+        str: 1,
+      },
+    });
+
+    resetAddOption(gear);
+
+    expect(gear.addOption).toEqual({});
+  });
+
+  it('resets addOptions', () => {
+    const gear = defaultGear({
+      attributes: { canAddOption: AddOptionCan.Can },
+      addOptions: [
+        {
+          type: AddOptionType.str,
+          grade: 1,
+          value: 1,
+        },
+      ],
+    });
+
+    gear.resetAddOption();
+
+    expect(gear.addOptions).toHaveLength(0);
   });
 });
 

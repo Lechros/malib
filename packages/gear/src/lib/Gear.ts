@@ -1,4 +1,7 @@
 import {
+  AddOptionData,
+  AddOptionGrade,
+  AddOptionType,
   GearAddOption,
   GearBaseOption,
   GearData,
@@ -15,9 +18,9 @@ import {
   SoulData,
 } from './data';
 import {
-  AddOptionGrade,
-  AddOptionType,
-  getAddOption,
+  applyAddOption,
+  canResetAddOption,
+  resetAddOption,
   supportsAddOption,
 } from './enhance/addOption';
 import {
@@ -55,11 +58,9 @@ import {
   supportsStarforce,
 } from './enhance/starforce';
 import {
-  applyGoldenHammer,
   applyScroll,
   canApplyScroll,
   canFailScroll,
-  canGoldenHammer,
   canResetUpgrade,
   canResileScroll,
   failScroll,
@@ -81,9 +82,13 @@ import {
   setSoulCharge,
   supportsSoul,
 } from './soulSlot';
-import { addOptions, sumOptions } from './utils';
+import { sumOptions } from './utils';
 
-type _Gear = Omit<GearData, 'potentials' | 'additionalPotentials'> & {
+type _Gear = Omit<
+  GearData,
+  'potentials' | 'additionalPotentials' | 'addOptions'
+> & {
+  addOptions: readonly Readonly<AddOptionData>[];
   potentials: readonly ReadonlyPotential[];
   additionalPotentials: readonly ReadonlyPotential[];
 };
@@ -232,6 +237,13 @@ export class Gear implements _Gear {
   }
 
   /**
+   * 추가 옵션 목록
+   */
+  get addOptions(): readonly Readonly<AddOptionData>[] {
+    return this.data.addOptions ?? [];
+  }
+
+  /**
    * 업그레이드 횟수
    */
   get scrollUpgradeCount(): number {
@@ -253,13 +265,6 @@ export class Gear implements _Gear {
   }
 
   /**
-   * 황금 망치 재련 적용
-   */
-  get goldenHammer(): number {
-    return this.data.goldenHammer ?? 0;
-  }
-
-  /**
    * 전체 업그레이드 가능 횟수
    *
    * 성공, 실패, 황금 망치 적용 여부를 무시한 장비의 기본 업그레이드 가능 횟수입니다.
@@ -268,8 +273,7 @@ export class Gear implements _Gear {
     return (
       this.scrollUpgradeCount +
       this.scrollUpgradeableCount +
-      this.scrollResilienceCount -
-      this.goldenHammer
+      this.scrollResilienceCount
     );
   }
 
@@ -411,28 +415,42 @@ export class Gear implements _Gear {
   }
 
   /**
+   * 장비에 추가 옵션을 적용할 수 있는 상태인지 여부
+   */
+  get canApplyAddOption(): boolean {
+    return supportsAddOption(this);
+  }
+
+  /**
    * 장비에 추가 옵션을 적용합니다.
    * @param type 추가 옵션 종류.
-   * @param grade 추가 옵션 등급.
+   * @param grade 추가 옵션 단계.
    *
    * @throws {@link TypeError}
-   * 장비에 부여할 수 없는 추가 옵션을 지정했을 경우.
+   * 추가 옵션을 적용할 수 없는 상태일 경우.
+   *
+   * @throws {@link TypeError}
+   * 부여할 수 없는 추가 옵션을 지정했을 경우.
    */
   applyAddOption(type: AddOptionType, grade: AddOptionGrade) {
-    const addOption = getAddOption(this, type, grade);
-    if (!this.data.addOption) {
-      this.data.addOption = {};
-    }
-    addOptions(this.data.addOption, addOption);
-    this.meta.add.push([type, grade]);
+    applyAddOption(this, type, grade);
+  }
+
+  /**
+   * 장비의 추가 옵션을 초기화할 수 있는 상태인지 여부
+   */
+  get canResetAddOption(): boolean {
+    return canResetAddOption(this);
   }
 
   /**
    * 장비의 추가 옵션을 초기화합니다.
+   *
+   * @throws {@link TypeError}
+   * 추가 옵션을 초기화할 수 없는 상태의 장비일 경우.
    */
   resetAddOption() {
-    this.data.addOption = undefined;
-    this.meta.add = [];
+    resetAddOption(this);
   }
 
   /**
@@ -440,23 +458,6 @@ export class Gear implements _Gear {
    */
   get supportsUpgrade(): boolean {
     return supportsUpgrade(this);
-  }
-
-  /**
-   * 장비에 황금 망치를 적용할 수 있는 상태인지 여부
-   */
-  get canApplyGoldenHammer(): boolean {
-    return canGoldenHammer(this);
-  }
-
-  /**
-   * 장비에 황금 망치를 적용합니다.
-   *
-   * @throws {@link TypeError}
-   * 황금 망치를 적용할 수 없는 상태일 경우.
-   */
-  applyGoldenHammer() {
-    applyGoldenHammer(this);
   }
 
   /**

@@ -10,8 +10,6 @@ export interface GearAttributeData {
   onlyEquip?: boolean;
   /** 월드 내 나의 캐릭터 간 이동 가능 여부 */
   share?: GearShare;
-  /** 황금망치 사용 불가 */
-  blockGoldenHammer?: boolean;
 
   /** 슈페리얼 */
   superior?: boolean;
@@ -36,6 +34,8 @@ export interface GearAttributeData {
   cuttable?: GearCuttable;
   /** 가위 사용 가능 횟수 */
   cuttableCount?: number;
+  /** 최대 가위 사용 가능 횟수 */
+  totalCuttableCount?: number;
   /** 쉐어 네임 텍을 사용 가능 여부 */
   accountShareTag?: boolean;
   /** 럭키 아이템 */

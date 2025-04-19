@@ -85,7 +85,7 @@ console.log(gear.name); // 'Example cap'
 
 console.log(gear.req.level); // 100
 
-console.log(gear.req.str); // 0
+console.log(gear.req.job); // 0
 
 console.log(gear.starforceOption.dex); // 0
 
@@ -128,10 +128,6 @@ const premiumAttackScroll = {
 gear.data.scrollUpgradeableCount = 1;
 
 if (gear.supportsUpgrade) {
-  if (gear.canApplyGoldenHammer) {
-    gear.applyGoldenHammer();
-  }
-
   if (gear.canApplyScroll) {
     gear.applyScroll(premiumAttackScroll);
   }

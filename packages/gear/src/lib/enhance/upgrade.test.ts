@@ -2,11 +2,9 @@ import { GearType } from '../data';
 import { Gear } from '../Gear';
 import { defaultGear } from '../testUtils';
 import {
-  applyGoldenHammer,
   applyScroll,
   canApplyScroll,
   canFailScroll,
-  canGoldenHammer,
   canResetUpgrade,
   canResileScroll,
   failScroll,
@@ -42,70 +40,6 @@ describe('canUpgrade', () => {
       .mockImplementation(() => 1);
 
     expect(supportsUpgrade(gear)).toBe(true);
-  });
-});
-
-describe('canGoldenHammer', () => {
-  it('returns false for cannotUpgrade gear', () => {
-    gear.data.attributes.cannotUpgrade = true;
-
-    expect(canGoldenHammer(gear)).toBe(false);
-  });
-
-  it('returns false for scrollTotalUpgradeableCount == 0 gear', () => {
-    vitest
-      .spyOn(gear, 'scrollTotalUpgradeableCount', 'get')
-      .mockImplementation(() => 0);
-
-    expect(canGoldenHammer(gear)).toBe(false);
-  });
-
-  it('returns false for blockGoldenHammer gear', () => {
-    gear.data.attributes.blockGoldenHammer = true;
-
-    expect(canGoldenHammer(gear)).toBe(false);
-  });
-
-  it('returns false for goldenHammer > 1 gear', () => {
-    gear.data.goldenHammer = 1;
-
-    expect(canGoldenHammer(gear)).toBe(false);
-  });
-
-  it('returns true for goldenHammer == 0 gear', () => {
-    expect(canGoldenHammer(gear)).toBe(true);
-  });
-});
-
-describe('applyGoldenHammer', () => {
-  it('throws TypeError for cannotUpgrade gear', () => {
-    gear.data.attributes.cannotUpgrade = true;
-
-    expect(() => {
-      applyGoldenHammer(gear);
-    }).toThrow(TypeError);
-  });
-
-  it('throws TypeError for blockGoldenHammer gear', () => {
-    gear.data.attributes.blockGoldenHammer = true;
-
-    expect(() => {
-      applyGoldenHammer(gear);
-    }).toThrow(TypeError);
-  });
-
-  it('throws TypeError for goldenHammer > 0 gear', () => {
-    gear.data.goldenHammer = 1;
-
-    expect(() => {
-      applyGoldenHammer(gear);
-    }).toThrow(TypeError);
-  });
-
-  it('sets goldenHammer to 1', () => {
-    applyGoldenHammer(gear);
-
-    expect(gear.goldenHammer).toBe(1);
   });
 });
 
@@ -262,17 +196,6 @@ describe('resetUpgrade', () => {
     expect(() => {
       resetUpgrade(gear);
     }).toThrow(TypeError);
-  });
-
-  it('resets goldenHammer', () => {
-    expect(gear.scrollUpgradeableCount).toBe(8);
-    expect(gear.goldenHammer).toBe(0);
-    applyGoldenHammer(gear);
-
-    resetUpgrade(gear);
-
-    expect(gear.scrollUpgradeableCount).toBe(8);
-    expect(gear.goldenHammer).toBe(0);
   });
 
   it('resets scrollResilienceCount', () => {

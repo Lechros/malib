@@ -5,7 +5,7 @@ import {
   GearType,
   PotentialGrade,
 } from './data';
-import { AddOptionGrade, AddOptionType } from './enhance/addOption';
+import { AddOptionGrade, AddOptionType } from './data';
 import { SpellTraceType } from './enhance/spellTrace';
 import { Gear } from './Gear';
 
@@ -15,7 +15,6 @@ describe('Gear constructor', () => {
       meta: {
         id: 0,
         version: 1,
-        add: [],
       },
       name: '',
       type: GearType.cap,
@@ -137,22 +136,6 @@ describe('Gear', () => {
   describe('req', () => {
     it('level is 200', () => {
       expect(gear.req.level).toBe(200);
-    });
-
-    it('str is 0', () => {
-      expect(gear.req.str).toBe(0);
-    });
-
-    it('dex is 0', () => {
-      expect(gear.req.dex).toBe(0);
-    });
-
-    it('int is 600', () => {
-      expect(gear.req.int).toBe(600);
-    });
-
-    it('luk is 0', () => {
-      expect(gear.req.luk).toBe(0);
     });
 
     it('job is 2', () => {
@@ -355,17 +338,6 @@ describe('Gear', () => {
     });
   });
 
-  describe('goldenHammer', () => {
-    it('is 0', () => {
-      expect(gear.goldenHammer).toBe(0);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'goldenHammer' because it is a read-only property.
-      expect(() => (gear.goldenHammer = 1)).toThrow();
-    });
-  });
-
   describe('scrollTotalUpgradeableCount', () => {
     it('is 8', () => {
       expect(gear.scrollTotalUpgradeableCount).toBe(8);
@@ -388,13 +360,6 @@ describe('Gear', () => {
 
       expect(gear.scrollTotalUpgradeableCount).toBe(9);
     });
-
-    it('is 8 after scrollUpgrabeableCount += 1, goldenHammer += 1', () => {
-      gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount + 1;
-      gear.data.goldenHammer = gear.goldenHammer + 1;
-
-      expect(gear.scrollTotalUpgradeableCount).toBe(8);
-    });
   });
 
   describe('star', () => {
@@ -409,8 +374,8 @@ describe('Gear', () => {
   });
 
   describe('maxStar', () => {
-    it('is 25', () => {
-      expect(gear.maxStar).toBe(25);
+    it('is 30', () => {
+      expect(gear.maxStar).toBe(30);
     });
 
     it('is readonly property', () => {
@@ -498,18 +463,21 @@ describe('Gear', () => {
     it('is equal to input value', () => {
       expect(gear.potentials).toEqual([
         {
+          grade: PotentialGrade.Legendary,
           summary: '보스 몬스터 공격 시 데미지 : +40%',
           option: {
             bossDamage: 40,
           },
         },
         {
+          grade: PotentialGrade.Legendary,
           summary: '마력 : +12%',
           option: {
             magicPowerRate: 12,
           },
         },
         {
+          grade: PotentialGrade.Unique,
           summary: '마력 : +9%',
           option: {
             magicPowerRate: 9,
@@ -551,18 +519,21 @@ describe('Gear', () => {
     it('is equal to input value', () => {
       expect(gear.additionalPotentials).toEqual([
         {
+          grade: PotentialGrade.Unique,
           summary: '마력 : +9%',
           option: {
             magicPowerRate: 9,
           },
         },
         {
+          grade: PotentialGrade.Unique,
           summary: '마력 : +9%',
           option: {
             magicPowerRate: 9,
           },
         },
         {
+          grade: PotentialGrade.Epic,
           summary: '크리티컬 확률 : +6%',
           option: {
             criticalRate: 6,
@@ -681,22 +652,20 @@ describe('Gear', () => {
       expect(gear.addOption).toEqual({ str: 19, dex: 20 });
     });
 
-    it('sets meta add property', () => {
+    it('sets addOptions property', () => {
       gear.data.type = GearType.cap;
       gear.data.req.level = 160;
 
       gear.applyAddOption(AddOptionType.str, 2);
       gear.applyAddOption(AddOptionType.str, 3);
-      gear.applyAddOption(AddOptionType.str, 2);
       gear.applyAddOption(AddOptionType.dex, 5);
       gear.applyAddOption(AddOptionType.allStat, 7);
 
-      expect(gear.meta.add).toEqual([
-        [AddOptionType.str, 2],
-        [AddOptionType.str, 3],
-        [AddOptionType.str, 2],
-        [AddOptionType.dex, 5],
-        [AddOptionType.allStat, 7],
+      expect(gear.addOptions).toEqual([
+        { type: AddOptionType.str, grade: 2, value: 18 },
+        { type: AddOptionType.str, grade: 3, value: 27 },
+        { type: AddOptionType.dex, grade: 5, value: 45 },
+        { type: AddOptionType.allStat, grade: 7, value: 7 },
       ]);
     });
   });
@@ -711,14 +680,14 @@ describe('Gear', () => {
     });
 
     it('resets meta add property', () => {
-      gear.meta.add = [
-        [AddOptionType.luk, 5],
-        [AddOptionType.armor, 3],
+      gear.data.addOptions = [
+        { type: AddOptionType.luk, grade: 5, value: 10 },
+        { type: AddOptionType.armor, grade: 3, value: 20 },
       ];
 
       gear.resetAddOption();
 
-      expect(gear.meta.add).toEqual([]);
+      expect(gear.addOptions).toEqual([]);
     });
   });
 
@@ -730,25 +699,6 @@ describe('Gear', () => {
     it('is readonly property', () => {
       // @ts-expect-error: Cannot assign to 'supportsUpgrade' because it is a read-only property.
       expect(() => (gear.supportsUpgrade = false)).toThrow();
-    });
-  });
-
-  describe('canGoldenHammer', () => {
-    it('is true', () => {
-      expect(gear.canApplyGoldenHammer).toBe(true);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'canApplyGoldenHammer' because it is a read-only property.
-      expect(() => (gear.canApplyGoldenHammer = false)).toThrow();
-    });
-  });
-
-  describe('applyGoldenHammer', () => {
-    it('sets goldenHammer to 1', () => {
-      gear.applyGoldenHammer();
-
-      expect(gear.goldenHammer).toBe(1);
     });
   });
 
@@ -1036,18 +986,28 @@ describe('Gear', () => {
 
   describe('setPotential', () => {
     it('sets potentialGrade to Unique', () => {
-      gear.setPotential(PotentialGrade.Unique, [{ summary: '', option: {} }]);
+      gear.setPotential(PotentialGrade.Unique, [
+        { grade: 1, summary: '', option: {} },
+      ]);
 
       expect(gear.potentialGrade).toBe(PotentialGrade.Unique);
     });
 
     it('sets potentials', () => {
       gear.setPotential(PotentialGrade.Unique, [
-        { summary: '마력 : +12%', option: { magicPowerRate: 12 } },
+        {
+          grade: PotentialGrade.Legendary,
+          summary: '마력 : +12%',
+          option: { magicPowerRate: 12 },
+        },
       ]);
 
       expect(gear.potentials).toEqual([
-        { summary: '마력 : +12%', option: { magicPowerRate: 12 } },
+        {
+          grade: PotentialGrade.Legendary,
+          summary: '마력 : +12%',
+          option: { magicPowerRate: 12 },
+        },
       ]);
     });
   });
@@ -1091,7 +1051,7 @@ describe('Gear', () => {
   describe('setAdditionalPotential', () => {
     it('sets additionalPotentialGrade to Legendary', () => {
       gear.setAdditionalPotential(PotentialGrade.Legendary, [
-        { summary: '', option: {} },
+        { grade: 1, summary: '', option: {} },
       ]);
 
       expect(gear.additionalPotentialGrade).toBe(PotentialGrade.Legendary);
@@ -1099,11 +1059,19 @@ describe('Gear', () => {
 
     it('sets additionalPotentials', () => {
       gear.setAdditionalPotential(PotentialGrade.Legendary, [
-        { summary: '마력 : +12%', option: { magicPowerRate: 12 } },
+        {
+          grade: PotentialGrade.Legendary,
+          summary: '마력 : +12%',
+          option: { magicPowerRate: 12 },
+        },
       ]);
 
       expect(gear.additionalPotentials).toEqual([
-        { summary: '마력 : +12%', option: { magicPowerRate: 12 } },
+        {
+          grade: PotentialGrade.Legendary,
+          summary: '마력 : +12%',
+          option: { magicPowerRate: 12 },
+        },
       ]);
     });
   });
@@ -1273,7 +1241,6 @@ describe('Gear', () => {
       meta: {
         id: 1212128,
         version: 1,
-        add: [],
       },
       name: '제네시스 샤이닝로드',
       icon: '1212128',
@@ -1285,10 +1252,6 @@ describe('Gear', () => {
       type: GearType.shiningRod,
       req: {
         level: 200,
-        str: 0,
-        luk: 0,
-        dex: 0,
-        int: 600,
         job: 2,
       },
       attributes: {
@@ -1327,10 +1290,9 @@ describe('Gear', () => {
       scrollUpgradeCount: 8,
       scrollResilienceCount: 0,
       scrollUpgradeableCount: 0,
-      goldenHammer: 0,
 
       star: 22,
-      maxStar: 25,
+      maxStar: 30,
       starScroll: false,
 
       soulSlot: {
@@ -1351,18 +1313,21 @@ describe('Gear', () => {
       potentialGrade: PotentialGrade.Legendary,
       potentials: [
         {
+          grade: PotentialGrade.Legendary,
           summary: '보스 몬스터 공격 시 데미지 : +40%',
           option: {
             bossDamage: 40,
           },
         },
         {
+          grade: PotentialGrade.Legendary,
           summary: '마력 : +12%',
           option: {
             magicPowerRate: 12,
           },
         },
         {
+          grade: PotentialGrade.Unique,
           summary: '마력 : +9%',
           option: {
             magicPowerRate: 9,
@@ -1372,18 +1337,21 @@ describe('Gear', () => {
       additionalPotentialGrade: PotentialGrade.Unique,
       additionalPotentials: [
         {
+          grade: PotentialGrade.Unique,
           summary: '마력 : +9%',
           option: {
             magicPowerRate: 9,
           },
         },
         {
+          grade: PotentialGrade.Unique,
           summary: '마력 : +9%',
           option: {
             magicPowerRate: 9,
           },
         },
         {
+          grade: PotentialGrade.Epic,
           summary: '크리티컬 확률 : +6%',
           option: {
             criticalRate: 6,
