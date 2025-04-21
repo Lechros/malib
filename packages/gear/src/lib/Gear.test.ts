@@ -1,4 +1,5 @@
 import {
+  AddOptionCan,
   GearAddOption,
   GearData,
   GearTrade,
@@ -596,30 +597,10 @@ describe('Gear', () => {
     });
   });
 
-  describe('canAddOption', () => {
-    it.each([
-      GearType.magicGauntlet,
-      GearType.handCannon,
-      GearType.faceAccessory,
-      GearType.pocket,
-    ])('returns true for gearType %d', (gearType) => {
-      gear.data.type = gearType;
-
-      const can = gear.supportsAddOption;
-
-      expect(can).toBe(true);
+  describe('canApplyAddOption', () => {
+    it('is true', () => {
+      expect(gear.canApplyAddOption).toBe(true);
     });
-
-    it.each([GearType.ring, GearType.shoulder, GearType.badge])(
-      'returns false for gearType %d',
-      (gearType) => {
-        gear.data.type = gearType;
-
-        const can = gear.supportsAddOption;
-
-        expect(can).toBe(false);
-      },
-    );
   });
 
   describe('applyAddOption', () => {
@@ -1258,6 +1239,7 @@ describe('Gear', () => {
         only: true,
         trade: GearTrade.TradeBlock,
         onlyEquip: true,
+        canAddOption: AddOptionCan.Can,
       },
 
       baseOption: {

@@ -1,5 +1,4 @@
 import {
-  AddOptionCan,
   Gear,
   GearBaseOption,
   GearData,
@@ -11,6 +10,7 @@ import {
   PotentialCan,
   PotentialGrade,
 } from '@malib/gear';
+import { getCanAddOption } from './addOption';
 import { getGearType } from './gearType';
 import { WzGear } from './wz';
 
@@ -140,14 +140,6 @@ export function convert(info: WzGear): GearData {
     data.attributes.bossReward = true;
   }
 
-  // AddOption
-  if (info.exUpgradeBlock) {
-    data.attributes.canAddOption = AddOptionCan.Cannot;
-  }
-  if (info.exUpgradeChangeBlock) {
-    data.attributes.canAddOption = AddOptionCan.Fixed;
-  }
-
   // Upgrade
   if (info.superiorEqp) {
     data.attributes.superior = true;
@@ -224,6 +216,9 @@ export function convert(info: WzGear): GearData {
   if (info.Etuc) {
     data.exceptionalUpgradeableCount = info.Etuc;
   }
+
+  // Late set
+  data.attributes.canAddOption = getCanAddOption(info, data.type);
 
   const maxStar = getGearMaxStar(new Gear(data), (info.onlyUpgrade ?? 0) > 0);
   if (maxStar) {

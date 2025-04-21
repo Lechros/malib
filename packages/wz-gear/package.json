@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@malib/gear": "workspace:^",
+    "@types/node": "^22.14.1",
     "vitest": "^3.0.7"
   }
 }

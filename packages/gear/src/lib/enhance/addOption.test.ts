@@ -6,7 +6,7 @@ import {
   GearType,
 } from '../data';
 import { Gear } from '../Gear';
-import { defaultGear, getGearTypeContains } from '../testUtils';
+import { defaultGear } from '../testUtils';
 import {
   _getAddOptionKeys,
   _getAllStatValue,
@@ -27,63 +27,6 @@ import {
   resetAddOption,
   supportsAddOption,
 } from './addOption';
-
-test.each(
-  getGearTypeContains([
-    GearType.cap,
-    GearType.coat,
-    GearType.longcoat,
-    GearType.pants,
-    GearType.shoes,
-    GearType.glove,
-    GearType.cape,
-    GearType.faceAccessory,
-    GearType.eyeAccessory,
-    GearType.earrings,
-    GearType.pendant,
-    GearType.belt,
-    GearType.pocket,
-    GearType.shiningRod,
-    GearType.tuner,
-    GearType.breathShooter,
-    GearType.soulShooter,
-    GearType.desperado,
-    GearType.energySword,
-    GearType.espLimiter,
-    GearType.chain,
-    GearType.magicGauntlet,
-    GearType.ritualFan,
-    GearType.ohSword,
-    GearType.ohAxe,
-    GearType.ohBlunt,
-    GearType.dagger,
-    GearType.cane,
-    GearType.wand,
-    GearType.staff,
-    GearType.thSword,
-    GearType.chakram,
-    GearType.thAxe,
-    GearType.thBlunt,
-    GearType.spear,
-    GearType.polearm,
-    GearType.bow,
-    GearType.crossbow,
-    GearType.claw,
-    GearType.knuckle,
-    GearType.gun,
-    GearType.dualBowguns,
-    GearType.handCannon,
-    GearType.heavySword,
-    GearType.longSword,
-    GearType.gauntletRevolver,
-    GearType.ancientBow,
-  ]),
-)('supportsAddOption(type=%d) returns %p', (gearType, expected) => {
-  const gear = defaultGear({ type: gearType });
-  const actual = supportsAddOption(gear);
-
-  expect(actual).toBe(expected);
-});
 
 describe('supportsAddOption', () => {
   it('returns true for canAddOption === Can', () => {
