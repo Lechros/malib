@@ -125,8 +125,8 @@ describe('GearAttribute', () => {
   });
 
   describe('potential', () => {
-    it('returns None by default', () => {
-      expect(attr.canPotential).toBe(PotentialCan.None);
+    it('returns Cannot by default', () => {
+      expect(attr.canPotential).toBe(PotentialCan.Cannot);
     });
 
     it('returns Fixed', () => {
@@ -142,8 +142,8 @@ describe('GearAttribute', () => {
   });
 
   describe('additionalPotential', () => {
-    it('returns None by default', () => {
-      expect(attr.canAdditionalPotential).toBe(PotentialCan.None);
+    it('returns Cannot by default', () => {
+      expect(attr.canAdditionalPotential).toBe(PotentialCan.Cannot);
     });
 
     it('returns Cannot', () => {

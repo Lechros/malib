@@ -7,11 +7,11 @@ import {
   GearTrade,
   isDragonGear,
   isMechanicGear,
-  PotentialCan,
   PotentialGrade,
 } from '@malib/gear';
 import { getCanAddOption } from './addOption';
 import { getGearType } from './gearType';
+import { getCanAdditionalPotential, getCanPotential } from './potential';
 import { WzGear } from './wz';
 
 export function convert(info: WzGear): GearData {
@@ -160,14 +160,6 @@ export function convert(info: WzGear): GearData {
   if (info.specialGrade) {
     data.attributes.specialGrade = true;
   }
-  if (info.noPotential) {
-    data.attributes.canPotential = PotentialCan.Cannot;
-  } else if (info.fixedPotential) {
-    data.attributes.canPotential = PotentialCan.Fixed;
-    data.attributes.canAdditionalPotential = PotentialCan.Cannot;
-  } else if (info.tucIgnoreForPotential) {
-    data.attributes.canPotential = PotentialCan.Can;
-  }
   if (info.fixedGrade) {
     switch (info.fixedGrade) {
       case 2:
@@ -219,6 +211,12 @@ export function convert(info: WzGear): GearData {
 
   // Late set
   data.attributes.canAddOption = getCanAddOption(info, data.type);
+
+  data.attributes.canPotential = getCanPotential(info, data.type);
+  data.attributes.canAdditionalPotential = getCanAdditionalPotential(
+    info,
+    data.type,
+  );
 
   const maxStar = getGearMaxStar(new Gear(data), (info.onlyUpgrade ?? 0) > 0);
   if (maxStar) {

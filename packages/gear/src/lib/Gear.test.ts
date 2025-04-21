@@ -4,6 +4,7 @@ import {
   GearData,
   GearTrade,
   GearType,
+  PotentialCan,
   PotentialGrade,
 } from './data';
 import { AddOptionGrade, AddOptionType } from './data';
@@ -1240,6 +1241,8 @@ describe('Gear', () => {
         trade: GearTrade.TradeBlock,
         onlyEquip: true,
         canAddOption: AddOptionCan.Can,
+        canPotential: PotentialCan.Can,
+        canAdditionalPotential: PotentialCan.Can,
       },
 
       baseOption: {
