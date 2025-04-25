@@ -1,4 +1,4 @@
-import { GearUpgradeOption } from '../data';
+import { GearUpgradeOption, ScrollCan } from '../data';
 import { ErrorMessage } from '../errors';
 import { Gear } from '../Gear';
 import { addOptions } from '../utils';
@@ -21,7 +21,7 @@ export interface Scroll {
  * @returns 지원할 경우 `true`; 아닐 경우 `false`.
  */
 export function supportsUpgrade(gear: Gear): boolean {
-  return gear.scrollTotalUpgradeableCount > 0;
+  return gear.attributes.canScroll === ScrollCan.Can;
 }
 
 /**

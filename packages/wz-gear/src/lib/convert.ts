@@ -11,6 +11,7 @@ import { getGearType } from './gearType';
 import { getCanAdditionalPotential, getCanPotential } from './potential';
 import { getCanStarforce } from './starforce';
 import { WzGear } from './wz';
+import { getCanScroll } from './upgrade';
 
 export function convert(info: WzGear): GearData {
   const data: GearData = {
@@ -142,9 +143,6 @@ export function convert(info: WzGear): GearData {
   if (info.superiorEqp) {
     data.attributes.superior = true;
   }
-  if (info.exceptUpgrade) {
-    // data.attributes.cannotUpgrade = true;
-  }
   if (info.tuc) {
     data.scrollUpgradeableCount = info.tuc;
   }
@@ -215,6 +213,8 @@ export function convert(info: WzGear): GearData {
     info,
     data.type,
   );
+
+  data.attributes.canScroll = getCanScroll(info);
 
   data.attributes.canStarforce = getCanStarforce(info, data.type);
 

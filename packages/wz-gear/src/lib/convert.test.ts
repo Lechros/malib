@@ -1,4 +1,10 @@
-import { Gear, GearData, PotentialCan, StarforceCan } from '@malib/gear';
+import {
+  Gear,
+  GearData,
+  PotentialCan,
+  ScrollCan,
+  StarforceCan,
+} from '@malib/gear';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { convert } from './convert';
@@ -28,8 +34,21 @@ test('Test canAddOption, canPotential, canAdditionalPotential equals expected', 
     checkAddOption(data, cans, id);
     checkPotential(data, cans, id);
     checkAdditionalPotential(data, cans, id);
+    checkScroll(data, cans, id);
     checkStarforce(data, cans, id);
   }
+});
+
+test.skip('Temp test', () => {
+  const gearData = readJson<Record<string, WzGear>>('./res/gear-data.json');
+  const id = 1114207;
+  const info = gearData[id];
+  const data = convert(info);
+  const gear = new Gear(data);
+
+  console.log(gear);
+  console.log('potentials:', gear.potentials);
+  console.log('maxStar:', gear.maxStar);
 });
 
 function checkAddOption(data: GearData, cans: Cans, id: string) {
@@ -55,6 +74,20 @@ function checkAdditionalPotential(data: GearData, cans: Cans, id: string) {
         .soft(data.attributes.canAdditionalPotential, id)
         .toBe(cans.canAdditionalPotential);
     }
+  }
+}
+
+function checkScroll(data: GearData, cans: Cans, id: string) {
+  // tuc이 없으면 Cannot으로, cannotUpgrade이면 Fixed로 설정
+  if (
+    data.scrollUpgradeableCount === undefined ||
+    data.scrollUpgradeableCount === 0
+  ) {
+    expect.soft(data.attributes.canScroll, id).toBe(ScrollCan.Cannot);
+  } else if (cans.cannotUpgrade) {
+    expect.soft(data.attributes.canScroll, id).toBe(ScrollCan.Fixed);
+  } else {
+    expect.soft(data.attributes.canScroll, id).toBe(ScrollCan.Can);
   }
 }
 

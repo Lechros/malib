@@ -1,4 +1,4 @@
-import { GearType } from '../data';
+import { GearType, ScrollCan } from '../data';
 import { Gear } from '../Gear';
 import { defaultGear } from '../testUtils';
 import {
@@ -19,47 +19,27 @@ afterEach(() => {
   vitest.restoreAllMocks();
 });
 
-describe('canUpgrade', () => {
-  it.skip('returns false for cannotUpgrade gear', () => {
-    // @ts-expect-error: 'cannotUpgrade' is deleted and will be fixed in next update
-    gear.data.attributes.cannotUpgrade = true;
-
-    expect(supportsUpgrade(gear)).toBe(false);
-  });
-
-  it('returns false for scrollTotalUpgradeableCount == 0 gear', () => {
-    vitest
-      .spyOn(gear, 'scrollTotalUpgradeableCount', 'get')
-      .mockImplementation(() => 0);
-
-    expect(supportsUpgrade(gear)).toBe(false);
-  });
-
-  it('returns true for scrollTotalUpgradeableCount > 0 gear', () => {
-    vitest
-      .spyOn(gear, 'scrollTotalUpgradeableCount', 'get')
-      .mockImplementation(() => 1);
+describe('supportsUpgrade', () => {
+  it('returns true for canScroll === Can', () => {
+    gear.data.attributes.canScroll = ScrollCan.Can;
 
     expect(supportsUpgrade(gear)).toBe(true);
+  });
+
+  it('returns false for canScroll === Fixed', () => {
+    gear.data.attributes.canScroll = ScrollCan.Fixed;
+
+    expect(supportsUpgrade(gear)).toBe(false);
+  });
+
+  it('returns false for canScroll === Cannot', () => {
+    gear.data.attributes.canScroll = ScrollCan.Cannot;
+
+    expect(supportsUpgrade(gear)).toBe(false);
   });
 });
 
 describe('canFailScroll', () => {
-  it.skip('returns false for cannotUpgrade gear', () => {
-    // @ts-expect-error: 'cannotUpgrade' is deleted and will be fixed in next update
-    gear.data.attributes.cannotUpgrade = true;
-
-    expect(canFailScroll(gear)).toBe(false);
-  });
-
-  it('returns false for scrollTotalUpgradeableCount == 0 gear', () => {
-    vitest
-      .spyOn(gear, 'scrollTotalUpgradeableCount', 'get')
-      .mockImplementation(() => 0);
-
-    expect(canFailScroll(gear)).toBe(false);
-  });
-
   it('returns false for scrollUpgradeableCount == 0 gear', () => {
     gear.data.scrollUpgradeableCount = 0;
 
@@ -74,15 +54,6 @@ describe('canFailScroll', () => {
 });
 
 describe('failScroll', () => {
-  it.skip('throws TypeError for cannotUpgrade gear', () => {
-    // @ts-expect-error: 'cannotUpgrade' is deleted and will be fixed in next update
-    gear.data.attributes.cannotUpgrade = true;
-
-    expect(() => {
-      failScroll(gear);
-    }).toThrow(TypeError);
-  });
-
   it('throws TypeError for scrollUpgradeableCount == 0 gear', () => {
     gear.data.scrollUpgradeableCount = 0;
 
@@ -111,13 +82,6 @@ describe('failScroll', () => {
 });
 
 describe('canResileScroll', () => {
-  it.skip('returns false for cannotUpgrade gear', () => {
-    // @ts-expect-error: 'cannotUpgrade' is deleted and will be fixed in next update
-    gear.data.attributes.cannotUpgrade = true;
-
-    expect(canResileScroll(gear)).toBe(false);
-  });
-
   it('returns false for scrollTotalUpgradeableCount == 0 gear', () => {
     vitest
       .spyOn(gear, 'scrollTotalUpgradeableCount', 'get')
@@ -140,15 +104,6 @@ describe('canResileScroll', () => {
 });
 
 describe('resileScroll', () => {
-  it.skip('throws TypeError for cannotUpgrade gear', () => {
-    // @ts-expect-error: 'cannotUpgrade' is deleted and will be fixed in next update
-    gear.data.attributes.cannotUpgrade = true;
-
-    expect(() => {
-      resileScroll(gear);
-    }).toThrow(TypeError);
-  });
-
   it('throws TypeError for scrollResilienceCount == 0 gear', () => {
     gear.data.scrollResilienceCount = 0;
 
@@ -177,13 +132,6 @@ describe('resileScroll', () => {
 });
 
 describe('canResetUpgrade', () => {
-  it.skip('returns false for cannotUpgrade gear', () => {
-    // @ts-expect-error: 'cannotUpgrade' is deleted and will be fixed in next update
-    gear.data.attributes.cannotUpgrade = true;
-
-    expect(canResetUpgrade(gear)).toBe(false);
-  });
-
   it('returns true', () => {
     expect(canResetUpgrade(gear)).toBe(true);
   });
@@ -196,15 +144,6 @@ describe('canResetUpgrade', () => {
 });
 
 describe('resetUpgrade', () => {
-  it.skip('throws TypeError for cannotUpgrade gear', () => {
-    // @ts-expect-error: 'cannotUpgrade' is deleted and will be fixed in next update
-    gear.data.attributes.cannotUpgrade = true;
-
-    expect(() => {
-      resetUpgrade(gear);
-    }).toThrow(TypeError);
-  });
-
   it('resets scrollResilienceCount', () => {
     expect(gear.scrollUpgradeableCount).toBe(8);
     expect(gear.scrollResilienceCount).toBe(0);
@@ -240,21 +179,6 @@ describe('resetUpgrade', () => {
 });
 
 describe('canApplyScroll', () => {
-  it.skip('returns false for cannotUpgrade gear', () => {
-    // @ts-expect-error: 'cannotUpgrade' is deleted and will be fixed in next update
-    gear.data.attributes.cannotUpgrade = true;
-
-    expect(canApplyScroll(gear)).toBe(false);
-  });
-
-  it('returns false for scrollTotalUpgradeableCount == 0 gear', () => {
-    vitest
-      .spyOn(gear, 'scrollTotalUpgradeableCount', 'get')
-      .mockImplementation(() => 0);
-
-    expect(canApplyScroll(gear)).toBe(false);
-  });
-
   it('returns false for scrollUpgradeableCount == 0 gear', () => {
     gear.data.scrollUpgradeableCount = 0;
 
@@ -273,15 +197,6 @@ describe('applyScroll', () => {
     name: 'Test scroll',
     option: { str: 1, dex: 2, int: 3, luk: 4, maxHp: 50, magicPower: 10 },
   };
-
-  it.skip('throws TypeError for cannotUpgrade gear', () => {
-    // @ts-expect-error: 'cannotUpgrade' is deleted and will be fixed in next update
-    gear.data.attributes.cannotUpgrade = true;
-
-    expect(() => {
-      applyScroll(gear, scroll);
-    }).toThrow(TypeError);
-  });
 
   it('throws TypeError for scrollUpgradeableCount == 0 gear', () => {
     gear.data.scrollUpgradeableCount = 0;
@@ -356,6 +271,9 @@ beforeEach(() => {
     type: GearType.shiningRod,
     req: {
       level: 200,
+    },
+    attributes: {
+      canScroll: ScrollCan.Can,
     },
     scrollUpgradeableCount: 8,
   });

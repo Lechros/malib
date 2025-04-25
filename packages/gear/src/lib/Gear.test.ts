@@ -6,6 +6,7 @@ import {
   GearType,
   PotentialCan,
   PotentialGrade,
+  ScrollCan,
   StarforceCan,
 } from './data';
 import { AddOptionGrade, AddOptionType } from './data';
@@ -1244,6 +1245,7 @@ describe('Gear', () => {
         canAddOption: AddOptionCan.Can,
         canPotential: PotentialCan.Can,
         canAdditionalPotential: PotentialCan.Can,
+        canScroll: ScrollCan.Can,
         canStarforce: StarforceCan.Can,
       },
 
