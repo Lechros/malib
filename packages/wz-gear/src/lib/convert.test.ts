@@ -46,18 +46,21 @@ test.skip('Temp test', () => {
 });
 
 function checkAddOption(data: GearData, cans: Cans, id: string) {
-  expect.soft(data.attributes.canAddOption, id).toBe(cans.canAddOption);
+  expect.soft(data.attributes.canAddOption ?? 0, id).toBe(cans.canAddOption);
 }
 
 function checkPotential(data: GearData, cans: Cans, id: string) {
-  expect.soft(data.attributes.canPotential, id).toBe(cans.canPotential);
+  expect.soft(data.attributes.canPotential ?? 0, id).toBe(cans.canPotential);
 }
 
 function checkAdditionalPotential(data: GearData, cans: Cans, id: string) {
   // canPotential이 Cannot일 경우 canAdditionalPotential도 Cannot이어야 함
-  if (data.attributes.canPotential === GearCapability.Cannot) {
+  if (
+    data.attributes.canPotential === undefined ||
+    data.attributes.canPotential === GearCapability.Cannot
+  ) {
     expect
-      .soft(data.attributes.canAdditionalPotential, id)
+      .soft(data.attributes.canAdditionalPotential ?? 0, id)
       .toBe(GearCapability.Cannot);
   } else {
     // 글로리온 링 류는 Can이 올바른 결과지만, 기존에 Cannot으로 계산되던 것을 처리
@@ -67,7 +70,7 @@ function checkAdditionalPotential(data: GearData, cans: Cans, id: string) {
       );
     } else {
       expect
-        .soft(data.attributes.canAdditionalPotential, id)
+        .soft(data.attributes.canAdditionalPotential ?? 0, id)
         .toBe(cans.canAdditionalPotential);
     }
   }
@@ -79,7 +82,7 @@ function checkScroll(data: GearData, cans: Cans, id: string) {
     data.scrollUpgradeableCount === undefined ||
     data.scrollUpgradeableCount === 0
   ) {
-    expect.soft(data.attributes.canScroll, id).toBe(GearCapability.Cannot);
+    expect.soft(data.attributes.canScroll ?? 0, id).toBe(GearCapability.Cannot);
   } else if (cans.cannotUpgrade) {
     expect.soft(data.attributes.canScroll, id).toBe(GearCapability.Fixed);
   } else {

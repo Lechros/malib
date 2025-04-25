@@ -205,18 +205,27 @@ export function convert(info: WzGear): GearData {
     data.exceptionalUpgradeableCount = info.Etuc;
   }
 
-  // Late set
-  data.attributes.canAddOption = getCanAddOption(info, data.type);
-
-  data.attributes.canPotential = getCanPotential(info, data.type);
-  data.attributes.canAdditionalPotential = getCanAdditionalPotential(
-    info,
-    data.type,
-  );
-
-  data.attributes.canScroll = getCanScroll(info);
-
-  data.attributes.canStarforce = getCanStarforce(info, data.type);
+  // Capabilities
+  const canStarforce = getCanStarforce(info, data.type);
+  if (canStarforce) {
+    data.attributes.canStarforce = canStarforce;
+  }
+  const canScroll = getCanScroll(info);
+  if (canScroll) {
+    data.attributes.canScroll = canScroll;
+  }
+  const canAddOption = getCanAddOption(info, data.type);
+  if (canAddOption) {
+    data.attributes.canAddOption = canAddOption;
+  }
+  const canPotential = getCanPotential(info, data.type);
+  if (canPotential) {
+    data.attributes.canPotential = canPotential;
+  }
+  const canAdditionalPotential = getCanAdditionalPotential(info, data.type);
+  if (canAdditionalPotential) {
+    data.attributes.canAdditionalPotential = canAdditionalPotential;
+  }
 
   if (info.potentials) {
     data.potentials = info.potentials.map((pot) => ({
