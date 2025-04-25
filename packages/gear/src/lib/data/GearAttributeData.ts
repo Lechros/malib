@@ -17,15 +17,15 @@ export interface GearAttributeData {
   attackSpeed?: number;
 
   /** 주문서 강화 가능 여부 */
-  canScroll?: ScrollCan;
+  canScroll?: GearCapability;
   /** 스타포스 강화 가능 여부 */
-  canStarforce?: StarforceCan;
+  canStarforce?: GearCapability;
   /** 추가 옵션 설정 가능 여부 */
-  canAddOption?: AddOptionCan;
+  canAddOption?: GearCapability;
   /** 잠재능력 설정 가능 여부 */
-  canPotential?: PotentialCan;
+  canPotential?: GearCapability;
   /** 에디셔널 잠재능력 설정 가능 여부 */
-  canAdditionalPotential?: PotentialCan;
+  canAdditionalPotential?: GearCapability;
   /** 스페셜 아이템 여부 */
   specialGrade?: boolean;
 
@@ -73,34 +73,7 @@ export enum GearShare {
   AccountSharableOnce = 2,
 }
 
-export enum ScrollCan {
-  /** 설정 불가 */
-  Cannot = 0,
-  /** 설정 가능 */
-  Can = 1,
-  /** 재설정 불가 */
-  Fixed = 2,
-}
-
-export enum StarforceCan {
-  /** 설정 불가 */
-  Cannot = 0,
-  /** 설정 가능 */
-  Can = 1,
-  /** 재설정 불가 */
-  Fixed = 2,
-}
-
-export enum AddOptionCan {
-  /** 설정 불가 */
-  Cannot = 0,
-  /** 설정 가능 */
-  Can = 1,
-  /** 재설정 불가 */
-  Fixed = 2,
-}
-
-export enum PotentialCan {
+export enum GearCapability {
   /** 설정 불가 */
   Cannot = 0,
   /** 설정 가능 */

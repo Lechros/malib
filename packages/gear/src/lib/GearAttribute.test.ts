@@ -1,11 +1,4 @@
-import {
-  GearCuttable,
-  GearShare,
-  GearTrade,
-  PotentialCan,
-  ScrollCan,
-  StarforceCan,
-} from './data';
+import { GearCapability, GearCuttable, GearShare, GearTrade } from './data';
 import { GearAttribute } from './GearAttribute';
 
 describe('GearAttribute', () => {
@@ -116,70 +109,87 @@ describe('GearAttribute', () => {
 
   describe('canScroll', () => {
     it('returns Cannot by default', () => {
-      expect(attr.canScroll).toBe(ScrollCan.Cannot);
+      expect(attr.canScroll).toBe(GearCapability.Cannot);
     });
 
     it('returns Can', () => {
-      attr.data.canScroll = ScrollCan.Can;
+      attr.data.canScroll = GearCapability.Can;
 
-      expect(attr.canScroll).toBe(ScrollCan.Can);
+      expect(attr.canScroll).toBe(GearCapability.Can);
     });
 
     it('is readonly property', () => {
       // @ts-expect-error: Cannot assign to 'canScroll' because it is a read-only property.
-      expect(() => (attr.canScroll = ScrollCan.Can)).toThrow();
+      expect(() => (attr.canScroll = GearCapability.Can)).toThrow();
     });
   });
 
   describe('canStarforce', () => {
     it('returns Cannot by default', () => {
-      expect(attr.canStarforce).toBe(StarforceCan.Cannot);
+      expect(attr.canStarforce).toBe(GearCapability.Cannot);
     });
 
     it('returns Can', () => {
-      attr.data.canStarforce = StarforceCan.Can;
+      attr.data.canStarforce = GearCapability.Can;
 
-      expect(attr.canStarforce).toBe(StarforceCan.Can);
+      expect(attr.canStarforce).toBe(GearCapability.Can);
     });
 
     it('is readonly property', () => {
       // @ts-expect-error: Cannot assign to 'canStarforce' because it is a read-only property.
-      expect(() => (attr.canStarforce = StarforceCan.Can)).toThrow();
+      expect(() => (attr.canStarforce = GearCapability.Can)).toThrow();
     });
   });
 
-  describe('potential', () => {
+  describe('canAddOption', () => {
     it('returns Cannot by default', () => {
-      expect(attr.canPotential).toBe(PotentialCan.Cannot);
+      expect(attr.canAddOption).toBe(GearCapability.Cannot);
+    });
+
+    it('returns Can', () => {
+      attr.data.canAddOption = GearCapability.Can;
+
+      expect(attr.canAddOption).toBe(GearCapability.Can);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'canAddOption' because it is a read-only property.
+      expect(() => (attr.canAddOption = GearCapability.Can)).toThrow();
+    });
+  });
+
+  describe('canPotential', () => {
+    it('returns Cannot by default', () => {
+      expect(attr.canPotential).toBe(GearCapability.Cannot);
     });
 
     it('returns Fixed', () => {
-      attr.data.canPotential = PotentialCan.Fixed;
+      attr.data.canPotential = GearCapability.Fixed;
 
-      expect(attr.canPotential).toBe(PotentialCan.Fixed);
+      expect(attr.canPotential).toBe(GearCapability.Fixed);
     });
 
     it('is readonly property', () => {
       // @ts-expect-error: Cannot assign to 'canPotential' because it is a read-only property.
-      expect(() => (attr.canPotential = PotentialCan.Fixed)).toThrow();
+      expect(() => (attr.canPotential = GearCapability.Fixed)).toThrow();
     });
   });
 
-  describe('additionalPotential', () => {
+  describe('canAdditionalPotential', () => {
     it('returns Cannot by default', () => {
-      expect(attr.canAdditionalPotential).toBe(PotentialCan.Cannot);
+      expect(attr.canAdditionalPotential).toBe(GearCapability.Cannot);
     });
 
     it('returns Cannot', () => {
-      attr.data.canAdditionalPotential = PotentialCan.Cannot;
+      attr.data.canAdditionalPotential = GearCapability.Cannot;
 
-      expect(attr.canAdditionalPotential).toBe(PotentialCan.Cannot);
+      expect(attr.canAdditionalPotential).toBe(GearCapability.Cannot);
     });
 
     it('is readonly property', () => {
       expect(
         // @ts-expect-error: Cannot assign to 'canAdditionalPotential' because it is a read-only property.
-        () => (attr.canAdditionalPotential = PotentialCan.Cannot),
+        () => (attr.canAdditionalPotential = GearCapability.Cannot),
       ).toThrow();
     });
   });

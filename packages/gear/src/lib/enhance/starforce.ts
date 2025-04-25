@@ -1,4 +1,4 @@
-import { GearStarforceOption, GearType, StarforceCan } from '../data';
+import { GearStarforceOption, GearType, GearCapability } from '../data';
 import { ErrorMessage } from '../errors';
 import { Gear } from '../Gear';
 import { toGearOption } from '../gearOption';
@@ -15,7 +15,7 @@ export const MAX_REQLEVEL_STARSCROLL = 150;
  * @returns 지원할 경우 `true`; 아닐 경우 `false`.
  */
 export function supportsStarforce(gear: Gear): boolean {
-  return gear.attributes.canStarforce === StarforceCan.Can;
+  return gear.attributes.canStarforce === GearCapability.Can;
 }
 
 /**
@@ -193,7 +193,7 @@ export function resetStarforce(gear: Gear) {
  * @returns 장비의 최대 스타포스 강화.
  */
 export function getMaxStar(gear: Gear): number {
-  if (gear.attributes.canStarforce === StarforceCan.Cannot) {
+  if (gear.attributes.canStarforce === GearCapability.Cannot) {
     return 0;
   }
   const baseMaxStar = _getBaseMaxStar(gear);

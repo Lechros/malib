@@ -1,4 +1,4 @@
-import { GearOption, GearType, StarforceCan } from '../data';
+import { GearOption, GearType, GearCapability } from '../data';
 import { defaultGear } from '../testUtils';
 import {
   canResetStarforce,
@@ -14,7 +14,7 @@ import {
 describe('supportsStarforce', () => {
   it('is true for canStarforce === Can', () => {
     const gear = defaultGear({
-      attributes: { canStarforce: StarforceCan.Can },
+      attributes: { canStarforce: GearCapability.Can },
     });
 
     expect(supportsStarforce(gear)).toBe(true);
@@ -22,7 +22,7 @@ describe('supportsStarforce', () => {
 
   it('is false for canStarforce === Fixed', () => {
     const gear = defaultGear({
-      attributes: { canStarforce: StarforceCan.Fixed },
+      attributes: { canStarforce: GearCapability.Fixed },
     });
 
     expect(supportsStarforce(gear)).toBe(false);
@@ -30,7 +30,7 @@ describe('supportsStarforce', () => {
 
   it('is false for canStarforce === Cannot', () => {
     const gear = defaultGear({
-      attributes: { canStarforce: StarforceCan.Cannot },
+      attributes: { canStarforce: GearCapability.Cannot },
     });
 
     expect(supportsStarforce(gear)).toBe(false);
@@ -51,7 +51,7 @@ describe('canStarforce', () => {
   ])('reqLevel = %d, star = %d is %p', (reqLevel, star, expected) => {
     const gear = defaultGear({
       req: { level: reqLevel },
-      attributes: { canStarforce: StarforceCan.Can },
+      attributes: { canStarforce: GearCapability.Can },
       star,
     });
 
@@ -73,7 +73,7 @@ describe('canStarforce', () => {
     (reqLevel, star, expected) => {
       const gear = defaultGear({
         req: { level: reqLevel },
-        attributes: { canStarforce: StarforceCan.Can },
+        attributes: { canStarforce: GearCapability.Can },
         star,
       });
 
@@ -94,7 +94,7 @@ describe('canStarforce', () => {
     (reqLevel, star, expected) => {
       const gear = defaultGear({
         req: { level: reqLevel },
-        attributes: { canStarforce: StarforceCan.Can },
+        attributes: { canStarforce: GearCapability.Can },
         star,
         starScroll: true,
       });
@@ -114,7 +114,7 @@ describe('canStarforce', () => {
   ])('reqLevel = %d, star = %d, superior is %p', (reqLevel, star, expected) => {
     const gear = defaultGear({
       req: { level: reqLevel },
-      attributes: { canStarforce: StarforceCan.Can, superior: true },
+      attributes: { canStarforce: GearCapability.Can, superior: true },
       star,
     });
 
@@ -125,7 +125,7 @@ describe('canStarforce', () => {
 describe('starforce', () => {
   it('increments star by 1', () => {
     const gear = defaultGear({
-      attributes: { canStarforce: StarforceCan.Can },
+      attributes: { canStarforce: GearCapability.Can },
       star: 1,
     });
 
@@ -140,7 +140,7 @@ describe('starforce', () => {
         {
           type: GearType.cap,
           req: { level: 120, job: 1 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: { str: 6, armor: 120 },
         },
         {
@@ -157,7 +157,7 @@ describe('starforce', () => {
         {
           type: GearType.shoes,
           req: { level: 160, job: 8 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: {
             dex: 20,
             luk: 20,
@@ -194,7 +194,7 @@ describe('starforce', () => {
         {
           type: GearType.shoes,
           req: { level: 160, job: 8 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: {
             dex: 20,
             luk: 20,
@@ -240,7 +240,7 @@ describe('starforce', () => {
         {
           type: GearType.cape,
           req: { level: 250, job: 1 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: {
             str: 50,
             dex: 50,
@@ -298,7 +298,7 @@ describe('starforce', () => {
         {
           type: GearType.earrings,
           req: { level: 130 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
 
           baseOption: {
             str: 5,
@@ -327,7 +327,7 @@ describe('starforce', () => {
         {
           type: GearType.belt,
           req: { level: 200 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: {
             str: 50,
             dex: 50,
@@ -389,7 +389,7 @@ describe('starforce', () => {
         {
           type: GearType.ring,
           req: { level: 250 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: {
             str: 10,
             dex: 10,
@@ -454,7 +454,7 @@ describe('starforce', () => {
         {
           type: GearType.machineHeart,
           req: { level: 30 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: {
             str: 3,
             dex: 3,
@@ -475,7 +475,7 @@ describe('starforce', () => {
         {
           type: GearType.machineHeart,
           req: { level: 100 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: {
             maxHp: 100,
           },
@@ -495,7 +495,7 @@ describe('starforce', () => {
         {
           type: GearType.machineHeart,
           req: { level: 120 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
 
           baseOption: {
             str: 3,
@@ -514,7 +514,7 @@ describe('starforce', () => {
         {
           type: GearType.machineHeart,
           req: { level: 200 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: {
             str: 25,
             dex: 25,
@@ -568,7 +568,7 @@ describe('starforce', () => {
       const gear = defaultGear({
         type: GearType.glove,
         req: { level: 130 },
-        attributes: { canStarforce: StarforceCan.Can },
+        attributes: { canStarforce: GearCapability.Can },
       });
 
       for (let i = 0; i < star; i++) {
@@ -585,7 +585,7 @@ describe('starforce', () => {
         {
           type: GearType.staff,
           req: { level: 130, job: 2 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: {
             attackPower: 90,
             magicPower: 142,
@@ -611,7 +611,7 @@ describe('starforce', () => {
         {
           type: GearType.breathShooter,
           req: { level: 200, job: 4 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: {
             str: 150,
             dex: 150,
@@ -640,7 +640,7 @@ describe('starforce', () => {
         {
           type: GearType.longSword,
           req: { level: 200, job: 1 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: {
             str: 100,
             dex: 100,
@@ -685,7 +685,7 @@ describe('starforce', () => {
         {
           type: GearType.ring,
           req: { level: 135 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: {
             str: 4,
             dex: 4,
@@ -767,7 +767,7 @@ describe('starforce', () => {
         {
           type: GearType.cape,
           req: { level: 110 },
-          attributes: { canStarforce: StarforceCan.Can, superior: true },
+          attributes: { canStarforce: GearCapability.Can, superior: true },
           baseOption: {
             str: 30,
             dex: 30,
@@ -827,7 +827,7 @@ describe('starforce', () => {
         {
           type: GearType.cape,
           req: { level: 150, job: 4 },
-          attributes: { canStarforce: StarforceCan.Can, superior: true },
+          attributes: { canStarforce: GearCapability.Can, superior: true },
           baseOption: {
             str: 50,
             dex: 50,
@@ -910,7 +910,7 @@ describe('starforce', () => {
       const gear = defaultGear({
         type,
         req: { level: 200 },
-        attributes: { canStarforce: StarforceCan.Can },
+        attributes: { canStarforce: GearCapability.Can },
       });
 
       for (let i = 0; i < 30; i++) {
@@ -934,7 +934,7 @@ describe('canStarScroll', () => {
   ])('reqLevel = %d, star = %d is %p', (reqLevel, star, expected) => {
     const gear = defaultGear({
       req: { level: reqLevel },
-      attributes: { canStarforce: StarforceCan.Can },
+      attributes: { canStarforce: GearCapability.Can },
       star,
     });
 
@@ -954,7 +954,7 @@ describe('canStarScroll', () => {
     (reqLevel, star, expected) => {
       const gear = defaultGear({
         req: { level: reqLevel },
-        attributes: { canStarforce: StarforceCan.Can },
+        attributes: { canStarforce: GearCapability.Can },
         star,
       });
 
@@ -975,7 +975,7 @@ describe('canStarScroll', () => {
     (reqLevel, star, expected) => {
       const gear = defaultGear({
         req: { level: reqLevel },
-        attributes: { canStarforce: StarforceCan.Can },
+        attributes: { canStarforce: GearCapability.Can },
         star,
         starScroll: true,
       });
@@ -995,7 +995,7 @@ describe('canStarScroll', () => {
   ])('reqLevel = %d, star = %d, superior is %p', (reqLevel, star, expected) => {
     const gear = defaultGear({
       req: { level: reqLevel },
-      attributes: { canStarforce: StarforceCan.Can, superior: true },
+      attributes: { canStarforce: GearCapability.Can, superior: true },
       star,
     });
 
@@ -1006,7 +1006,7 @@ describe('canStarScroll', () => {
 describe('starScroll', () => {
   it('increments gear star by 1', () => {
     const gear = defaultGear({
-      attributes: { canStarforce: StarforceCan.Can },
+      attributes: { canStarforce: GearCapability.Can },
     });
 
     starScroll(gear);
@@ -1016,7 +1016,7 @@ describe('starScroll', () => {
 
   it('sets starScroll to true', () => {
     const gear = defaultGear({
-      attributes: { canStarforce: StarforceCan.Can },
+      attributes: { canStarforce: GearCapability.Can },
     });
 
     starScroll(gear);
@@ -1030,7 +1030,7 @@ describe('starScroll', () => {
         {
           type: GearType.glove,
           req: { level: 10 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: { armor: 2 },
           upgradeOption: {
             str: 50,
@@ -1075,7 +1075,7 @@ describe('starScroll', () => {
         {
           type: GearType.shoulder,
           req: { level: 135 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: {
             str: 12,
             dex: 12,
@@ -1111,7 +1111,7 @@ describe('starScroll', () => {
         {
           type: GearType.pendant,
           req: { level: 140 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: {
             str: 8,
             dex: 8,
@@ -1155,7 +1155,7 @@ describe('starScroll', () => {
         {
           type: GearType.staff,
           req: { level: 130, job: 2 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: {
             attackPower: 90,
             magicPower: 142,
@@ -1193,7 +1193,7 @@ describe('starScroll', () => {
         {
           type: GearType.staff,
           req: { level: 130, job: 2 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: {
             attackPower: 90,
             magicPower: 142,
@@ -1251,7 +1251,7 @@ describe('starScroll', () => {
         {
           type: GearType.ring,
           req: { level: 135 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: {
             str: 4,
             dex: 4,
@@ -1326,7 +1326,7 @@ describe('starScroll', () => {
         {
           type: GearType.shoes,
           req: { level: 140 },
-          attributes: { canStarforce: StarforceCan.Can },
+          attributes: { canStarforce: GearCapability.Can },
           baseOption: {
             str: 10,
             dex: 10,
@@ -1378,7 +1378,7 @@ describe('starScroll', () => {
 describe('canResetStarforce', () => {
   it('is true for canStarforce === Can', () => {
     const gear = defaultGear({
-      attributes: { canStarforce: StarforceCan.Can },
+      attributes: { canStarforce: GearCapability.Can },
     });
 
     expect(canResetStarforce(gear)).toBe(true);
@@ -1386,7 +1386,7 @@ describe('canResetStarforce', () => {
 
   it('is false for canStarforce === Fixed', () => {
     const gear = defaultGear({
-      attributes: { canStarforce: StarforceCan.Fixed },
+      attributes: { canStarforce: GearCapability.Fixed },
     });
 
     expect(canResetStarforce(gear)).toBe(false);
@@ -1394,7 +1394,7 @@ describe('canResetStarforce', () => {
 
   it('is false for canStarforce === Cannot', () => {
     const gear = defaultGear({
-      attributes: { canStarforce: StarforceCan.Cannot },
+      attributes: { canStarforce: GearCapability.Cannot },
     });
 
     expect(canResetStarforce(gear)).toBe(false);
@@ -1404,7 +1404,7 @@ describe('canResetStarforce', () => {
 describe('resetStarforce', () => {
   it('resets star', () => {
     const gear = defaultGear({
-      attributes: { canStarforce: StarforceCan.Can },
+      attributes: { canStarforce: GearCapability.Can },
       star: 5,
     });
 
@@ -1415,7 +1415,7 @@ describe('resetStarforce', () => {
 
   it('resets starforceOption', () => {
     const gear = defaultGear({
-      attributes: { canStarforce: StarforceCan.Can },
+      attributes: { canStarforce: GearCapability.Can },
       starforceOption: { str: 1 },
     });
 
@@ -1428,7 +1428,7 @@ describe('resetStarforce', () => {
 describe('getMaxStar', () => {
   it('returns 0 for canStarforce === Cannot', () => {
     const gear = defaultGear({
-      attributes: { canStarforce: StarforceCan.Cannot },
+      attributes: { canStarforce: GearCapability.Cannot },
     });
 
     expect(getMaxStar(gear)).toBe(0);
@@ -1436,7 +1436,7 @@ describe('getMaxStar', () => {
 
   it('returns not 0 for canStarforce === Fixed', () => {
     const gear = defaultGear({
-      attributes: { canStarforce: StarforceCan.Fixed },
+      attributes: { canStarforce: GearCapability.Fixed },
     });
 
     expect(getMaxStar(gear)).not.toBe(0);
@@ -1457,7 +1457,7 @@ describe('getMaxStar', () => {
     (reqLevel, expected) => {
       const gear = defaultGear({
         req: { level: reqLevel },
-        attributes: { canStarforce: StarforceCan.Can },
+        attributes: { canStarforce: GearCapability.Can },
       });
 
       expect(getMaxStar(gear)).toBe(expected);
@@ -1479,7 +1479,7 @@ describe('getMaxStar', () => {
     (reqLevel, expected) => {
       const gear = defaultGear({
         req: { level: reqLevel },
-        attributes: { canStarforce: StarforceCan.Can, superior: true },
+        attributes: { canStarforce: GearCapability.Can, superior: true },
       });
 
       expect(getMaxStar(gear)).toBe(expected);
@@ -1489,7 +1489,7 @@ describe('getMaxStar', () => {
   it('returns 10 for reqLevel === 110, starScroll', () => {
     const gear = defaultGear({
       req: { level: 140 },
-      attributes: { canStarforce: StarforceCan.Can },
+      attributes: { canStarforce: GearCapability.Can },
       starScroll: true,
     });
 
@@ -1499,7 +1499,7 @@ describe('getMaxStar', () => {
   it('returns 15 for reqLevel === 140, starScroll', () => {
     const gear = defaultGear({
       req: { level: 140 },
-      attributes: { canStarforce: StarforceCan.Can },
+      attributes: { canStarforce: GearCapability.Can },
       starScroll: true,
     });
 

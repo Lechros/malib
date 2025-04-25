@@ -3,43 +3,47 @@ import {
   isDragonGear,
   isMechanicGear,
   isSubWeapon,
-  PotentialCan,
+  GearCapability,
 } from '@malib/gear';
 import { WzGear } from './wz';
 
-export function getCanPotential(info: WzGear, type: GearType): PotentialCan {
+export function getCanPotential(info: WzGear, type: GearType): GearCapability {
   if (info.noPotential) {
-    return PotentialCan.Cannot;
+    return GearCapability.Cannot;
   } else if (info.fixedPotential) {
-    return PotentialCan.Fixed;
+    return GearCapability.Fixed;
   }
   if ((info.tuc && info.tuc > 0) || info.tucIgnoreForPotential) {
     if (isMechanicGear(type) || isDragonGear(type)) {
-      return PotentialCan.Cannot;
+      return GearCapability.Cannot;
     } else {
-      return PotentialCan.Can;
+      return GearCapability.Can;
     }
   }
-  return typeSupportsPotential(type) ? PotentialCan.Can : PotentialCan.Cannot;
+  return typeSupportsPotential(type)
+    ? GearCapability.Can
+    : GearCapability.Cannot;
 }
 
 export function getCanAdditionalPotential(
   info: WzGear,
   type: GearType,
-): PotentialCan {
+): GearCapability {
   if (info.noPotential) {
-    return PotentialCan.Cannot;
+    return GearCapability.Cannot;
   } else if (info.fixedPotential) {
-    return PotentialCan.Cannot;
+    return GearCapability.Cannot;
   }
   if ((info.tuc && info.tuc > 0) || info.tucIgnoreForPotential) {
     if (isMechanicGear(type) || isDragonGear(type)) {
-      return PotentialCan.Cannot;
+      return GearCapability.Cannot;
     } else {
-      return PotentialCan.Can;
+      return GearCapability.Can;
     }
   }
-  return typeSupportsPotential(type) ? PotentialCan.Can : PotentialCan.Cannot;
+  return typeSupportsPotential(type)
+    ? GearCapability.Can
+    : GearCapability.Cannot;
 }
 
 export function typeSupportsPotential(type: GearType) {

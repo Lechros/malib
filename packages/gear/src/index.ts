@@ -7,10 +7,7 @@ export {
   type GearAttributeData,
   GearTrade,
   GearShare,
-  ScrollCan,
-  StarforceCan,
-  AddOptionCan,
-  PotentialCan,
+  GearCapability,
   GearCuttable,
   type GearIncline,
   /* GearData */

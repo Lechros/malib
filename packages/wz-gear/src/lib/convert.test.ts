@@ -1,10 +1,4 @@
-import {
-  Gear,
-  GearData,
-  PotentialCan,
-  ScrollCan,
-  StarforceCan,
-} from '@malib/gear';
+import { Gear, GearCapability, GearData } from '@malib/gear';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { convert } from './convert';
@@ -61,14 +55,16 @@ function checkPotential(data: GearData, cans: Cans, id: string) {
 
 function checkAdditionalPotential(data: GearData, cans: Cans, id: string) {
   // canPotential이 Cannot일 경우 canAdditionalPotential도 Cannot이어야 함
-  if (data.attributes.canPotential === PotentialCan.Cannot) {
+  if (data.attributes.canPotential === GearCapability.Cannot) {
     expect
       .soft(data.attributes.canAdditionalPotential, id)
-      .toBe(PotentialCan.Cannot);
+      .toBe(GearCapability.Cannot);
   } else {
     // 글로리온 링 류는 Can이 올바른 결과지만, 기존에 Cannot으로 계산되던 것을 처리
     if (isGlorionRing(data.meta.id)) {
-      expect(data.attributes.canAdditionalPotential, id).toBe(PotentialCan.Can);
+      expect(data.attributes.canAdditionalPotential, id).toBe(
+        GearCapability.Can,
+      );
     } else {
       expect
         .soft(data.attributes.canAdditionalPotential, id)
@@ -83,11 +79,11 @@ function checkScroll(data: GearData, cans: Cans, id: string) {
     data.scrollUpgradeableCount === undefined ||
     data.scrollUpgradeableCount === 0
   ) {
-    expect.soft(data.attributes.canScroll, id).toBe(ScrollCan.Cannot);
+    expect.soft(data.attributes.canScroll, id).toBe(GearCapability.Cannot);
   } else if (cans.cannotUpgrade) {
-    expect.soft(data.attributes.canScroll, id).toBe(ScrollCan.Fixed);
+    expect.soft(data.attributes.canScroll, id).toBe(GearCapability.Fixed);
   } else {
-    expect.soft(data.attributes.canScroll, id).toBe(ScrollCan.Can);
+    expect.soft(data.attributes.canScroll, id).toBe(GearCapability.Can);
   }
 }
 
@@ -101,15 +97,15 @@ function checkStarforce(data: GearData, cans: Cans, id: string) {
   if (cans.maxStar > 0) {
     // cannotUpgrade가 설정된 장비는 Fixed로 설정
     if (cans.cannotUpgrade) {
-      expect.soft(gear.attributes.canStarforce, id).toBe(StarforceCan.Fixed);
+      expect.soft(gear.attributes.canStarforce, id).toBe(GearCapability.Fixed);
     } else {
-      expect.soft(gear.attributes.canStarforce, id).toBe(StarforceCan.Can);
+      expect.soft(gear.attributes.canStarforce, id).toBe(GearCapability.Can);
     }
     // 최대 스타포스 강화 확장 대응
     const maxStar = cans.maxStar === 25 ? 30 : cans.maxStar;
     expect.soft(gear.maxStar, id).toBe(maxStar);
   } else {
-    expect.soft(gear.attributes.canStarforce, id).toBe(StarforceCan.Cannot);
+    expect.soft(gear.attributes.canStarforce, id).toBe(GearCapability.Cannot);
     expect.soft(gear.maxStar, id).toBe(0);
   }
 }

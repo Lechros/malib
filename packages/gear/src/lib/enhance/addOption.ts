@@ -1,5 +1,5 @@
 import {
-  AddOptionCan,
+  GearCapability,
   AddOptionGrade,
   AddOptionType,
   GearAddOption,
@@ -18,7 +18,7 @@ const MAX_ADDOPTION = 4;
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function supportsAddOption(gear: Gear): boolean {
-  return gear.attributes.canAddOption === AddOptionCan.Can;
+  return gear.attributes.canAddOption === GearCapability.Can;
 }
 
 /**

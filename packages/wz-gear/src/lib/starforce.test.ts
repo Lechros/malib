@@ -1,4 +1,4 @@
-import { GearType, StarforceCan } from '@malib/gear';
+import { GearType, GearCapability } from '@malib/gear';
 import { getCanStarforce } from './starforce';
 
 describe('getCanStarforce', () => {
@@ -9,7 +9,7 @@ describe('getCanStarforce', () => {
       icon: '',
     };
 
-    expect(getCanStarforce(info, GearType.cap)).toBe(StarforceCan.Cannot);
+    expect(getCanStarforce(info, GearType.cap)).toBe(GearCapability.Cannot);
   });
 
   it('returns Cannot for tuc === 0', () => {
@@ -20,7 +20,7 @@ describe('getCanStarforce', () => {
       tuc: 0,
     };
 
-    expect(getCanStarforce(info, GearType.cap)).toBe(StarforceCan.Cannot);
+    expect(getCanStarforce(info, GearType.cap)).toBe(GearCapability.Cannot);
   });
 
   it('returns Cannot for onlyUpgrade === 1', () => {
@@ -31,7 +31,7 @@ describe('getCanStarforce', () => {
       onlyUpgrade: 1,
     };
 
-    expect(getCanStarforce(info, GearType.cap)).toBe(StarforceCan.Cannot);
+    expect(getCanStarforce(info, GearType.cap)).toBe(GearCapability.Cannot);
   });
 
   it('returns Fixed for exceptUpgrade === 1', () => {
@@ -43,7 +43,7 @@ describe('getCanStarforce', () => {
       tuc: 1,
     };
 
-    expect(getCanStarforce(info, GearType.cap)).toBe(StarforceCan.Fixed);
+    expect(getCanStarforce(info, GearType.cap)).toBe(GearCapability.Fixed);
   });
 
   it('returns Cannot for mechanic gear', () => {
@@ -54,7 +54,7 @@ describe('getCanStarforce', () => {
     };
 
     expect(getCanStarforce(info, GearType.machineArms)).toBe(
-      StarforceCan.Cannot,
+      GearCapability.Cannot,
     );
   });
 
@@ -66,7 +66,7 @@ describe('getCanStarforce', () => {
     };
 
     expect(getCanStarforce(info, GearType.dragonPendant)).toBe(
-      StarforceCan.Cannot,
+      GearCapability.Cannot,
     );
   });
 
@@ -78,6 +78,6 @@ describe('getCanStarforce', () => {
       tuc: 1,
     };
 
-    expect(getCanStarforce(info, GearType.katara)).toBe(StarforceCan.Can);
+    expect(getCanStarforce(info, GearType.katara)).toBe(GearCapability.Can);
   });
 });

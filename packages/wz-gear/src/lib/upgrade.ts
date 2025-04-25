@@ -1,12 +1,12 @@
-import { ScrollCan } from '@malib/gear';
+import { GearCapability } from '@malib/gear';
 import { WzGear } from './wz';
 
-export function getCanScroll(info: WzGear): ScrollCan {
+export function getCanScroll(info: WzGear): GearCapability {
   if (!info.tuc) {
-    return ScrollCan.Cannot;
+    return GearCapability.Cannot;
   }
   if (info.exceptUpgrade) {
-    return ScrollCan.Fixed;
+    return GearCapability.Fixed;
   }
-  return ScrollCan.Can;
+  return GearCapability.Can;
 }

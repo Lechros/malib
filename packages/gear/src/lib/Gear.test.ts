@@ -1,15 +1,13 @@
 import {
-  AddOptionCan,
+  AddOptionGrade,
+  AddOptionType,
   GearAddOption,
+  GearCapability,
   GearData,
   GearTrade,
   GearType,
-  PotentialCan,
   PotentialGrade,
-  ScrollCan,
-  StarforceCan,
 } from './data';
-import { AddOptionGrade, AddOptionType } from './data';
 import { SpellTraceType } from './enhance/spellTrace';
 import { Gear } from './Gear';
 
@@ -1242,11 +1240,11 @@ describe('Gear', () => {
         only: true,
         trade: GearTrade.TradeBlock,
         onlyEquip: true,
-        canAddOption: AddOptionCan.Can,
-        canPotential: PotentialCan.Can,
-        canAdditionalPotential: PotentialCan.Can,
-        canScroll: ScrollCan.Can,
-        canStarforce: StarforceCan.Can,
+        canAddOption: GearCapability.Can,
+        canPotential: GearCapability.Can,
+        canAdditionalPotential: GearCapability.Can,
+        canScroll: GearCapability.Can,
+        canStarforce: GearCapability.Can,
       },
 
       baseOption: {

@@ -2,22 +2,22 @@ import {
   GearType,
   isDragonGear,
   isMechanicGear,
-  StarforceCan,
+  GearCapability,
 } from '@malib/gear';
 import { WzGear } from './wz';
 
-export function getCanStarforce(info: WzGear, type: GearType): StarforceCan {
+export function getCanStarforce(info: WzGear, type: GearType): GearCapability {
   if (!info.tuc) {
-    return StarforceCan.Cannot;
+    return GearCapability.Cannot;
   }
   if (info.onlyUpgrade) {
-    return StarforceCan.Cannot;
+    return GearCapability.Cannot;
   }
   if (isMechanicGear(type) || isDragonGear(type)) {
-    return StarforceCan.Cannot;
+    return GearCapability.Cannot;
   }
   if (info.exceptUpgrade) {
-    return StarforceCan.Fixed;
+    return GearCapability.Fixed;
   }
-  return StarforceCan.Can;
+  return GearCapability.Can;
 }

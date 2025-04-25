@@ -1,5 +1,5 @@
 import {
-  PotentialCan,
+  GearCapability,
   PotentialData,
   PotentialGrade,
   PotentialOption,
@@ -21,7 +21,7 @@ export interface ReadonlyPotential extends Readonly<PotentialData> {
  * @returns 지원할 경우 `true`; 아닐 경우 `false`.
  */
 export function supportsPotential(gear: Gear): boolean {
-  return gear.attributes.canPotential === PotentialCan.Can;
+  return gear.attributes.canPotential === GearCapability.Can;
 }
 
 /**
@@ -30,7 +30,7 @@ export function supportsPotential(gear: Gear): boolean {
  * @returns 설정할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canSetPotential(gear: Gear): boolean {
-  return gear.attributes.canPotential === PotentialCan.Can;
+  return gear.attributes.canPotential === GearCapability.Can;
 }
 
 /**
@@ -89,7 +89,7 @@ export function resetPotential(gear: Gear) {
  * @returns 지원할 경우 `true`; 아닐 경우 `false`.
  */
 export function supportsAdditionalPotential(gear: Gear): boolean {
-  return gear.attributes.canAdditionalPotential === PotentialCan.Can;
+  return gear.attributes.canAdditionalPotential === GearCapability.Can;
 }
 
 /**
@@ -98,7 +98,7 @@ export function supportsAdditionalPotential(gear: Gear): boolean {
  * @returns 설정할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canSetAdditionalPotential(gear: Gear): boolean {
-  return gear.attributes.canAdditionalPotential === PotentialCan.Can;
+  return gear.attributes.canAdditionalPotential === GearCapability.Can;
 }
 
 /**

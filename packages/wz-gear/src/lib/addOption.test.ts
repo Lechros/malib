@@ -1,4 +1,4 @@
-import { GearType, AddOptionCan } from '@malib/gear';
+import { GearType, GearCapability } from '@malib/gear';
 import { getCanAddOption, typeSupportsAddOption } from './addOption';
 
 test('exUpgradeBlock returns Cannot', () => {
@@ -11,7 +11,7 @@ test('exUpgradeBlock returns Cannot', () => {
 
   const actual = getCanAddOption(info, GearType.cap);
 
-  expect(actual).toBe(AddOptionCan.Cannot);
+  expect(actual).toBe(GearCapability.Cannot);
 });
 
 test('exUpgradeChangeBlock returns Fixed', () => {
@@ -24,7 +24,7 @@ test('exUpgradeChangeBlock returns Fixed', () => {
 
   const actual = getCanAddOption(info, GearType.cap);
 
-  expect(actual).toBe(AddOptionCan.Fixed);
+  expect(actual).toBe(GearCapability.Fixed);
 });
 
 test('exUpgradeBlock, exUpgradeChangeBlock returns Cannot', () => {
@@ -38,7 +38,7 @@ test('exUpgradeBlock, exUpgradeChangeBlock returns Cannot', () => {
 
   const actual = getCanAddOption(info, GearType.cap);
 
-  expect(actual).toBe(AddOptionCan.Cannot);
+  expect(actual).toBe(GearCapability.Cannot);
 });
 
 test('no add option related props calculates by gear type', () => {
@@ -50,7 +50,7 @@ test('no add option related props calculates by gear type', () => {
 
   const actual = getCanAddOption(info, GearType.cap);
 
-  expect(actual).toBe(AddOptionCan.Can);
+  expect(actual).toBe(GearCapability.Can);
 });
 
 test.each(

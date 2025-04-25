@@ -1,4 +1,4 @@
-import { ScrollCan } from '@malib/gear';
+import { GearCapability } from '@malib/gear';
 import { getCanScroll } from './upgrade';
 
 describe('getCanScroll', () => {
@@ -9,7 +9,7 @@ describe('getCanScroll', () => {
       icon: '',
     };
 
-    expect(getCanScroll(info)).toBe(ScrollCan.Cannot);
+    expect(getCanScroll(info)).toBe(GearCapability.Cannot);
   });
 
   it('returns Cannot for tuc === 0', () => {
@@ -20,7 +20,7 @@ describe('getCanScroll', () => {
       tuc: 0,
     };
 
-    expect(getCanScroll(info)).toBe(ScrollCan.Cannot);
+    expect(getCanScroll(info)).toBe(GearCapability.Cannot);
   });
 
   it('returns Fixed for exceptUpgrade === 1', () => {
@@ -32,7 +32,7 @@ describe('getCanScroll', () => {
       tuc: 1,
     };
 
-    expect(getCanScroll(info)).toBe(ScrollCan.Fixed);
+    expect(getCanScroll(info)).toBe(GearCapability.Fixed);
   });
 
   it('returns Can for tuc > 0', () => {
@@ -43,6 +43,6 @@ describe('getCanScroll', () => {
       tuc: 1,
     };
 
-    expect(getCanScroll(info)).toBe(ScrollCan.Can);
+    expect(getCanScroll(info)).toBe(GearCapability.Can);
   });
 });

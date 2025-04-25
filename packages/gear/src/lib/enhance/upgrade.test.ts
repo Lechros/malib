@@ -1,4 +1,4 @@
-import { GearType, ScrollCan } from '../data';
+import { GearType, GearCapability } from '../data';
 import { Gear } from '../Gear';
 import { defaultGear } from '../testUtils';
 import {
@@ -21,19 +21,19 @@ afterEach(() => {
 
 describe('supportsUpgrade', () => {
   it('returns true for canScroll === Can', () => {
-    gear.data.attributes.canScroll = ScrollCan.Can;
+    gear.data.attributes.canScroll = GearCapability.Can;
 
     expect(supportsUpgrade(gear)).toBe(true);
   });
 
   it('returns false for canScroll === Fixed', () => {
-    gear.data.attributes.canScroll = ScrollCan.Fixed;
+    gear.data.attributes.canScroll = GearCapability.Fixed;
 
     expect(supportsUpgrade(gear)).toBe(false);
   });
 
   it('returns false for canScroll === Cannot', () => {
-    gear.data.attributes.canScroll = ScrollCan.Cannot;
+    gear.data.attributes.canScroll = GearCapability.Cannot;
 
     expect(supportsUpgrade(gear)).toBe(false);
   });
@@ -273,7 +273,7 @@ beforeEach(() => {
       level: 200,
     },
     attributes: {
-      canScroll: ScrollCan.Can,
+      canScroll: GearCapability.Can,
     },
     scrollUpgradeableCount: 8,
   });

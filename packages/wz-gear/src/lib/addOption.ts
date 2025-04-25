@@ -1,5 +1,5 @@
 import {
-  AddOptionCan,
+  GearCapability,
   GearType,
   isAccessory,
   isArmor,
@@ -8,14 +8,16 @@ import {
 } from '@malib/gear';
 import { WzGear } from './wz';
 
-export function getCanAddOption(info: WzGear, type: GearType): AddOptionCan {
+export function getCanAddOption(info: WzGear, type: GearType): GearCapability {
   if (info.exUpgradeBlock) {
-    return AddOptionCan.Cannot;
+    return GearCapability.Cannot;
   }
   if (info.exUpgradeChangeBlock) {
-    return AddOptionCan.Fixed;
+    return GearCapability.Fixed;
   }
-  return typeSupportsAddOption(type) ? AddOptionCan.Can : AddOptionCan.Cannot;
+  return typeSupportsAddOption(type)
+    ? GearCapability.Can
+    : GearCapability.Cannot;
 }
 
 export function typeSupportsAddOption(type: GearType): boolean {

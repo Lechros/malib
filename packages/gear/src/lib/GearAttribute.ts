@@ -1,13 +1,10 @@
 import {
-  AddOptionCan,
   GearAttributeData,
+  GearCapability,
   GearCuttable,
   GearIncline,
   GearShare,
   GearTrade,
-  PotentialCan,
-  ScrollCan,
-  StarforceCan,
 } from './data';
 
 type OptionalProperty =
@@ -64,27 +61,27 @@ export class GearAttribute implements _GearAttribute {
   }
 
   /** 주문서 강화 가능 여부 */
-  get canScroll(): ScrollCan {
+  get canScroll(): GearCapability {
     return this.data.canScroll ?? 0;
   }
 
   /** 스타포스 강화 가능 여부 */
-  get canStarforce(): StarforceCan {
+  get canStarforce(): GearCapability {
     return this.data.canStarforce ?? 0;
   }
 
   /** 추가옵션 설정 가능 여부 */
-  get canAddOption(): AddOptionCan {
+  get canAddOption(): GearCapability {
     return this.data.canAddOption ?? 0;
   }
 
   /** 잠재능력 설정 가능 여부 */
-  get canPotential(): PotentialCan {
+  get canPotential(): GearCapability {
     return this.data.canPotential ?? 0;
   }
 
   /** 에디셔널 잠재능력 설정 가능 여부 */
-  get canAdditionalPotential(): PotentialCan {
+  get canAdditionalPotential(): GearCapability {
     return this.data.canAdditionalPotential ?? 0;
   }
 

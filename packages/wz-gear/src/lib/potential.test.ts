@@ -1,4 +1,4 @@
-import { GearType, PotentialCan } from '@malib/gear';
+import { GearType, GearCapability } from '@malib/gear';
 import {
   getCanAdditionalPotential,
   getCanPotential,
@@ -14,7 +14,7 @@ describe('getCanPotential', () => {
       tuc: 1,
     };
 
-    expect(getCanPotential(info, GearType.cap)).toBe(PotentialCan.Can);
+    expect(getCanPotential(info, GearType.cap)).toBe(GearCapability.Can);
   });
 
   it('returns true for tuc === 0 and tucIgnoreForPotential === 1', () => {
@@ -26,7 +26,7 @@ describe('getCanPotential', () => {
       tucIgnoreForPotential: 1,
     };
 
-    expect(getCanPotential(info, GearType.cap)).toBe(PotentialCan.Can);
+    expect(getCanPotential(info, GearType.cap)).toBe(GearCapability.Can);
   });
 
   it.each([
@@ -48,7 +48,7 @@ describe('getCanPotential', () => {
       type,
     };
 
-    expect(getCanPotential(info, type)).toBe(PotentialCan.Cannot);
+    expect(getCanPotential(info, type)).toBe(GearCapability.Cannot);
   });
 
   it('returns false for noPotential === 1', () => {
@@ -59,7 +59,7 @@ describe('getCanPotential', () => {
       noPotential: 1,
     };
 
-    expect(getCanPotential(info, GearType.cap)).toBe(PotentialCan.Cannot);
+    expect(getCanPotential(info, GearType.cap)).toBe(GearCapability.Cannot);
   });
 
   it('returns Fixed for fixedPotential === 1', () => {
@@ -70,7 +70,7 @@ describe('getCanPotential', () => {
       fixedPotential: 1,
     };
 
-    expect(getCanPotential(info, GearType.cap)).toBe(PotentialCan.Fixed);
+    expect(getCanPotential(info, GearType.cap)).toBe(GearCapability.Fixed);
   });
 
   it('returns by type for other cases', () => {
@@ -80,7 +80,7 @@ describe('getCanPotential', () => {
       icon: '',
     };
 
-    expect(getCanPotential(info, GearType.katara)).toBe(PotentialCan.Can);
+    expect(getCanPotential(info, GearType.katara)).toBe(GearCapability.Can);
   });
 });
 
@@ -94,7 +94,7 @@ describe('getCanAdditionalPotential', () => {
     };
 
     expect(getCanAdditionalPotential(info, GearType.cap)).toBe(
-      PotentialCan.Can,
+      GearCapability.Can,
     );
   });
 
@@ -108,7 +108,7 @@ describe('getCanAdditionalPotential', () => {
     };
 
     expect(getCanAdditionalPotential(info, GearType.cap)).toBe(
-      PotentialCan.Can,
+      GearCapability.Can,
     );
   });
 
@@ -131,7 +131,7 @@ describe('getCanAdditionalPotential', () => {
       type,
     };
 
-    expect(getCanAdditionalPotential(info, type)).toBe(PotentialCan.Cannot);
+    expect(getCanAdditionalPotential(info, type)).toBe(GearCapability.Cannot);
   });
 
   it('returns false for noPotential === 1', () => {
@@ -143,7 +143,7 @@ describe('getCanAdditionalPotential', () => {
     };
 
     expect(getCanAdditionalPotential(info, GearType.cap)).toBe(
-      PotentialCan.Cannot,
+      GearCapability.Cannot,
     );
   });
 
@@ -156,7 +156,7 @@ describe('getCanAdditionalPotential', () => {
     };
 
     expect(getCanAdditionalPotential(info, GearType.cap)).toBe(
-      PotentialCan.Cannot,
+      GearCapability.Cannot,
     );
   });
 
@@ -168,7 +168,7 @@ describe('getCanAdditionalPotential', () => {
     };
 
     expect(getCanAdditionalPotential(info, GearType.katara)).toBe(
-      PotentialCan.Can,
+      GearCapability.Can,
     );
   });
 });
