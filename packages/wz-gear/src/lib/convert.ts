@@ -13,6 +13,11 @@ import { getCanStarforce } from './starforce';
 import { WzGear } from './wz';
 import { getCanScroll } from './upgrade';
 
+/**
+ * WzGear 형식의 아이템 정보를 GearData 객체로 변환합니다.
+ * @param info WzGear 형식의 아이템 정보.
+ * @returns GearData 객체.
+ */
 export function convert(info: WzGear): GearData {
   const data: GearData = {
     meta: {
