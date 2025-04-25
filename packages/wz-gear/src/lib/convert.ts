@@ -31,59 +31,8 @@ export function convert(info: WzGear): GearData {
   }
 
   // BaseOption
-  const baseOption: Partial<GearBaseOption> = {};
-  if (info.incSTR) {
-    baseOption.str = info.incSTR;
-  }
-  if (info.incDEX) {
-    baseOption.dex = info.incDEX;
-  }
-  if (info.incINT) {
-    baseOption.int = info.incINT;
-  }
-  if (info.incLUK) {
-    baseOption.luk = info.incLUK;
-  }
-  if (info.incMHP) {
-    baseOption.maxHp = info.incMHP;
-  }
-  if (info.incMHPr) {
-    baseOption.maxHpRate = info.incMHPr;
-  }
-  if (info.incMMP) {
-    baseOption.maxMp = info.incMMP;
-  }
-  if (info.incMMPr) {
-    baseOption.maxMpRate = info.incMMPr;
-  }
-  if (info.incPAD) {
-    baseOption.attackPower = info.incPAD;
-  }
-  if (info.incMAD) {
-    baseOption.magicPower = info.incMAD;
-  }
-  if (info.incPDD) {
-    baseOption.armor = info.incPDD;
-  }
-  if (info.incSpeed) {
-    baseOption.speed = info.incSpeed;
-  }
-  if (info.incJump) {
-    baseOption.jump = info.incJump;
-  }
-  if (info.bdR) {
-    baseOption.bossDamage = info.bdR;
-  }
-  if (info.imdR) {
-    baseOption.ignoreMonsterArmor = info.imdR;
-  }
-  if (info.damR) {
-    baseOption.damage = info.damR;
-  }
-  if (info.reduceReq) {
-    baseOption.reqLevelDecrease = info.reduceReq;
-  }
-  if (Object.keys(baseOption).length >= 0) {
+  const baseOption = getBaseOption(info);
+  if (baseOption) {
     data.baseOption = baseOption;
   }
 
@@ -157,46 +106,22 @@ export function convert(info: WzGear): GearData {
     data.attributes.specialGrade = true;
   }
   if (info.fixedGrade) {
-    switch (info.fixedGrade) {
-      case 2:
-        data.potentialGrade = PotentialGrade.Rare;
-        break;
-      case 3:
-        data.potentialGrade = PotentialGrade.Epic;
-        break;
-      case 5:
-        data.potentialGrade = PotentialGrade.Unique;
-        break;
-      case 7:
-        data.potentialGrade = PotentialGrade.Legendary;
-        break;
-      default:
-        data.potentialGrade = info.fixedGrade - 1;
-        break;
-    }
+    data.potentialGrade = getFixedGrade(info.fixedGrade);
+  }
+  if (info.potentials) {
+    data.potentials = info.potentials.map((pot) => ({
+      grade:
+        pot.grade === 6 && data.potentialGrade
+          ? data.potentialGrade
+          : pot.grade,
+      summary: pot.summary,
+      option: pot.option,
+    }));
   }
 
   // Incline
-  const incline: Partial<GearIncline> = {};
-  if (info.charismaEXP) {
-    incline.charisma = info.charismaEXP;
-  }
-  if (info.senseEXP) {
-    incline.sense = info.senseEXP;
-  }
-  if (info.insightEXP) {
-    incline.insight = info.insightEXP;
-  }
-  if (info.willEXP) {
-    incline.will = info.willEXP;
-  }
-  if (info.craftEXP) {
-    incline.craft = info.craftEXP;
-  }
-  if (info.charmEXP) {
-    incline.charm = info.charmEXP;
-  }
-  if (Object.keys(incline).length > 0) {
+  const incline = getIncline(info);
+  if (incline) {
     data.attributes.incline = incline;
   }
 
@@ -227,16 +152,99 @@ export function convert(info: WzGear): GearData {
     data.attributes.canAdditionalPotential = canAdditionalPotential;
   }
 
-  if (info.potentials) {
-    data.potentials = info.potentials.map((pot) => ({
-      grade:
-        pot.grade === 6 && data.potentialGrade
-          ? data.potentialGrade
-          : pot.grade,
-      summary: pot.summary,
-      option: pot.option,
-    }));
-  }
-
   return data;
+}
+
+function getBaseOption(info: WzGear): Partial<GearBaseOption> | undefined {
+  const baseOption: Partial<GearBaseOption> = {};
+  if (info.incSTR) {
+    baseOption.str = info.incSTR;
+  }
+  if (info.incDEX) {
+    baseOption.dex = info.incDEX;
+  }
+  if (info.incINT) {
+    baseOption.int = info.incINT;
+  }
+  if (info.incLUK) {
+    baseOption.luk = info.incLUK;
+  }
+  if (info.incMHP) {
+    baseOption.maxHp = info.incMHP;
+  }
+  if (info.incMHPr) {
+    baseOption.maxHpRate = info.incMHPr;
+  }
+  if (info.incMMP) {
+    baseOption.maxMp = info.incMMP;
+  }
+  if (info.incMMPr) {
+    baseOption.maxMpRate = info.incMMPr;
+  }
+  if (info.incPAD) {
+    baseOption.attackPower = info.incPAD;
+  }
+  if (info.incMAD) {
+    baseOption.magicPower = info.incMAD;
+  }
+  if (info.incPDD) {
+    baseOption.armor = info.incPDD;
+  }
+  if (info.incSpeed) {
+    baseOption.speed = info.incSpeed;
+  }
+  if (info.incJump) {
+    baseOption.jump = info.incJump;
+  }
+  if (info.bdR) {
+    baseOption.bossDamage = info.bdR;
+  }
+  if (info.imdR) {
+    baseOption.ignoreMonsterArmor = info.imdR;
+  }
+  if (info.damR) {
+    baseOption.damage = info.damR;
+  }
+  if (info.reduceReq) {
+    baseOption.reqLevelDecrease = info.reduceReq;
+  }
+  return Object.keys(baseOption).length >= 0 ? baseOption : undefined;
+}
+
+function getIncline(info: WzGear): Partial<GearIncline> | undefined {
+  const incline: Partial<GearIncline> = {};
+  if (info.charismaEXP) {
+    incline.charisma = info.charismaEXP;
+  }
+  if (info.senseEXP) {
+    incline.sense = info.senseEXP;
+  }
+  if (info.insightEXP) {
+    incline.insight = info.insightEXP;
+  }
+  if (info.willEXP) {
+    incline.will = info.willEXP;
+  }
+  if (info.craftEXP) {
+    incline.craft = info.craftEXP;
+  }
+  if (info.charmEXP) {
+    incline.charm = info.charmEXP;
+  }
+  return Object.keys(incline).length > 0 ? incline : undefined;
+}
+
+function getFixedGrade(fixedGrade: number): PotentialGrade {
+  switch (fixedGrade) {
+    case 2:
+      return PotentialGrade.Rare;
+    case 3:
+      return PotentialGrade.Epic;
+    case 5:
+      return PotentialGrade.Unique;
+    case 7:
+      return PotentialGrade.Legendary;
+    default:
+      return fixedGrade - 1;
+  }
 }
