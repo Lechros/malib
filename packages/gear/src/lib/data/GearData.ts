@@ -48,8 +48,6 @@ export interface GearData {
 
   /** 강화 단계 */
   star?: number;
-  /** 최대 강화 단계 */
-  maxStar?: number;
   /** 놀라운 장비 강화 주문서 사용 여부 */
   starScroll?: boolean;
 

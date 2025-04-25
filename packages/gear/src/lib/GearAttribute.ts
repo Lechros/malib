@@ -6,6 +6,8 @@ import {
   GearShare,
   GearTrade,
   PotentialCan,
+  ScrollCan,
+  StarforceCan,
 } from './data';
 
 type OptionalProperty =
@@ -61,9 +63,14 @@ export class GearAttribute implements _GearAttribute {
     return this.data.attackSpeed;
   }
 
-  /** 강화불가 */
-  get cannotUpgrade(): boolean {
-    return this.data.cannotUpgrade ?? false;
+  /** 주문서 강화 가능 여부 */
+  get canScroll(): ScrollCan {
+    return this.data.canScroll ?? 0;
+  }
+
+  /** 스타포스 강화 가능 여부 */
+  get canStarforce(): StarforceCan {
+    return this.data.canStarforce ?? 0;
   }
 
   /** 추가옵션 설정 가능 여부 */

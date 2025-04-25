@@ -1,4 +1,4 @@
-import { GearStarforceOption, GearType } from '../data';
+import { GearStarforceOption, GearType, StarforceCan } from '../data';
 import { ErrorMessage } from '../errors';
 import { Gear } from '../Gear';
 import { toGearOption } from '../gearOption';
@@ -15,7 +15,7 @@ export const MAX_REQLEVEL_STARSCROLL = 150;
  * @returns 지원할 경우 `true`; 아닐 경우 `false`.
  */
 export function supportsStarforce(gear: Gear): boolean {
-  return (gear.data.maxStar ?? 0) > 0;
+  return gear.attributes.canStarforce === StarforceCan.Can;
 }
 
 /**
@@ -185,6 +185,24 @@ export function resetStarforce(gear: Gear) {
   gear.data.starScroll = undefined;
 }
 
+/**
+ * 장비의 최대 스타포스 강화를 계산합니다.
+ *
+ * 놀라운 장비 강화 주문서가 사용되었을 경우 최대 `15`입니다.
+ * @param gear 계산할 장비.
+ * @returns 장비의 최대 스타포스 강화.
+ */
+export function getMaxStar(gear: Gear): number {
+  if (gear.attributes.canStarforce === StarforceCan.Cannot) {
+    return 0;
+  }
+  const baseMaxStar = _getBaseMaxStar(gear);
+  if (gear.starScroll) {
+    return Math.min(MAX_STARSCROLL, baseMaxStar);
+  }
+  return baseMaxStar;
+}
+
 function _superiorStarforce(gear: Gear) {
   const stat = _getValue(superiorStat, gear);
   const power = _getValue(superiorPower, gear);
@@ -351,6 +369,27 @@ function _getStarScrollBaseValue(
     gear.starforceOption[type]
   );
 }
+
+function _getBaseMaxStar(gear: Gear): number {
+  const reqLevel = gear.req.level;
+  let data: readonly number[] | undefined = undefined;
+  for (const item of maxStarData) {
+    if (reqLevel >= item[0]) data = item;
+    else break;
+  }
+
+  if (!data) return 0;
+  return gear.attributes.superior ? data[2] : data[1];
+}
+
+const maxStarData = [
+  [0, 5, 3],
+  [95, 8, 5],
+  [110, 10, 8],
+  [120, 15, 10],
+  [130, 20, 12],
+  [140, 30, 15],
+] as const;
 
 const statTypes = ['str', 'dex', 'int', 'luk'] as const;
 

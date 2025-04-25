@@ -1,4 +1,11 @@
-import { GearCuttable, GearShare, GearTrade, PotentialCan } from './data';
+import {
+  GearCuttable,
+  GearShare,
+  GearTrade,
+  PotentialCan,
+  ScrollCan,
+  StarforceCan,
+} from './data';
 import { GearAttribute } from './GearAttribute';
 
 describe('GearAttribute', () => {
@@ -107,20 +114,37 @@ describe('GearAttribute', () => {
     });
   });
 
-  describe('cannotUpgrade', () => {
-    it('returns false by default', () => {
-      expect(attr.cannotUpgrade).toBe(false);
+  describe('canScroll', () => {
+    it('returns Cannot by default', () => {
+      expect(attr.canScroll).toBe(ScrollCan.Cannot);
     });
 
-    it('returns true', () => {
-      attr.data.cannotUpgrade = true;
+    it('returns Can', () => {
+      attr.data.canScroll = ScrollCan.Can;
 
-      expect(attr.cannotUpgrade).toBe(true);
+      expect(attr.canScroll).toBe(ScrollCan.Can);
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'cannotUpgrade' because it is a read-only property.
-      expect(() => (attr.cannotUpgrade = true)).toThrow();
+      // @ts-expect-error: Cannot assign to 'canScroll' because it is a read-only property.
+      expect(() => (attr.canScroll = ScrollCan.Can)).toThrow();
+    });
+  });
+
+  describe('canStarforce', () => {
+    it('returns Cannot by default', () => {
+      expect(attr.canStarforce).toBe(StarforceCan.Cannot);
+    });
+
+    it('returns Can', () => {
+      attr.data.canStarforce = StarforceCan.Can;
+
+      expect(attr.canStarforce).toBe(StarforceCan.Can);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'canStarforce' because it is a read-only property.
+      expect(() => (attr.canStarforce = StarforceCan.Can)).toThrow();
     });
   });
 

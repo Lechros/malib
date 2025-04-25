@@ -7,6 +7,8 @@ export {
   type GearAttributeData,
   GearTrade,
   GearShare,
+  ScrollCan,
+  StarforceCan,
   AddOptionCan,
   PotentialCan,
   GearCuttable,
@@ -80,6 +82,7 @@ export {
   starScroll,
   canResetStarforce,
   resetStarforce,
+  getMaxStar,
 } from './lib/enhance/starforce';
 export {
   type Scroll,

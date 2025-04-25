@@ -6,6 +6,7 @@ import {
   GearType,
   PotentialCan,
   PotentialGrade,
+  StarforceCan,
 } from './data';
 import { AddOptionGrade, AddOptionType } from './data';
 import { SpellTraceType } from './enhance/spellTrace';
@@ -1243,6 +1244,7 @@ describe('Gear', () => {
         canAddOption: AddOptionCan.Can,
         canPotential: PotentialCan.Can,
         canAdditionalPotential: PotentialCan.Can,
+        canStarforce: StarforceCan.Can,
       },
 
       baseOption: {
@@ -1277,7 +1279,6 @@ describe('Gear', () => {
       scrollUpgradeableCount: 0,
 
       star: 22,
-      maxStar: 30,
       starScroll: false,
 
       soulSlot: {

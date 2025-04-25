@@ -21,7 +21,7 @@ export interface Scroll {
  * @returns 지원할 경우 `true`; 아닐 경우 `false`.
  */
 export function supportsUpgrade(gear: Gear): boolean {
-  return !gear.attributes.cannotUpgrade && gear.scrollTotalUpgradeableCount > 0;
+  return gear.scrollTotalUpgradeableCount > 0;
 }
 
 /**

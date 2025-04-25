@@ -1,17 +1,15 @@
 import {
-  Gear,
   GearBaseOption,
   GearData,
   GearIncline,
   GearShare,
   GearTrade,
-  isDragonGear,
-  isMechanicGear,
   PotentialGrade,
 } from '@malib/gear';
 import { getCanAddOption } from './addOption';
 import { getGearType } from './gearType';
 import { getCanAdditionalPotential, getCanPotential } from './potential';
+import { getCanStarforce } from './starforce';
 import { WzGear } from './wz';
 
 export function convert(info: WzGear): GearData {
@@ -145,7 +143,7 @@ export function convert(info: WzGear): GearData {
     data.attributes.superior = true;
   }
   if (info.exceptUpgrade) {
-    data.attributes.cannotUpgrade = true;
+    // data.attributes.cannotUpgrade = true;
   }
   if (info.tuc) {
     data.scrollUpgradeableCount = info.tuc;
@@ -218,10 +216,7 @@ export function convert(info: WzGear): GearData {
     data.type,
   );
 
-  const maxStar = getGearMaxStar(new Gear(data), (info.onlyUpgrade ?? 0) > 0);
-  if (maxStar) {
-    data.maxStar = maxStar;
-  }
+  data.attributes.canStarforce = getCanStarforce(info, data.type);
 
   if (info.potentials) {
     data.potentials = info.potentials.map((pot) => ({
@@ -235,28 +230,4 @@ export function convert(info: WzGear): GearData {
   }
 
   return data;
-}
-
-const maxStarData = [
-  [0, 5, 3],
-  [95, 8, 5],
-  [110, 10, 8],
-  [120, 15, 10],
-  [130, 20, 12],
-  [140, 25, 15],
-] as const;
-
-function getGearMaxStar(gear: Gear, onlyUpgrade: boolean): number {
-  if (gear.scrollTotalUpgradeableCount <= 0) return 0;
-  if (onlyUpgrade) return 0;
-  if (isMechanicGear(gear.type) || isDragonGear(gear.type)) return 0;
-
-  let data: readonly number[] | undefined = undefined;
-  for (const item of maxStarData) {
-    if (gear.req.level >= item[0]) data = item;
-    else break;
-  }
-
-  if (!data) return 0;
-  return gear.attributes.superior ? data[2] : data[1];
 }

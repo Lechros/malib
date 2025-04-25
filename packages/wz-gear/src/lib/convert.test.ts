@@ -1,8 +1,8 @@
+import { Gear, GearData, PotentialCan, StarforceCan } from '@malib/gear';
 import { readFileSync } from 'fs';
+import { join } from 'path';
 import { convert } from './convert';
 import { WzGear } from './wz';
-import { join } from 'path';
-import { PotentialCan } from '@malib/gear';
 
 type Can = 0 | 1 | 2;
 
@@ -25,27 +25,61 @@ test('Test canAddOption, canPotential, canAdditionalPotential equals expected', 
 
     const data = convert(info);
 
-    expect.soft(data.attributes.canAddOption, id).toBe(cans.canAddOption);
-    expect.soft(data.attributes.canPotential, id).toBe(cans.canPotential);
-    // canPotential이 Cannot일 경우 canAdditionalPotential도 Cannot이어야 함
-    if (data.attributes.canPotential === PotentialCan.Cannot) {
-      expect
-        .soft(data.attributes.canAdditionalPotential, id)
-        .toBe(PotentialCan.Cannot);
-    } else {
-      // 글로리온 링 류는 Can이 올바른 결과지만, 기존에 Cannot으로 계산되던 것을 처리
-      if (isGlorionRing(data.meta.id)) {
-        expect(data.attributes.canAdditionalPotential, id).toBe(
-          PotentialCan.Can,
-        );
-      } else {
-        expect
-          .soft(data.attributes.canAdditionalPotential, id)
-          .toBe(cans.canAdditionalPotential);
-      }
-    }
+    checkAddOption(data, cans, id);
+    checkPotential(data, cans, id);
+    checkAdditionalPotential(data, cans, id);
+    checkStarforce(data, cans, id);
   }
 });
+
+function checkAddOption(data: GearData, cans: Cans, id: string) {
+  expect.soft(data.attributes.canAddOption, id).toBe(cans.canAddOption);
+}
+
+function checkPotential(data: GearData, cans: Cans, id: string) {
+  expect.soft(data.attributes.canPotential, id).toBe(cans.canPotential);
+}
+
+function checkAdditionalPotential(data: GearData, cans: Cans, id: string) {
+  // canPotential이 Cannot일 경우 canAdditionalPotential도 Cannot이어야 함
+  if (data.attributes.canPotential === PotentialCan.Cannot) {
+    expect
+      .soft(data.attributes.canAdditionalPotential, id)
+      .toBe(PotentialCan.Cannot);
+  } else {
+    // 글로리온 링 류는 Can이 올바른 결과지만, 기존에 Cannot으로 계산되던 것을 처리
+    if (isGlorionRing(data.meta.id)) {
+      expect(data.attributes.canAdditionalPotential, id).toBe(PotentialCan.Can);
+    } else {
+      expect
+        .soft(data.attributes.canAdditionalPotential, id)
+        .toBe(cans.canAdditionalPotential);
+    }
+  }
+}
+
+function checkStarforce(data: GearData, cans: Cans, id: string) {
+  // 프리미엄 PC방 칭호 incCHUC 처리
+  const gear = new Gear(data);
+  if (gear.meta.id === 1142145) {
+    return;
+  }
+  // maxStar > 0인 경우에만 스타포스 강화 가능
+  if (cans.maxStar > 0) {
+    // cannotUpgrade가 설정된 장비는 Fixed로 설정
+    if (cans.cannotUpgrade) {
+      expect.soft(gear.attributes.canStarforce, id).toBe(StarforceCan.Fixed);
+    } else {
+      expect.soft(gear.attributes.canStarforce, id).toBe(StarforceCan.Can);
+    }
+    // 최대 스타포스 강화 확장 대응
+    const maxStar = cans.maxStar === 25 ? 30 : cans.maxStar;
+    expect.soft(gear.maxStar, id).toBe(maxStar);
+  } else {
+    expect.soft(gear.attributes.canStarforce, id).toBe(StarforceCan.Cannot);
+    expect.soft(gear.maxStar, id).toBe(0);
+  }
+}
 
 function isGlorionRing(id: number): boolean {
   const glorionRings = [
