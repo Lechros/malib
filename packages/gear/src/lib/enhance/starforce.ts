@@ -15,7 +15,7 @@ export const MAX_REQLEVEL_STARSCROLL = 150;
  * @param gear 확인할 장비.
  * @returns 지원할 경우 `true`; 아닐 경우 `false`.
  */
-export function supportsStarforce(gear: Gear): boolean {
+export function supportsStarforce(gear: ReadonlyGear): boolean {
   return gear.attributes.canStarforce === GearCapability.Can;
 }
 
@@ -27,7 +27,10 @@ export function supportsStarforce(gear: Gear): boolean {
  * @param exceedMaxStar 장비의 최대 강화 단계를 초과하여 강화할 지 여부.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canStarforce(gear: Gear, exceedMaxStar = false): boolean {
+export function canStarforce(
+  gear: ReadonlyGear,
+  exceedMaxStar = false,
+): boolean {
   if (!supportsStarforce(gear)) {
     return false;
   }
@@ -82,7 +85,10 @@ export function starforce(gear: Gear, exceedMaxStar = false) {
  * @param exceedMaxStar 장비의 최대 강화 단계를 초과하여 강화할 지 여부.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canStarScroll(gear: Gear, exceedMaxStar = false): boolean {
+export function canStarScroll(
+  gear: ReadonlyGear,
+  exceedMaxStar = false,
+): boolean {
   if (!supportsStarforce(gear)) {
     return false;
   }
@@ -169,7 +175,7 @@ export function starScroll(
  * @param gear 확인할 장비.
  * @returns 초기화할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canResetStarforce(gear: Gear): boolean {
+export function canResetStarforce(gear: ReadonlyGear): boolean {
   if (!supportsStarforce(gear)) {
     return false;
   }
@@ -313,7 +319,9 @@ function _otherStarforce(gear: Gear) {
   }
 }
 
-function _getJobOptionTypes(gear: Gear): Set<'str' | 'dex' | 'int' | 'luk'> {
+function _getJobOptionTypes(
+  gear: ReadonlyGear,
+): Set<'str' | 'dex' | 'int' | 'luk'> {
   if (gear.req.beginner()) {
     return new Set(statTypes);
   }
@@ -336,7 +344,7 @@ function _getJobOptionTypes(gear: Gear): Set<'str' | 'dex' | 'int' | 'luk'> {
   return new Set(stats) as Set<'str' | 'dex' | 'int' | 'luk'>;
 }
 
-function _getValue(data: number[][], gear: Gear): number {
+function _getValue(data: number[][], gear: ReadonlyGear): number {
   const reqLevel = gear.req.level;
   for (let i = data.length - 1; i >= 0; i--) {
     const item = data[i];
@@ -355,7 +363,7 @@ function _getStarforceOption(gear: Gear): GearStarforceOption {
 }
 
 function _getStarforceBaseValue(
-  gear: Gear,
+  gear: ReadonlyGear,
   type: keyof GearStarforceOption,
 ): number {
   return (
@@ -366,7 +374,7 @@ function _getStarforceBaseValue(
 }
 
 function _getStarScrollBaseValue(
-  gear: Gear,
+  gear: ReadonlyGear,
   type: keyof GearStarforceOption,
 ): number {
   return (
@@ -389,7 +397,7 @@ function _getBaseMaxStar(gear: ReadonlyGear): number {
   return gear.attributes.superior ? data[2] : data[1];
 }
 
-function _getBaseMaxStarWithToadsHammer(gear: Gear): number {
+function _getBaseMaxStarWithToadsHammer(gear: ReadonlyGear): number {
   const reqLevel = gear.req.level;
   let data: readonly number[] | undefined = undefined;
   for (const item of maxStarDataWithToadsHammer) {
