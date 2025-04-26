@@ -44,8 +44,6 @@ export interface GearOption {
   speed: number;
   /** 점프력 */
   jump: number;
-  /** %의 확률로 넉백 */
-  knockback: number;
   /** 보스 공격 시 데미지 증가(%) */
   bossDamage: number;
   /** 일반 몬스터 데미지(%) */

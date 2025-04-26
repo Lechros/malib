@@ -60,7 +60,6 @@ const defaultGearOption = {
   armorRate: 0,
   speed: 0,
   jump: 0,
-  knockback: 0,
   bossDamage: 0,
   normalDamage: 0,
   ignoreMonsterArmor: 0,

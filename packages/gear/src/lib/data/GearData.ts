@@ -128,7 +128,6 @@ export type GearBaseOption = Pick<
   | 'armor'
   | 'speed'
   | 'jump'
-  | 'knockback'
   | 'bossDamage'
   | 'ignoreMonsterArmor'
   | 'allStat'
