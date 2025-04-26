@@ -1,4 +1,4 @@
-import { defaultGear } from '../testUtils';
+import { createGear } from '../test';
 import {
   applyExceptional,
   canApplyExceptional,
@@ -10,7 +10,7 @@ import {
 
 describe('supportsExceptional', () => {
   it('is true for exceptionalUpgradeableCount === 1', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       exceptionalUpgradeableCount: 1,
     });
 
@@ -18,7 +18,7 @@ describe('supportsExceptional', () => {
   });
 
   it('is true for exceptionalUpgradeCount === 1', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       exceptionalUpgradeCount: 1,
     });
 
@@ -26,7 +26,7 @@ describe('supportsExceptional', () => {
   });
 
   it('is false for exceptionalTotalUpgradeableCount === 0', () => {
-    const gear = defaultGear({});
+    const gear = createGear({});
 
     expect(supportsExceptional(gear)).toBe(false);
   });
@@ -34,7 +34,7 @@ describe('supportsExceptional', () => {
 
 describe('canApplyExceptional', () => {
   it('is true for exceptionalUpgradeableCount > 0', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       exceptionalUpgradeableCount: 1,
     });
 
@@ -42,7 +42,7 @@ describe('canApplyExceptional', () => {
   });
 
   it('is false for exceptionalUpgradeableCount === 0', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       exceptionalUpgradeCount: 1,
     });
 
@@ -52,7 +52,7 @@ describe('canApplyExceptional', () => {
 
 describe('applyExceptional', () => {
   it('increments exceptionalUpgradeCount', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       exceptionalUpgradeableCount: 1,
     });
     const hammer: ExceptionalHammer = {
@@ -66,7 +66,7 @@ describe('applyExceptional', () => {
   });
 
   it('decrements exceptionalUpgradeableCount', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       exceptionalUpgradeableCount: 1,
     });
     const hammer: ExceptionalHammer = {
@@ -80,7 +80,7 @@ describe('applyExceptional', () => {
   });
 
   it('adds option to exceptionalOption', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       exceptionalUpgradeableCount: 1,
     });
     const hammer: ExceptionalHammer = {
@@ -98,7 +98,7 @@ describe('applyExceptional', () => {
   });
 
   it('throws TypeError for gear with exceptionalUpgradeableCount === 0', () => {
-    const gear = defaultGear({});
+    const gear = createGear();
     const hammer: ExceptionalHammer = { name: '', option: {} };
 
     expect(() => {
@@ -109,7 +109,7 @@ describe('applyExceptional', () => {
 
 describe('canResetExceptional', () => {
   it('is true for gear with totalExceptionalUpgradeableCount > 0', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       exceptionalUpgradeableCount: 1,
     });
 
@@ -117,7 +117,7 @@ describe('canResetExceptional', () => {
   });
 
   it('is false for gear with totalExceptionalUpgradeableCount = 0', () => {
-    const gear = defaultGear({});
+    const gear = createGear();
 
     expect(canResetExceptional(gear)).toBe(false);
   });
@@ -125,7 +125,7 @@ describe('canResetExceptional', () => {
 
 describe('resetExceptional', () => {
   it('sets exceptionalUpgradeCount to 0', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       exceptionalUpgradeCount: 2,
       exceptionalUpgradeableCount: 1,
     });
@@ -136,7 +136,7 @@ describe('resetExceptional', () => {
   });
 
   it('sets exceptionalUpgradeableCount to 3', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       exceptionalUpgradeCount: 2,
       exceptionalUpgradeableCount: 1,
     });
@@ -147,7 +147,7 @@ describe('resetExceptional', () => {
   });
 
   it('resets exceptionalOption', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       exceptionalUpgradeCount: 1,
       exceptionalOption: { int: 1, luk: 2 },
     });
