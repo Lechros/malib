@@ -1,8 +1,9 @@
 export { createGear } from './gearFixture';
 export {
-  starforcePatch,
-  upgradePatch,
+  addiPotentialPatch,
   addOptionPatch,
   potentialPatch,
-  addiPotentialPatch,
+  starforcePatch,
+  upgradePatch,
 } from './gearPatch';
+export { createSoulData } from './soulFixture';

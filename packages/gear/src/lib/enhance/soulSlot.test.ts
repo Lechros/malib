@@ -1,4 +1,5 @@
 import { GearType } from '../data';
+import { createGear, createSoulData } from '../test';
 import {
   _updateChargeOption,
   applySoulEnchant,
@@ -10,7 +11,6 @@ import {
   setSoulCharge,
   supportsSoul,
 } from './soulSlot';
-import { defaultGear } from '../testUtils';
 
 describe('supportsSoul', () => {
   it.each([
@@ -20,7 +20,9 @@ describe('supportsSoul', () => {
     GearType.tuner,
     GearType.dagger,
   ])('is true for weapon gears, type == %d', (type) => {
-    const gear = defaultGear({ type, req: { level: 120 } });
+    const gear = createGear({
+      type,
+    });
 
     expect(supportsSoul(gear)).toBe(true);
   });
@@ -34,7 +36,9 @@ describe('supportsSoul', () => {
     GearType.katara,
     GearType.shield,
   ])('is false for non weapon gears, type == %d', (type) => {
-    const gear = defaultGear({ type, req: { level: 120 } });
+    const gear = createGear({
+      type,
+    });
 
     expect(supportsSoul(gear)).toBe(false);
   });
@@ -47,7 +51,7 @@ describe('supportsSoul', () => {
     [75, true],
     [200, true],
   ])('for reqLevel == %d is %p', (reqLevel, expected) => {
-    const gear = defaultGear({
+    const gear = createGear({
       type: GearType.thSword,
       req: { level: reqLevel },
     });
@@ -58,20 +62,16 @@ describe('supportsSoul', () => {
 
 describe('canApplySoulEnchant', () => {
   it('is true for unenchanted gear', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       type: GearType.bow,
-      req: {
-        level: 100,
-      },
     });
 
     expect(canApplySoulEnchant(gear)).toBe(true);
   });
 
   it('is false for enchanted gear', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       type: GearType.bow,
-      req: { level: 150 },
       soulSlot: {},
     });
 
@@ -81,9 +81,8 @@ describe('canApplySoulEnchant', () => {
 
 describe('applySoulEnchant', () => {
   it('sets soulEnchanted to true', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       type: GearType.bow,
-      req: { level: 150 },
     });
 
     applySoulEnchant(gear);
@@ -92,9 +91,8 @@ describe('applySoulEnchant', () => {
   });
 
   it('throws TypeError for non weapon gears', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       type: GearType.cape,
-      req: { level: 150 },
     });
 
     expect(() => {
@@ -103,9 +101,8 @@ describe('applySoulEnchant', () => {
   });
 
   it('throws TypeError for already soul enchanted gears', () => {
-    const gear = defaultGear({
-      type: GearType.cape,
-      req: { level: 150 },
+    const gear = createGear({
+      type: GearType.bow,
       soulSlot: {},
     });
 
@@ -117,9 +114,8 @@ describe('applySoulEnchant', () => {
 
 describe('canSetSoul', () => {
   it('is true for enchanted gear', () => {
-    const gear = defaultGear({
-      type: GearType.cape,
-      req: { level: 150 },
+    const gear = createGear({
+      type: GearType.bow,
       soulSlot: {},
     });
 
@@ -127,19 +123,17 @@ describe('canSetSoul', () => {
   });
 
   it('is true for enchanted gear with soul', () => {
-    const gear = defaultGear({
-      type: GearType.cape,
-      req: { level: 150 },
-      soulSlot: { soul: { name: '', skill: '', option: {} } },
+    const gear = createGear({
+      type: GearType.bow,
+      soulSlot: { soul: createSoulData() },
     });
 
     expect(canSetSoul(gear)).toBe(true);
   });
 
   it('is false for unenchanted gear', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       type: GearType.bow,
-      req: { level: 150 },
     });
 
     expect(canSetSoul(gear)).toBe(false);
@@ -148,16 +142,11 @@ describe('canSetSoul', () => {
 
 describe('setSoul', () => {
   it('sets soul name to 위대한 카링의 소울', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       type: GearType.bow,
-      req: { level: 150 },
       soulSlot: {},
     });
-    const soul = {
-      name: '위대한 카링의 소울',
-      skill: '',
-      option: {},
-    };
+    const soul = createSoulData({ name: '위대한 카링의 소울' });
 
     setSoul(gear, soul);
 
@@ -165,18 +154,12 @@ describe('setSoul', () => {
   });
 
   it('sets soul charge option to { attackPower: 20 }', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       type: GearType.bow,
-      req: { level: 150 },
       baseOption: { attackPower: 170 },
       soulSlot: { charge: 1000 },
     });
-    const soul = {
-      name: '',
-      skill: '',
-      option: {},
-      chargeFactor: 2,
-    } as const;
+    const soul = createSoulData({ chargeFactor: 2 });
 
     setSoul(gear, soul);
 
@@ -184,18 +167,12 @@ describe('setSoul', () => {
   });
 
   it('sets soul charge option to { magicPower: 10 }', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       type: GearType.staff,
-      req: { level: 150 },
       baseOption: { attackPower: 90, magicPower: 200 },
       soulSlot: { charge: 100 },
     });
-    const soul = {
-      name: '',
-      skill: '',
-      option: {},
-      chargeFactor: 2,
-    } as const;
+    const soul = createSoulData({ chargeFactor: 2 });
 
     setSoul(gear, soul);
 
@@ -203,15 +180,10 @@ describe('setSoul', () => {
   });
 
   it('throws TypeError for unenchanted gear', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       type: GearType.bow,
-      req: { level: 150 },
     });
-    const soul = {
-      name: '',
-      skill: '',
-      option: {},
-    };
+    const soul = createSoulData();
 
     expect(() => {
       setSoul(gear, soul);
@@ -221,9 +193,8 @@ describe('setSoul', () => {
 
 describe('canSetSoulCharge', () => {
   it('is true for enchanted gear', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       type: GearType.bow,
-      req: { level: 150 },
       soulSlot: {},
     });
 
@@ -233,9 +204,8 @@ describe('canSetSoulCharge', () => {
 
 describe('setSoulCharge', () => {
   it.each([0, 1, 100, 500, 999, 1000])('sets soul charge', (charge) => {
-    const gear = defaultGear({
+    const gear = createGear({
       type: GearType.bow,
-      req: { level: 150 },
       soulSlot: {},
     });
 
@@ -245,9 +215,8 @@ describe('setSoulCharge', () => {
   });
 
   it('sets soul charge option', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       type: GearType.bow,
-      req: { level: 150 },
       soulSlot: {},
     });
 
@@ -259,9 +228,8 @@ describe('setSoulCharge', () => {
   it.each([-1000, -100, -1, 1001, 2000])(
     'throws TypeError for charge == %d',
     (charge) => {
-      const gear = defaultGear({
+      const gear = createGear({
         type: GearType.bow,
-        req: { level: 150 },
         soulSlot: {},
       });
 
@@ -272,9 +240,8 @@ describe('setSoulCharge', () => {
   );
 
   it('throws TypeError for unenchanted gear', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       type: GearType.bow,
-      req: { level: 150 },
     });
 
     expect(() => {
@@ -285,9 +252,8 @@ describe('setSoulCharge', () => {
 
 describe('resetSoulEnchant', () => {
   it('resets soulEnchanted', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       type: GearType.bow,
-      req: { level: 150 },
       soulSlot: {},
     });
 
@@ -297,9 +263,8 @@ describe('resetSoulEnchant', () => {
   });
 
   it('resets soul', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       type: GearType.bow,
-      req: { level: 150 },
       soulSlot: {},
     });
 
@@ -309,9 +274,8 @@ describe('resetSoulEnchant', () => {
   });
 
   it('resets soulCharge', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       type: GearType.bow,
-      req: { level: 150 },
       soulSlot: {},
     });
 
@@ -321,9 +285,8 @@ describe('resetSoulEnchant', () => {
   });
 
   it('resets soulChargeOption', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       type: GearType.bow,
-      req: { level: 150 },
       soulSlot: {},
     });
 
@@ -364,11 +327,10 @@ describe('_updateChargeOption', () => {
   ] as const)(
     'chargeFactor === %d, charge === %d, sets %d',
     (chargeFactor, charge, expected) => {
-      const gear = defaultGear({
+      const gear = createGear({
         type: GearType.bow,
-        req: { level: 150 },
         soulSlot: {
-          soul: { name: '', skill: '', option: {}, chargeFactor },
+          soul: createSoulData({ chargeFactor }),
           charge,
         },
       });
