@@ -7,6 +7,7 @@ import {
   _getHeartSpellTrace,
   _getWeaponSpellTrace,
   getSpellTraceScroll,
+  SpellTrace,
   SpellTraceRate,
   SpellTraceType,
 } from './spellTrace';
@@ -52,6 +53,23 @@ describe('getSpellTraceScroll', () => {
       expect(scroll).toEqual(expected);
     },
   );
+
+  it('respects reqLevelIncrease', () => {
+    const gear = mockGear(GearType.cap, { level: 110, levelIncrease: 10 });
+    const expected: SpellTrace = {
+      name: '70% 힘 주문서',
+      option: {
+        str: 4,
+        maxHp: 70,
+        armor: 5,
+      },
+      type: SpellTraceType.str,
+      rate: 70,
+    };
+    const scroll = getSpellTraceScroll(gear, SpellTraceType.str, 70);
+
+    expect(scroll).toEqual(expected);
+  });
 });
 
 describe('_getWeaponSpellTrace', () => {

@@ -285,7 +285,8 @@ function _getTypeName(
 }
 
 function _getTier(gear: ReadonlyGear): _Tier {
-  return gear.req.level > 110 ? 2 : gear.req.level > 70 ? 1 : 0;
+  const reqLevel = gear.req.level + gear.req.levelIncrease;
+  return reqLevel > 110 ? 2 : reqLevel > 70 ? 1 : 0;
 }
 
 function _getPowerType(type: SpellTraceType): 'attackPower' | 'magicPower' {
