@@ -1,4 +1,4 @@
-import { GearType } from './data';
+import { GearType } from '../data';
 import {
   _updateChargeOption,
   applySoulEnchant,
@@ -10,7 +10,7 @@ import {
   setSoulCharge,
   supportsSoul,
 } from './soulSlot';
-import { defaultGear } from './testUtils';
+import { defaultGear } from '../testUtils';
 
 describe('supportsSoul', () => {
   it.each([

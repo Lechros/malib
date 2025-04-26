@@ -67,7 +67,7 @@ import {
   setSoul,
   setSoulCharge,
   supportsSoul,
-} from './soulSlot';
+} from './enhance/soulSlot';
 
 /**
  * 장비

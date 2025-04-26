@@ -1,8 +1,8 @@
-import { SoulChargeOption, SoulData } from './data';
-import { ErrorMessage } from './errors';
-import { Gear } from './Gear';
-import { isWeapon } from './gearType';
-import { ReadonlyGear } from './ReadonlyGear';
+import { SoulChargeOption, SoulData } from '../data';
+import { ErrorMessage } from '../errors';
+import { Gear } from '../Gear';
+import { isWeapon } from '../gearType';
+import { ReadonlyGear } from '../ReadonlyGear';
 
 /**
  * 장비가 소울웨폰을 지원하는지 여부를 확인합니다.
