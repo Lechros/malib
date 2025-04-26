@@ -1505,4 +1505,13 @@ describe('getMaxStar', () => {
 
     expect(getMaxStar(gear)).toBe(15);
   });
+
+  it('returns 20 for reqLevel === 110, reqLevelIncrease === 20', () => {
+    const gear = defaultGear({
+      req: { level: 110, levelIncrease: 20 },
+      attributes: { canStarforce: GearCapability.Can },
+    });
+
+    expect(getMaxStar(gear)).toBe(20);
+  });
 });

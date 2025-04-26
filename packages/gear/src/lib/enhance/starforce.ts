@@ -371,7 +371,7 @@ function _getStarScrollBaseValue(
 }
 
 function _getBaseMaxStar(gear: Gear): number {
-  const reqLevel = gear.req.level;
+  const reqLevel = gear.req.level + gear.req.levelIncrease;
   let data: readonly number[] | undefined = undefined;
   for (const item of maxStarData) {
     if (reqLevel >= item[0]) data = item;
