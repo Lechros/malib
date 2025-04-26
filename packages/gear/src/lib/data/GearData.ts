@@ -101,6 +101,8 @@ export interface GearShapeData {
 export interface GearReqData {
   /** 착용 가능 레벨 */
   level?: number;
+  /** 착용 가능 레벨 증가 */
+  levelIncrease?: number;
   /** 착용 가능 직업 분류 */
   job?: number;
   /** 착용 가능 직업 */

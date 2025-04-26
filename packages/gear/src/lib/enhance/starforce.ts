@@ -33,8 +33,14 @@ export function canStarforce(gear: Gear, exceedMaxStar = false): boolean {
   if (gear.attributes.superior) {
     return gear.star < Math.min(MAX_SUPERIOR, gear.maxStar);
   }
-  if (!exceedMaxStar && gear.star >= gear.maxStar) {
-    return false;
+  if (exceedMaxStar) {
+    if (gear.star >= _getBaseMaxStarWithToadsHammer(gear)) {
+      return false;
+    }
+  } else {
+    if (gear.star >= gear.maxStar) {
+      return false;
+    }
   }
   const limit = gear.starScroll ? MAX_STARSCROLL : MAX_STARFORCE;
   return gear.star < limit;
@@ -371,7 +377,7 @@ function _getStarScrollBaseValue(
 }
 
 function _getBaseMaxStar(gear: Gear): number {
-  const reqLevel = gear.req.level;
+  const reqLevel = gear.req.level + gear.req.levelIncrease;
   let data: readonly number[] | undefined = undefined;
   for (const item of maxStarData) {
     if (reqLevel >= item[0]) data = item;
@@ -382,6 +388,17 @@ function _getBaseMaxStar(gear: Gear): number {
   return gear.attributes.superior ? data[2] : data[1];
 }
 
+function _getBaseMaxStarWithToadsHammer(gear: Gear): number {
+  const reqLevel = gear.req.level;
+  let data: readonly number[] | undefined = undefined;
+  for (const item of maxStarDataWithToadsHammer) {
+    if (reqLevel >= item[0]) data = item;
+    else break;
+  }
+  if (!data) return 0;
+  return data[1];
+}
+
 const maxStarData = [
   [0, 5, 3],
   [95, 8, 5],
@@ -389,6 +406,13 @@ const maxStarData = [
   [120, 15, 10],
   [130, 20, 12],
   [140, 30, 15],
+] as const;
+
+const maxStarDataWithToadsHammer = [
+  [0, 15],
+  [101, 19],
+  [111, 29],
+  [140, 30],
 ] as const;
 
 const statTypes = ['str', 'dex', 'int', 'luk'] as const;
@@ -409,7 +433,7 @@ const maxHpTypes = [
 ];
 
 const starforceStat = [
-  [0, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0],
   [108, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0],
   [118, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0],
   [128, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0],
@@ -421,7 +445,7 @@ const starforceStat = [
 ]; // prettier-ignore
 
 const starforcePower = [
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0],
   [108, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 6, 7, 8, 9, 10, 12, 13, 15, 17],
   [118, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 7, 8, 9, 10, 11, 13, 14, 16, 18],
   [128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20],
@@ -433,7 +457,7 @@ const starforcePower = [
 ]; // prettier-ignore
 
 const starforceWeaponPower = [
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 5, 6, 7, 0, 0, 0, 0, 0],
   [108, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 5, 6, 7, 8, 9, 27, 28, 29],
   [118, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 6, 6, 7, 8, 9, 10, 28, 29, 30],
   [128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 7, 7, 8, 9, 10, 11, 29, 30, 31],

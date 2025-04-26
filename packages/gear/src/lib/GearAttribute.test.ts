@@ -194,23 +194,6 @@ describe('GearAttribute', () => {
     });
   });
 
-  describe('reqLevelIncrease', () => {
-    it('returns 0 by default', () => {
-      expect(attr.reqLevelIncrease).toBe(0);
-    });
-
-    it('returns 20', () => {
-      attr.data.reqLevelIncrease = 20;
-
-      expect(attr.reqLevelIncrease).toBe(20);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'reqLevelIncrease' because it is a read-only property.
-      expect(() => (attr.reqLevelIncrease = 10)).toThrow();
-    });
-  });
-
   describe('cuttable', () => {
     it('returns None by default', () => {
       expect(attr.cuttable).toBe(GearCuttable.None);

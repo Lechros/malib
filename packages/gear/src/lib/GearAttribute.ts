@@ -90,11 +90,6 @@ export class GearAttribute implements _GearAttribute {
     return this.data.specialGrade ?? false;
   }
 
-  /** 착용 레벨 증가 */
-  get reqLevelIncrease(): number {
-    return this.data.reqLevelIncrease ?? 0;
-  }
-
   /** 카르마의 가위 사용 가능 여부 */
   get cuttable(): GearCuttable {
     return this.data.cuttable ?? 0;

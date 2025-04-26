@@ -67,9 +67,19 @@ describe('canStarforce', () => {
     [140, 15, true],
     [140, 24, true],
     [140, 25, true],
+    [140, 29, true],
     [140, 30, false],
+    [0, 15, false],
+    [100, 15, false],
+    [101, 15, true],
+    [101, 18, true],
+    [101, 19, false],
+    [110, 19, false],
+    [111, 19, true],
+    [111, 28, true],
+    [111, 29, false],
   ])(
-    'star = %d, maxStar = %d, ignoreMaxStar is %p',
+    'reqLevel = %d, star = %d, ignoreMaxStar is %p',
     (reqLevel, star, expected) => {
       const gear = defaultGear({
         req: { level: reqLevel },
@@ -920,6 +930,42 @@ describe('starforce', () => {
       expect(gear.starforceOption).toHaveProperty(key, expected);
     },
   );
+
+  it.each([
+    [
+      100,
+      30,
+      20,
+      {
+        str: 50,
+        dex: 50,
+        maxHp: 255,
+        attackPower: 30,
+        magicPower: 30,
+        armor: 191,
+      },
+    ],
+  ] satisfies [number, number, number, Partial<GearOption>][])(
+    'sets gear stat for reqLevel === 100, reqLevelIncrease === 30, star = 20',
+    (reqLevel, reqLevelIncrease, star, expected) => {
+      const gear = defaultGear({
+        type: GearType.coat,
+        req: { level: reqLevel, levelIncrease: reqLevelIncrease, job: 1 },
+        attributes: { canStarforce: GearCapability.Can },
+        baseOption: {
+          str: 2,
+          dex: 6,
+          armor: 105,
+        },
+      });
+
+      for (let i = 0; i < star; i++) {
+        starforce(gear);
+      }
+
+      expect(gear.starforceOption).toEqual(expected);
+    },
+  );
 });
 
 describe('canStarScroll', () => {
@@ -1504,5 +1550,14 @@ describe('getMaxStar', () => {
     });
 
     expect(getMaxStar(gear)).toBe(15);
+  });
+
+  it('returns 20 for reqLevel === 110, reqLevelIncrease === 20', () => {
+    const gear = defaultGear({
+      req: { level: 110, levelIncrease: 20 },
+      attributes: { canStarforce: GearCapability.Can },
+    });
+
+    expect(getMaxStar(gear)).toBe(20);
   });
 });

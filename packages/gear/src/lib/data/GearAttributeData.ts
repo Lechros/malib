@@ -29,9 +29,6 @@ export interface GearAttributeData {
   /** 스페셜 아이템 여부 */
   specialGrade?: boolean;
 
-  /** 착용 레벨 증가 */
-  reqLevelIncrease?: number;
-
   /** 카르마의 가위 사용 가능 여부 */
   cuttable?: GearCuttable;
   /** 가위 사용 가능 횟수 */

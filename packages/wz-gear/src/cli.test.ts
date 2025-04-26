@@ -8,7 +8,7 @@ import { join } from 'path';
 const inPath = '../tmp/gear-data.json';
 const outPath = '../tmp/gear-data-converted.json';
 
-test('Run', () => {
+test.skip('Run', () => {
   // Read the input file
   const data = readJson<Record<string, WzGear>>(inPath);
   // Convert the data
