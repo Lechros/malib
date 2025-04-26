@@ -1,5 +1,5 @@
 import {
-  AddOptionCan,
+  GearCapability,
   AddOptionGrade,
   AddOptionType,
   GearAddOption,
@@ -7,7 +7,7 @@ import {
 } from '../data';
 import { ErrorMessage } from '../errors';
 import { Gear } from '../Gear';
-import { isAccessory, isArmor, isShield, isWeapon } from '../gearType';
+import { isWeapon } from '../gearType';
 import { addOptions } from '../utils';
 
 const MAX_ADDOPTION = 4;
@@ -18,25 +18,7 @@ const MAX_ADDOPTION = 4;
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function supportsAddOption(gear: Gear): boolean {
-  if (gear.attributes.canAddOption === AddOptionCan.Can) {
-    return true;
-  }
-  if (gear.attributes.canAddOption === AddOptionCan.Cannot) {
-    return false;
-  }
-  if (isWeapon(gear.type)) {
-    return true;
-  }
-  if (isArmor(gear.type)) {
-    return !isShield(gear.type);
-  }
-  if (isAccessory(gear.type)) {
-    return ![GearType.ring, GearType.shoulder].includes(gear.type);
-  }
-  if (gear.type === GearType.pocket) {
-    return true;
-  }
-  return false;
+  return gear.attributes.canAddOption === GearCapability.Can;
 }
 
 /**

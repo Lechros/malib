@@ -1,12 +1,12 @@
 import {
-  AddOptionCan,
+  GearCapability,
   AddOptionGrade,
   AddOptionType,
   GearAddOption,
   GearType,
 } from '../data';
 import { Gear } from '../Gear';
-import { defaultGear, getGearTypeContains } from '../testUtils';
+import { defaultGear } from '../testUtils';
 import {
   _getAddOptionKeys,
   _getAllStatValue,
@@ -28,67 +28,10 @@ import {
   supportsAddOption,
 } from './addOption';
 
-test.each(
-  getGearTypeContains([
-    GearType.cap,
-    GearType.coat,
-    GearType.longcoat,
-    GearType.pants,
-    GearType.shoes,
-    GearType.glove,
-    GearType.cape,
-    GearType.faceAccessory,
-    GearType.eyeAccessory,
-    GearType.earrings,
-    GearType.pendant,
-    GearType.belt,
-    GearType.pocket,
-    GearType.shiningRod,
-    GearType.tuner,
-    GearType.breathShooter,
-    GearType.soulShooter,
-    GearType.desperado,
-    GearType.energySword,
-    GearType.espLimiter,
-    GearType.chain,
-    GearType.magicGauntlet,
-    GearType.ritualFan,
-    GearType.ohSword,
-    GearType.ohAxe,
-    GearType.ohBlunt,
-    GearType.dagger,
-    GearType.cane,
-    GearType.wand,
-    GearType.staff,
-    GearType.thSword,
-    GearType.chakram,
-    GearType.thAxe,
-    GearType.thBlunt,
-    GearType.spear,
-    GearType.polearm,
-    GearType.bow,
-    GearType.crossbow,
-    GearType.claw,
-    GearType.knuckle,
-    GearType.gun,
-    GearType.dualBowguns,
-    GearType.handCannon,
-    GearType.heavySword,
-    GearType.longSword,
-    GearType.gauntletRevolver,
-    GearType.ancientBow,
-  ]),
-)('supportsAddOption(type=%d) returns %p', (gearType, expected) => {
-  const gear = defaultGear({ type: gearType });
-  const actual = supportsAddOption(gear);
-
-  expect(actual).toBe(expected);
-});
-
 describe('supportsAddOption', () => {
   it('returns true for canAddOption === Can', () => {
     const gear = defaultGear({
-      attributes: { canAddOption: AddOptionCan.Can },
+      attributes: { canAddOption: GearCapability.Can },
     });
 
     expect(supportsAddOption(gear)).toBe(true);
@@ -96,7 +39,7 @@ describe('supportsAddOption', () => {
 
   it('returns false for canAddOption === Cannot', () => {
     const gear = defaultGear({
-      attributes: { canAddOption: AddOptionCan.Cannot },
+      attributes: { canAddOption: GearCapability.Cannot },
     });
 
     expect(supportsAddOption(gear)).toBe(false);
@@ -106,7 +49,7 @@ describe('supportsAddOption', () => {
 describe('canApplyAddOption', () => {
   it('returns true for canAddOption === Can', () => {
     const gear = defaultGear({
-      attributes: { canAddOption: AddOptionCan.Can },
+      attributes: { canAddOption: GearCapability.Can },
     });
 
     expect(supportsAddOption(gear)).toBe(true);
@@ -114,7 +57,7 @@ describe('canApplyAddOption', () => {
 
   it('returns false for canAddOption === Cannot', () => {
     const gear = defaultGear({
-      attributes: { canAddOption: AddOptionCan.Cannot },
+      attributes: { canAddOption: GearCapability.Cannot },
     });
 
     expect(supportsAddOption(gear)).toBe(false);
@@ -124,7 +67,7 @@ describe('canApplyAddOption', () => {
 describe('applyAddOption', () => {
   it('throws TypeError for canAddOption === Cannot', () => {
     const gear = defaultGear({
-      attributes: { canAddOption: AddOptionCan.Cannot },
+      attributes: { canAddOption: GearCapability.Cannot },
     });
 
     expect(() => {
@@ -134,7 +77,7 @@ describe('applyAddOption', () => {
 
   it('adds option to addOption', () => {
     const gear = defaultGear({
-      attributes: { canAddOption: AddOptionCan.Can },
+      attributes: { canAddOption: GearCapability.Can },
       addOption: {
         str: 1,
       },
@@ -147,7 +90,7 @@ describe('applyAddOption', () => {
 
   it('adds multiple options to addOption', () => {
     const gear = defaultGear({
-      attributes: { canAddOption: AddOptionCan.Can },
+      attributes: { canAddOption: GearCapability.Can },
     });
 
     applyAddOption(gear, AddOptionType.str_dex, 1);
@@ -160,7 +103,7 @@ describe('applyAddOption', () => {
 
   it('adds entry to addOptions', () => {
     const gear = defaultGear({
-      attributes: { canAddOption: AddOptionCan.Can },
+      attributes: { canAddOption: GearCapability.Can },
     });
 
     applyAddOption(gear, AddOptionType.str, 1);
@@ -177,7 +120,7 @@ describe('applyAddOption', () => {
 describe('canResetAddOption', () => {
   it('returns true for canAddOption === Can', () => {
     const gear = defaultGear({
-      attributes: { canAddOption: AddOptionCan.Can },
+      attributes: { canAddOption: GearCapability.Can },
     });
 
     expect(canResetAddOption(gear)).toBe(true);
@@ -185,7 +128,7 @@ describe('canResetAddOption', () => {
 
   it('returns false for canAddOption === Cannot', () => {
     const gear = defaultGear({
-      attributes: { canAddOption: AddOptionCan.Cannot },
+      attributes: { canAddOption: GearCapability.Cannot },
     });
 
     expect(canResetAddOption(gear)).toBe(false);
@@ -193,7 +136,7 @@ describe('canResetAddOption', () => {
 
   it('returns true for addOptions length === 0', () => {
     const gear = defaultGear({
-      attributes: { canAddOption: AddOptionCan.Can },
+      attributes: { canAddOption: GearCapability.Can },
       addOptions: [],
     });
 
@@ -204,7 +147,7 @@ describe('canResetAddOption', () => {
 describe('resetAddOption', () => {
   it('throws TypeError for canAddOption === Cannot', () => {
     const gear = defaultGear({
-      attributes: { canAddOption: AddOptionCan.Cannot },
+      attributes: { canAddOption: GearCapability.Cannot },
     });
 
     expect(() => {
@@ -214,7 +157,7 @@ describe('resetAddOption', () => {
 
   it('resets addOption', () => {
     const gear = defaultGear({
-      attributes: { canAddOption: AddOptionCan.Can },
+      attributes: { canAddOption: GearCapability.Can },
       addOption: {
         str: 1,
       },
@@ -227,7 +170,7 @@ describe('resetAddOption', () => {
 
   it('resets addOptions', () => {
     const gear = defaultGear({
-      attributes: { canAddOption: AddOptionCan.Can },
+      attributes: { canAddOption: GearCapability.Can },
       addOptions: [
         {
           type: AddOptionType.str,

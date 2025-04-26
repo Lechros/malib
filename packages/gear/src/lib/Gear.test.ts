@@ -1,11 +1,13 @@
 import {
+  AddOptionGrade,
+  AddOptionType,
   GearAddOption,
+  GearCapability,
   GearData,
   GearTrade,
   GearType,
   PotentialGrade,
 } from './data';
-import { AddOptionGrade, AddOptionType } from './data';
 import { SpellTraceType } from './enhance/spellTrace';
 import { Gear } from './Gear';
 
@@ -596,30 +598,10 @@ describe('Gear', () => {
     });
   });
 
-  describe('canAddOption', () => {
-    it.each([
-      GearType.magicGauntlet,
-      GearType.handCannon,
-      GearType.faceAccessory,
-      GearType.pocket,
-    ])('returns true for gearType %d', (gearType) => {
-      gear.data.type = gearType;
-
-      const can = gear.supportsAddOption;
-
-      expect(can).toBe(true);
+  describe('canApplyAddOption', () => {
+    it('is true', () => {
+      expect(gear.canApplyAddOption).toBe(true);
     });
-
-    it.each([GearType.ring, GearType.shoulder, GearType.badge])(
-      'returns false for gearType %d',
-      (gearType) => {
-        gear.data.type = gearType;
-
-        const can = gear.supportsAddOption;
-
-        expect(can).toBe(false);
-      },
-    );
   });
 
   describe('applyAddOption', () => {
@@ -1258,6 +1240,11 @@ describe('Gear', () => {
         only: true,
         trade: GearTrade.TradeBlock,
         onlyEquip: true,
+        canAddOption: GearCapability.Can,
+        canPotential: GearCapability.Can,
+        canAdditionalPotential: GearCapability.Can,
+        canScroll: GearCapability.Can,
+        canStarforce: GearCapability.Can,
       },
 
       baseOption: {
@@ -1292,7 +1279,6 @@ describe('Gear', () => {
       scrollUpgradeableCount: 0,
 
       star: 22,
-      maxStar: 30,
       starScroll: false,
 
       soulSlot: {

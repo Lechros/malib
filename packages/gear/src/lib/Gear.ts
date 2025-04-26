@@ -51,7 +51,7 @@ import {
   canResetStarforce,
   canStarforce,
   canStarScroll,
-  MAX_STARSCROLL,
+  getMaxStar,
   resetStarforce,
   starforce,
   starScroll,
@@ -278,24 +278,19 @@ export class Gear implements _Gear {
   }
 
   /**
-   * 강화 단계
+   * 스타포스 강화 단계
    */
   get star(): number {
     return this.data.star ?? 0;
   }
 
   /**
-   * 최대 강화 단계
+   * 최대 스타포스 강화 단계
    *
-   * 장비의 현재 강화 단계가 최대 강화 단계를 초과할 시 현재 강화 단계입니다.
    * 놀라운 장비 강화 주문서가 사용되었을 경우 최대 `15`입니다.
    */
   get maxStar(): number {
-    const value = this.data.maxStar ?? 0;
-    return Math.max(
-      this.star,
-      this.starScroll ? Math.min(MAX_STARSCROLL, value) : value,
-    );
+    return getMaxStar(this);
   }
 
   /**

@@ -16,14 +16,16 @@ export interface GearAttributeData {
   /** 공격 속도 */
   attackSpeed?: number;
 
-  /** 강화불가 */
-  cannotUpgrade?: boolean;
+  /** 주문서 강화 가능 여부 */
+  canScroll?: GearCapability;
+  /** 스타포스 강화 가능 여부 */
+  canStarforce?: GearCapability;
   /** 추가 옵션 설정 가능 여부 */
-  canAddOption?: AddOptionCan;
+  canAddOption?: GearCapability;
   /** 잠재능력 설정 가능 여부 */
-  canPotential?: PotentialCan;
+  canPotential?: GearCapability;
   /** 에디셔널 잠재능력 설정 가능 여부 */
-  canAdditionalPotential?: PotentialCan;
+  canAdditionalPotential?: GearCapability;
   /** 스페셜 아이템 여부 */
   specialGrade?: boolean;
 
@@ -71,26 +73,13 @@ export enum GearShare {
   AccountSharableOnce = 2,
 }
 
-export enum AddOptionCan {
-  /** 없음 (장비 분류를 따름) */
-  None = 0,
+export enum GearCapability {
+  /** 설정 불가 */
+  Cannot = 0,
   /** 설정 가능 */
   Can = 1,
-  /** 설정 불가 */
-  Cannot = 2,
   /** 재설정 불가 */
-  Fixed = 3,
-}
-
-export enum PotentialCan {
-  /** 없음 (장비 분류를 따름) */
-  None = 0,
-  /** 설정 가능 */
-  Can = 1,
-  /** 설정 불가 */
-  Cannot = 2,
-  /** 재설정 불가 */
-  Fixed = 3,
+  Fixed = 2,
 }
 
 export enum GearCuttable {
