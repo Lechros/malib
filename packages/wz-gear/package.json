@@ -1,14 +1,9 @@
 {
   "name": "@malib/wz-gear",
+  "private": true,
   "description": "KMS gear data parser",
   "version": "0.0.1",
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "typings": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Lechros/malib",
