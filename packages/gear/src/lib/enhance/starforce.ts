@@ -33,8 +33,14 @@ export function canStarforce(gear: Gear, exceedMaxStar = false): boolean {
   if (gear.attributes.superior) {
     return gear.star < Math.min(MAX_SUPERIOR, gear.maxStar);
   }
-  if (!exceedMaxStar && gear.star >= gear.maxStar) {
-    return false;
+  if (exceedMaxStar) {
+    if (gear.star >= _getBaseMaxStarWithToadsHammer(gear)) {
+      return false;
+    }
+  } else {
+    if (gear.star >= gear.maxStar) {
+      return false;
+    }
   }
   const limit = gear.starScroll ? MAX_STARSCROLL : MAX_STARFORCE;
   return gear.star < limit;
@@ -382,6 +388,17 @@ function _getBaseMaxStar(gear: Gear): number {
   return gear.attributes.superior ? data[2] : data[1];
 }
 
+function _getBaseMaxStarWithToadsHammer(gear: Gear): number {
+  const reqLevel = gear.req.level;
+  let data: readonly number[] | undefined = undefined;
+  for (const item of maxStarDataWithToadsHammer) {
+    if (reqLevel >= item[0]) data = item;
+    else break;
+  }
+  if (!data) return 0;
+  return data[1];
+}
+
 const maxStarData = [
   [0, 5, 3],
   [95, 8, 5],
@@ -389,6 +406,13 @@ const maxStarData = [
   [120, 15, 10],
   [130, 20, 12],
   [140, 30, 15],
+] as const;
+
+const maxStarDataWithToadsHammer = [
+  [0, 15],
+  [101, 19],
+  [111, 29],
+  [140, 30],
 ] as const;
 
 const statTypes = ['str', 'dex', 'int', 'luk'] as const;

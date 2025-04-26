@@ -67,9 +67,19 @@ describe('canStarforce', () => {
     [140, 15, true],
     [140, 24, true],
     [140, 25, true],
+    [140, 29, true],
     [140, 30, false],
+    [0, 15, false],
+    [100, 15, false],
+    [101, 15, true],
+    [101, 18, true],
+    [101, 19, false],
+    [110, 19, false],
+    [111, 19, true],
+    [111, 28, true],
+    [111, 29, false],
   ])(
-    'star = %d, maxStar = %d, ignoreMaxStar is %p',
+    'reqLevel = %d, star = %d, ignoreMaxStar is %p',
     (reqLevel, star, expected) => {
       const gear = defaultGear({
         req: { level: reqLevel },
