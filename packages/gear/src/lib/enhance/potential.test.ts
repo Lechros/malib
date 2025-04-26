@@ -1,5 +1,5 @@
 import { GearCapability, PotentialGrade } from '../data';
-import { defaultGear } from '../testUtils';
+import { createGear } from '../test';
 import {
   canSetAdditionalPotential,
   canSetPotential,
@@ -13,7 +13,7 @@ import {
 
 describe('supportsPotential', () => {
   it('is true for canPotential === Can', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canPotential: GearCapability.Can,
       },
@@ -23,7 +23,7 @@ describe('supportsPotential', () => {
   });
 
   it('is false for canPotential === Fixed', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canPotential: GearCapability.Fixed,
       },
@@ -33,7 +33,7 @@ describe('supportsPotential', () => {
   });
 
   it('is false for canPotential === Cannot', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canPotential: GearCapability.Cannot,
       },
@@ -45,7 +45,7 @@ describe('supportsPotential', () => {
 
 describe('canSetPotential', () => {
   it('is true for canPotential === Can', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canPotential: GearCapability.Can,
       },
@@ -55,7 +55,7 @@ describe('canSetPotential', () => {
   });
 
   it('is false for canPotential === Fixed', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canPotential: GearCapability.Fixed,
       },
@@ -65,7 +65,7 @@ describe('canSetPotential', () => {
   });
 
   it('is false for canPotential === Cannot', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canPotential: GearCapability.Cannot,
       },
@@ -77,7 +77,7 @@ describe('canSetPotential', () => {
 
 describe('setPotential', () => {
   it('sets potentialGrade', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canPotential: GearCapability.Can,
       },
@@ -91,7 +91,7 @@ describe('setPotential', () => {
   });
 
   it('sets potentials', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canPotential: GearCapability.Can,
       },
@@ -109,7 +109,7 @@ describe('setPotential', () => {
   });
 
   it('sets potentials for options with lower grade', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canPotential: GearCapability.Can,
       },
@@ -127,7 +127,7 @@ describe('setPotential', () => {
   });
 
   it('sets potentials for options with higher grade', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canPotential: GearCapability.Can,
       },
@@ -143,7 +143,7 @@ describe('setPotential', () => {
   });
 
   it('throws error if canSetPotential is false', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canPotential: GearCapability.Cannot,
       },
@@ -157,7 +157,7 @@ describe('setPotential', () => {
   });
 
   it('throws error if grade is Normal', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canPotential: GearCapability.Can,
       },
@@ -171,7 +171,7 @@ describe('setPotential', () => {
   });
 
   it('throws error if options length is less than 1', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canPotential: GearCapability.Can,
       },
@@ -183,7 +183,7 @@ describe('setPotential', () => {
   });
 
   it('throws error if options length is greater than 3', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canPotential: GearCapability.Can,
       },
@@ -202,7 +202,7 @@ describe('setPotential', () => {
 
 describe('resetPotential', () => {
   it('sets potentialGrade to Normal', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canPotential: GearCapability.Can,
       },
@@ -216,7 +216,7 @@ describe('resetPotential', () => {
   });
 
   it('sets potentials to empty', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canPotential: GearCapability.Can,
       },
@@ -232,7 +232,7 @@ describe('resetPotential', () => {
 
 describe('supportsAdditionalPotential', () => {
   it('is true for canAdditionalPotential === Can', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Can,
       },
@@ -242,7 +242,7 @@ describe('supportsAdditionalPotential', () => {
   });
 
   it('is true for canAdditionalPotential === Fixed', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Fixed,
       },
@@ -252,7 +252,7 @@ describe('supportsAdditionalPotential', () => {
   });
 
   it('is false for canAdditionalPotential === Cannot', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Cannot,
       },
@@ -264,7 +264,7 @@ describe('supportsAdditionalPotential', () => {
 
 describe('canSetAdditionalPotential', () => {
   it('is true for canAdditionalPotential === Can', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Can,
       },
@@ -274,7 +274,7 @@ describe('canSetAdditionalPotential', () => {
   });
 
   it('is false for canAdditionalPotential === Fixed', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Fixed,
       },
@@ -284,7 +284,7 @@ describe('canSetAdditionalPotential', () => {
   });
 
   it('is false for canAdditionalPotential === Cannot', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Cannot,
       },
@@ -296,7 +296,7 @@ describe('canSetAdditionalPotential', () => {
 
 describe('setAdditionalPotential', () => {
   it('sets additionalPotentialGrade', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Can,
       },
@@ -310,7 +310,7 @@ describe('setAdditionalPotential', () => {
   });
 
   it('sets additionalPotentials', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Can,
       },
@@ -328,7 +328,7 @@ describe('setAdditionalPotential', () => {
   });
 
   it('sets additionalPotentials for options with lower grade', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Can,
       },
@@ -346,7 +346,7 @@ describe('setAdditionalPotential', () => {
   });
 
   it('sets additionalPotentials for options with higher grade', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Can,
       },
@@ -362,7 +362,7 @@ describe('setAdditionalPotential', () => {
   });
 
   it('throws error if canSetAdditionalPotential is false', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Cannot,
       },
@@ -376,7 +376,7 @@ describe('setAdditionalPotential', () => {
   });
 
   it('throws error if grade is Normal', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Can,
       },
@@ -390,7 +390,7 @@ describe('setAdditionalPotential', () => {
   });
 
   it('throws error if options length is less than 1', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Can,
       },
@@ -402,7 +402,7 @@ describe('setAdditionalPotential', () => {
   });
 
   it('throws error if options length is greater than 3', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Can,
       },
@@ -421,7 +421,7 @@ describe('setAdditionalPotential', () => {
 
 describe('resetAdditionalPotential', () => {
   it('sets additionalPotentialGrade to Normal', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Can,
       },
@@ -437,7 +437,7 @@ describe('resetAdditionalPotential', () => {
   });
 
   it('sets additionalPotentials to empty', () => {
-    const gear = defaultGear({
+    const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Can,
       },
