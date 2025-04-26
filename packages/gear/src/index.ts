@@ -94,6 +94,7 @@ export {
   applyScroll,
 } from './lib/enhance/upgrade';
 export { Gear } from './lib/Gear';
+export { ReadonlyGear } from './lib/ReadonlyGear';
 export { GearAttribute } from './lib/GearAttribute';
 export { toGearOption } from './lib/gearOption';
 export { GearReq } from './lib/GearReq';

@@ -3,6 +3,7 @@ import { ErrorMessage } from '../errors';
 import { Gear } from '../Gear';
 import { toGearOption } from '../gearOption';
 import { isAccessory, isArmor, isWeapon } from '../gearType';
+import { ReadonlyGear } from '../ReadonlyGear';
 
 export const MAX_STARFORCE = 30;
 export const MAX_STARSCROLL = 15;
@@ -198,7 +199,7 @@ export function resetStarforce(gear: Gear) {
  * @param gear 계산할 장비.
  * @returns 장비의 최대 스타포스 강화.
  */
-export function getMaxStar(gear: Gear): number {
+export function getMaxStar(gear: ReadonlyGear): number {
   if (gear.attributes.canStarforce === GearCapability.Cannot) {
     return 0;
   }
@@ -376,7 +377,7 @@ function _getStarScrollBaseValue(
   );
 }
 
-function _getBaseMaxStar(gear: Gear): number {
+function _getBaseMaxStar(gear: ReadonlyGear): number {
   const reqLevel = gear.req.level + gear.req.levelIncrease;
   let data: readonly number[] | undefined = undefined;
   for (const item of maxStarData) {
