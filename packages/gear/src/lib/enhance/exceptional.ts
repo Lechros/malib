@@ -1,8 +1,8 @@
 import { GearUpgradeOption } from '../data';
 import { ErrorMessage } from '../errors';
 import { Gear } from '../Gear';
+import { addOptions } from '../gearOption';
 import { ReadonlyGear } from '../ReadonlyGear';
-import { addOptions } from '../utils';
 
 /**
  * 익셉셔널 해머

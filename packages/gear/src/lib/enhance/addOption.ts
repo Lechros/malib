@@ -7,9 +7,9 @@ import {
 } from '../data';
 import { ErrorMessage } from '../errors';
 import { Gear } from '../Gear';
+import { addOptions } from '../gearOption';
 import { isWeapon } from '../gearType';
 import { ReadonlyGear } from '../ReadonlyGear';
-import { addOptions } from '../utils';
 
 const MAX_ADDOPTION = 4;
 
