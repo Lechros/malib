@@ -9,7 +9,7 @@ import { isWeapon } from './gearType';
  * @returns 지원할 경우 `true`; 아닐 경우 `false`.
  */
 export function supportsSoul(gear: Gear): boolean {
-  return isWeapon(gear.type) && gear.req.level >= 30;
+  return isWeapon(gear.type);
 }
 
 /**
@@ -89,6 +89,7 @@ export function setSoulCharge(gear: Gear, charge: number) {
   gear.data.soulSlot!.charge = charge;
   _updateChargeOption(gear);
 }
+
 /**
  * 장비의 소울웨폰을 초기화합니다.
  * @param gear 초기화할 장비.

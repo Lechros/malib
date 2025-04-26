@@ -40,9 +40,9 @@ describe('supportsSoul', () => {
   });
 
   it.each([
-    [0, false],
-    [20, false],
-    [29, false],
+    [0, true],
+    [20, true],
+    [29, true],
     [30, true],
     [75, true],
     [200, true],
