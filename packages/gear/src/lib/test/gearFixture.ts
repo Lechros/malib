@@ -1,8 +1,17 @@
-import { GearData, GearType } from '../data';
+import { GearData } from '../data';
 import { Gear } from '../Gear';
+import { resources } from './gearFixtureResources';
 import { Patch } from './gearPatch';
 
-type GearNames = keyof typeof repo;
+type GearNames = keyof typeof resources;
+
+export type CreateGearParams =
+  // createGear(name, patches?)
+  | [name?: GearNames, patches?: Patch[]]
+  // createGear(data)
+  | [data: Partial<GearData>]
+  // createGear(name, data, patches?)
+  | [name: GearNames, data: Partial<GearData>, patches?: Patch[]];
 
 export function createGear(name?: GearNames, patches?: Patch[]): Gear;
 export function createGear(data: Partial<GearData>): Gear;
@@ -22,7 +31,7 @@ export function createGear(
       return new Gear(createGearData(name_data));
     } else if (Array.isArray(data_patches)) {
       // createGear(name, patches)
-      return _patch(new Gear(createGearData(name_data)), patches);
+      return _patch(new Gear(createGearData(name_data)), data_patches);
     } else {
       // createGear(name, data, patches?)
       return _patch(new Gear(createGearData(name_data, data_patches)), patches);
@@ -42,14 +51,11 @@ function _patch(gear: Gear, patches?: Patch[]): Gear {
   return gear;
 }
 
-function createGearData(
-  name: keyof typeof repo,
-  data?: Partial<GearData>,
-): GearData {
+function createGearData(name: GearNames, data?: Partial<GearData>): GearData {
   if (data) {
-    return mergeGearData(repo[name], data);
+    return mergeGearData(resources[name], data);
   } else {
-    return repo[name];
+    return resources[name];
   }
 }
 
@@ -68,52 +74,3 @@ function mergeGearData(data: GearData, over: Partial<GearData>): GearData {
     },
   };
 }
-
-const repo = {
-  '': {
-    meta: {
-      id: 1000000,
-      version: 1,
-    },
-    name: '테스트용 장비',
-    icon: '1000000',
-    type: 100,
-    req: {},
-    attributes: {},
-  },
-  '아케인셰이드 샤이닝로드': {
-    meta: {
-      id: 1212120,
-      version: 1,
-    },
-    name: '아케인셰이드 샤이닝로드',
-    icon: '1212120',
-    type: GearType.shiningRod,
-    req: {
-      level: 200,
-      job: 2,
-    },
-    attributes: {
-      trade: 2,
-      cuttable: 2,
-      bossReward: true,
-      incline: {
-        charm: 200,
-      },
-      canStarforce: 1,
-      canScroll: 1,
-      canAddOption: 1,
-      canPotential: 1,
-      canAdditionalPotential: 1,
-    },
-    baseOption: {
-      int: 100,
-      luk: 100,
-      attackPower: 206,
-      magicPower: 347,
-      bossDamage: 30,
-      ignoreMonsterArmor: 20,
-    },
-    scrollUpgradeableCount: 9,
-  },
-} satisfies Record<string, GearData>;

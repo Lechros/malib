@@ -1,4 +1,4 @@
-export { createGear } from './gearFixture';
+export { createGear, type CreateGearParams } from './gearFixture';
 export {
   addiPotentialPatch,
   addOptionPatch,
