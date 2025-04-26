@@ -52,10 +52,11 @@ function _patch(gear: Gear, patches?: Patch[]): Gear {
 }
 
 function createGearData(name: GearNames, data?: Partial<GearData>): GearData {
+  const base = structuredClone(resources[name]);
   if (data) {
-    return mergeGearData(resources[name], data);
+    return mergeGearData(base, data);
   } else {
-    return resources[name];
+    return base;
   }
 }
 
