@@ -1,6 +1,7 @@
 import { GearUpgradeOption, GearCapability } from '../data';
 import { ErrorMessage } from '../errors';
 import { Gear } from '../Gear';
+import { ReadonlyGear } from '../ReadonlyGear';
 import { addOptions } from '../utils';
 
 /**
@@ -20,7 +21,7 @@ export interface Scroll {
  * @param gear 확인할 장비.
  * @returns 지원할 경우 `true`; 아닐 경우 `false`.
  */
-export function supportsUpgrade(gear: Gear): boolean {
+export function supportsUpgrade(gear: ReadonlyGear): boolean {
   return gear.attributes.canScroll === GearCapability.Can;
 }
 
@@ -29,7 +30,7 @@ export function supportsUpgrade(gear: Gear): boolean {
  * @param gear 확인할 장비.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canFailScroll(gear: Gear): boolean {
+export function canFailScroll(gear: ReadonlyGear): boolean {
   return supportsUpgrade(gear) && gear.scrollUpgradeableCount > 0;
 }
 
@@ -53,7 +54,7 @@ export function failScroll(gear: Gear) {
  * @param gear 확인할 장비.
  * @returns 복구할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canResileScroll(gear: Gear): boolean {
+export function canResileScroll(gear: ReadonlyGear): boolean {
   return supportsUpgrade(gear) && gear.scrollResilienceCount > 0;
 }
 
@@ -77,7 +78,7 @@ export function resileScroll(gear: Gear) {
  * @param gear 확인할 장비.
  * @returns 초기화할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canResetUpgrade(gear: Gear): boolean {
+export function canResetUpgrade(gear: ReadonlyGear): boolean {
   return supportsUpgrade(gear);
 }
 
@@ -103,7 +104,7 @@ export function resetUpgrade(gear: Gear) {
  * @param gear 확인할 장비.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canApplyScroll(gear: Gear): boolean {
+export function canApplyScroll(gear: ReadonlyGear): boolean {
   return supportsUpgrade(gear) && gear.scrollUpgradeableCount > 0;
 }
 

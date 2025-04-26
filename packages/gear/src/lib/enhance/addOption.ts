@@ -8,6 +8,7 @@ import {
 import { ErrorMessage } from '../errors';
 import { Gear } from '../Gear';
 import { isWeapon } from '../gearType';
+import { ReadonlyGear } from '../ReadonlyGear';
 import { addOptions } from '../utils';
 
 const MAX_ADDOPTION = 4;
@@ -17,7 +18,7 @@ const MAX_ADDOPTION = 4;
  * @param gear 확인할 장비.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function supportsAddOption(gear: Gear): boolean {
+export function supportsAddOption(gear: ReadonlyGear): boolean {
   return gear.attributes.canAddOption === GearCapability.Can;
 }
 
@@ -26,7 +27,7 @@ export function supportsAddOption(gear: Gear): boolean {
  * @param gear 확인할 장비.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canApplyAddOption(gear: Gear): boolean {
+export function canApplyAddOption(gear: ReadonlyGear): boolean {
   if (!supportsAddOption(gear)) {
     return false;
   }
@@ -74,7 +75,7 @@ export function applyAddOption(
  * @param gear 확인할 장비.
  * @returns 초기화할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canResetAddOption(gear: Gear): boolean {
+export function canResetAddOption(gear: ReadonlyGear): boolean {
   if (!supportsAddOption(gear)) {
     return false;
   }
@@ -107,7 +108,7 @@ export function resetAddOption(gear: Gear) {
  * 장비에 부여할 수 없는 추가 옵션을 지정했을 경우.
  */
 export function getAddOption(
-  gear: Gear,
+  gear: ReadonlyGear,
   type: AddOptionType,
   grade: AddOptionGrade,
 ): Partial<GearAddOption> {
@@ -129,7 +130,7 @@ export function getAddOption(
  * 장비에 부여할 수 없는 추가 옵션을 지정했을 경우.
  */
 export function getAddOptionValue(
-  gear: Gear,
+  gear: ReadonlyGear,
   type: AddOptionType,
   grade: AddOptionGrade,
 ): number {

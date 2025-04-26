@@ -2,13 +2,14 @@ import { SoulChargeOption, SoulData } from './data';
 import { ErrorMessage } from './errors';
 import { Gear } from './Gear';
 import { isWeapon } from './gearType';
+import { ReadonlyGear } from './ReadonlyGear';
 
 /**
  * 장비가 소울웨폰을 지원하는지 여부를 확인합니다.
  * @param gear 확인할 장비.
  * @returns 지원할 경우 `true`; 아닐 경우 `false`.
  */
-export function supportsSoul(gear: Gear): boolean {
+export function supportsSoul(gear: ReadonlyGear): boolean {
   return isWeapon(gear.type);
 }
 
@@ -17,7 +18,7 @@ export function supportsSoul(gear: Gear): boolean {
  * @param gear 확인할 장비.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canApplySoulEnchant(gear: Gear): boolean {
+export function canApplySoulEnchant(gear: ReadonlyGear): boolean {
   return supportsSoul(gear) && !gear.soulEnchanted;
 }
 
@@ -40,7 +41,7 @@ export function applySoulEnchant(gear: Gear) {
  * @param gear 확인할 장비.
  * @returns 장착할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canSetSoul(gear: Gear): boolean {
+export function canSetSoul(gear: ReadonlyGear): boolean {
   return gear.soulEnchanted;
 }
 
@@ -66,7 +67,7 @@ export function setSoul(gear: Gear, soul: SoulData) {
  * @param gear 확인할 장비.
  * @returns 설정할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canSetSoulCharge(gear: Gear): boolean {
+export function canSetSoulCharge(gear: ReadonlyGear): boolean {
   return gear.soulEnchanted;
 }
 
