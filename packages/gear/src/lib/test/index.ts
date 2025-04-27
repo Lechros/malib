@@ -6,4 +6,5 @@ export {
   starforcePatch,
   upgradePatch,
 } from './gearPatch';
+export { createScroll } from './scrollFixture';
 export { createSoulData } from './soulFixture';
