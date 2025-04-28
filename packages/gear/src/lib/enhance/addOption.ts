@@ -1,94 +1,114 @@
-import { AddOptionCan, GearAddOption, GearType } from '../data';
+import {
+  AddOptionGrade,
+  AddOptionType,
+  GearAddOption,
+  GearCapability,
+  GearType,
+} from '../data';
 import { ErrorMessage } from '../errors';
 import { Gear } from '../Gear';
-import { isAccessory, isArmor, isShield, isWeapon } from '../gearType';
+import { addOptions } from '../gearOption';
+import { isWeapon } from '../gearType';
+import { ReadonlyGear } from '../ReadonlyGear';
 
-export enum AddOptionType {
-  /** STR */
-  str = 'str',
-  /** DEX */
-  dex = 'dex',
-  /** INT */
-  int = 'int',
-  /** LUK */
-  luk = 'luk',
-  /** STR, DEX */
-  str_dex = 'str&dex',
-  /** STR, INT */
-  str_int = 'str&int',
-  /** STR, LUK */
-  str_luk = 'str&luk',
-  /** DEX, INT */
-  dex_int = 'dex&int',
-  /** DEX, LUK */
-  dex_luk = 'dex&luk',
-  /** INT, LUK */
-  int_luk = 'int&luk',
-  /** 최대 HP */
-  maxHp = 'maxHp',
-  /** 최대 MP */
-  maxMp = 'maxMp',
-  /** 공격력 */
-  attackPower = 'attackPower',
-  /** 마력 */
-  magicPower = 'magicPower',
-  /** 방어력 */
-  armor = 'armor',
-  /** 이동속도 */
-  speed = 'speed',
-  /** 점프력 */
-  jump = 'jump',
-  /** 보스 공격 시 데미지 증가(%) */
-  bossDamage = 'bossDamage',
-  /** 데미지(%) */
-  damage = 'damage',
-  /** 올스탯(%) */
-  allStat = 'allStat',
-  /** 착용 레벨 감소 */
-  reqLevelDecrease = 'reqLevelDecrease',
-}
-
-export type AddOptionGrade = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+const MAX_ADDOPTION = 4;
 
 /**
  * 장비가 추가 옵션을 지원하는지 확인합니다.
  * @param gear 확인할 장비.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function supportsAddOption(gear: Gear): boolean {
-  if (gear.attributes.canAddOption === AddOptionCan.Can) {
-    return true;
-  }
-  if (gear.attributes.canAddOption === AddOptionCan.Cannot) {
+export function supportsAddOption(gear: ReadonlyGear): boolean {
+  return gear.attributes.canAddOption === GearCapability.Can;
+}
+
+/**
+ * 장비에 추가 옵션을 적용할 수 있는 상태인지 여부를 확인합니다.
+ * @param gear 확인할 장비.
+ * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
+ */
+export function canApplyAddOption(gear: ReadonlyGear): boolean {
+  if (!supportsAddOption(gear)) {
     return false;
   }
-  if (isWeapon(gear.type)) {
-    return true;
+  if (gear.addOptions.length === MAX_ADDOPTION) {
+    return false;
   }
-  if (isArmor(gear.type)) {
-    return !isShield(gear.type);
+  return true;
+}
+
+/**
+ * 장비에 추가 옵션을 적용합니다.
+ * @param gear 적용할 장비.
+ * @param type 추가 옵션 종류.
+ * @param grade 추가 옵션 단계.
+ *
+ * @throws {@link TypeError}
+ * 추가 옵션을 적용할 수 없는 상태의 장비일 경우.
+ *
+ * @throws {@link TypeError}
+ * 장비에 부여할 수 없는 추가 옵션을 지정했을 경우.
+ */
+export function applyAddOption(
+  gear: Gear,
+  type: AddOptionType,
+  grade: AddOptionGrade,
+) {
+  if (!canApplyAddOption(gear)) {
+    throw TypeError(ErrorMessage.AddOption_InvalidApplyGear);
   }
-  if (isAccessory(gear.type)) {
-    return ![GearType.ring, GearType.shoulder].includes(gear.type);
+  if (gear.data.addOption === undefined) {
+    gear.data.addOption = {};
   }
-  if (gear.type === GearType.pocket) {
-    return true;
+  const option = getAddOption(gear, type, grade);
+  addOptions(gear.data.addOption, option);
+
+  if (gear.data.addOptions === undefined) {
+    gear.data.addOptions = [];
   }
-  return false;
+  const value = getAddOptionValue(gear, type, grade);
+  gear.data.addOptions.push({ type, grade, value });
+}
+
+/**
+ * 추가 옵션을 초기화할 수 있는지 여부를 확인합니다.
+ * @param gear 확인할 장비.
+ * @returns 초기화할 수 있을 경우 `true`; 아닐 경우 `false`.
+ */
+export function canResetAddOption(gear: ReadonlyGear): boolean {
+  if (!supportsAddOption(gear)) {
+    return false;
+  }
+  return true;
+}
+
+/**
+ * 장비의 추가 옵션을 초기화합니다.
+ * @param gear 초기화할 장비.
+ *
+ * @throws {@link TypeError}
+ * 추가 옵션을 초기화할 수 없는 상태의 장비일 경우.
+ */
+export function resetAddOption(gear: Gear) {
+  if (!canResetAddOption(gear)) {
+    throw TypeError(ErrorMessage.AddOption_InvalidApplyGear);
+  }
+  gear.data.addOption = undefined;
+  gear.data.addOptions = undefined;
 }
 
 /**
  * 장비에 적용되는 추가 옵션을 계산합니다.
  * @param gear 추가옵션을 계산할 장비.
  * @param type 추가 옵션 종류.
- * @param grade 추가 옵션 등급.
- * @returns 추가 옵션 종류 및 등급에 해당하는 옵션.
+ * @param grade 추가 옵션 단계.
+ * @returns 추가 옵션 종류 및 단계에 해당하는 옵션.
  *
  * @throws {@link TypeError}
  * 장비에 부여할 수 없는 추가 옵션을 지정했을 경우.
  */
 export function getAddOption(
-  gear: Gear,
+  gear: ReadonlyGear,
   type: AddOptionType,
   grade: AddOptionGrade,
 ): Partial<GearAddOption> {
@@ -103,20 +123,20 @@ export function getAddOption(
  * 장비에 적용되는 추가 옵션 종류에 따른 값을 계산합니다.
  * @param gear 추가옵션을 계산할 장비.
  * @param type 추가 옵션 종류.
- * @param grade 추가 옵션 등급.
+ * @param grade 추가 옵션 단계.
  * @returns 추가 옵션 값.
  *
  * @throws {@link TypeError}
  * 장비에 부여할 수 없는 추가 옵션을 지정했을 경우.
  */
 export function getAddOptionValue(
-  gear: Gear,
+  gear: ReadonlyGear,
   type: AddOptionType,
   grade: AddOptionGrade,
 ): number {
   const ctx = {
     type,
-    reqLevel: gear.req.level,
+    reqLevel: gear.req.level + gear.req.levelIncrease,
     gearType: gear.type,
     bossReward: gear.attributes.bossReward,
     attackPower: gear.baseOption.attackPower,
@@ -330,5 +350,5 @@ export function _getReqLevelDecreaseValue(
 export function _getAddOptionKeys(
   type: AddOptionType,
 ): (keyof GearAddOption)[] {
-  return type.split('&') as (keyof GearAddOption)[];
+  return type.split(',') as (keyof GearAddOption)[];
 }

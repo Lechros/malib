@@ -1,22 +1,28 @@
 import {
-  AddOptionCan,
   GearAttributeData,
+  GearCapability,
   GearCuttable,
   GearIncline,
   GearShare,
   GearTrade,
-  PotentialCan,
 } from './data';
 
 type OptionalProperty =
   | 'attackSpeed'
   | 'cuttableCount'
+  | 'totalCuttableCount'
+  | 'setItemId'
   | 'growthExp'
   | 'growthLevel'
   | 'dateExpire';
 
-type _GearAttribute = Omit<Required<GearAttributeData>, OptionalProperty> &
-  Pick<GearAttributeData, OptionalProperty>;
+type _GearAttribute = Omit<
+  Omit<Required<GearAttributeData>, OptionalProperty> &
+    Pick<GearAttributeData, OptionalProperty>,
+  'skills'
+> & {
+  skills: readonly string[];
+};
 
 export class GearAttribute implements _GearAttribute {
   /** 장비 속성 정보 */
@@ -50,11 +56,6 @@ export class GearAttribute implements _GearAttribute {
     return this.data.share ?? 0;
   }
 
-  /** 황금망치 사용 불가 */
-  get blockGoldenHammer(): boolean {
-    return this.data.blockGoldenHammer ?? false;
-  }
-
   /** 슈페리얼 */
   get superior(): boolean {
     return this.data.superior ?? false;
@@ -65,34 +66,34 @@ export class GearAttribute implements _GearAttribute {
     return this.data.attackSpeed;
   }
 
-  /** 강화불가 */
-  get cannotUpgrade(): boolean {
-    return this.data.cannotUpgrade ?? false;
+  /** 주문서 강화 가능 여부 */
+  get canScroll(): GearCapability {
+    return this.data.canScroll ?? 0;
+  }
+
+  /** 스타포스 강화 가능 여부 */
+  get canStarforce(): GearCapability {
+    return this.data.canStarforce ?? 0;
   }
 
   /** 추가옵션 설정 가능 여부 */
-  get canAddOption(): AddOptionCan {
+  get canAddOption(): GearCapability {
     return this.data.canAddOption ?? 0;
   }
 
   /** 잠재능력 설정 가능 여부 */
-  get canPotential(): PotentialCan {
+  get canPotential(): GearCapability {
     return this.data.canPotential ?? 0;
   }
 
   /** 에디셔널 잠재능력 설정 가능 여부 */
-  get canAdditionalPotential(): PotentialCan {
+  get canAdditionalPotential(): GearCapability {
     return this.data.canAdditionalPotential ?? 0;
   }
 
   /** 스페셜 아이템 여부 */
   get specialGrade(): boolean {
     return this.data.specialGrade ?? false;
-  }
-
-  /** 착용 레벨 증가 */
-  get reqLevelIncrease(): number {
-    return this.data.reqLevelIncrease ?? 0;
   }
 
   /** 카르마의 가위 사용 가능 여부 */
@@ -109,9 +110,19 @@ export class GearAttribute implements _GearAttribute {
     this.data.cuttableCount = value;
   }
 
+  /** 최대 가위 사용 가능 횟수 */
+  get totalCuttableCount(): number | undefined {
+    return this.data.totalCuttableCount;
+  }
+
   /** 쉐어 네임 텍을 사용 가능 여부 */
   get accountShareTag(): boolean {
     return this.data.accountShareTag ?? false;
+  }
+
+  /** 세트 효과 ID */
+  get setItemId(): number | undefined {
+    return this.data.setItemId;
   }
 
   /** 럭키 아이템 */
@@ -139,6 +150,11 @@ export class GearAttribute implements _GearAttribute {
   /** 보스 드롭 여부 */
   get bossReward(): boolean {
     return this.data.bossReward ?? false;
+  }
+
+  /** 사용 가능 스킬 */
+  get skills(): readonly string[] {
+    return this.data.skills ?? [];
   }
 
   /** 성장 경험치 */

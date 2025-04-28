@@ -1,3 +1,4 @@
+export * from './AddOptionData';
 export * from './GearAttributeData';
 export * from './GearData';
 export * from './GearOption';

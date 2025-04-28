@@ -1,7 +1,8 @@
 import { GearUpgradeOption } from '../data';
 import { ErrorMessage } from '../errors';
 import { Gear } from '../Gear';
-import { addOptions } from '../utils';
+import { addOptions } from '../gearOption';
+import { ReadonlyGear } from '../ReadonlyGear';
 
 /**
  * 익셉셔널 해머
@@ -20,7 +21,7 @@ export interface ExceptionalHammer {
  * @param gear 확인할 장비.
  * @returns 지원할 경우 `true`; 아닐 경우 `false`.
  */
-export function supportsExceptional(gear: Gear): boolean {
+export function supportsExceptional(gear: ReadonlyGear): boolean {
   return gear.exceptionalTotalUpgradeableCount > 0;
 }
 
@@ -29,7 +30,7 @@ export function supportsExceptional(gear: Gear): boolean {
  * @param gear 확인할 장비.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canApplyExceptional(gear: Gear): boolean {
+export function canApplyExceptional(gear: ReadonlyGear): boolean {
   return supportsExceptional(gear) && gear.exceptionalUpgradeableCount > 0;
 }
 
@@ -61,7 +62,7 @@ export function applyExceptional(
  * @param gear 확인할 장비.
  * @returns 초기화할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canResetExceptional(gear: Gear): boolean {
+export function canResetExceptional(gear: ReadonlyGear): boolean {
   return supportsExceptional(gear);
 }
 

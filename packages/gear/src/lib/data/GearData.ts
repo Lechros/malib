@@ -1,4 +1,4 @@
-import { AddOptionGrade, AddOptionType } from '../enhance/addOption';
+import { AddOptionData } from './AddOptionData';
 import { GearAttributeData } from './GearAttributeData';
 import { GearOption } from './GearOption';
 import { GearType } from './GearType';
@@ -36,19 +36,18 @@ export interface GearData {
   /** 장비 스타포스 옵션 */
   starforceOption?: Partial<GearStarforceOption>;
 
+  /** 추가 옵션 목록 */
+  addOptions?: AddOptionData[];
+
   /** 업그레이드 횟수 */
   scrollUpgradeCount?: number;
   /** 복구 가능 횟수 */
   scrollResilienceCount?: number;
   /** 업그레이드 가능 횟수 */
   scrollUpgradeableCount?: number;
-  /** 황금 망치 재련 적용 */
-  goldenHammer?: number;
 
   /** 강화 단계 */
   star?: number;
-  /** 최대 강화 단계 */
-  maxStar?: number;
   /** 놀라운 장비 강화 주문서 사용 여부 */
   starScroll?: boolean;
 
@@ -84,8 +83,6 @@ export interface GearMetadata {
   id: number;
   /** 장비 정보 버전 */
   version: 1;
-  /** 추가 옵션 적용 기록 */
-  add: [AddOptionType, AddOptionGrade][];
 }
 
 /**
@@ -104,14 +101,8 @@ export interface GearShapeData {
 export interface GearReqData {
   /** 착용 가능 레벨 */
   level?: number;
-  /** 착용 가능 STR */
-  str?: number;
-  /** 착용 가능 LUK */
-  luk?: number;
-  /** 착용 가능 DEX */
-  dex?: number;
-  /** 착용 가능 INT */
-  int?: number;
+  /** 착용 가능 레벨 증가 */
+  levelIncrease?: number;
   /** 착용 가능 직업 분류 */
   job?: number;
   /** 착용 가능 직업 */
@@ -137,7 +128,6 @@ export type GearBaseOption = Pick<
   | 'armor'
   | 'speed'
   | 'jump'
-  | 'knockback'
   | 'bossDamage'
   | 'ignoreMonsterArmor'
   | 'allStat'

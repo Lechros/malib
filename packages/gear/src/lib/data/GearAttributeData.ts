@@ -10,40 +10,43 @@ export interface GearAttributeData {
   onlyEquip?: boolean;
   /** 월드 내 나의 캐릭터 간 이동 가능 여부 */
   share?: GearShare;
-  /** 황금망치 사용 불가 */
-  blockGoldenHammer?: boolean;
 
   /** 슈페리얼 */
   superior?: boolean;
   /** 공격 속도 */
   attackSpeed?: number;
 
-  /** 강화불가 */
-  cannotUpgrade?: boolean;
+  /** 주문서 강화 가능 여부 */
+  canScroll?: GearCapability;
+  /** 스타포스 강화 가능 여부 */
+  canStarforce?: GearCapability;
   /** 추가 옵션 설정 가능 여부 */
-  canAddOption?: AddOptionCan;
+  canAddOption?: GearCapability;
   /** 잠재능력 설정 가능 여부 */
-  canPotential?: PotentialCan;
+  canPotential?: GearCapability;
   /** 에디셔널 잠재능력 설정 가능 여부 */
-  canAdditionalPotential?: PotentialCan;
+  canAdditionalPotential?: GearCapability;
   /** 스페셜 아이템 여부 */
   specialGrade?: boolean;
-
-  /** 착용 레벨 증가 */
-  reqLevelIncrease?: number;
 
   /** 카르마의 가위 사용 가능 여부 */
   cuttable?: GearCuttable;
   /** 가위 사용 가능 횟수 */
   cuttableCount?: number;
+  /** 최대 가위 사용 가능 횟수 */
+  totalCuttableCount?: number;
   /** 쉐어 네임 텍을 사용 가능 여부 */
   accountShareTag?: boolean;
+  /** 세트 효과 ID */
+  setItemId?: number;
   /** 럭키 아이템 */
   lucky?: boolean;
   /** 장착 시 획득 경험치 */
   incline?: Partial<GearIncline>;
   /** 보스 드롭 여부 */
   bossReward?: boolean;
+  /** 사용 가능 스킬 */
+  skills?: string[];
 
   /** 성장 경험치 */
   growthExp?: number;
@@ -71,24 +74,13 @@ export enum GearShare {
   AccountSharableOnce = 2,
 }
 
-export enum AddOptionCan {
-  /** 없음 (장비 분류를 따름) */
-  None = 0,
+export enum GearCapability {
+  /** 설정 불가 */
+  Cannot = 0,
   /** 설정 가능 */
   Can = 1,
-  /** 설정 불가 */
-  Cannot = 2,
-}
-
-export enum PotentialCan {
-  /** 없음 (장비 분류를 따름) */
-  None = 0,
-  /** 설정 가능 */
-  Can = 1,
-  /** 설정 불가 */
-  Cannot = 2,
   /** 재설정 불가 */
-  Fixed = 3,
+  Fixed = 2,
 }
 
 export enum GearCuttable {

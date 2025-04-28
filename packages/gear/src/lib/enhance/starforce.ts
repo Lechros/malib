@@ -1,10 +1,11 @@
-import { GearStarforceOption, GearType } from '../data';
+import { GearStarforceOption, GearType, GearCapability } from '../data';
 import { ErrorMessage } from '../errors';
 import { Gear } from '../Gear';
 import { toGearOption } from '../gearOption';
 import { isAccessory, isArmor, isWeapon } from '../gearType';
+import { ReadonlyGear } from '../ReadonlyGear';
 
-export const MAX_STARFORCE = 25;
+export const MAX_STARFORCE = 30;
 export const MAX_STARSCROLL = 15;
 export const MAX_SUPERIOR = 15;
 export const MAX_REQLEVEL_STARSCROLL = 150;
@@ -14,8 +15,8 @@ export const MAX_REQLEVEL_STARSCROLL = 150;
  * @param gear 확인할 장비.
  * @returns 지원할 경우 `true`; 아닐 경우 `false`.
  */
-export function supportsStarforce(gear: Gear): boolean {
-  return (gear.data.maxStar ?? 0) > 0;
+export function supportsStarforce(gear: ReadonlyGear): boolean {
+  return gear.attributes.canStarforce === GearCapability.Can;
 }
 
 /**
@@ -26,15 +27,24 @@ export function supportsStarforce(gear: Gear): boolean {
  * @param exceedMaxStar 장비의 최대 강화 단계를 초과하여 강화할 지 여부.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canStarforce(gear: Gear, exceedMaxStar = false): boolean {
+export function canStarforce(
+  gear: ReadonlyGear,
+  exceedMaxStar = false,
+): boolean {
   if (!supportsStarforce(gear)) {
     return false;
   }
   if (gear.attributes.superior) {
     return gear.star < Math.min(MAX_SUPERIOR, gear.maxStar);
   }
-  if (!exceedMaxStar && gear.star >= gear.maxStar) {
-    return false;
+  if (exceedMaxStar) {
+    if (gear.star >= _getBaseMaxStarWithToadsHammer(gear)) {
+      return false;
+    }
+  } else {
+    if (gear.star >= gear.maxStar) {
+      return false;
+    }
   }
   const limit = gear.starScroll ? MAX_STARSCROLL : MAX_STARFORCE;
   return gear.star < limit;
@@ -75,7 +85,10 @@ export function starforce(gear: Gear, exceedMaxStar = false) {
  * @param exceedMaxStar 장비의 최대 강화 단계를 초과하여 강화할 지 여부.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canStarScroll(gear: Gear, exceedMaxStar = false): boolean {
+export function canStarScroll(
+  gear: ReadonlyGear,
+  exceedMaxStar = false,
+): boolean {
   if (!supportsStarforce(gear)) {
     return false;
   }
@@ -162,7 +175,7 @@ export function starScroll(
  * @param gear 확인할 장비.
  * @returns 초기화할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canResetStarforce(gear: Gear): boolean {
+export function canResetStarforce(gear: ReadonlyGear): boolean {
   if (!supportsStarforce(gear)) {
     return false;
   }
@@ -183,6 +196,24 @@ export function resetStarforce(gear: Gear) {
   gear.data.starforceOption = {};
   gear.data.star = undefined;
   gear.data.starScroll = undefined;
+}
+
+/**
+ * 장비의 최대 스타포스 강화를 계산합니다.
+ *
+ * 놀라운 장비 강화 주문서가 사용되었을 경우 최대 `15`입니다.
+ * @param gear 계산할 장비.
+ * @returns 장비의 최대 스타포스 강화.
+ */
+export function getMaxStar(gear: ReadonlyGear): number {
+  if (gear.attributes.canStarforce === GearCapability.Cannot) {
+    return 0;
+  }
+  const baseMaxStar = _getBaseMaxStar(gear);
+  if (gear.starScroll) {
+    return Math.min(MAX_STARSCROLL, baseMaxStar);
+  }
+  return baseMaxStar;
 }
 
 function _superiorStarforce(gear: Gear) {
@@ -259,7 +290,7 @@ function _otherStarforce(gear: Gear) {
   // power
   _getStarforceOption(gear).attackPower += power;
   _getStarforceOption(gear).magicPower += power;
-  if (gear.type === GearType.glove) {
+  if (gear.type === GearType.glove && gear.req.level >= 130) {
     const bonusPower = starforceGloveBonusPower[gear.star];
     if (gear.req.beginner()) {
       _getStarforceOption(gear).attackPower += bonusPower;
@@ -288,7 +319,9 @@ function _otherStarforce(gear: Gear) {
   }
 }
 
-function _getJobOptionTypes(gear: Gear): Set<'str' | 'dex' | 'int' | 'luk'> {
+function _getJobOptionTypes(
+  gear: ReadonlyGear,
+): Set<'str' | 'dex' | 'int' | 'luk'> {
   if (gear.req.beginner()) {
     return new Set(statTypes);
   }
@@ -311,7 +344,7 @@ function _getJobOptionTypes(gear: Gear): Set<'str' | 'dex' | 'int' | 'luk'> {
   return new Set(stats) as Set<'str' | 'dex' | 'int' | 'luk'>;
 }
 
-function _getValue(data: number[][], gear: Gear): number {
+function _getValue(data: number[][], gear: ReadonlyGear): number {
   const reqLevel = gear.req.level;
   for (let i = data.length - 1; i >= 0; i--) {
     const item = data[i];
@@ -330,7 +363,7 @@ function _getStarforceOption(gear: Gear): GearStarforceOption {
 }
 
 function _getStarforceBaseValue(
-  gear: Gear,
+  gear: ReadonlyGear,
   type: keyof GearStarforceOption,
 ): number {
   return (
@@ -341,7 +374,7 @@ function _getStarforceBaseValue(
 }
 
 function _getStarScrollBaseValue(
-  gear: Gear,
+  gear: ReadonlyGear,
   type: keyof GearStarforceOption,
 ): number {
   return (
@@ -351,6 +384,45 @@ function _getStarScrollBaseValue(
     gear.starforceOption[type]
   );
 }
+
+function _getBaseMaxStar(gear: ReadonlyGear): number {
+  const reqLevel = gear.req.level + gear.req.levelIncrease;
+  let data: readonly number[] | undefined = undefined;
+  for (const item of maxStarData) {
+    if (reqLevel >= item[0]) data = item;
+    else break;
+  }
+
+  if (!data) return 0;
+  return gear.attributes.superior ? data[2] : data[1];
+}
+
+function _getBaseMaxStarWithToadsHammer(gear: ReadonlyGear): number {
+  const reqLevel = gear.req.level;
+  let data: readonly number[] | undefined = undefined;
+  for (const item of maxStarDataWithToadsHammer) {
+    if (reqLevel >= item[0]) data = item;
+    else break;
+  }
+  if (!data) return 0;
+  return data[1];
+}
+
+const maxStarData = [
+  [0, 5, 3],
+  [95, 8, 5],
+  [110, 10, 8],
+  [120, 15, 10],
+  [130, 20, 12],
+  [140, 30, 15],
+] as const;
+
+const maxStarDataWithToadsHammer = [
+  [0, 15],
+  [101, 19],
+  [111, 29],
+  [140, 30],
+] as const;
 
 const statTypes = ['str', 'dex', 'int', 'luk'] as const;
 
@@ -370,39 +442,39 @@ const maxHpTypes = [
 ];
 
 const starforceStat = [
-  [0, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0],
   [108, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0],
   [118, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0],
   [128, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0],
-  [138, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 9, 9, 9, 9, 9, 9, 9, 0, 0, 0],
-  [148, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 11, 11, 11, 11, 11, 11, 11, 0, 0, 0],
-  [158, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 13, 13, 13, 13, 13, 13, 13, 0, 0, 0],
-  [198, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15, 15, 15, 15, 15, 15, 15, 0, 0, 0],
-  [248, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 17, 17, 17, 17, 17, 17, 17, 0, 0, 0],
+  [138, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 9, 9, 9, 9, 9, 9, 9, 0, 0, 0, 0, 0, 0, 0, 0],
+  [148, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 11, 11, 11, 11, 11, 11, 11, 0, 0, 0, 0, 0, 0, 0, 0],
+  [158, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 13, 13, 13, 13, 13, 13, 13, 0, 0, 0, 0, 0, 0, 0, 0],
+  [198, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 15, 15, 15, 15, 15, 15, 15, 0, 0, 0, 0, 0, 0, 0, 0],
+  [248, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 17, 17, 17, 17, 17, 17, 17, 0, 0, 0, 0, 0, 0, 0, 0],
 ]; // prettier-ignore
 
 const starforcePower = [
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0],
   [108, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 6, 7, 8, 9, 10, 12, 13, 15, 17],
   [118, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 7, 8, 9, 10, 11, 13, 14, 16, 18],
   [128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 8, 9, 10, 11, 12, 14, 16, 18, 20],
-  [138, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 9, 10, 11, 12, 13, 15, 17, 19, 21],
-  [148, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22],
-  [158, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 11, 12, 13, 14, 15, 17, 19, 21, 23],
-  [198, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 13, 14, 15, 16, 17, 19, 21, 23, 25],
-  [248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 15, 16, 17, 18, 19, 21, 23, 25, 27],
+  [138, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 9, 10, 11, 12, 13, 15, 17, 19, 21, 22, 23, 24, 25, 26],
+  [148, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 23, 24, 25, 26, 27],
+  [158, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 11, 12, 13, 14, 15, 17, 19, 21, 23, 24, 25, 26, 27, 28],
+  [198, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 13, 14, 15, 16, 17, 19, 21, 23, 25, 26, 27, 28, 29, 30],
+  [248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 15, 16, 17, 18, 19, 21, 23, 25, 27, 28, 29, 30, 31, 32],
 ]; // prettier-ignore
 
 const starforceWeaponPower = [
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 5, 6, 7, 0, 0, 0, 0, 0],
   [108, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 5, 6, 7, 8, 9, 27, 28, 29],
   [118, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 6, 6, 7, 8, 9, 10, 28, 29, 30],
   [128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 7, 7, 8, 9, 10, 11, 29, 30, 31],
-  [138, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 8, 8, 9, 10, 11, 12, 30, 31, 32],
-  [148, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 9, 9, 10, 11, 12, 13, 31, 32, 33],
-  [158, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 9, 10, 11, 12, 13, 14, 32, 33, 34],
-  [198, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 13, 14, 14, 15, 16, 17, 34, 35, 36],
-  [248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 15, 16, 16, 17, 18, 19, 36, 37, 38],
+  [138, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 8, 8, 9, 10, 11, 12, 30, 31, 32, 33, 34, 35, 36, 37],
+  [148, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 9, 9, 10, 11, 12, 13, 31, 32, 33, 34, 35, 36, 37, 38],
+  [158, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 9, 10, 11, 12, 13, 14, 32, 33, 34, 35, 36, 37, 38, 39],
+  [198, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 13, 14, 14, 15, 16, 17, 34, 35, 36, 37, 38, 39, 40, 41],
+  [248, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 15, 16, 16, 17, 18, 19, 36, 37, 38, 39, 40, 41, 42, 43],
 ]; // prettier-ignore
 
 const superiorPower = [
@@ -420,15 +492,17 @@ const superiorStat = [
 
 const starforceGloveBonusPower = [
   -1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0,
 ];
 
 const starforceMaxHpMp = [
   -1, 5, 5, 5, 10, 10, 15, 15, 20, 20, 25, 25, 25, 25, 25, 25, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0, 0,
 ];
 
 const starforceSpeedJump = [
   -1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0,
 ];
 
 const starScrollStat = [

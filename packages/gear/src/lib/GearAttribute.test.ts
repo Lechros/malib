@@ -1,4 +1,4 @@
-import { GearCuttable, GearShare, GearTrade, PotentialCan } from './data';
+import { GearCapability, GearCuttable, GearShare, GearTrade } from './data';
 import { GearAttribute } from './GearAttribute';
 
 describe('GearAttribute', () => {
@@ -73,23 +73,6 @@ describe('GearAttribute', () => {
     });
   });
 
-  describe('blockGoldenHammer', () => {
-    it('returns false by default', () => {
-      expect(attr.blockGoldenHammer).toBe(false);
-    });
-
-    it('returns true', () => {
-      attr.data.blockGoldenHammer = true;
-
-      expect(attr.blockGoldenHammer).toBe(true);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'blockGoldenHammer' because it is a read-only property.
-      expect(() => (attr.blockGoldenHammer = true)).toThrow();
-    });
-  });
-
   describe('superior', () => {
     it('returns false by default', () => {
       expect(attr.superior).toBe(false);
@@ -124,73 +107,90 @@ describe('GearAttribute', () => {
     });
   });
 
-  describe('cannotUpgrade', () => {
-    it('returns false by default', () => {
-      expect(attr.cannotUpgrade).toBe(false);
+  describe('canScroll', () => {
+    it('returns Cannot by default', () => {
+      expect(attr.canScroll).toBe(GearCapability.Cannot);
     });
 
-    it('returns true', () => {
-      attr.data.cannotUpgrade = true;
+    it('returns Can', () => {
+      attr.data.canScroll = GearCapability.Can;
 
-      expect(attr.cannotUpgrade).toBe(true);
+      expect(attr.canScroll).toBe(GearCapability.Can);
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'cannotUpgrade' because it is a read-only property.
-      expect(() => (attr.cannotUpgrade = true)).toThrow();
+      // @ts-expect-error: Cannot assign to 'canScroll' because it is a read-only property.
+      expect(() => (attr.canScroll = GearCapability.Can)).toThrow();
     });
   });
 
-  describe('potential', () => {
-    it('returns None by default', () => {
-      expect(attr.canPotential).toBe(PotentialCan.None);
+  describe('canStarforce', () => {
+    it('returns Cannot by default', () => {
+      expect(attr.canStarforce).toBe(GearCapability.Cannot);
+    });
+
+    it('returns Can', () => {
+      attr.data.canStarforce = GearCapability.Can;
+
+      expect(attr.canStarforce).toBe(GearCapability.Can);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'canStarforce' because it is a read-only property.
+      expect(() => (attr.canStarforce = GearCapability.Can)).toThrow();
+    });
+  });
+
+  describe('canAddOption', () => {
+    it('returns Cannot by default', () => {
+      expect(attr.canAddOption).toBe(GearCapability.Cannot);
+    });
+
+    it('returns Can', () => {
+      attr.data.canAddOption = GearCapability.Can;
+
+      expect(attr.canAddOption).toBe(GearCapability.Can);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'canAddOption' because it is a read-only property.
+      expect(() => (attr.canAddOption = GearCapability.Can)).toThrow();
+    });
+  });
+
+  describe('canPotential', () => {
+    it('returns Cannot by default', () => {
+      expect(attr.canPotential).toBe(GearCapability.Cannot);
     });
 
     it('returns Fixed', () => {
-      attr.data.canPotential = PotentialCan.Fixed;
+      attr.data.canPotential = GearCapability.Fixed;
 
-      expect(attr.canPotential).toBe(PotentialCan.Fixed);
+      expect(attr.canPotential).toBe(GearCapability.Fixed);
     });
 
     it('is readonly property', () => {
       // @ts-expect-error: Cannot assign to 'canPotential' because it is a read-only property.
-      expect(() => (attr.canPotential = PotentialCan.Fixed)).toThrow();
+      expect(() => (attr.canPotential = GearCapability.Fixed)).toThrow();
     });
   });
 
-  describe('additionalPotential', () => {
-    it('returns None by default', () => {
-      expect(attr.canAdditionalPotential).toBe(PotentialCan.None);
+  describe('canAdditionalPotential', () => {
+    it('returns Cannot by default', () => {
+      expect(attr.canAdditionalPotential).toBe(GearCapability.Cannot);
     });
 
     it('returns Cannot', () => {
-      attr.data.canAdditionalPotential = PotentialCan.Cannot;
+      attr.data.canAdditionalPotential = GearCapability.Cannot;
 
-      expect(attr.canAdditionalPotential).toBe(PotentialCan.Cannot);
+      expect(attr.canAdditionalPotential).toBe(GearCapability.Cannot);
     });
 
     it('is readonly property', () => {
       expect(
         // @ts-expect-error: Cannot assign to 'canAdditionalPotential' because it is a read-only property.
-        () => (attr.canAdditionalPotential = PotentialCan.Cannot),
+        () => (attr.canAdditionalPotential = GearCapability.Cannot),
       ).toThrow();
-    });
-  });
-
-  describe('reqLevelIncrease', () => {
-    it('returns 0 by default', () => {
-      expect(attr.reqLevelIncrease).toBe(0);
-    });
-
-    it('returns 20', () => {
-      attr.data.reqLevelIncrease = 20;
-
-      expect(attr.reqLevelIncrease).toBe(20);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'reqLevelIncrease' because it is a read-only property.
-      expect(() => (attr.reqLevelIncrease = 10)).toThrow();
     });
   });
 
@@ -229,6 +229,23 @@ describe('GearAttribute', () => {
     });
   });
 
+  describe('totalCuttableCount', () => {
+    it('returns undefined by default', () => {
+      expect(attr.totalCuttableCount).toBe(undefined);
+    });
+
+    it('returns 10', () => {
+      attr.data.totalCuttableCount = 10;
+
+      expect(attr.totalCuttableCount).toBe(10);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'totalCuttableCount' because it is a read-only property.
+      expect(() => (attr.totalCuttableCount = 20)).toThrow();
+    });
+  });
+
   describe('accountShareTag', () => {
     it('returns false by default', () => {
       expect(attr.accountShareTag).toBe(false);
@@ -243,6 +260,23 @@ describe('GearAttribute', () => {
     it('is readonly property', () => {
       // @ts-expect-error: Cannot assign to 'accountShareTag' because it is a read-only property.
       expect(() => (attr.accountShareTag = true)).toThrow();
+    });
+  });
+
+  describe('setItemId', () => {
+    it('returns undefined by default', () => {
+      expect(attr.setItemId).toBe(undefined);
+    });
+
+    it('returns 100', () => {
+      attr.data.setItemId = 100;
+
+      expect(attr.setItemId).toBe(100);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'setItemId' because it is a read-only property.
+      expect(() => (attr.setItemId = 100)).toThrow();
     });
   });
 
@@ -309,6 +343,23 @@ describe('GearAttribute', () => {
     it('is readonly property', () => {
       // @ts-expect-error: Cannot assign to 'bossReward' because it is a read-only property.
       expect(() => (attr.bossReward = true)).toThrow();
+    });
+  });
+
+  describe('skills', () => {
+    it('returns empty array by default', () => {
+      expect(attr.skills).toEqual([]);
+    });
+
+    it('returns data value', () => {
+      attr.data.skills = ['스킬1', '스킬2'];
+
+      expect(attr.skills).toEqual(['스킬1', '스킬2']);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'skills' because it is a read-only property.
+      expect(() => (attr.skills = ['스킬1', '스킬2'])).toThrow();
     });
   });
 

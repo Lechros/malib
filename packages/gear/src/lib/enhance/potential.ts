@@ -1,20 +1,17 @@
 import {
-  GearType,
-  PotentialCan,
+  GearCapability,
   PotentialData,
   PotentialGrade,
   PotentialOption,
 } from '../data';
 import { ErrorMessage } from '../errors';
 import { Gear } from '../Gear';
-import { isDragonGear, isMechanicGear, isSubWeapon } from '../gearType';
+import { ReadonlyGear } from '../ReadonlyGear';
 
 /**
  * 잠재옵션 (읽기 전용)
  */
 export interface ReadonlyPotential extends Readonly<PotentialData> {
-  /** 장비에 표시되는 이름 */
-  summary: string;
   /** 잠재능력 옵션 */
   option: Readonly<PotentialOption>;
 }
@@ -24,11 +21,8 @@ export interface ReadonlyPotential extends Readonly<PotentialData> {
  * @param gear 확인할 장비.
  * @returns 지원할 경우 `true`; 아닐 경우 `false`.
  */
-export function supportsPotential(gear: Gear): boolean {
-  return (
-    _determineCanPotential(gear.attributes.canPotential, gear) !==
-    PotentialCan.Cannot
-  );
+export function supportsPotential(gear: ReadonlyGear): boolean {
+  return gear.attributes.canPotential === GearCapability.Can;
 }
 
 /**
@@ -36,11 +30,8 @@ export function supportsPotential(gear: Gear): boolean {
  * @param gear 확인할 장비.
  * @returns 설정할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canSetPotential(gear: Gear): boolean {
-  return (
-    _determineCanPotential(gear.attributes.canPotential, gear) ===
-    PotentialCan.Can
-  );
+export function canSetPotential(gear: ReadonlyGear): boolean {
+  return gear.attributes.canPotential === GearCapability.Can;
 }
 
 /**
@@ -98,11 +89,8 @@ export function resetPotential(gear: Gear) {
  * @param gear 확인할 장비.
  * @returns 지원할 경우 `true`; 아닐 경우 `false`.
  */
-export function supportsAdditionalPotential(gear: Gear): boolean {
-  return (
-    _determineCanPotential(gear.attributes.canAdditionalPotential, gear) !==
-    PotentialCan.Cannot
-  );
+export function supportsAdditionalPotential(gear: ReadonlyGear): boolean {
+  return gear.attributes.canAdditionalPotential === GearCapability.Can;
 }
 
 /**
@@ -110,11 +98,8 @@ export function supportsAdditionalPotential(gear: Gear): boolean {
  * @param gear 확인할 장비.
  * @returns 설정할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canSetAdditionalPotential(gear: Gear): boolean {
-  return (
-    _determineCanPotential(gear.attributes.canAdditionalPotential, gear) ===
-    PotentialCan.Can
-  );
+export function canSetAdditionalPotential(gear: ReadonlyGear): boolean {
+  return gear.attributes.canAdditionalPotential === GearCapability.Can;
 }
 
 /**
@@ -165,42 +150,4 @@ export function resetAdditionalPotential(gear: Gear) {
   }
   gear.data.additionalPotentialGrade = PotentialGrade.Normal;
   gear.data.additionalPotentials = undefined;
-}
-
-function _determineCanPotential(can: PotentialCan, gear: Gear) {
-  if (can !== PotentialCan.None) {
-    return can;
-  }
-  return _defaultCanPotential(gear);
-}
-
-function _defaultCanPotential(gear: Gear) {
-  if (gear.scrollTotalUpgradeableCount > 0) {
-    if (isMechanicGear(gear.type) || isDragonGear(gear.type)) {
-      return PotentialCan.Cannot;
-    }
-    return PotentialCan.Can;
-  }
-  if (_isSpecialCanPotential(gear.type) || isSubWeapon(gear.type)) {
-    return PotentialCan.Can;
-  }
-  return PotentialCan.Cannot;
-}
-
-function _isSpecialCanPotential(gearType: GearType) {
-  switch (gearType) {
-    case GearType.soulShield:
-    case GearType.demonShield:
-    case GearType.katara:
-    case GearType.magicArrow:
-    case GearType.card:
-    case GearType.orb:
-    case GearType.dragonEssence:
-    case GearType.soulRing:
-    case GearType.magnum:
-    case GearType.emblem:
-      return true;
-    default:
-      return false;
-  }
 }

@@ -17,38 +17,17 @@ export class GearReq implements GearReqData {
   }
 
   /**
-   * 착용 가능 레벨
+   * 기본 착용 가능 레벨
    */
   get level(): number {
     return this.data.level ?? 0;
   }
 
   /**
-   * 착용 가능 STR
+   * 착용 가능 레벨 증가
    */
-  get str(): number {
-    return this.data.str ?? 0;
-  }
-
-  /**
-   * 착용 가능 DEX
-   */
-  get dex(): number {
-    return this.data.dex ?? 0;
-  }
-
-  /**
-   * 착용 가능 INT
-   */
-  get int(): number {
-    return this.data.int ?? 0;
-  }
-
-  /**
-   * 착용 가능 LUK
-   */
-  get luk(): number {
-    return this.data.luk ?? 0;
+  get levelIncrease(): number {
+    return this.data.levelIncrease ?? 0;
   }
 
   /**

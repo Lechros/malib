@@ -1,0 +1,87 @@
+import { GearOption } from '@malib/gear';
+
+export interface WzGear {
+  id: number;
+  name: string;
+  icon: string;
+  desc?: string;
+  potentials?: WzPotential[];
+  skills?: string[];
+
+  incSTR?: number;
+  incDEX?: number;
+  incINT?: number;
+  incLUK?: number;
+  incMHP?: number;
+  incMHPr?: number;
+  incMMP?: number;
+  incMMPr?: number;
+  incARC?: number;
+  incPAD?: number;
+  incMAD?: number;
+  incPDD?: number;
+  incMDD?: number;
+  incACC?: number;
+  incEVA?: number;
+  incSpeed?: number;
+  incJump?: number;
+  incCraft?: number;
+  bdR?: number;
+  imdR?: number;
+  damR?: number;
+  incCHUC?: number;
+  attackSpeed?: number;
+  tuc?: number;
+  setItemID?: number;
+  durability?: number;
+  reduceReq?: number;
+  reqLevel?: number;
+  reqJob?: number;
+  reqSpecJob?: number;
+  grade?: number;
+  only?: number;
+  tradeBlock?: number;
+  accountSharable?: number;
+  onlyEquip?: number;
+  tradeAvailable?: number;
+  equipTradeBlock?: number;
+  sharableOnce?: number;
+  notExtend?: number;
+  epicItem?: number;
+  charismaEXP?: number;
+  senseEXP?: number;
+  insightEXP?: number;
+  willEXP?: number;
+  craftEXP?: number;
+  charmEXP?: number;
+  accountShareTag?: number;
+  noPotential?: number;
+  fixedPotential?: number;
+  timeLimited?: number;
+  specialGrade?: number;
+  fixedGrade?: number;
+  unchangeable?: number;
+  superiorEqp?: number;
+  incPQEXPr?: number;
+  jokerToSetItem?: number;
+  medalTag?: number;
+  ringOptionSkill?: number;
+  ringOptionSkillLv?: number;
+  blockGoldHammer?: number;
+  exceptUpgrade?: number;
+  onlyUpgrade?: number;
+  android?: number;
+  noLookChange?: number;
+  tucIgnoreForPotential?: number;
+  Etuc?: number;
+  CuttableCount?: number;
+  exUpgradeBlock?: number;
+  exUpgradeChangeBlock?: number;
+  bossReward?: number;
+}
+
+export interface WzPotential {
+  grade: number;
+  summary: string;
+  option: Partial<GearOption>;
+}

@@ -1,10 +1,13 @@
 export {
+  /* AddOptionData */
+  AddOptionType,
+  type AddOptionGrade,
+  type AddOptionData,
   /* GearAttributeData */
   type GearAttributeData,
   GearTrade,
   GearShare,
-  AddOptionCan,
-  PotentialCan,
+  GearCapability,
   GearCuttable,
   type GearIncline,
   /* GearData */
@@ -34,9 +37,11 @@ export {
   type SoulOption,
 } from './lib/data';
 export {
-  AddOptionType,
-  type AddOptionGrade,
   supportsAddOption,
+  canApplyAddOption,
+  applyAddOption,
+  canResetAddOption,
+  resetAddOption,
   getAddOption,
   getAddOptionValue,
 } from './lib/enhance/addOption';
@@ -48,6 +53,27 @@ export {
   canResetExceptional,
   resetExceptional,
 } from './lib/enhance/exceptional';
+export {
+  type ReadonlyPotential,
+  supportsPotential,
+  canSetPotential,
+  setPotential,
+  resetPotential,
+  supportsAdditionalPotential,
+  canSetAdditionalPotential,
+  setAdditionalPotential,
+  resetAdditionalPotential,
+} from './lib/enhance/potential';
+export {
+  supportsSoul,
+  canApplySoulEnchant,
+  applySoulEnchant,
+  canSetSoul,
+  setSoul,
+  canSetSoulCharge,
+  setSoulCharge,
+  resetSoulEnchant,
+} from './lib/enhance/soulSlot';
 export {
   SpellTraceType,
   type SpellTraceRate,
@@ -63,12 +89,11 @@ export {
   starScroll,
   canResetStarforce,
   resetStarforce,
+  getMaxStar,
 } from './lib/enhance/starforce';
 export {
   type Scroll,
   supportsUpgrade,
-  canGoldenHammer,
-  applyGoldenHammer,
   canFailScroll,
   failScroll,
   canResileScroll,
@@ -79,6 +104,7 @@ export {
   applyScroll,
 } from './lib/enhance/upgrade';
 export { Gear } from './lib/Gear';
+export { ReadonlyGear } from './lib/ReadonlyGear';
 export { GearAttribute } from './lib/GearAttribute';
 export { toGearOption } from './lib/gearOption';
 export { GearReq } from './lib/GearReq';
@@ -93,13 +119,3 @@ export {
   isMechanicGear,
   isDragonGear,
 } from './lib/gearType';
-export {
-  supportsSoul,
-  canApplySoulEnchant,
-  applySoulEnchant,
-  canSetSoul,
-  setSoul,
-  canSetSoulCharge,
-  setSoulCharge,
-  resetSoulEnchant,
-} from './lib/soulSlot';

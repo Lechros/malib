@@ -1,7 +1,8 @@
-import { GearUpgradeOption } from '../data';
+import { GearUpgradeOption, GearCapability } from '../data';
 import { ErrorMessage } from '../errors';
 import { Gear } from '../Gear';
-import { addOptions } from '../utils';
+import { addOptions } from '../gearOption';
+import { ReadonlyGear } from '../ReadonlyGear';
 
 /**
  * 주문서
@@ -20,36 +21,8 @@ export interface Scroll {
  * @param gear 확인할 장비.
  * @returns 지원할 경우 `true`; 아닐 경우 `false`.
  */
-export function supportsUpgrade(gear: Gear): boolean {
-  return !gear.attributes.cannotUpgrade && gear.scrollTotalUpgradeableCount > 0;
-}
-
-/**
- * 장비에 황금 망치를 적용할 수 있는 상태인지 여부를 확인합니다.
- * @param gear 확인할 장비.
- * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
- */
-export function canGoldenHammer(gear: Gear): boolean {
-  return (
-    supportsUpgrade(gear) &&
-    !gear.attributes.blockGoldenHammer &&
-    gear.goldenHammer === 0
-  );
-}
-
-/**
- * 장비에 황금 망치를 적용합니다.
- * @param gear 적용할 장비.
- *
- * @throws {@link TypeError}
- * 황금 망치를 적용할 수 없는 상태의 장비일 경우.
- */
-export function applyGoldenHammer(gear: Gear) {
-  if (!canGoldenHammer(gear)) {
-    throw TypeError(ErrorMessage.Upgrade_InvalidGoldenHammerGear);
-  }
-  gear.data.goldenHammer = gear.goldenHammer + 1;
-  gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount + 1;
+export function supportsUpgrade(gear: ReadonlyGear): boolean {
+  return gear.attributes.canScroll === GearCapability.Can;
 }
 
 /**
@@ -57,7 +30,7 @@ export function applyGoldenHammer(gear: Gear) {
  * @param gear 확인할 장비.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canFailScroll(gear: Gear): boolean {
+export function canFailScroll(gear: ReadonlyGear): boolean {
   return supportsUpgrade(gear) && gear.scrollUpgradeableCount > 0;
 }
 
@@ -81,7 +54,7 @@ export function failScroll(gear: Gear) {
  * @param gear 확인할 장비.
  * @returns 복구할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canResileScroll(gear: Gear): boolean {
+export function canResileScroll(gear: ReadonlyGear): boolean {
   return supportsUpgrade(gear) && gear.scrollResilienceCount > 0;
 }
 
@@ -105,7 +78,7 @@ export function resileScroll(gear: Gear) {
  * @param gear 확인할 장비.
  * @returns 초기화할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canResetUpgrade(gear: Gear): boolean {
+export function canResetUpgrade(gear: ReadonlyGear): boolean {
   return supportsUpgrade(gear);
 }
 
@@ -124,7 +97,6 @@ export function resetUpgrade(gear: Gear) {
   gear.data.scrollUpgradeableCount = gear.scrollTotalUpgradeableCount;
   gear.data.scrollUpgradeCount = undefined;
   gear.data.scrollResilienceCount = undefined;
-  gear.data.goldenHammer = undefined;
 }
 
 /**
@@ -132,7 +104,7 @@ export function resetUpgrade(gear: Gear) {
  * @param gear 확인할 장비.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canApplyScroll(gear: Gear): boolean {
+export function canApplyScroll(gear: ReadonlyGear): boolean {
   return supportsUpgrade(gear) && gear.scrollUpgradeableCount > 0;
 }
 

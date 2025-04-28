@@ -1,5 +1,5 @@
-import { GearType, PotentialCan, PotentialGrade } from '../data';
-import { defaultGear } from '../testUtils';
+import { GearCapability, PotentialGrade } from '../data';
+import { createGear, createPotentialData } from '../test';
 import {
   canSetAdditionalPotential,
   canSetPotential,
@@ -12,137 +12,62 @@ import {
 } from './potential';
 
 describe('supportsPotential', () => {
-  it('is true for canPotential === Can', () => {
-    const gear = defaultGear({
+  it('canPotential = Can일 경우 true를 반환한다.', () => {
+    const gear = createGear({
       attributes: {
-        canPotential: PotentialCan.Can,
+        canPotential: GearCapability.Can,
       },
     });
 
     expect(supportsPotential(gear)).toBe(true);
   });
 
-  it('is true for canPotential === Fixed', () => {
-    const gear = defaultGear({
+  it('canPotential = Fixed일 경우 false를 반환한다.', () => {
+    const gear = createGear({
       attributes: {
-        canPotential: PotentialCan.Fixed,
-      },
-    });
-
-    expect(supportsPotential(gear)).toBe(true);
-  });
-
-  it('is false for canPotential === Cannot', () => {
-    const gear = defaultGear({
-      attributes: {
-        canPotential: PotentialCan.Cannot,
+        canPotential: GearCapability.Fixed,
       },
     });
 
     expect(supportsPotential(gear)).toBe(false);
   });
 
-  it('is true for canPotential === None with scrollTotalUpgradeableCount > 0', () => {
-    const gear = defaultGear({
+  it('canPotential = Cannot일 경우 false를 반환한다.', () => {
+    const gear = createGear({
       attributes: {
-        canPotential: PotentialCan.None,
+        canPotential: GearCapability.Cannot,
       },
-      scrollUpgradeableCount: 1,
-    });
-
-    expect(supportsPotential(gear)).toBe(true);
-  });
-
-  it('is false for canPotential === None with scrollTotalUpgradeableCount === 0', () => {
-    const gear = defaultGear({
-      attributes: {
-        canPotential: PotentialCan.None,
-      },
-      scrollUpgradeableCount: 0,
     });
 
     expect(supportsPotential(gear)).toBe(false);
   });
-
-  it('is false for canPotential === None with scrollTotalUpgradeableCount > 0 if type is mechanicGear', () => {
-    const gear = defaultGear({
-      type: GearType.machineArms,
-      attributes: {
-        canPotential: PotentialCan.None,
-      },
-      scrollUpgradeableCount: 1,
-    });
-
-    expect(supportsPotential(gear)).toBe(false);
-  });
-
-  it('is false for canPotential === None with scrollTotalUpgradeableCount > 0 if type is dragonGear', () => {
-    const gear = defaultGear({
-      type: GearType.dragonMask,
-      attributes: {
-        canPotential: PotentialCan.None,
-      },
-      scrollUpgradeableCount: 1,
-    });
-
-    expect(supportsPotential(gear)).toBe(false);
-  });
-
-  it.each([
-    GearType.soulShield,
-    GearType.demonShield,
-    GearType.katara,
-    GearType.magicArrow,
-    GearType.card,
-    GearType.orb,
-    GearType.dragonEssence,
-    GearType.soulRing,
-    GearType.magnum,
-    GearType.emblem,
-    GearType.shield,
-    GearType.katara,
-    GearType.jewel,
-  ])(
-    'is true for canPotential === None with scrollTotalUpgradeableCount === 0 if type is %s',
-    (type) => {
-      const gear = defaultGear({
-        type,
-        attributes: {
-          canPotential: PotentialCan.None,
-        },
-        scrollUpgradeableCount: 0,
-      });
-
-      expect(supportsPotential(gear)).toBe(true);
-    },
-  );
 });
 
 describe('canSetPotential', () => {
-  it('is true for canPotential === Can', () => {
-    const gear = defaultGear({
+  it('canPotential = Can일 경우 true를 반환한다.', () => {
+    const gear = createGear({
       attributes: {
-        canPotential: PotentialCan.Can,
+        canPotential: GearCapability.Can,
       },
     });
 
     expect(canSetPotential(gear)).toBe(true);
   });
 
-  it('is false for canPotential === Fixed', () => {
-    const gear = defaultGear({
+  it('canPotential = Fixed일 경우 false를 반환한다.', () => {
+    const gear = createGear({
       attributes: {
-        canPotential: PotentialCan.Fixed,
+        canPotential: GearCapability.Fixed,
       },
     });
 
     expect(canSetPotential(gear)).toBe(false);
   });
 
-  it('is false for canPotential === Cannot', () => {
-    const gear = defaultGear({
+  it('canPotential = Cannot일 경우 false를 반환한다.', () => {
+    const gear = createGear({
       attributes: {
-        canPotential: PotentialCan.Cannot,
+        canPotential: GearCapability.Cannot,
       },
     });
 
@@ -151,98 +76,129 @@ describe('canSetPotential', () => {
 });
 
 describe('setPotential', () => {
-  it('sets potentialGrade', () => {
-    const gear = defaultGear({
+  it('잠재능력 등급을 설정한다.', () => {
+    const gear = createGear({
       attributes: {
-        canPotential: PotentialCan.Can,
+        canPotential: GearCapability.Can,
       },
     });
 
-    setPotential(gear, PotentialGrade.Unique, [{ summary: '', option: {} }]);
+    setPotential(gear, PotentialGrade.Unique, [createPotentialData()]);
 
     expect(gear.potentialGrade).toBe(PotentialGrade.Unique);
   });
 
-  it('sets potentials', () => {
-    const gear = defaultGear({
+  it('잠재능력 옵션을 설정한다.', () => {
+    const gear = createGear({
       attributes: {
-        canPotential: PotentialCan.Can,
+        canPotential: GearCapability.Can,
       },
     });
+    const potentials = [
+      createPotentialData({
+        grade: PotentialGrade.Unique,
+        summary: '테스트용 잠재능력 1',
+      }),
+      createPotentialData({
+        grade: PotentialGrade.Unique,
+        summary: '테스트용 잠재능력 2',
+      }),
+    ];
 
-    setPotential(gear, PotentialGrade.Unique, [
-      { summary: 'test1', option: {} },
-      { summary: 'test2', option: {} },
-    ]);
+    setPotential(gear, PotentialGrade.Unique, potentials);
 
-    expect(gear.potentials).toEqual([
-      { summary: 'test1', option: {} },
-      { summary: 'test2', option: {} },
-    ]);
+    expect(gear.potentials).toEqual(potentials);
   });
 
-  it('throws error if canSetPotential is false', () => {
-    const gear = defaultGear({
+  it('잠재능력 옵션의 등급이 잠재능력 등급보다 낮은 경우에도 설정한다.', () => {
+    const gear = createGear({
       attributes: {
-        canPotential: PotentialCan.Cannot,
+        canPotential: GearCapability.Can,
+      },
+    });
+    const potentials = [createPotentialData({ grade: PotentialGrade.Rare })];
+
+    setPotential(gear, PotentialGrade.Unique, potentials);
+
+    expect(gear.potentials).toEqual(potentials);
+  });
+
+  it('잠재능력 옵션의 등급이 잠재능력 등급보다 높은 경우에도 설정한다.', () => {
+    const gear = createGear({
+      attributes: {
+        canPotential: GearCapability.Can,
+      },
+    });
+    const potentials = [
+      createPotentialData({ grade: PotentialGrade.Legendary }),
+    ];
+
+    setPotential(gear, PotentialGrade.Epic, potentials);
+
+    expect(gear.potentials).toEqual(potentials);
+  });
+
+  it('canPotential = Cannot일 경우 TypeError가 발생한다.', () => {
+    const gear = createGear({
+      attributes: {
+        canPotential: GearCapability.Cannot,
       },
     });
 
     expect(() => {
-      setPotential(gear, PotentialGrade.Unique, [{ summary: '', option: {} }]);
-    }).toThrow();
+      setPotential(gear, PotentialGrade.Unique, [createPotentialData()]);
+    }).toThrow(TypeError);
   });
 
-  it('throws error if grade is Normal', () => {
-    const gear = defaultGear({
+  it('설정하려는 잠재능력 등급이 Normal일 경우 TypeError가 발생한다.', () => {
+    const gear = createGear({
       attributes: {
-        canPotential: PotentialCan.Can,
+        canPotential: GearCapability.Can,
       },
     });
 
     expect(() => {
-      setPotential(gear, PotentialGrade.Normal, [{ summary: '', option: {} }]);
-    }).toThrow();
+      setPotential(gear, PotentialGrade.Normal, [createPotentialData()]);
+    }).toThrow(TypeError);
   });
 
-  it('throws error if options length is less than 1', () => {
-    const gear = defaultGear({
+  it('설정하려는 잠재능력 옵션의 길이가 0일 경우 TypeError가 발생한다.', () => {
+    const gear = createGear({
       attributes: {
-        canPotential: PotentialCan.Can,
+        canPotential: GearCapability.Can,
       },
     });
 
     expect(() => {
       setPotential(gear, PotentialGrade.Unique, []);
-    }).toThrow();
+    }).toThrow(TypeError);
   });
 
-  it('throws error if options length is greater than 3', () => {
-    const gear = defaultGear({
+  it('설정하려는 잠재능력 옵션의 길이가 3보다 클 경우 TypeError가 발생한다.', () => {
+    const gear = createGear({
       attributes: {
-        canPotential: PotentialCan.Can,
+        canPotential: GearCapability.Can,
       },
     });
 
     expect(() => {
       setPotential(gear, PotentialGrade.Unique, [
-        { summary: '', option: {} },
-        { summary: '', option: {} },
-        { summary: '', option: {} },
-        { summary: '', option: {} },
+        createPotentialData(),
+        createPotentialData(),
+        createPotentialData(),
+        createPotentialData(),
       ]);
-    }).toThrow();
+    }).toThrow(TypeError);
   });
 });
 
 describe('resetPotential', () => {
-  it('sets potentialGrade to Normal', () => {
-    const gear = defaultGear({
+  it('잠재능력 등급을 Normal로 설정한다.', () => {
+    const gear = createGear({
       attributes: {
-        canPotential: PotentialCan.Can,
+        canPotential: GearCapability.Can,
       },
       potentialGrade: PotentialGrade.Unique,
-      potentials: [{ summary: '', option: {} }],
     });
 
     resetPotential(gear);
@@ -250,13 +206,12 @@ describe('resetPotential', () => {
     expect(gear.potentialGrade).toBe(PotentialGrade.Normal);
   });
 
-  it('sets potentials to empty', () => {
-    const gear = defaultGear({
+  it('잠재능력 옵션을 초기화한다.', () => {
+    const gear = createGear({
       attributes: {
-        canPotential: PotentialCan.Can,
+        canPotential: GearCapability.Can,
       },
-      potentialGrade: PotentialGrade.Unique,
-      potentials: [{ summary: '', option: {} }],
+      potentials: [createPotentialData()],
     });
 
     resetPotential(gear);
@@ -264,245 +219,201 @@ describe('resetPotential', () => {
     expect(gear.potentials).toEqual([]);
   });
 });
-// Now generate all tests equal but with Additional variant
+
 describe('supportsAdditionalPotential', () => {
-  it('is true for canAdditionalPotential === Can', () => {
-    const gear = defaultGear({
+  it('canAdditionalPotential = Can일 경우 true를 반환한다.', () => {
+    const gear = createGear({
       attributes: {
-        canAdditionalPotential: PotentialCan.Can,
+        canAdditionalPotential: GearCapability.Can,
       },
     });
 
     expect(supportsAdditionalPotential(gear)).toBe(true);
   });
 
-  it('is true for canAdditionalPotential === Fixed', () => {
-    const gear = defaultGear({
+  it('canAdditionalPotential = Fixed일 경우 false를 반환한다.', () => {
+    const gear = createGear({
       attributes: {
-        canAdditionalPotential: PotentialCan.Fixed,
-      },
-    });
-
-    expect(supportsAdditionalPotential(gear)).toBe(true);
-  });
-
-  it('is false for canAdditionalPotential === Cannot', () => {
-    const gear = defaultGear({
-      attributes: {
-        canAdditionalPotential: PotentialCan.Cannot,
+        canAdditionalPotential: GearCapability.Fixed,
       },
     });
 
     expect(supportsAdditionalPotential(gear)).toBe(false);
   });
 
-  it('is true for canAdditionalPotential === None with scrollTotalUpgradeableCount > 0', () => {
-    const gear = defaultGear({
+  it('canAdditionalPotential = Cannot일 경우 false를 반환한다.', () => {
+    const gear = createGear({
       attributes: {
-        canAdditionalPotential: PotentialCan.None,
+        canAdditionalPotential: GearCapability.Cannot,
       },
-      scrollUpgradeableCount: 1,
-    });
-
-    expect(supportsAdditionalPotential(gear)).toBe(true);
-  });
-
-  it('is false for canAdditionalPotential === None with scrollTotalUpgradeableCount === 0', () => {
-    const gear = defaultGear({
-      attributes: {
-        canAdditionalPotential: PotentialCan.None,
-      },
-      scrollUpgradeableCount: 0,
     });
 
     expect(supportsAdditionalPotential(gear)).toBe(false);
   });
 
-  it('is false for canAdditionalPotential === None with scrollTotalUpgradeableCount > 0 if type is mechanicGear', () => {
-    const gear = defaultGear({
-      type: GearType.machineArms,
-      attributes: {
-        canAdditionalPotential: PotentialCan.None,
-      },
-      scrollUpgradeableCount: 1,
-    });
-
-    expect(supportsAdditionalPotential(gear)).toBe(false);
-  });
-
-  it('is false for canAdditionalPotential === None with scrollTotalUpgradeableCount > 0 if type is dragonGear', () => {
-    const gear = defaultGear({
-      type: GearType.dragonMask,
-      attributes: {
-        canAdditionalPotential: PotentialCan.None,
-      },
-      scrollUpgradeableCount: 1,
-    });
-
-    expect(supportsAdditionalPotential(gear)).toBe(false);
-  });
-
-  it.each([
-    GearType.soulShield,
-    GearType.demonShield,
-    GearType.katara,
-    GearType.magicArrow,
-    GearType.card,
-    GearType.orb,
-    GearType.dragonEssence,
-    GearType.soulRing,
-    GearType.magnum,
-    GearType.emblem,
-    GearType.shield,
-    GearType.katara,
-    GearType.jewel,
-  ])(
-    'is true for canAdditionalPotential === None with scrollTotalUpgradeableCount === 0 if type is %s',
-    (type) => {
-      const gear = defaultGear({
-        type,
+  describe('canSetAdditionalPotential', () => {
+    it('canAdditionalPotential = Can일 경우 true를 반환한다.', () => {
+      const gear = createGear({
         attributes: {
-          canAdditionalPotential: PotentialCan.None,
+          canAdditionalPotential: GearCapability.Can,
         },
-        scrollUpgradeableCount: 0,
       });
 
-      expect(supportsAdditionalPotential(gear)).toBe(true);
-    },
-  );
-});
-
-describe('canSetAdditionalPotential', () => {
-  it('is true for canAdditionalPotential === Can', () => {
-    const gear = defaultGear({
-      attributes: {
-        canAdditionalPotential: PotentialCan.Can,
-      },
+      expect(canSetAdditionalPotential(gear)).toBe(true);
     });
 
-    expect(canSetAdditionalPotential(gear)).toBe(true);
-  });
+    it('canAdditionalPotential = Fixed일 경우 false를 반환한다.', () => {
+      const gear = createGear({
+        attributes: {
+          canAdditionalPotential: GearCapability.Fixed,
+        },
+      });
 
-  it('is false for canAdditionalPotential === Fixed', () => {
-    const gear = defaultGear({
-      attributes: {
-        canAdditionalPotential: PotentialCan.Fixed,
-      },
+      expect(canSetAdditionalPotential(gear)).toBe(false);
     });
 
-    expect(canSetAdditionalPotential(gear)).toBe(false);
-  });
+    it('canAdditionalPotential = Cannot일 경우 false를 반환한다.', () => {
+      const gear = createGear({
+        attributes: {
+          canAdditionalPotential: GearCapability.Cannot,
+        },
+      });
 
-  it('is false for canAdditionalPotential === Cannot', () => {
-    const gear = defaultGear({
-      attributes: {
-        canAdditionalPotential: PotentialCan.Cannot,
-      },
+      expect(canSetAdditionalPotential(gear)).toBe(false);
     });
-
-    expect(canSetAdditionalPotential(gear)).toBe(false);
   });
 });
 
 describe('setAdditionalPotential', () => {
-  it('sets additionalPotentialGrade', () => {
-    const gear = defaultGear({
+  it('에디셔널 잠재능력 등급을 설정한다.', () => {
+    const gear = createGear({
       attributes: {
-        canAdditionalPotential: PotentialCan.Can,
+        canAdditionalPotential: GearCapability.Can,
       },
     });
 
     setAdditionalPotential(gear, PotentialGrade.Unique, [
-      { summary: '', option: {} },
+      createPotentialData(),
     ]);
 
     expect(gear.additionalPotentialGrade).toBe(PotentialGrade.Unique);
   });
 
-  it('sets additionalPotentials', () => {
-    const gear = defaultGear({
+  it('에디셔널 잠재능력 옵션을 설정한다.', () => {
+    const gear = createGear({
       attributes: {
-        canAdditionalPotential: PotentialCan.Can,
+        canAdditionalPotential: GearCapability.Can,
       },
     });
+    const potentials = [
+      createPotentialData({
+        grade: PotentialGrade.Unique,
+        summary: '테스트용 에디셔널 잠재능력 1',
+      }),
+      createPotentialData({
+        grade: PotentialGrade.Unique,
+        summary: '테스트용 에디셔널 잠재능력 2',
+      }),
+    ];
 
-    setAdditionalPotential(gear, PotentialGrade.Unique, [
-      { summary: 'test1', option: {} },
-      { summary: 'test2', option: {} },
-    ]);
+    setAdditionalPotential(gear, PotentialGrade.Unique, potentials);
 
-    expect(gear.additionalPotentials).toEqual([
-      { summary: 'test1', option: {} },
-      { summary: 'test2', option: {} },
-    ]);
+    expect(gear.additionalPotentials).toEqual(potentials);
   });
 
-  it('throws error if canSetAdditionalPotential is false', () => {
-    const gear = defaultGear({
+  it('에디셔널 잠재능력 옵션의 등급이 에디셔널 잠재능력 등급보다 낮은 경우에도 설정한다.', () => {
+    const gear = createGear({
       attributes: {
-        canAdditionalPotential: PotentialCan.Cannot,
+        canAdditionalPotential: GearCapability.Can,
+      },
+    });
+    const potentials = [createPotentialData({ grade: PotentialGrade.Rare })];
+
+    setAdditionalPotential(gear, PotentialGrade.Unique, potentials);
+
+    expect(gear.additionalPotentials).toEqual(potentials);
+  });
+
+  it('에디셔널 잠재능력 옵션의 등급이 에디셔널 잠재능력 등급보다 높은 경우에도 설정한다.', () => {
+    const gear = createGear({
+      attributes: {
+        canAdditionalPotential: GearCapability.Can,
+      },
+    });
+    const potentials = [
+      createPotentialData({ grade: PotentialGrade.Legendary }),
+    ];
+
+    setAdditionalPotential(gear, PotentialGrade.Epic, potentials);
+
+    expect(gear.additionalPotentials).toEqual(potentials);
+  });
+
+  it('canAdditionalPotential = Cannot일 경우 TypeError가 발생한다.', () => {
+    const gear = createGear({
+      attributes: {
+        canAdditionalPotential: GearCapability.Cannot,
       },
     });
 
     expect(() => {
       setAdditionalPotential(gear, PotentialGrade.Unique, [
-        { summary: '', option: {} },
+        createPotentialData(),
       ]);
-    }).toThrow();
+    }).toThrow(TypeError);
   });
 
-  it('throws error if grade is Normal', () => {
-    const gear = defaultGear({
+  it('설정하려는 에디셔널 잠재능력 등급이 Normal일 경우 TypeError가 발생한다.', () => {
+    const gear = createGear({
       attributes: {
-        canAdditionalPotential: PotentialCan.Can,
+        canAdditionalPotential: GearCapability.Can,
       },
     });
 
     expect(() => {
       setAdditionalPotential(gear, PotentialGrade.Normal, [
-        { summary: '', option: {} },
+        createPotentialData(),
       ]);
-    }).toThrow();
+    }).toThrow(TypeError);
   });
 
-  it('throws error if options length is less than 1', () => {
-    const gear = defaultGear({
+  it('설정하려는 에디셔널 잠재능력 옵션의 길이가 0일 경우 TypeError가 발생한다.', () => {
+    const gear = createGear({
       attributes: {
-        canAdditionalPotential: PotentialCan.Can,
+        canAdditionalPotential: GearCapability.Can,
       },
     });
 
     expect(() => {
       setAdditionalPotential(gear, PotentialGrade.Unique, []);
-    }).toThrow();
+    }).toThrow(TypeError);
   });
 
-  it('throws error if options length is greater than 3', () => {
-    const gear = defaultGear({
+  it('설정하려는 에디셔널 잠재능력 옵션의 길이가 3보다 클 경우 TypeError가 발생한다.', () => {
+    const gear = createGear({
       attributes: {
-        canAdditionalPotential: PotentialCan.Can,
+        canAdditionalPotential: GearCapability.Can,
       },
     });
 
     expect(() => {
       setAdditionalPotential(gear, PotentialGrade.Unique, [
-        { summary: '', option: {} },
-        { summary: '', option: {} },
-        { summary: '', option: {} },
-        { summary: '', option: {} },
+        createPotentialData(),
+        createPotentialData(),
+        createPotentialData(),
+        createPotentialData(),
       ]);
-    }).toThrow();
+    }).toThrow(TypeError);
   });
 });
 
 describe('resetAdditionalPotential', () => {
-  it('sets additionalPotentialGrade to Normal', () => {
-    const gear = defaultGear({
+  it('에디셔널 잠재능력 등급을 Normal로 설정한다.', () => {
+    const gear = createGear({
       attributes: {
-        canAdditionalPotential: PotentialCan.Can,
+        canAdditionalPotential: GearCapability.Can,
       },
-      additionalPotentialGrade: PotentialGrade.Unique,
-      additionalPotentials: [{ summary: '', option: {} }],
+      additionalPotentialGrade: PotentialGrade.Legendary,
     });
 
     resetAdditionalPotential(gear);
@@ -510,13 +421,12 @@ describe('resetAdditionalPotential', () => {
     expect(gear.additionalPotentialGrade).toBe(PotentialGrade.Normal);
   });
 
-  it('sets additionalPotentials to empty', () => {
-    const gear = defaultGear({
+  it('에디셔널 잠재능력 옵션을 초기화한다.', () => {
+    const gear = createGear({
       attributes: {
-        canAdditionalPotential: PotentialCan.Can,
+        canAdditionalPotential: GearCapability.Can,
       },
-      additionalPotentialGrade: PotentialGrade.Unique,
-      additionalPotentials: [{ summary: '', option: {} }],
+      additionalPotentials: [createPotentialData()],
     });
 
     resetAdditionalPotential(gear);

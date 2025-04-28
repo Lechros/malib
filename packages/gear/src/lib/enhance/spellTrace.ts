@@ -2,6 +2,7 @@ import { GearType } from '../data';
 import { ErrorMessage } from '../errors';
 import { Gear } from '../Gear';
 import { isAccessory, isArmor, isWeapon } from '../gearType';
+import { ReadonlyGear } from '../ReadonlyGear';
 import { applyScroll, Scroll } from './upgrade';
 
 /**
@@ -69,7 +70,7 @@ export function applySpellTrace(
  * 주문의 흔적을 장비에 적용할 수 없는 경우.
  */
 export function getSpellTraceScroll(
-  gear: Gear,
+  gear: ReadonlyGear,
   type: SpellTraceType,
   rate: SpellTraceRate,
 ): SpellTrace {
@@ -92,7 +93,7 @@ export function getSpellTraceScroll(
 }
 
 export function _getWeaponSpellTrace(
-  gear: Gear,
+  gear: ReadonlyGear,
   type: SpellTraceType,
   rate: SpellTraceRate,
 ): SpellTrace {
@@ -119,7 +120,7 @@ export function _getWeaponSpellTrace(
 }
 
 export function _getGloveSpellTrace(
-  gear: Gear,
+  gear: ReadonlyGear,
   type: SpellTraceType,
   rate: SpellTraceRate,
 ): SpellTrace {
@@ -139,7 +140,7 @@ export function _getGloveSpellTrace(
 }
 
 export function _getArmorSpellTrace(
-  gear: Gear,
+  gear: ReadonlyGear,
   type: SpellTraceType,
   rate: SpellTraceRate,
 ): SpellTrace {
@@ -189,7 +190,7 @@ export function _getArmorSpellTrace(
 }
 
 export function _getAccSpellTrace(
-  gear: Gear,
+  gear: ReadonlyGear,
   type: SpellTraceType,
   rate: SpellTraceRate,
 ): SpellTrace {
@@ -232,7 +233,7 @@ export function _getAccSpellTrace(
 }
 
 export function _getHeartSpellTrace(
-  gear: Gear,
+  gear: ReadonlyGear,
   type: SpellTraceType,
   rate: SpellTraceRate,
 ): SpellTrace {
@@ -283,8 +284,9 @@ function _getTypeName(
   }
 }
 
-function _getTier(gear: Gear): _Tier {
-  return gear.req.level > 110 ? 2 : gear.req.level > 70 ? 1 : 0;
+function _getTier(gear: ReadonlyGear): _Tier {
+  const reqLevel = gear.req.level + gear.req.levelIncrease;
+  return reqLevel > 110 ? 2 : reqLevel > 70 ? 1 : 0;
 }
 
 function _getPowerType(type: SpellTraceType): 'attackPower' | 'magicPower' {
