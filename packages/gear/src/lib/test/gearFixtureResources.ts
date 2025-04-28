@@ -12,6 +12,32 @@ export const resources = {
     req: {},
     attributes: {},
   },
+  '핑크빈 모자': {
+    meta: {
+      id: 1003450,
+      version: 1,
+    },
+    name: '핑크빈 모자',
+    icon: '1002971',
+    type: 100,
+    req: {
+      level: 13,
+    },
+    attributes: {
+      canStarforce: 1,
+      canScroll: 1,
+      canAddOption: 1,
+      canPotential: 1,
+      canAdditionalPotential: 1,
+    },
+    baseOption: {
+      str: 1,
+      dex: 1,
+      int: 1,
+      luk: 1,
+    },
+    scrollUpgradeableCount: 11,
+  },
   '리버스 휀넬': {
     meta: {
       id: 1002790,
@@ -58,6 +84,29 @@ export const resources = {
     },
     baseOption: {
       armor: 2,
+    },
+    scrollUpgradeableCount: 6,
+  },
+  '튼튼한 기계 장갑': {
+    meta: {
+      id: 1082283,
+      version: 1,
+    },
+    name: '튼튼한 기계 장갑',
+    icon: '1082222',
+    type: 108,
+    req: {
+      level: 90,
+    },
+    attributes: {
+      canStarforce: 1,
+      canScroll: 1,
+      canAddOption: 1,
+      canPotential: 1,
+      canAdditionalPotential: 1,
+    },
+    baseOption: {
+      armor: 30,
     },
     scrollUpgradeableCount: 6,
   },
@@ -259,6 +308,43 @@ export const resources = {
       armor: 125,
     },
     scrollUpgradeableCount: 2,
+  },
+  '카오스 혼테일의 목걸이': {
+    meta: {
+      id: 1122076,
+      version: 1,
+    },
+    name: '카오스 혼테일의 목걸이',
+    icon: '1122076',
+    type: 112,
+    req: {
+      level: 120,
+    },
+    attributes: {
+      trade: 1,
+      onlyEquip: true,
+      cuttable: 2,
+      incline: {
+        charm: 80,
+      },
+      canStarforce: 1,
+      canScroll: 1,
+      canAddOption: 1,
+      canPotential: 1,
+      canAdditionalPotential: 1,
+    },
+    baseOption: {
+      str: 10,
+      dex: 10,
+      int: 10,
+      luk: 10,
+      maxHpRate: 10,
+      maxMpRate: 10,
+      attackPower: 2,
+      magicPower: 2,
+      armor: 140,
+    },
+    scrollUpgradeableCount: 3,
   },
   '데아 시두스 이어링': {
     meta: {
@@ -569,6 +655,43 @@ export const resources = {
     },
     scrollUpgradeableCount: 8,
   },
+  '앱솔랩스 ESP리미터': {
+    meta: {
+      id: 1262017,
+      version: 1,
+    },
+    name: '앱솔랩스 ESP리미터',
+    icon: '1262017',
+    type: 126,
+    req: {
+      level: 160,
+      job: 2,
+      class: 142,
+    },
+    attributes: {
+      trade: 2,
+      cuttable: 2,
+      attackSpeed: 6,
+      bossReward: true,
+      incline: {
+        charm: 100,
+      },
+      canStarforce: 1,
+      canScroll: 1,
+      canAddOption: 1,
+      canPotential: 1,
+      canAdditionalPotential: 1,
+    },
+    baseOption: {
+      int: 60,
+      luk: 60,
+      attackPower: 143,
+      magicPower: 241,
+      bossDamage: 30,
+      ignoreMonsterArmor: 10,
+    },
+    scrollUpgradeableCount: 9,
+  },
   '아케인셰이드 샤이닝로드': {
     meta: {
       id: 1212120,
@@ -603,6 +726,67 @@ export const resources = {
       ignoreMonsterArmor: 20,
     },
     scrollUpgradeableCount: 9,
+  },
+  '아케인셰이드 초선': {
+    meta: {
+      id: 1292018,
+      version: 1,
+    },
+    name: '아케인셰이드 초선',
+    icon: '1292018',
+    type: 129,
+    req: {
+      level: 200,
+      job: 8,
+    },
+    attributes: {
+      trade: 2,
+      cuttable: 2,
+      attackSpeed: 4,
+      bossReward: true,
+      incline: {
+        charm: 200,
+      },
+      canStarforce: 1,
+      canScroll: 1,
+      canAddOption: 1,
+      canPotential: 1,
+      canAdditionalPotential: 1,
+    },
+    baseOption: {
+      dex: 100,
+      luk: 100,
+      attackPower: 276,
+      bossDamage: 30,
+      ignoreMonsterArmor: 20,
+    },
+    scrollUpgradeableCount: 9,
+  },
+  '레드 보우': {
+    meta: {
+      id: 1452220,
+      version: 1,
+    },
+    name: '레드 보우',
+    icon: '1452220',
+    type: 145,
+    req: {
+      level: 75,
+      job: 4,
+    },
+    attributes: {
+      trade: 2,
+      attackSpeed: 6,
+      canStarforce: 1,
+      canScroll: 1,
+      canAddOption: 1,
+      canPotential: 1,
+      canAdditionalPotential: 1,
+    },
+    baseOption: {
+      attackPower: 83,
+    },
+    scrollUpgradeableCount: 8,
   },
   '라즐리 9형': {
     meta: {
