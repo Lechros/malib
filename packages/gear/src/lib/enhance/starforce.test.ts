@@ -414,10 +414,37 @@ describe('starforce', () => {
       [14, 6],
       [15, 7],
       [16, 14],
-    ])('%d성 장갑의 공격력은 %d이다.', (star, expected) => {
+    ])('%d성 130제 장갑의 공격력은 %d이다.', (star, expected) => {
       const gear = createGear({
         type: GearType.glove,
         req: { level: 130 },
+        attributes: { canStarforce: GearCapability.Can },
+      });
+
+      for (let i = 0; i < star; i++) {
+        starforce(gear);
+      }
+
+      expect(gear.starforceOption.attackPower).toBe(expected);
+    });
+
+    it.each([
+      [4, 0],
+      [5, 0],
+      [6, 0],
+      [7, 0],
+      [8, 0],
+      [9, 0],
+      [10, 0],
+      [11, 0],
+      [11, 0],
+      [13, 0],
+      [14, 0],
+      [15, 0],
+    ])('%d성 120제 장갑의 공격력은 %d이다.', (star, expected) => {
+      const gear = createGear({
+        type: GearType.glove,
+        req: { level: 120 },
         attributes: { canStarforce: GearCapability.Can },
       });
 
