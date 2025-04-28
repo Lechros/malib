@@ -6,6 +6,7 @@ export interface WzGear {
   icon: string;
   desc?: string;
   potentials?: WzPotential[];
+  skills?: string[];
 
   incSTR?: number;
   incDEX?: number;

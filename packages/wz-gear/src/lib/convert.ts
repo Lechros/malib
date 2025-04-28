@@ -86,11 +86,17 @@ export function convert(info: WzGear): GearData {
   if (info.attackSpeed) {
     data.attributes.attackSpeed = info.attackSpeed;
   }
+  if (info.setItemID) {
+    data.attributes.setItemId = info.setItemID;
+  }
   if (info.jokerToSetItem) {
     data.attributes.lucky = true;
   }
   if (info.bossReward) {
     data.attributes.bossReward = true;
+  }
+  if (info.skills) {
+    data.attributes.skills = info.skills;
   }
 
   // Upgrade
