@@ -251,6 +251,20 @@ test.each([
     ],
   ),
   ...joinEach<[Gear], [AddOptionType, AddOptionGrade, Partial<GearAddOption>]>(
+    [
+      createGear('블랙 가리나 글로브', {
+        req: {
+          levelIncrease: 20,
+        },
+      }),
+    ],
+    [
+      [AddOptionType.int_luk, 4, { int: 16, luk: 16 }],
+      [AddOptionType.attackPower, 3, { attackPower: 3 }],
+      [AddOptionType.speed, 1, { speed: 1 }],
+    ],
+  ),
+  ...joinEach<[Gear], [AddOptionType, AddOptionGrade, Partial<GearAddOption>]>(
     [createGear('앱솔랩스 ESP리미터')],
     [
       [AddOptionType.maxHp, 7, { maxHp: 3360 }],

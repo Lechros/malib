@@ -437,11 +437,7 @@ describe('Gear', () => {
 
       it('스타포스 옵션을 설정한다.', () => {
         const gear = createGear('노가다 목장갑', [starforcePatch(5)]);
-        const expected = sumOptions(gear.starforceOption, {
-          attackPower: 1,
-          magicPower: 1,
-          armor: 1,
-        });
+        const expected = sumOptions(gear.starforceOption, { armor: 1 });
 
         gear.applyStarScrollIgnoringMaxStar();
 

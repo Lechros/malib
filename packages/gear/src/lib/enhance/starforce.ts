@@ -290,7 +290,7 @@ function _otherStarforce(gear: Gear) {
   // power
   _getStarforceOption(gear).attackPower += power;
   _getStarforceOption(gear).magicPower += power;
-  if (gear.type === GearType.glove) {
+  if (gear.type === GearType.glove && gear.req.level >= 130) {
     const bonusPower = starforceGloveBonusPower[gear.star];
     if (gear.req.beginner()) {
       _getStarforceOption(gear).attackPower += bonusPower;
