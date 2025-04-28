@@ -1,8 +1,8 @@
 import {
-  GearCapability,
   AddOptionGrade,
   AddOptionType,
   GearAddOption,
+  GearCapability,
   GearType,
 } from '../data';
 import { ErrorMessage } from '../errors';
@@ -136,7 +136,7 @@ export function getAddOptionValue(
 ): number {
   const ctx = {
     type,
-    reqLevel: gear.req.level,
+    reqLevel: gear.req.level + gear.req.levelIncrease,
     gearType: gear.type,
     bossReward: gear.attributes.bossReward,
     attackPower: gear.baseOption.attackPower,

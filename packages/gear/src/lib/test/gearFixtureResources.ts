@@ -110,6 +110,32 @@ export const resources = {
     },
     scrollUpgradeableCount: 6,
   },
+  '블랙 가리나 글로브': {
+    meta: {
+      id: 1082167,
+      version: 1,
+    },
+    name: '블랙 가리나 글로브',
+    icon: '1082167',
+    type: 108,
+    req: {
+      level: 110,
+      job: 8,
+    },
+    attributes: {
+      canStarforce: 1,
+      canScroll: 1,
+      canAddOption: 1,
+      canPotential: 1,
+      canAdditionalPotential: 1,
+    },
+    baseOption: {
+      dex: 5,
+      luk: 6,
+      armor: 43,
+    },
+    scrollUpgradeableCount: 6,
+  },
   '펜살리르 스키퍼부츠': {
     meta: {
       id: 1072971,
