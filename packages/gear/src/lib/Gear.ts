@@ -160,7 +160,7 @@ export class Gear extends ReadonlyGear {
   /**
    * 장비에 주문서 실패를 적용할 수 있는 상태인지 여부
    */
-  get canApplyFailScroll(): boolean {
+  get canApplyScrollFail(): boolean {
     return canFailScroll(this);
   }
 
@@ -187,7 +187,7 @@ export class Gear extends ReadonlyGear {
    * @throws {@link TypeError}
    * 업그레이드 가능 횟수를 복구할 수 없는 상태일 경우.
    */
-  applyScrollResile() {
+  applyResileScroll() {
     resileScroll(this);
   }
 

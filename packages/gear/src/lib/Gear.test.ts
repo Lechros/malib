@@ -168,13 +168,13 @@ describe('Gear', () => {
       it('주문서 강화가 가능한 장비는 true를 반환한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드');
 
-        expect(gear.canApplyFailScroll).toBe(true);
+        expect(gear.canApplyScrollFail).toBe(true);
       });
 
       it('주문서 강화가 불가능한 장비는 false를 반환한다.', () => {
         const gear = createGear();
 
-        expect(gear.canApplyFailScroll).toBe(false);
+        expect(gear.canApplyScrollFail).toBe(false);
       });
     });
 
@@ -211,7 +211,7 @@ describe('Gear', () => {
         const gear = createGear('아케인셰이드 샤이닝로드');
 
         expect(() => {
-          gear.applyScrollResile();
+          gear.applyResileScroll();
         }).toThrow(TypeError);
       });
     });
