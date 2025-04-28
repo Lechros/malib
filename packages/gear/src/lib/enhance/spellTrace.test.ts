@@ -1,5 +1,6 @@
 import { GearOption, GearType } from '../data';
 import { createGear } from '../test';
+import { joinEach } from '../test/util';
 import {
   _getAccSpellTrace,
   _getArmorSpellTrace,
@@ -121,7 +122,7 @@ describe('getSpellTraceScroll', () => {
 
 describe('_getWeaponSpellTrace', () => {
   it.each([
-    ...map([GearType.bow, 20], [
+    ...joinEach([GearType.bow, 20], [
       [SpellTraceType.str, 100, '100% 공격력 주문서', { attackPower: 1 }],
       [SpellTraceType.str, 70, '70% 공격력 주문서', { attackPower: 2 }],
       [SpellTraceType.str, 30, '30% 공격력(힘) 주문서', { attackPower: 3, str: 1 }],
@@ -143,7 +144,7 @@ describe('_getWeaponSpellTrace', () => {
       [SpellTraceType.maxHp, 30, '30% 공격력(체력) 주문서', { attackPower: 3, maxHp: 50 }],
       [SpellTraceType.maxHp, 15, '15% 공격력(체력) 주문서', { attackPower: 5, maxHp: 100 }],
     ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]), // prettier-ignore
-    ...map([GearType.bow, 100], [
+    ...joinEach([GearType.bow, 100], [
       [SpellTraceType.str, 100, '100% 공격력 주문서', { attackPower: 2 }],
       [SpellTraceType.str, 70, '70% 공격력(힘) 주문서', { attackPower: 3, str: 1 }],
       [SpellTraceType.str, 30, '30% 공격력(힘) 주문서', { attackPower: 5, str: 2 }],
@@ -165,7 +166,7 @@ describe('_getWeaponSpellTrace', () => {
       [SpellTraceType.maxHp, 30, '30% 공격력(체력) 주문서', { attackPower: 5, maxHp: 100 }],
       [SpellTraceType.maxHp, 15, '15% 공격력(체력) 주문서', { attackPower: 7, maxHp: 150 }],
     ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]), // prettier-ignore
-    ...map([GearType.bow, 200], [
+    ...joinEach([GearType.bow, 200], [
       [SpellTraceType.str, 100, '100% 공격력(힘) 주문서', { attackPower: 3, str: 1 }],
       [SpellTraceType.str, 70, '70% 공격력(힘) 주문서', { attackPower: 5, str: 2 }],
       [SpellTraceType.str, 30, '30% 공격력(힘) 주문서', { attackPower: 7, str: 3 }],
@@ -223,7 +224,7 @@ describe('_getWeaponSpellTrace', () => {
 
 describe('_getGloveSpellTrace', () => {
   it.each([
-    ...map([GearType.glove, 20], [
+    ...joinEach([GearType.glove, 20], [
       [SpellTraceType.str, 100, '100% 방어력 주문서', { armor: 3 }],
       [SpellTraceType.str, 70, '70% 공격력 주문서', { attackPower: 1 }],
       [SpellTraceType.str, 30, '30% 공격력 주문서', { attackPower: 2 }],
@@ -236,7 +237,7 @@ describe('_getGloveSpellTrace', () => {
       [SpellTraceType.maxHp, 15, '15% 공격력 주문서', { attackPower: 3 }],
       [SpellTraceType.allStat, 15, '15% 공격력 주문서', { attackPower: 3 }],
     ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]),
-    ...map([GearType.glove, 100], [
+    ...joinEach([GearType.glove, 100], [
       [SpellTraceType.str, 100, '100% 공격력 주문서', { attackPower: 1 }],
       [SpellTraceType.str, 70, '70% 공격력 주문서', { attackPower: 2 }],
       [SpellTraceType.str, 30, '30% 공격력 주문서', { attackPower: 3 }],
@@ -249,7 +250,7 @@ describe('_getGloveSpellTrace', () => {
       [SpellTraceType.maxHp, 15, '15% 공격력 주문서', { attackPower: 4 }],
       [SpellTraceType.allStat, 15, '15% 공격력 주문서', { attackPower: 4 }],
     ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]),
-    ...map([GearType.glove, 250], [
+    ...joinEach([GearType.glove, 250], [
       [SpellTraceType.str, 100, '100% 공격력 주문서', { attackPower: 1 }],
       [SpellTraceType.str, 70, '70% 공격력 주문서', { attackPower: 2 }],
       [SpellTraceType.str, 30, '30% 공격력 주문서', { attackPower: 3 }],
@@ -280,7 +281,7 @@ describe('_getGloveSpellTrace', () => {
 
 describe('_getArmorSpellTrace', () => {
   it.each([
-    ...map([GearType.shoulder, 20], [
+    ...joinEach([GearType.shoulder, 20], [
       [SpellTraceType.str, 100,'100% 힘 주문서', { str: 1, maxHp: 5, armor: 1 }],
       [SpellTraceType.str, 70,'70% 힘 주문서', { str: 2, maxHp: 15, armor: 2 }],
       [SpellTraceType.str, 30,'30% 힘 주문서', { str: 3, maxHp: 30, armor: 4 }],
@@ -304,7 +305,7 @@ describe('_getArmorSpellTrace', () => {
       [SpellTraceType.allStat, 30,'30% 올스탯 주문서', { str: 1, dex: 1, int: 1, luk: 1, maxHp: 30, armor: 4 }],
       [SpellTraceType.allStat, 15,'15% 올스탯 주문서', { str: 2, dex: 2, int: 2, luk: 2, maxHp: 45, armor: 6 }],
     ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]), // prettier-ignore
-    ...map([GearType.shoulder, 100], [
+    ...joinEach([GearType.shoulder, 100], [
       [SpellTraceType.str, 100, '100% 힘 주문서', { str: 2, maxHp: 20, armor: 2 }],
       [SpellTraceType.str, 70, '70% 힘 주문서', { str: 3, maxHp: 40, armor: 4 }],
       [SpellTraceType.str, 30, '30% 힘 주문서', { str: 5, maxHp: 70, armor: 7 }],
@@ -328,7 +329,7 @@ describe('_getArmorSpellTrace', () => {
       [SpellTraceType.allStat, 30, '30% 올스탯 주문서', { str: 2, dex: 2, int: 2, luk: 2, maxHp: 70, armor: 7 }],
       [SpellTraceType.allStat, 15, '15% 올스탯 주문서', { str: 3, dex: 3, int: 3, luk: 3, maxHp: 110, armor: 10 }],
     ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]), // prettier-ignore
-    ...map([GearType.shoulder, 200], [
+    ...joinEach([GearType.shoulder, 200], [
       [SpellTraceType.str, 100, '100% 힘 주문서', { str: 3, maxHp: 30, armor: 3 }],
       [SpellTraceType.str, 70, '70% 힘 주문서', { str: 4, maxHp: 70, armor: 5 }],
       [SpellTraceType.str, 30, '30% 힘 주문서', { str: 7, maxHp: 120, armor: 10 }],
@@ -419,7 +420,7 @@ describe('_getArmorSpellTrace', () => {
 
 describe('_getAccSpellTrace', () => {
   it.each([
-    ...map([GearType.pendant, 20], [
+    ...joinEach([GearType.pendant, 20], [
       ['str', 100, '100% 힘 주문서', { str: 1 }],
       ['str', 70, '70% 힘 주문서', { str: 2 }],
       ['str', 30, '30% 힘 주문서', { str: 3 }],
@@ -437,7 +438,7 @@ describe('_getAccSpellTrace', () => {
       ['maxHp', 30, '30% 체력 주문서', { maxHp: 150 }],
       ['allStat', 30, '30% 올스탯 주문서', { str: 1, dex: 1, int: 1, luk: 1 }],
     ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]),
-    ...map([GearType.pendant, 100], [
+    ...joinEach([GearType.pendant, 100], [
       ['str', 100, '100% 힘 주문서', { str: 1 }],
       ['str', 70, '70% 힘 주문서', { str: 2 }],
       ['str', 30, '30% 힘 주문서', { str: 4 }],
@@ -455,7 +456,7 @@ describe('_getAccSpellTrace', () => {
       ['maxHp', 30, '30% 체력 주문서', { maxHp: 200 }],
       ['allStat', 30, '30% 올스탯 주문서', { str: 2, dex: 2, int: 2, luk: 2 }],
     ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]),
-    ...map([GearType.pendant, 200], [
+    ...joinEach([GearType.pendant, 200], [
       ['str', 100, '100% 힘 주문서', { str: 2 }],
       ['str', 70, '70% 힘 주문서', { str: 3 }],
       ['str', 30, '30% 힘 주문서', { str: 5 }],
@@ -514,7 +515,7 @@ describe('_getAccSpellTrace', () => {
 
 describe('_getHeartSpellTrace', () => {
   it.each([
-    ...map([GearType.machineHeart, 20], [
+    ...joinEach([GearType.machineHeart, 20], [
       [SpellTraceType.str, 100, '100% 공격력 주문서', { attackPower: 1 }],
       [SpellTraceType.str, 70, '70% 공격력 주문서', { attackPower: 2 }],
       [SpellTraceType.str, 30, '30% 공격력 주문서', { attackPower: 3 }],
@@ -525,7 +526,7 @@ describe('_getHeartSpellTrace', () => {
       [SpellTraceType.maxHp, 30, '30% 공격력 주문서', { attackPower: 3 }],
       [SpellTraceType.allStat, 30, '30% 공격력 주문서', { attackPower: 3 }],
     ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]),
-    ...map([GearType.machineHeart, 90], [
+    ...joinEach([GearType.machineHeart, 90], [
       [SpellTraceType.str, 100, '100% 공격력 주문서', { attackPower: 2 }],
       [SpellTraceType.str, 70, '70% 공격력 주문서', { attackPower: 3 }],
       [SpellTraceType.str, 30, '30% 공격력 주문서', { attackPower: 5 }],
@@ -536,7 +537,7 @@ describe('_getHeartSpellTrace', () => {
       [SpellTraceType.maxHp, 30, '30% 공격력 주문서', { attackPower: 5 }],
       [SpellTraceType.allStat, 30, '30% 공격력 주문서', { attackPower: 5 }],
     ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]),
-    ...map([GearType.machineHeart, 160], [
+    ...joinEach([GearType.machineHeart, 160], [
       [SpellTraceType.str, 100, '100% 공격력 주문서', { attackPower: 3 }],
       [SpellTraceType.str, 70, '70% 공격력 주문서', { attackPower: 5 }],
       [SpellTraceType.str, 30, '30% 공격력 주문서', { attackPower: 7 }],
@@ -562,10 +563,3 @@ describe('_getHeartSpellTrace', () => {
     },
   );
 });
-
-function map<Root extends unknown[], Values extends unknown[]>(
-  root: [...Root],
-  values: [...Values][],
-): [...Root, ...Values][] {
-  return values.map((value) => [...root, ...value]);
-}

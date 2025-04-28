@@ -18,7 +18,7 @@ import {
 } from './starforce';
 
 describe('supportsStarforce', () => {
-  it('canStarforce === Can일 경우 true를 반환한다.', () => {
+  it('canStarforce = Can일 경우 true를 반환한다.', () => {
     const gear = createGear({
       attributes: { canStarforce: GearCapability.Can },
     });
@@ -26,7 +26,7 @@ describe('supportsStarforce', () => {
     expect(supportsStarforce(gear)).toBe(true);
   });
 
-  it('canStarforce === Fixed일 경우 false를 반환한다.', () => {
+  it('canStarforce = Fixed일 경우 false를 반환한다.', () => {
     const gear = createGear({
       attributes: { canStarforce: GearCapability.Fixed },
     });
@@ -34,7 +34,7 @@ describe('supportsStarforce', () => {
     expect(supportsStarforce(gear)).toBe(false);
   });
 
-  it('canStarforce === Cannot일 경우 false를 반환한다.', () => {
+  it('canStarforce = Cannot일 경우 false를 반환한다.', () => {
     const gear = createGear({
       attributes: { canStarforce: GearCapability.Cannot },
     });

@@ -19,7 +19,7 @@ describe('supportsSoul', () => {
     GearType.longSword,
     GearType.tuner,
     GearType.dagger,
-  ])('is true for weapon gears, type == %d', (type) => {
+  ])('무기(장비 분류: %d)일 경우 true를 반환한다.', (type) => {
     const gear = createGear({
       type,
     });
@@ -35,7 +35,7 @@ describe('supportsSoul', () => {
     GearType.pendant,
     GearType.katara,
     GearType.shield,
-  ])('is false for non weapon gears, type == %d', (type) => {
+  ])('무기가 아닌 장비(장비 분류: %d)일 경우 false를 반환한다.', (type) => {
     const gear = createGear({
       type,
     });
@@ -50,7 +50,7 @@ describe('supportsSoul', () => {
     [30, true],
     [75, true],
     [200, true],
-  ])('for reqLevel == %d is %p', (reqLevel, expected) => {
+  ])('요구 레벨에 관계 없이 true를 반환한다.', (reqLevel, expected) => {
     const gear = createGear({
       type: GearType.thSword,
       req: { level: reqLevel },
@@ -61,7 +61,7 @@ describe('supportsSoul', () => {
 });
 
 describe('canApplySoulEnchant', () => {
-  it('is true for unenchanted gear', () => {
+  it('소울 인챈트가 적용되지 않았을을 경우 true를 반환한다.', () => {
     const gear = createGear({
       type: GearType.bow,
     });
@@ -69,7 +69,7 @@ describe('canApplySoulEnchant', () => {
     expect(canApplySoulEnchant(gear)).toBe(true);
   });
 
-  it('is false for enchanted gear', () => {
+  it('소울 인챈트가 적용되었을 경우 false를 반환한다.', () => {
     const gear = createGear({
       type: GearType.bow,
       soulSlot: {},
@@ -80,7 +80,7 @@ describe('canApplySoulEnchant', () => {
 });
 
 describe('applySoulEnchant', () => {
-  it('sets soulEnchanted to true', () => {
+  it('소울 인챈트를 적용한다.', () => {
     const gear = createGear({
       type: GearType.bow,
     });
@@ -90,17 +90,17 @@ describe('applySoulEnchant', () => {
     expect(gear.soulEnchanted).toBe(true);
   });
 
-  it('throws TypeError for non weapon gears', () => {
+  it('무기가 아닌 장비일 경우 TypeError가 발생한다.', () => {
     const gear = createGear({
       type: GearType.cape,
     });
 
     expect(() => {
       applySoulEnchant(gear);
-    }).toThrow();
+    }).toThrow(TypeError);
   });
 
-  it('throws TypeError for already soul enchanted gears', () => {
+  it('이미 소울 인챈트가 적용되었을 경우 TypeError가 발생한다.', () => {
     const gear = createGear({
       type: GearType.bow,
       soulSlot: {},
@@ -113,7 +113,7 @@ describe('applySoulEnchant', () => {
 });
 
 describe('canSetSoul', () => {
-  it('is true for enchanted gear', () => {
+  it('소울 인챈트가 적용되었을 경우 true를 반환한다.', () => {
     const gear = createGear({
       type: GearType.bow,
       soulSlot: {},
@@ -122,7 +122,7 @@ describe('canSetSoul', () => {
     expect(canSetSoul(gear)).toBe(true);
   });
 
-  it('is true for enchanted gear with soul', () => {
+  it('소울 인챈트가 적용되고 소울이 장착된 경우 true를 반환한다.', () => {
     const gear = createGear({
       type: GearType.bow,
       soulSlot: { soul: createSoulData() },
@@ -131,7 +131,7 @@ describe('canSetSoul', () => {
     expect(canSetSoul(gear)).toBe(true);
   });
 
-  it('is false for unenchanted gear', () => {
+  it('소울 인챈트가 적용되지 않았을 경우 false를 반환한다.', () => {
     const gear = createGear({
       type: GearType.bow,
     });
@@ -141,7 +141,7 @@ describe('canSetSoul', () => {
 });
 
 describe('setSoul', () => {
-  it('sets soul name to 위대한 카링의 소울', () => {
+  it('소울 정보를 설정한다.', () => {
     const gear = createGear({
       type: GearType.bow,
       soulSlot: {},
@@ -150,10 +150,10 @@ describe('setSoul', () => {
 
     setSoul(gear, soul);
 
-    expect(gear.soul?.name).toBe('위대한 카링의 소울');
+    expect(gear.soul).toEqual(soul);
   });
 
-  it('sets soul charge option to { attackPower: 20 }', () => {
+  it('공격력 무기의 소울 충전 옵션을 갱신한다.', () => {
     const gear = createGear({
       type: GearType.bow,
       baseOption: { attackPower: 170 },
@@ -166,7 +166,7 @@ describe('setSoul', () => {
     expect(gear.soulChargeOption).toEqual({ attackPower: 20 });
   });
 
-  it('sets soul charge option to { magicPower: 10 }', () => {
+  it('마력 무기의 소울 충전 옵션을 갱신한다.', () => {
     const gear = createGear({
       type: GearType.staff,
       baseOption: { attackPower: 90, magicPower: 200 },
@@ -179,7 +179,7 @@ describe('setSoul', () => {
     expect(gear.soulChargeOption).toEqual({ magicPower: 10 });
   });
 
-  it('throws TypeError for unenchanted gear', () => {
+  it('소울 인챈트가 적용되지 않았을 경우 TypeError가 발생한다.', () => {
     const gear = createGear({
       type: GearType.bow,
     });
@@ -192,7 +192,7 @@ describe('setSoul', () => {
 });
 
 describe('canSetSoulCharge', () => {
-  it('is true for enchanted gear', () => {
+  it('소울 인챈트가 적용되었을 경우 true를 반환한다.', () => {
     const gear = createGear({
       type: GearType.bow,
       soulSlot: {},
@@ -200,10 +200,18 @@ describe('canSetSoulCharge', () => {
 
     expect(canSetSoulCharge(gear)).toBe(true);
   });
+
+  it('소울 인챈트가 적용되지 않았을 경우 false를 반환한다.', () => {
+    const gear = createGear({
+      type: GearType.bow,
+    });
+
+    expect(canSetSoulCharge(gear)).toBe(false);
+  });
 });
 
 describe('setSoulCharge', () => {
-  it.each([0, 1, 100, 500, 999, 1000])('sets soul charge', (charge) => {
+  it.each([0, 1, 100, 500, 999, 1000])('소울 충전량을 설정한다.', (charge) => {
     const gear = createGear({
       type: GearType.bow,
       soulSlot: {},
@@ -214,7 +222,7 @@ describe('setSoulCharge', () => {
     expect(gear.soulCharge).toBe(charge);
   });
 
-  it('sets soul charge option', () => {
+  it('소울 충전 옵션을 설정한다.', () => {
     const gear = createGear({
       type: GearType.bow,
       soulSlot: {},
@@ -226,7 +234,7 @@ describe('setSoulCharge', () => {
   });
 
   it.each([-1000, -100, -1, 1001, 2000])(
-    'throws TypeError for charge == %d',
+    '소울 충전량이 0 미만 또는 1000 초과일 경우 TypeError가 발생한다.',
     (charge) => {
       const gear = createGear({
         type: GearType.bow,
@@ -239,7 +247,7 @@ describe('setSoulCharge', () => {
     },
   );
 
-  it('throws TypeError for unenchanted gear', () => {
+  it('소울 인챈트가 적용되지 않았을 경우 TypeError가 발생한다.', () => {
     const gear = createGear({
       type: GearType.bow,
     });
@@ -251,7 +259,7 @@ describe('setSoulCharge', () => {
 });
 
 describe('resetSoulEnchant', () => {
-  it('resets soulEnchanted', () => {
+  it('소울 인챈트를 해제한다.', () => {
     const gear = createGear({
       type: GearType.bow,
       soulSlot: {},
@@ -262,7 +270,7 @@ describe('resetSoulEnchant', () => {
     expect(gear.soulEnchanted).toBe(false);
   });
 
-  it('resets soul', () => {
+  it('소울을 초기화한다.', () => {
     const gear = createGear({
       type: GearType.bow,
       soulSlot: {},
@@ -273,7 +281,7 @@ describe('resetSoulEnchant', () => {
     expect(gear.soul).toBeUndefined();
   });
 
-  it('resets soulCharge', () => {
+  it('소울 충전량을 초기화한다.', () => {
     const gear = createGear({
       type: GearType.bow,
       soulSlot: {},
@@ -284,7 +292,7 @@ describe('resetSoulEnchant', () => {
     expect(gear.soulCharge).toBe(0);
   });
 
-  it('resets soulChargeOption', () => {
+  it('소울 충전 옵션을 초기화한다.', () => {
     const gear = createGear({
       type: GearType.bow,
       soulSlot: {},
@@ -325,7 +333,7 @@ describe('_updateChargeOption', () => {
     [2, 501, 20],
     [2, 1000, 20],
   ] as const)(
-    'chargeFactor === %d, charge === %d, sets %d',
+    '소울 충전 옵션 배율=%d, 소울 충전량=%d일 때 공격력을 %d로 설정한다.',
     (chargeFactor, charge, expected) => {
       const gear = createGear({
         type: GearType.bow,
