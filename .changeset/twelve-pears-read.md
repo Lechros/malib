@@ -2,4 +2,4 @@
 '@malib/gear': patch
 ---
 
-fix: removd attackPower, magicPower bonus from gloves with req level < 130
+fix: removed attackPower, magicPower bonus from gloves with req level < 130
