@@ -12,10 +12,11 @@ import { Gear } from '../Gear';
 export type Patch = (gear: Gear) => void;
 
 export function starforcePatch(
-  arg: [number] | [number, boolean] | [number, boolean, boolean],
+  star: number,
+  starScroll = false,
+  ignoreMaxStar = false,
 ): Patch {
   return (gear: Gear) => {
-    const [star, starScroll, ignoreMaxStar] = arg;
     if (starScroll) {
       if (ignoreMaxStar) {
         for (let i = 0; i < star; i++) {
@@ -41,65 +42,68 @@ export function starforcePatch(
 }
 
 export function upgradePatch(
-  arg: ([SpellTraceType, SpellTraceRate] | Partial<GearOption>)[],
+  options: ([SpellTraceType, SpellTraceRate] | Partial<GearOption>)[],
 ): Patch {
   function apply(
     gear: Gear,
-    arg: [SpellTraceType, SpellTraceRate] | Partial<GearOption>,
+    option: [SpellTraceType, SpellTraceRate] | Partial<GearOption>,
   ) {
-    if (Array.isArray(arg)) {
-      const [type, rate] = arg;
+    if (Array.isArray(option)) {
+      const [type, rate] = option;
       gear.applySpellTrace(type, rate);
     } else {
       gear.applyScroll({
         name: '',
-        option: arg,
+        option: option,
       });
     }
   }
   return (gear: Gear) => {
-    arg.forEach((item) => {
+    options.forEach((item) => {
       apply(gear, item);
     });
     while (gear.canApplyScroll) {
-      apply(gear, arg[arg.length - 1]);
+      apply(gear, options[options.length - 1]);
     }
   };
 }
 
-export function addOptionPatch(arg: [AddOptionType, AddOptionGrade][]): Patch {
+export function addOptionPatch(
+  options: [AddOptionType, AddOptionGrade][],
+): Patch {
   return (gear: Gear) => {
-    arg.forEach(([type, grade]) => {
+    options.forEach(([type, grade]) => {
       gear.applyAddOption(type, grade);
     });
   };
 }
 
-export function potentialPatch(arg: [PotentialGrade, PotentialData[]]): Patch {
+export function potentialPatch(
+  grade: PotentialGrade,
+  options: PotentialData[],
+): Patch {
   return (gear: Gear) => {
-    const [grade, options] = arg;
     gear.setPotential(grade, options);
   };
 }
 
 export function addiPotentialPatch(
-  arg: [PotentialGrade, PotentialData[]],
+  grade: PotentialGrade,
+  options: PotentialData[],
 ): Patch {
   return (gear: Gear) => {
-    const [grade, options] = arg;
     gear.setAdditionalPotential(grade, options);
   };
 }
 
-export function soulPatch(arg?: [SoulData] | [SoulData, number]): Patch {
+export function soulPatch(soul?: SoulData, charge = 0): Patch {
   return (gear: Gear) => {
     gear.applySoulEnchant();
-    if (arg) {
-      const [soul, charge] = arg;
+    if (soul) {
       gear.setSoul(soul);
-      if (charge) {
-        gear.setSoulCharge(charge);
-      }
+    }
+    if (charge) {
+      gear.setSoulCharge(charge);
     }
   };
 }

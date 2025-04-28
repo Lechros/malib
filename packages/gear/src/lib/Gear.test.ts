@@ -1,5 +1,6 @@
 import { AddOptionType, PotentialGrade } from './data';
 import { SpellTraceType } from './enhance/spellTrace';
+import { sumOptions } from './gearOption';
 import {
   createExceptional,
   createGear,
@@ -106,13 +107,13 @@ describe('Gear', () => {
       it('추가 옵션 부여가 가능한 장비는 true를 반환한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드');
 
-        expect(gear.canResetAddOption).toBe(false);
+        expect(gear.canResetAddOption).toBe(true);
       });
 
       it('추가 옵션 부여가 불가능한 장비는 false를 반환한다.', () => {
         const gear = createGear('스칼렛 링');
 
-        expect(gear.canResetAddOption).toBe(true);
+        expect(gear.canResetAddOption).toBe(false);
       });
     });
 
@@ -180,20 +181,20 @@ describe('Gear', () => {
     describe('applyScrollFail', () => {
       it('복구 가능 주문서 강화 횟수가 1 증가한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드');
-        const expected = gear.scrollUpgradeableCount + 1;
+        const expected = gear.scrollResilienceCount + 1;
 
         gear.applyScrollFail();
 
-        expect(gear.scrollUpgradeableCount).toBe(expected);
+        expect(gear.scrollResilienceCount).toBe(expected);
       });
 
       it('잔여 주문서 강화 횟수가 1 감소한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드');
-        const expected = gear.scrollUpgradeCount - 1;
+        const expected = gear.scrollUpgradeableCount - 1;
 
         gear.applyScrollFail();
 
-        expect(gear.scrollUpgradeCount).toBe(expected);
+        expect(gear.scrollUpgradeableCount).toBe(expected);
       });
     });
 
@@ -341,21 +342,24 @@ describe('Gear', () => {
 
       it('스타포스 옵션을 설정한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드');
+        const expected = sumOptions(gear.starforceOption, {
+          int: 2,
+          luk: 2,
+          maxHp: 5,
+          maxMp: 5,
+          attackPower: 5,
+          magicPower: 7,
+        });
 
         gear.applyStarforce();
 
-        expect(gear.starforceOption).toEqual({
-          str: 2,
-          dex: 2,
-          int: 2,
-          luk: 2,
-        });
+        expect(gear.starforceOption).toEqual(expected);
       });
     });
 
     describe('canStarforceIgnoringMaxStar', () => {
       it('스타포스 강화가 최대 단계 이상이어도 true를 반환한다.', () => {
-        const gear = createGear('노가다 목장갑', [starforcePatch([5])]);
+        const gear = createGear('노가다 목장갑', [starforcePatch(5)]);
 
         expect(gear.canApplyStarforceIgnoringMaxStar).toBe(true);
       });
@@ -363,7 +367,7 @@ describe('Gear', () => {
 
     describe('starforceIgnoringMaxStar', () => {
       it('스타포스 강화 단계가 1 증가한다.', () => {
-        const gear = createGear('노가다 목장갑', [starforcePatch([5])]);
+        const gear = createGear('노가다 목장갑', [starforcePatch(5)]);
         const expected = gear.star + 1;
 
         gear.applyStarforceIgnoringMaxStar();
@@ -372,16 +376,18 @@ describe('Gear', () => {
       });
 
       it('스타포스 옵션을 설정한다.', () => {
-        const gear = createGear('노가다 목장갑', [starforcePatch([5])]);
+        const gear = createGear('노가다 목장갑', [starforcePatch(5)]);
+        const expected = sumOptions(gear.starforceOption, {
+          str: 3,
+          dex: 3,
+          int: 3,
+          luk: 3,
+          armor: 1,
+        });
 
         gear.applyStarforceIgnoringMaxStar();
 
-        expect(gear.starforceOption).toEqual({
-          str: 13,
-          dex: 13,
-          int: 13,
-          luk: 13,
-        });
+        expect(gear.starforceOption).toEqual(expected);
       });
     });
 
@@ -405,7 +411,7 @@ describe('Gear', () => {
 
     describe('canStarScrollIgnoringMaxStar', () => {
       it('스타포스 강화가 최대 단계 이상이어도 true를 반환한다.', () => {
-        const gear = createGear('노가다 목장갑', [starforcePatch([5])]);
+        const gear = createGear('노가다 목장갑', [starforcePatch(5)]);
 
         expect(gear.canApplyStarScrollIgnoringMaxStar).toBe(true);
       });
@@ -413,7 +419,7 @@ describe('Gear', () => {
 
     describe('applyStarScrollIgnoringMaxStar', () => {
       it('스타포스 강화 단계가 1 증가한다.', () => {
-        const gear = createGear('노가다 목장갑', [starforcePatch([5])]);
+        const gear = createGear('노가다 목장갑', [starforcePatch(5)]);
         const expected = gear.star + 1;
 
         gear.applyStarScrollIgnoringMaxStar();
@@ -422,7 +428,7 @@ describe('Gear', () => {
       });
 
       it('놀라운 장비 강화 주문서 여부를 true로 설정한다.', () => {
-        const gear = createGear('노가다 목장갑', [starforcePatch([5])]);
+        const gear = createGear('노가다 목장갑', [starforcePatch(5)]);
 
         gear.applyStarScrollIgnoringMaxStar();
 
@@ -430,16 +436,16 @@ describe('Gear', () => {
       });
 
       it('스타포스 옵션을 설정한다.', () => {
-        const gear = createGear('노가다 목장갑', [starforcePatch([5])]);
+        const gear = createGear('노가다 목장갑', [starforcePatch(5)]);
+        const expected = sumOptions(gear.starforceOption, {
+          attackPower: 1,
+          magicPower: 1,
+          armor: 1,
+        });
 
         gear.applyStarScrollIgnoringMaxStar();
 
-        expect(gear.starforceOption).toEqual({
-          str: 13,
-          dex: 13,
-          int: 13,
-          luk: 13,
-        });
+        expect(gear.starforceOption).toEqual(expected);
       });
     });
 

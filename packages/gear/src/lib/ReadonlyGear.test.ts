@@ -702,7 +702,7 @@ describe('ReadonlyGear', () => {
       });
 
       // @ts-expect-error: Index signature in type 'readonly ReadonlyPotential[]' only permits reading.
-      expect(() => (gear.potentials[0] = {})).toThrow();
+      gear.potentials[0] = createPotentialData();
     });
 
     it('배열의 객체가 readonly이다.', () => {
@@ -775,7 +775,7 @@ describe('ReadonlyGear', () => {
       });
 
       // @ts-expect-error: Index signature in type 'readonly ReadonlyPotential[]' only permits reading.
-      expect(() => (gear.additionalPotentials[0] = {})).toThrow();
+      gear.additionalPotentials[0] = createPotentialData();
     });
 
     it('배열의 객체가 readonly이다.', () => {

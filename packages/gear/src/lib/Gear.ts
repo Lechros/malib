@@ -9,6 +9,7 @@ import {
 } from './data';
 import {
   applyAddOption,
+  canApplyAddOption,
   canResetAddOption,
   resetAddOption,
   supportsAddOption,
@@ -31,6 +32,16 @@ import {
   supportsAdditionalPotential,
   supportsPotential,
 } from './enhance/potential';
+import {
+  applySoulEnchant,
+  canApplySoulEnchant,
+  canSetSoul,
+  canSetSoulCharge,
+  resetSoulEnchant,
+  setSoul,
+  setSoulCharge,
+  supportsSoul,
+} from './enhance/soulSlot';
 import {
   applySpellTrace,
   SpellTraceRate,
@@ -58,16 +69,6 @@ import {
   supportsUpgrade,
 } from './enhance/upgrade';
 import { ReadonlyGear } from './ReadonlyGear';
-import {
-  applySoulEnchant,
-  canApplySoulEnchant,
-  canSetSoul,
-  canSetSoulCharge,
-  resetSoulEnchant,
-  setSoul,
-  setSoulCharge,
-  supportsSoul,
-} from './enhance/soulSlot';
 
 /**
  * 장비
@@ -114,7 +115,7 @@ export class Gear extends ReadonlyGear {
    * 장비에 추가 옵션을 적용할 수 있는 상태인지 여부
    */
   get canApplyAddOption(): boolean {
-    return supportsAddOption(this);
+    return canApplyAddOption(this);
   }
 
   /**
