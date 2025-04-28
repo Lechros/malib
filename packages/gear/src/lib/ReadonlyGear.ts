@@ -16,9 +16,8 @@ import {
 import { ReadonlyPotential } from './enhance/potential';
 import { getMaxStar } from './enhance/starforce';
 import { GearAttribute } from './GearAttribute';
-import { toGearOption } from './gearOption';
+import { sumOptions, toGearOption } from './gearOption';
 import { GearReq } from './GearReq';
-import { sumOptions } from './utils';
 
 type _Gear = Omit<
   GearData,

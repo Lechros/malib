@@ -1,6 +1,5 @@
-import { GearType, GearCapability } from '../data';
-import { Gear } from '../Gear';
-import { defaultGear } from '../testUtils';
+import { GearCapability } from '../data';
+import { createGear, createScroll } from '../test';
 import {
   applyScroll,
   canApplyScroll,
@@ -13,164 +12,225 @@ import {
   supportsUpgrade,
 } from './upgrade';
 
-let gear: Gear;
-
-afterEach(() => {
-  vitest.restoreAllMocks();
-});
-
 describe('supportsUpgrade', () => {
-  it('returns true for canScroll === Can', () => {
-    gear.data.attributes.canScroll = GearCapability.Can;
+  it('canScroll = Can일 경우 true를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+    });
 
     expect(supportsUpgrade(gear)).toBe(true);
   });
 
-  it('returns false for canScroll === Fixed', () => {
-    gear.data.attributes.canScroll = GearCapability.Fixed;
+  it('canScroll = Cannot일 경우 false를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Cannot },
+    });
 
     expect(supportsUpgrade(gear)).toBe(false);
   });
 
-  it('returns false for canScroll === Cannot', () => {
-    gear.data.attributes.canScroll = GearCapability.Cannot;
+  it('canScroll = Fixed 경우 false를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Fixed },
+    });
 
     expect(supportsUpgrade(gear)).toBe(false);
   });
 });
 
 describe('canFailScroll', () => {
-  it('returns false for scrollUpgradeableCount == 0 gear', () => {
-    gear.data.scrollUpgradeableCount = 0;
+  it('canScroll = Cannot일 경우 false를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+    });
+
+    expect(supportsUpgrade(gear)).toBe(true);
+  });
+
+  it('잔여 주문서 강화 횟수가 0일 경우 false를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+    });
 
     expect(canFailScroll(gear)).toBe(false);
   });
 
-  it('returns true for scrollUpgradeableCount > 0 gear', () => {
-    gear.data.scrollUpgradeableCount = 1;
+  it('잔여 주문서 강화 횟수가 1일 경우 true를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+      scrollUpgradeableCount: 1,
+    });
 
     expect(canFailScroll(gear)).toBe(true);
   });
 });
 
 describe('failScroll', () => {
-  it('throws TypeError for scrollUpgradeableCount == 0 gear', () => {
-    gear.data.scrollUpgradeableCount = 0;
+  it('잔여 주문서 강화 횟수가 0일 경우 TypeError가 발생한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+    });
 
     expect(() => {
       failScroll(gear);
     }).toThrow(TypeError);
   });
 
-  it('increments scrollResilienceCount by 1', () => {
-    gear.data.scrollUpgradeableCount = 2;
-    gear.data.scrollResilienceCount = 1;
+  it('복구 가능 주문서 강화 횟수가 1회 증가한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+      scrollUpgradeableCount: 1,
+      scrollResilienceCount: 1,
+    });
 
     failScroll(gear);
 
     expect(gear.scrollResilienceCount).toBe(2);
   });
 
-  it('decrements scrollUpgradeableCount by 1', () => {
-    gear.data.scrollUpgradeableCount = 2;
-    gear.data.scrollResilienceCount = 1;
+  it('잔여 주문서 강화 횟수가 1회 감소한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+      scrollUpgradeableCount: 1,
+      scrollResilienceCount: 1,
+    });
 
     failScroll(gear);
 
-    expect(gear.scrollUpgradeableCount).toBe(1);
+    expect(gear.scrollUpgradeableCount).toBe(0);
   });
 });
 
 describe('canResileScroll', () => {
-  it('returns false for scrollTotalUpgradeableCount == 0 gear', () => {
-    vitest
-      .spyOn(gear, 'scrollTotalUpgradeableCount', 'get')
-      .mockImplementation(() => 0);
+  it('canScroll = Cannot일 경우 false를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Cannot },
+    });
 
     expect(canResileScroll(gear)).toBe(false);
   });
 
-  it('returns false for scrollResilienceCount == 0 gear', () => {
-    gear.data.scrollResilienceCount = 0;
+  it('복구 가능 주문서 강화 횟수가 0일 경우 false를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+    });
 
     expect(canResileScroll(gear)).toBe(false);
   });
 
-  it('returns true for scrollResilienceCount > 0 gear', () => {
-    gear.data.scrollResilienceCount = 1;
+  it('복구 가능 주문서 강화 횟수가 1일 경우 true를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+      scrollResilienceCount: 1,
+    });
 
     expect(canResileScroll(gear)).toBe(true);
   });
 });
 
 describe('resileScroll', () => {
-  it('throws TypeError for scrollResilienceCount == 0 gear', () => {
-    gear.data.scrollResilienceCount = 0;
+  it('복구 가능 주문서 강화 횟수가 0일 경우 TypeError가 발생한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+    });
 
     expect(() => {
       resileScroll(gear);
     }).toThrow(TypeError);
   });
 
-  it('increments scrollUpgradeableCount by 1', () => {
-    gear.data.scrollUpgradeableCount = 1;
-    gear.data.scrollResilienceCount = 2;
+  it('잔여 주문서 강화 횟수가 1회 증가한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+      scrollUpgradeableCount: 1,
+      scrollResilienceCount: 1,
+    });
 
     resileScroll(gear);
 
     expect(gear.scrollUpgradeableCount).toBe(2);
   });
 
-  it('decrements scrollResilienceCount by 1', () => {
-    gear.data.scrollUpgradeableCount = 1;
-    gear.data.scrollResilienceCount = 2;
+  it('복구 가능 주문서 강화 횟수가 1회 감소한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+      scrollUpgradeableCount: 1,
+      scrollResilienceCount: 1,
+    });
 
     resileScroll(gear);
 
-    expect(gear.scrollResilienceCount).toBe(1);
+    expect(gear.scrollResilienceCount).toBe(0);
   });
 });
 
 describe('canResetUpgrade', () => {
-  it('returns true', () => {
-    expect(canResetUpgrade(gear)).toBe(true);
+  it('canScroll = Cannot일 경우 false를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Cannot },
+    });
+
+    expect(canResetUpgrade(gear)).toBe(false);
   });
 
-  it('returns true after reset', () => {
-    resetUpgrade(gear);
+  it('주문서 강화 횟수와 관계 없이 true를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+    });
 
     expect(canResetUpgrade(gear)).toBe(true);
   });
 });
 
 describe('resetUpgrade', () => {
-  it('resets scrollResilienceCount', () => {
-    expect(gear.scrollUpgradeableCount).toBe(8);
-    expect(gear.scrollResilienceCount).toBe(0);
-    for (let i = 0; i < 3; i++) {
-      failScroll(gear);
-    }
+  it('canScroll = Cannot일 경우 TypeError가 발생한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Cannot },
+    });
+    expect(() => {
+      resetUpgrade(gear);
+    }).toThrow(TypeError);
+  });
+
+  it('복구 가능 주문서 강화 횟수가 0으로 설정된다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+      scrollResilienceCount: 1,
+    });
 
     resetUpgrade(gear);
 
-    expect(gear.scrollUpgradeableCount).toBe(8);
     expect(gear.scrollResilienceCount).toBe(0);
   });
 
-  it('resets scrollUpgradeCount', () => {
-    expect(gear.scrollUpgradeableCount).toBe(8);
-    expect(gear.scrollUpgradeCount).toBe(0);
-    gear.data.scrollUpgradeableCount = 1;
-    gear.data.scrollUpgradeCount = 7;
+  it('주문서 강화 횟수가 0으로 설정된다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+      scrollUpgradeCount: 1,
+    });
 
     resetUpgrade(gear);
 
-    expect(gear.scrollUpgradeableCount).toBe(8);
     expect(gear.scrollUpgradeCount).toBe(0);
   });
 
-  it('resets upgradeOption', () => {
-    gear.data.upgradeOption = { str: 2, dex: 1 };
+  it('잔여 주문서 강화 횟수가 전체 주문서 강화 횟수로 설정된다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+      scrollUpgradeableCount: 1,
+      scrollResilienceCount: 1,
+    });
+
+    resetUpgrade(gear);
+
+    expect(gear.scrollUpgradeableCount).toBe(2);
+  });
+
+  it('upgradeOption을 초기화한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+      upgradeOption: { str: 2, dex: 1 },
+    });
 
     resetUpgrade(gear);
 
@@ -179,53 +239,96 @@ describe('resetUpgrade', () => {
 });
 
 describe('canApplyScroll', () => {
-  it('returns false for scrollUpgradeableCount == 0 gear', () => {
-    gear.data.scrollUpgradeableCount = 0;
+  it('canScroll = Cannot일 경우 false를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Cannot },
+    });
 
     expect(canApplyScroll(gear)).toBe(false);
   });
 
-  it('returns true for scrollUpgradeableCount > 0 gear', () => {
-    gear.data.scrollUpgradeableCount = 1;
+  it('잔여 주문서 강화 횟수가 0회일 경우 false를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+    });
+
+    expect(canApplyScroll(gear)).toBe(false);
+  });
+
+  it('잔여 주문서 강화 횟수가 1회일 경우 true를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+      scrollUpgradeableCount: 1,
+    });
 
     expect(canApplyScroll(gear)).toBe(true);
   });
 });
 
 describe('applyScroll', () => {
-  const scroll = {
-    name: 'Test scroll',
-    option: { str: 1, dex: 2, int: 3, luk: 4, maxHp: 50, magicPower: 10 },
-  };
-
-  it('throws TypeError for scrollUpgradeableCount == 0 gear', () => {
-    gear.data.scrollUpgradeableCount = 0;
+  it('canScroll = Cannot일 경우 TypeError가 발생한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Cannot },
+    });
+    const scroll = createScroll();
 
     expect(() => {
       applyScroll(gear, scroll);
     }).toThrow(TypeError);
   });
 
-  it('increments scrollUpgradeCount by 1', () => {
-    gear.data.scrollUpgradeableCount = 2;
-    gear.data.scrollUpgradeCount = 1;
+  it('잔여 주문서 강화 횟수가 0회일 경우 TypeError가 발생한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+    });
+    const scroll = createScroll();
+
+    expect(() => {
+      applyScroll(gear, scroll);
+    }).toThrow(TypeError);
+  });
+
+  it('주문서 강화 횟수가 1회 증가한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+      scrollUpgradeableCount: 1,
+      scrollUpgradeCount: 1,
+    });
+    const scroll = createScroll();
 
     applyScroll(gear, scroll);
 
     expect(gear.scrollUpgradeCount).toBe(2);
   });
 
-  it('decrements scrollUpgradeableCount by 1', () => {
-    gear.data.scrollUpgradeableCount = 2;
-    gear.data.scrollUpgradeCount = 1;
+  it('잔여 주문서 강화 횟수가 1회 감소한다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+      scrollUpgradeableCount: 1,
+      scrollUpgradeCount: 1,
+    });
+    const scroll = createScroll();
 
     applyScroll(gear, scroll);
 
-    expect(gear.scrollUpgradeableCount).toBe(1);
+    expect(gear.scrollUpgradeableCount).toBe(0);
   });
 
-  it('adds option to upgradeOption == undefined gear', () => {
-    gear.data.upgradeOption = undefined;
+  it('upgradeOption = undefined인 경우에도 옵션이 적용된다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+      scrollUpgradeableCount: 1,
+    });
+    const scroll = createScroll({
+      option: {
+        str: 1,
+        dex: 2,
+        int: 3,
+        luk: 4,
+        maxHp: 50,
+        magicPower: 10,
+      },
+    });
 
     applyScroll(gear, scroll);
 
@@ -239,8 +342,22 @@ describe('applyScroll', () => {
     });
   });
 
-  it('adds option to upgradeOption', () => {
-    gear.data.upgradeOption = {};
+  it('기존의 upgradeOption에 옵션이 추가된다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Can },
+      upgradeOption: {},
+      scrollUpgradeableCount: 2,
+    });
+    const scroll = createScroll({
+      option: {
+        str: 1,
+        dex: 2,
+        int: 3,
+        luk: 4,
+        maxHp: 50,
+        magicPower: 10,
+      },
+    });
 
     applyScroll(gear, scroll);
 
@@ -263,18 +380,5 @@ describe('applyScroll', () => {
       maxHp: 100,
       magicPower: 20,
     });
-  });
-});
-
-beforeEach(() => {
-  gear = defaultGear({
-    type: GearType.shiningRod,
-    req: {
-      level: 200,
-    },
-    attributes: {
-      canScroll: GearCapability.Can,
-    },
-    scrollUpgradeableCount: 8,
   });
 });

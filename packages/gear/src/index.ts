@@ -65,6 +65,16 @@ export {
   resetAdditionalPotential,
 } from './lib/enhance/potential';
 export {
+  supportsSoul,
+  canApplySoulEnchant,
+  applySoulEnchant,
+  canSetSoul,
+  setSoul,
+  canSetSoulCharge,
+  setSoulCharge,
+  resetSoulEnchant,
+} from './lib/enhance/soulSlot';
+export {
   SpellTraceType,
   type SpellTraceRate,
   type SpellTrace,
@@ -109,13 +119,3 @@ export {
   isMechanicGear,
   isDragonGear,
 } from './lib/gearType';
-export {
-  supportsSoul,
-  canApplySoulEnchant,
-  applySoulEnchant,
-  canSetSoul,
-  setSoul,
-  canSetSoulCharge,
-  setSoulCharge,
-  resetSoulEnchant,
-} from './lib/soulSlot';
