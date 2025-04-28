@@ -1,1353 +1,818 @@
-import {
-  AddOptionGrade,
-  AddOptionType,
-  GearAddOption,
-  GearCapability,
-  GearData,
-  GearTrade,
-  GearType,
-  PotentialGrade,
-} from './data';
+import { AddOptionType, PotentialGrade } from './data';
 import { SpellTraceType } from './enhance/spellTrace';
-import { Gear } from './Gear';
-
-describe('Gear constructor', () => {
-  it('should accept GearData', () => {
-    const data = {
-      meta: {
-        id: 0,
-        version: 1,
-      },
-      name: '',
-      type: GearType.cap,
-      req: {},
-      attributes: {},
-    } satisfies GearData;
-
-    const gear = new Gear(data);
-
-    expect(gear).toBeInstanceOf(Gear);
-  });
-});
+import {
+  createExceptional,
+  createGear,
+  createPotentialData,
+  createScroll,
+  createSoulData,
+  starforcePatch,
+} from './test';
+import { soulPatch } from './test/gearPatch';
 
 describe('Gear', () => {
-  let gear: Gear;
-
-  describe('meta', () => {
-    it('id is 1212123', () => {
-      expect(gear.meta.id).toBe(1212128);
-    });
-
-    it('id is settable to 1234567', () => {
-      gear.meta.id = 1234567;
-
-      expect(gear.meta.id).toBe(1234567);
-    });
-
-    it('version is 1', () => {
-      expect(gear.meta.version).toBe(1);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'id' because it is a read-only property.
-      expect(() => (gear.meta = { id: 0, version: 1 })).toThrow();
-    });
-  });
-
-  describe('name', () => {
-    it('is 제네시스 샤이닝로드', () => {
-      expect(gear.name).toBe('제네시스 샤이닝로드');
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'name' because it is a read-only property.
-      expect(() => (gear.name = '제네시스 스태프')).toThrow();
-    });
-  });
-
-  describe('icon', () => {
-    it('is 1212128', () => {
-      expect(gear.icon).toBe('1212128');
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'icon' because it is a read-only property.
-      expect(() => (gear.icon = '1234567')).toThrow();
-    });
-  });
-
-  describe('desc', () => {
-    it('is 해방 무기', () => {
-      expect(gear.desc).toBe('해방 무기');
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'desc' because it is a read-only property.
-      expect(() => (gear.desc = '설명')).toThrow();
-      // @ts-expect-error: Cannot assign to 'desc' because it is a read-only property.
-      expect(() => (gear.desc = undefined)).toThrow();
-    });
-  });
-
   describe('shape', () => {
-    it('is { name: 모루 아이템, icon: 1010101 }', () => {
-      expect(gear.shape).toEqual({ name: '모루 아이템', icon: '1010101' });
+    it('{ name: 모루 아이템, icon: 1001234 }이다.', () => {
+      const gear = createGear({
+        shape: {
+          name: '모루 아이템',
+          icon: '1001234',
+        },
+      });
+
+      expect(gear.shape).toEqual({ name: '모루 아이템', icon: '1001234' });
     });
 
-    it('is settable', () => {
-      gear.shape = { name: '모루 아이템 2', icon: '1212121' };
+    it('직접 설정할 수 있있다.', () => {
+      const gear = createGear();
 
-      expect(gear.shape).toEqual({ name: '모루 아이템 2', icon: '1212121' });
+      gear.shape = { name: '새로운 모루 아이템', icon: '1002000' };
+
+      expect(gear.shape).toEqual({
+        name: '새로운 모루 아이템',
+        icon: '1002000',
+      });
     });
 
-    it('is settable to undefined', () => {
+    it('undefined로 설정할 수 있다.', () => {
+      const gear = createGear({
+        shape: {
+          name: '모루 아이템',
+          icon: '1001234',
+        },
+      });
+
       gear.shape = undefined;
 
       expect(gear.shape).toBeUndefined();
     });
   });
 
-  describe('shapeIcon', () => {
-    it('is 1010101', () => {
-      expect(gear.shapeIcon).toBe('1010101');
-    });
+  describe('추가 옵션', () => {
+    describe('supportsAddOption', () => {
+      it('추가 옵션 부여가 가능한 장비는true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-    it('is icon if shape is undefined', () => {
-      gear.shape = undefined;
+        expect(gear.supportsAddOption).toBe(true);
+      });
 
-      expect(gear.shapeIcon).toBe('1212128');
-    });
+      it('추가 옵션 부여가 불가능한 장비는 false를 반환한다.', () => {
+        const gear = createGear('스칼렛 링');
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'shapeIcon' because it is a read-only property.
-      expect(() => (gear.shapeIcon = '1234567')).toThrow();
-    });
-  });
-
-  describe('type', () => {
-    it('is shiningRod', () => {
-      expect(gear.type).toBe(GearType.shiningRod);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'type' because it is a read-only property.
-      expect(() => (gear.type = GearType.staff)).toThrow();
-    });
-  });
-
-  describe('req', () => {
-    it('level is 200', () => {
-      expect(gear.req.level).toBe(200);
-    });
-
-    it('job is 2', () => {
-      expect(gear.req.job).toBe(2);
-    });
-
-    it('class is 0', () => {
-      expect(gear.req.class).toBe(0);
-    });
-
-    it('is readonly property', () => {
-      expect(
-        () =>
-          // @ts-expect-error: Cannot assign to 'req' because it is a read-only property.
-          (gear.req = {
-            level: 100,
-            str: 0,
-            dex: 0,
-            int: 0,
-            luk: 0,
-            job: 0,
-          }),
-      ).toThrow();
-    });
-  });
-
-  describe('attributes', () => {
-    it('only is true', () => {
-      expect(gear.attributes.only).toBe(true);
-    });
-
-    it('trade is TradeBlock', () => {
-      expect(gear.attributes.trade).toBe(GearTrade.TradeBlock);
-    });
-
-    it('trade is settable to EquipTradeBlock', () => {
-      gear.attributes.trade = GearTrade.EquipTradeBlock;
-
-      expect(gear.attributes.trade).toBe(GearTrade.EquipTradeBlock);
-    });
-
-    it('trade is settable to undefined', () => {
-      gear.attributes.trade = GearTrade.Tradeable;
-
-      expect(gear.attributes.trade).toBe(GearTrade.Tradeable);
-    });
-
-    it('onlyEquip is true', () => {
-      expect(gear.attributes.onlyEquip).toBe(true);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'attributes' because it is a read-only property.
-      expect(() => (gear.attributes = {})).toThrow();
-    });
-  });
-
-  describe('totalOption', () => {
-    it('is sum of standard options', () => {
-      expect(gear.totalOption).toEqual({
-        int: 382,
-        luk: 295,
-        maxHp: 255,
-        maxMp: 255,
-        attackPower: 430,
-        magicPower: 938,
-        bossDamage: 44,
-        ignoreMonsterArmor: 20,
-        allStat: 4,
+        expect(gear.supportsAddOption).toBe(false);
       });
     });
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'totalOption' because it is a read-only property.
-      expect(() => (gear.totalOption = {})).toThrow();
-    });
+    describe('canApplyAddOption', () => {
+      it('추가 옵션이 없는 장비는 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-    it('is readonly object', () => {
-      // @ts-expect-error: Cannot assign to 'int' because it is a read-only property.
-      expect(() => (gear.totalOption.int = 3)).not.toThrow();
-    });
-  });
-
-  describe('baseOption', () => {
-    it('is equal to input value', () => {
-      expect(gear.baseOption).toEqual({
-        int: 150,
-        luk: 150,
-        attackPower: 237,
-        magicPower: 400,
-        bossDamage: 30,
-        ignoreMonsterArmor: 20,
+        expect(gear.canApplyAddOption).toBe(true);
       });
-    });
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'baseOption' because it is a read-only property.
-      expect(() => (gear.baseOption = {})).toThrow();
-    });
-
-    it('is readonly object', () => {
-      // @ts-expect-error: Cannot assign to 'int' because it is a read-only property.
-      expect(() => (gear.baseOption.int = 3)).not.toThrow();
-    });
-  });
-
-  describe('addOption', () => {
-    it('is equal to input value', () => {
-      expect(gear.addOption).toEqual({
-        int: 55,
-        magicPower: 192,
-        bossDamage: 14,
-        allStat: 4,
-      });
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'addOption' because it is a read-only property.
-      expect(() => (gear.addOption = {})).toThrow();
-    });
-
-    it('is readonly object', () => {
-      // @ts-expect-error: Cannot assign to 'int' because it is a read-only property.
-      expect(() => (gear.addOption.int = 3)).not.toThrow();
-    });
-  });
-
-  describe('scrollOption', () => {
-    it('is equal to input value', () => {
-      expect(gear.upgradeOption).toEqual({
-        int: 32,
-        magicPower: 72,
-      });
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'upgradeOption' because it is a read-only property.
-      expect(() => (gear.upgradeOption = {})).toThrow();
-    });
-
-    it('is readonly object', () => {
-      // @ts-expect-error: Cannot assign to 'int' because it is a read-only property.
-      expect(() => (gear.upgradeOption.int = 3)).not.toThrow();
-    });
-  });
-
-  describe('starforceOption', () => {
-    it('is equal to input value', () => {
-      expect(gear.starforceOption).toEqual({
-        int: 145,
-        luk: 145,
-        maxHp: 255,
-        maxMp: 255,
-        attackPower: 193,
-        magicPower: 274,
-      });
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'starforceOption' because it is a read-only property.
-      expect(() => (gear.starforceOption = {})).toThrow();
-    });
-
-    it('is readonly object', () => {
-      // @ts-expect-error: Cannot assign to 'int' because it is a read-only property.
-      expect(() => (gear.starforceOption.int = 3)).not.toThrow();
-    });
-  });
-
-  describe('scrollUpgradeCount', () => {
-    it('is 8', () => {
-      expect(gear.scrollUpgradeCount).toBe(8);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'scrollUpgradeCount' because it is a read-only property.
-      expect(() => (gear.scrollUpgradeCount = 7)).toThrow();
-    });
-  });
-
-  describe('scrollResilienceCount', () => {
-    it('is 0', () => {
-      expect(gear.scrollResilienceCount).toBe(0);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'scrollResilienceCount' because it is a read-only property.
-      expect(() => (gear.scrollResilienceCount = 1)).toThrow();
-    });
-  });
-
-  describe('scrollUpgradeableCount', () => {
-    it('is 0', () => {
-      expect(gear.scrollUpgradeableCount).toBe(0);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'scrollUpgradeableCount' because it is a read-only property.
-      expect(() => (gear.scrollUpgradeableCount = 1)).toThrow();
-    });
-  });
-
-  describe('scrollTotalUpgradeableCount', () => {
-    it('is 8', () => {
-      expect(gear.scrollTotalUpgradeableCount).toBe(8);
-    });
-
-    it('is 9 after scrollUpgradeCount += 1', () => {
-      gear.data.scrollUpgradeCount = gear.scrollUpgradeCount + 1;
-
-      expect(gear.scrollTotalUpgradeableCount).toBe(9);
-    });
-
-    it('is 9 after scrollResilienceCount += 1', () => {
-      gear.data.scrollResilienceCount = gear.scrollResilienceCount + 1;
-
-      expect(gear.scrollTotalUpgradeableCount).toBe(9);
-    });
-
-    it('is 9 after scrollUpgradeableCount += 1', () => {
-      gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount + 1;
-
-      expect(gear.scrollTotalUpgradeableCount).toBe(9);
-    });
-  });
-
-  describe('star', () => {
-    it('is 22', () => {
-      expect(gear.star).toBe(22);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'star' because it is a read-only property.
-      expect(() => (gear.star = 23)).toThrow();
-    });
-  });
-
-  describe('maxStar', () => {
-    it('is 30', () => {
-      expect(gear.maxStar).toBe(30);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'maxStar' because it is a read-only property.
-      expect(() => (gear.maxStar = 20)).toThrow();
-    });
-  });
-
-  describe('starScroll', () => {
-    it('is false', () => {
-      expect(gear.starScroll).toBe(false);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'starScroll' because it is a read-only property.
-      expect(() => (gear.starScroll = true)).toThrow();
-    });
-  });
-
-  describe('soulEnchanted', () => {
-    it('is true', () => {
-      expect(gear.soulEnchanted).toBe(true);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'soulEnchanted' because it is a read-only property.
-      expect(() => (gear.soulEnchanted = false)).toThrow();
-    });
-  });
-
-  describe('soul', () => {
-    it('is 위대한 데미안의 소울 with 공격력 : +3%', () => {
-      expect(gear.soul).toEqual({
-        name: '위대한 데미안의 소울',
-        skill: '파멸의 검',
-        option: {
-          attackPowerRate: 3,
-        },
-        chargeFactor: 2,
-      });
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'soul' because it is a read-only property.
-      expect(() => (gear.soul = undefined)).toThrow();
-    });
-  });
-
-  describe('soulCharge', () => {
-    it('is 1000', () => {
-      expect(gear.soulCharge).toBe(1000);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'soulCharge' because it is a read-only property.
-      expect(() => (gear.soulCharge = undefined)).toThrow();
-    });
-  });
-
-  describe('soulChargeOption', () => {
-    it('is equal to input value', () => {
-      expect(gear.soulChargeOption).toEqual({
-        magicPower: 20,
-      });
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'soulChargeOption' because it is a read-only property.
-      expect(() => (gear.soulChargeOption = undefined)).toThrow();
-    });
-  });
-
-  describe('potentialGrade', () => {
-    it('is Legendary', () => {
-      expect(gear.potentialGrade).toBe(PotentialGrade.Legendary);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'potentialGrade' because it is a read-only property.
-      expect(() => (gear.potentialGrade = PotentialGrade.Unique)).toThrow();
-    });
-  });
-
-  describe('potentials', () => {
-    it('is equal to input value', () => {
-      expect(gear.potentials).toEqual([
-        {
-          grade: PotentialGrade.Legendary,
-          summary: '보스 몬스터 공격 시 데미지 : +40%',
-          option: {
-            bossDamage: 40,
+      it('추가 옵션이 4개 부여된 장비는 false를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          addOption: {
+            str: 1,
+            dex: 2,
+            int: 3,
+            luk: 4,
           },
-        },
-        {
-          grade: PotentialGrade.Legendary,
-          summary: '마력 : +12%',
-          option: {
-            magicPowerRate: 12,
+          addOptions: [
+            { type: AddOptionType.str, grade: 1, value: 1 },
+            { type: AddOptionType.dex, grade: 2, value: 2 },
+            { type: AddOptionType.int, grade: 3, value: 3 },
+            { type: AddOptionType.luk, grade: 4, value: 4 },
+          ],
+        });
+
+        expect(gear.canApplyAddOption).toBe(false);
+      });
+    });
+
+    describe('applyAddOption', () => {
+      it('추가 옵션을 설정한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        gear.applyAddOption(AddOptionType.allStat, 5);
+
+        expect(gear.addOption).toEqual({
+          allStat: 5,
+        });
+      });
+    });
+
+    describe('canResetAddOption', () => {
+      it('추가 옵션 부여가 가능한 장비는 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        expect(gear.canResetAddOption).toBe(false);
+      });
+
+      it('추가 옵션 부여가 불가능한 장비는 false를 반환한다.', () => {
+        const gear = createGear('스칼렛 링');
+
+        expect(gear.canResetAddOption).toBe(true);
+      });
+    });
+
+    describe('resetAddOption', () => {
+      it('추가 옵션을 초기화한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          addOption: {
+            str: 1,
+            dex: 2,
+            int: 3,
+            luk: 4,
           },
-        },
-        {
-          grade: PotentialGrade.Unique,
-          summary: '마력 : +9%',
-          option: {
-            magicPowerRate: 9,
-          },
-        },
-      ]);
-    });
+        });
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'potentials' because it is a read-only property.
-      expect(() => (gear.potentials = [])).toThrow();
-    });
+        gear.resetAddOption();
 
-    it('is readonly array', () => {
-      // @ts-expect-error: Cannot mutate 'potentials' because it is a readonly array.
-      gear.potentials[0] = { summary: '', option: {} };
-    });
+        expect(gear.addOption).toEqual({});
+      });
 
-    it('is deeply readonly', () => {
-      // @ts-expect-error: Cannot assign to 'potentials' element because it is a read-only property
-      gear.potentials[0].option.bossDamage = 50;
+      it('추가 옵션 목록을 초기화한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          addOptions: [
+            { type: AddOptionType.str, grade: 1, value: 1 },
+            { type: AddOptionType.dex, grade: 2, value: 2 },
+            { type: AddOptionType.int, grade: 3, value: 3 },
+          ],
+        });
+
+        gear.resetAddOption();
+
+        expect(gear.addOptions).toEqual([]);
+      });
     });
   });
 
-  describe('additionalPotentialGrade', () => {
-    it('is Unique', () => {
-      expect(gear.additionalPotentialGrade).toBe(PotentialGrade.Unique);
+  describe('주문서 강화', () => {
+    describe('supportsUpgrade', () => {
+      it('주문서 강화가 가능한 장비는 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        expect(gear.supportsUpgrade).toBe(true);
+      });
+
+      it('주문서 강화가 불가능한 장비는 false를 반환한다.', () => {
+        const gear = createGear();
+
+        expect(gear.supportsUpgrade).toBe(false);
+      });
     });
 
-    it('is readonly property', () => {
-      expect(
-        // @ts-expect-error: Cannot assign to 'additionalPotentialGrade' because it is a read-only property.
-        () => (gear.additionalPotentialGrade = PotentialGrade.Epic),
-      ).toThrow();
-    });
-  });
+    describe('canApplyFailScroll', () => {
+      it('주문서 강화가 가능한 장비는 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-  describe('additionalPotentials', () => {
-    it('is equal to input value', () => {
-      expect(gear.additionalPotentials).toEqual([
-        {
-          grade: PotentialGrade.Unique,
-          summary: '마력 : +9%',
-          option: {
-            magicPowerRate: 9,
-          },
-        },
-        {
-          grade: PotentialGrade.Unique,
-          summary: '마력 : +9%',
-          option: {
-            magicPowerRate: 9,
-          },
-        },
-        {
-          grade: PotentialGrade.Epic,
-          summary: '크리티컬 확률 : +6%',
-          option: {
-            criticalRate: 6,
-          },
-        },
-      ]);
+        expect(gear.canApplyFailScroll).toBe(true);
+      });
+
+      it('주문서 강화가 불가능한 장비는 false를 반환한다.', () => {
+        const gear = createGear();
+
+        expect(gear.canApplyFailScroll).toBe(false);
+      });
     });
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'potentials' because it is a read-only property.
-      expect(() => (gear.additionalPotentials = [])).toThrow();
-    });
+    describe('applyScrollFail', () => {
+      it('복구 가능 주문서 강화 횟수가 1 증가한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+        const expected = gear.scrollUpgradeableCount + 1;
 
-    it('is readonly array', () => {
-      // @ts-expect-error: Cannot mutate 'potentials' because it is a readonly array.
-      gear.additionalPotentials[0] = { summary: '', option: {} };
-    });
-
-    it('is deeply readonly', () => {
-      // @ts-expect-error: Cannot assign to 'potentials' element because it is a read-only property
-      gear.additionalPotentials[0].option.bossDamage = 50;
-    });
-  });
-
-  describe('exceptionalOption', () => {
-    it('is equal to input value', () => {
-      expect(gear.exceptionalOption).toEqual({});
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'exceptionalOption' because it is a read-only property.
-      expect(() => (gear.exceptionalOption = {})).toThrow();
-    });
-
-    it('is readonly object', () => {
-      // @ts-expect-error: Cannot assign to 'int' because it is a read-only property.
-      expect(() => (gear.exceptionalOption.int = 3)).not.toThrow();
-    });
-  });
-
-  describe('exceptionalUpgradeCount', () => {
-    it('is 0', () => {
-      expect(gear.exceptionalUpgradeCount).toBe(0);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'exceptionalUpgradeCount' because it is a read-only property.
-      expect(() => (gear.exceptionalUpgradeCount = 1)).toThrow();
-    });
-  });
-
-  describe('exceptionalUpgradeableCount', () => {
-    it('is 0', () => {
-      expect(gear.exceptionalUpgradeableCount).toBe(0);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'exceptionalUpgradeableCount' because it is a read-only property.
-      expect(() => (gear.exceptionalUpgradeableCount = 1)).toThrow();
-    });
-  });
-
-  describe('canApplyAddOption', () => {
-    it('is true', () => {
-      expect(gear.canApplyAddOption).toBe(true);
-    });
-  });
-
-  describe('applyAddOption', () => {
-    it.each([
-      [GearType.cape, 160, AddOptionType.str, 5, { str: 45 }],
-      [GearType.wand, 200, AddOptionType.bossDamage, 7, { bossDamage: 14 }],
-    ] satisfies [
-      GearType,
-      number,
-      AddOptionType,
-      AddOptionGrade,
-      Partial<GearAddOption>,
-    ][])('sets addOption', (gearType, reqLevel, type, grade, expected) => {
-      gear.data.type = gearType;
-      gear.data.req.level = reqLevel;
-      gear.data.addOption = {};
-
-      gear.applyAddOption(type, grade);
-
-      expect(gear.addOption).toEqual(expected);
-    });
-
-    it('adds to previous addOption', () => {
-      gear.data.type = GearType.belt;
-      gear.data.req.level = 200;
-      gear.data.addOption = { str: 1, dex: 2 };
-
-      gear.applyAddOption(AddOptionType.str_dex, 3);
-
-      expect(gear.addOption).toEqual({ str: 19, dex: 20 });
-    });
-
-    it('sets addOptions property', () => {
-      gear.data.type = GearType.cap;
-      gear.data.req.level = 160;
-
-      gear.applyAddOption(AddOptionType.str, 2);
-      gear.applyAddOption(AddOptionType.str, 3);
-      gear.applyAddOption(AddOptionType.dex, 5);
-      gear.applyAddOption(AddOptionType.allStat, 7);
-
-      expect(gear.addOptions).toEqual([
-        { type: AddOptionType.str, grade: 2, value: 18 },
-        { type: AddOptionType.str, grade: 3, value: 27 },
-        { type: AddOptionType.dex, grade: 5, value: 45 },
-        { type: AddOptionType.allStat, grade: 7, value: 7 },
-      ]);
-    });
-  });
-
-  describe('resetAddOption', () => {
-    it('resets addOption', () => {
-      gear.data.addOption = { str: 1, dex: 2, bossDamage: 10 };
-
-      gear.resetAddOption();
-
-      expect(gear.addOption).toEqual({});
-    });
-
-    it('resets meta add property', () => {
-      gear.data.addOptions = [
-        { type: AddOptionType.luk, grade: 5, value: 10 },
-        { type: AddOptionType.armor, grade: 3, value: 20 },
-      ];
-
-      gear.resetAddOption();
-
-      expect(gear.addOptions).toEqual([]);
-    });
-  });
-
-  describe('canUpgrade', () => {
-    it('is true', () => {
-      expect(gear.supportsUpgrade).toBe(true);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'supportsUpgrade' because it is a read-only property.
-      expect(() => (gear.supportsUpgrade = false)).toThrow();
-    });
-  });
-
-  describe('canFailScroll', () => {
-    it('is false', () => {
-      expect(gear.canApplyFailScroll).toBe(false);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'canApplyFailScroll' because it is a read-only property.
-      expect(() => (gear.canApplyFailScroll = true)).toThrow();
-    });
-  });
-
-  describe('failScroll', () => {
-    it('throws TypeError', () => {
-      expect(() => {
         gear.applyScrollFail();
-      }).toThrow();
+
+        expect(gear.scrollUpgradeableCount).toBe(expected);
+      });
+
+      it('잔여 주문서 강화 횟수가 1 감소한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+        const expected = gear.scrollUpgradeCount - 1;
+
+        gear.applyScrollFail();
+
+        expect(gear.scrollUpgradeCount).toBe(expected);
+      });
     });
 
-    it('sets scrollUpgradeableCount from 1 to 0', () => {
-      gear.data.scrollUpgradeableCount = 1;
+    describe('canApplyResileScroll', () => {
+      it('복구 가능 주문서 강화 횟수가 0인 경우 false를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-      gear.applyScrollFail();
-
-      expect(gear.scrollUpgradeableCount).toBe(0);
-    });
-  });
-
-  describe('canResileScroll', () => {
-    it('is false', () => {
-      expect(gear.canApplyResileScroll).toBe(false);
+        expect(gear.canApplyResileScroll).toBe(false);
+      });
     });
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'canApplyResileScroll' because it is a read-only property.
-      expect(() => (gear.canApplyResileScroll = true)).toThrow();
-    });
-  });
+    describe('applyScrollResile', () => {
+      it('복구 가능 주문서 강화 횟수가 0인 경우 TypeError가 발생한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-  describe('resileScroll', () => {
-    it('throws TypeError', () => {
-      expect(() => {
-        gear.applyScrollResile();
-      }).toThrow();
+        expect(() => {
+          gear.applyScrollResile();
+        }).toThrow(TypeError);
+      });
     });
 
-    it('sets scrollResilienceCount from 1 to 0', () => {
-      gear.data.scrollResilienceCount = 1;
+    describe('canResetUpgrade', () => {
+      it('주문서 강화가 가능한 장비는 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-      gear.applyScrollResile();
+        expect(gear.canResetUpgrade).toBe(true);
+      });
 
-      expect(gear.scrollResilienceCount).toBe(0);
-    });
-  });
+      it('주문서 강화가 불가능한 장비는 false를 반환한다.', () => {
+        const gear = createGear();
 
-  describe('canResetUpgrade', () => {
-    it('is true', () => {
-      expect(gear.canResetUpgrade).toBe(true);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'canResetUpgrade' because it is a read-only property.
-      expect(() => (gear.canResetUpgrade = false)).toThrow();
-    });
-  });
-
-  describe('resetUpgrade', () => {
-    it('resets upgradeOption', () => {
-      gear.resetUpgrade();
-
-      expect(gear.upgradeOption).toEqual({});
+        expect(gear.canResetUpgrade).toBe(false);
+      });
     });
 
-    it('sets scrollUpgradeCount to 0', () => {
-      gear.resetUpgrade();
+    describe('resetUpgrade', () => {
+      it('주문서 옵션을 초기화한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          upgradeOption: {
+            int: 1,
+            magicPower: 2,
+          },
+        });
 
-      expect(gear.scrollUpgradeCount).toBe(0);
+        gear.resetUpgrade();
+
+        expect(gear.upgradeOption).toEqual({});
+      });
+
+      it('주문서 강화 횟수를 0으로 설정한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          scrollUpgradeCount: 1,
+        });
+
+        gear.resetUpgrade();
+
+        expect(gear.scrollUpgradeCount).toBe(0);
+      });
     });
-  });
 
-  describe('canApplyScroll', () => {
-    it('is false', () => {
-      expect(gear.canApplyScroll).toBe(false);
+    describe('canApplyScroll', () => {
+      it('잔여 주문서 강화 횟수가 1 이상인 경우 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        expect(gear.canApplyScroll).toBe(true);
+      });
     });
 
-    it('is true for scrollUpgradeableCount == 1', () => {
-      gear.data.scrollUpgradeableCount = 1;
+    describe('applyScroll', () => {
+      it('주문서 옵션을 설정한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+        const scroll = createScroll({
+          option: {
+            int: 100,
+          },
+        });
 
-      expect(gear.canApplyScroll).toBe(true);
-    });
-  });
-
-  describe('applyScroll', () => {
-    it('throws TypeError', () => {
-      const scroll = { name: '', option: {} };
-
-      expect(() => {
         gear.applyScroll(scroll);
-      }).toThrow();
+
+        expect(gear.upgradeOption).toEqual({
+          int: 100,
+        });
+      });
+
+      it('주문서 강화 횟수가 1회 증가한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+        const scroll = createScroll();
+        const expected = gear.scrollUpgradeCount + 1;
+
+        gear.applyScroll(scroll);
+
+        expect(gear.scrollUpgradeCount).toBe(expected);
+      });
     });
 
-    it('adds int = 100 to upgradeOption for scrollUpgradeableCount == 1', () => {
-      gear.data.scrollUpgradeableCount = 1;
-      const scroll = { name: '', option: { int: 100 } };
-      const intBefore = gear.upgradeOption.int;
+    describe('applySpellTrace', () => {
+      it('주문서 옵션을 설정한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-      gear.applyScroll(scroll);
+        gear.applySpellTrace(SpellTraceType.int, 15);
 
-      expect(gear.upgradeOption.int).toBe(intBefore + 100);
-    });
+        expect(gear.upgradeOption).toEqual({
+          int: 4,
+          magicPower: 9,
+        });
+      });
 
-    it('sets scrollUpgradeCount from 8 to 9', () => {
-      gear.data.scrollUpgradeableCount = 1;
-      const scroll = { name: '', option: { int: 100 } };
+      it('주문서 강화 횟수가 1회 증가한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+        const expected = gear.scrollUpgradeCount + 1;
 
-      gear.applyScroll(scroll);
+        gear.applySpellTrace(SpellTraceType.int, 15);
 
-      expect(gear.scrollUpgradeCount).toBe(9);
-    });
-  });
-
-  describe('applySpellTrace', () => {
-    it('throws TypeError', () => {
-      expect(() => {
-        gear.applySpellTrace(SpellTraceType.dex, 30);
-      }).toThrow();
-    });
-
-    it('adds magicPower = 9 to upgradeOption for scrollUpgradeableCount == 1', () => {
-      gear.data.scrollUpgradeableCount = 1;
-      const magicPowerBefore = gear.upgradeOption.magicPower;
-
-      gear.applySpellTrace(SpellTraceType.int, 15);
-
-      expect(gear.upgradeOption.magicPower).toBe(magicPowerBefore + 9);
-    });
-  });
-
-  describe('supportsStarforce', () => {
-    it('is true', () => {
-      expect(gear.supportsStarforce).toBe(true);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'supportsStarforce' because it is a read-only property.
-      expect(() => (gear.supportsStarforce = false)).toThrow();
+        expect(gear.scrollUpgradeCount).toBe(expected);
+      });
     });
   });
 
-  describe('canStarforce', () => {
-    it('is true', () => {
-      expect(gear.canApplyStarforce).toBe(true);
+  describe('스타포스 강화', () => {
+    describe('supportsStarforce', () => {
+      it('스타포스 강화를 지원하는 장비는 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        expect(gear.supportsStarforce).toBe(true);
+      });
     });
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'canApplyStarforce' because it is a read-only property.
-      expect(() => (gear.canApplyStarforce = false)).toThrow();
-    });
-  });
+    describe('canApplyStarforce', () => {
+      it('스타포스 강화가 최대 단계보다 작은 경우 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-  describe('starforce', () => {
-    it('sets star to 23', () => {
-      gear.applyStarforce();
-
-      expect(gear.star).toBe(23);
+        expect(gear.canApplyStarforce).toBe(true);
+      });
     });
 
-    it('modifies starforceOption', () => {
-      const original = { ...gear.starforceOption };
+    describe('applyStarforce', () => {
+      it('스타포스 강화 단계가 1 증가한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+        const expected = gear.star + 1;
 
-      gear.applyStarforce();
+        gear.applyStarforce();
 
-      expect(gear.starforceOption).not.toEqual(original);
-    });
-  });
+        expect(gear.star).toBe(expected);
+      });
 
-  describe('canStarforceIgnoringMaxStar', () => {
-    it('is true', () => {
-      expect(gear.canApplyStarforceIgnoringMaxStar).toBe(true);
-    });
+      it('스타포스 옵션을 설정한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'canApplyStarforceIgnoringMaxStar' because it is a read-only property.
-      expect(() => (gear.canApplyStarforceIgnoringMaxStar = false)).toThrow();
-    });
-  });
+        gear.applyStarforce();
 
-  describe('starforceIgnoringMaxStar', () => {
-    it('sets star to 23', () => {
-      gear.applyStarforceIgnoringMaxStar();
-
-      expect(gear.star).toBe(23);
+        expect(gear.starforceOption).toEqual({
+          str: 2,
+          dex: 2,
+          int: 2,
+          luk: 2,
+        });
+      });
     });
 
-    it('modifies starforceOption', () => {
-      const original = { ...gear.starforceOption };
+    describe('canStarforceIgnoringMaxStar', () => {
+      it('스타포스 강화가 최대 단계 이상이어도 true를 반환한다.', () => {
+        const gear = createGear('노가다 목장갑', [starforcePatch([5])]);
 
-      gear.applyStarforceIgnoringMaxStar();
-
-      expect(gear.starforceOption).not.toEqual(original);
-    });
-  });
-
-  describe('canStarScroll', () => {
-    it('is false', () => {
-      expect(gear.canApplyStarScroll).toBe(false);
+        expect(gear.canApplyStarforceIgnoringMaxStar).toBe(true);
+      });
     });
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'canApplyStarScroll' because it is a read-only property.
-      expect(() => (gear.canApplyStarScroll = true)).toThrow();
-    });
-  });
+    describe('starforceIgnoringMaxStar', () => {
+      it('스타포스 강화 단계가 1 증가한다.', () => {
+        const gear = createGear('노가다 목장갑', [starforcePatch([5])]);
+        const expected = gear.star + 1;
 
-  describe('applyStarScroll', () => {
-    it('throws TypeError', () => {
-      expect(() => {
-        gear.applyStarScroll();
-      }).toThrow(TypeError);
-    });
-  });
+        gear.applyStarforceIgnoringMaxStar();
 
-  describe('canStarScrollIgnoringMaxStar', () => {
-    it('is false', () => {
-      expect(gear.canApplyStarScrollIgnoringMaxStar).toBe(false);
+        expect(gear.star).toBe(expected);
+      });
+
+      it('스타포스 옵션을 설정한다.', () => {
+        const gear = createGear('노가다 목장갑', [starforcePatch([5])]);
+
+        gear.applyStarforceIgnoringMaxStar();
+
+        expect(gear.starforceOption).toEqual({
+          str: 13,
+          dex: 13,
+          int: 13,
+          luk: 13,
+        });
+      });
     });
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'canApplyStarScrollIgnoringMaxStar' because it is a read-only property.
-      expect(() => (gear.canApplyStarScrollIgnoringMaxStar = true)).toThrow();
-    });
-  });
+    describe('canStarScroll', () => {
+      it('요구 레벨이 Lv.150을 넘는 장비는 false를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-  describe('applyStarScrollIgnoringMaxStar', () => {
-    it('throws TypeError', () => {
-      expect(() => {
+        expect(gear.canApplyStarScroll).toBe(false);
+      });
+    });
+
+    describe('applyStarScroll', () => {
+      it('요구 레벨이 Lv.150을 넘는 장비는 TypeError가 발생한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        expect(() => {
+          gear.applyStarScroll();
+        }).toThrow(TypeError);
+      });
+    });
+
+    describe('canStarScrollIgnoringMaxStar', () => {
+      it('스타포스 강화가 최대 단계 이상이어도 true를 반환한다.', () => {
+        const gear = createGear('노가다 목장갑', [starforcePatch([5])]);
+
+        expect(gear.canApplyStarScrollIgnoringMaxStar).toBe(true);
+      });
+    });
+
+    describe('applyStarScrollIgnoringMaxStar', () => {
+      it('스타포스 강화 단계가 1 증가한다.', () => {
+        const gear = createGear('노가다 목장갑', [starforcePatch([5])]);
+        const expected = gear.star + 1;
+
         gear.applyStarScrollIgnoringMaxStar();
-      }).toThrow(TypeError);
+
+        expect(gear.star).toBe(expected);
+      });
+
+      it('놀라운 장비 강화 주문서 여부를 true로 설정한다.', () => {
+        const gear = createGear('노가다 목장갑', [starforcePatch([5])]);
+
+        gear.applyStarScrollIgnoringMaxStar();
+
+        expect(gear.starScroll).toBe(true);
+      });
+
+      it('스타포스 옵션을 설정한다.', () => {
+        const gear = createGear('노가다 목장갑', [starforcePatch([5])]);
+
+        gear.applyStarScrollIgnoringMaxStar();
+
+        expect(gear.starforceOption).toEqual({
+          str: 13,
+          dex: 13,
+          int: 13,
+          luk: 13,
+        });
+      });
+    });
+
+    describe('canResetStarforce', () => {
+      it('스타포스 강화를 지원하는 장비는 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        expect(gear.canResetStarforce).toBe(true);
+      });
+    });
+
+    describe('resetStarforce', () => {
+      it('스타포스 옵션을 초기화한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          starforceOption: {
+            str: 1,
+            dex: 2,
+            int: 3,
+            luk: 4,
+          },
+        });
+
+        gear.resetStarforce();
+
+        expect(gear.starforceOption).toEqual({});
+      });
+
+      it('스타포스 강화 단계를 0으로 설정한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          star: 1,
+        });
+
+        gear.resetStarforce();
+
+        expect(gear.star).toBe(0);
+      });
     });
   });
 
-  describe('canResetStarforce', () => {
-    it('is true', () => {
-      expect(gear.canResetStarforce).toBe(true);
+  describe('잠재능력', () => {
+    describe('supportsPotential', () => {
+      it('잠재능력 설정을 지원하는 장비는 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        expect(gear.supportsPotential).toBe(true);
+      });
     });
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'canResetStarforce' because it is a read-only property.
-      expect(() => (gear.canResetStarforce = true)).toThrow();
-    });
-  });
+    describe('canSetPotential', () => {
+      it('잠재능력 설정을 지원하는 장비는 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-  describe('resetStarforce', () => {
-    it('resets star and starforceOption', () => {
-      gear.resetStarforce();
-
-      expect(gear.star).toBe(0);
-      expect(gear.starforceOption).toEqual({});
-    });
-  });
-
-  describe('supportsPotential', () => {
-    it('is true', () => {
-      expect(gear.supportsPotential).toBe(true);
+        expect(gear.canSetPotential).toBe(true);
+      });
     });
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'supportsPotential' because it is a read-only property.
-      expect(() => (gear.supportsPotential = false)).toThrow();
-    });
-  });
+    describe('setPotential', () => {
+      it('잠재능력 등급을 설정한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-  describe('canSetPotential', () => {
-    it('is true', () => {
-      expect(gear.canSetPotential).toBe(true);
-    });
+        gear.setPotential(PotentialGrade.Unique, [createPotentialData()]);
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'canSetPotential' because it is a read-only property.
-      expect(() => (gear.canSetPotential = false)).toThrow();
-    });
-  });
+        expect(gear.potentialGrade).toBe(PotentialGrade.Unique);
+      });
 
-  describe('setPotential', () => {
-    it('sets potentialGrade to Unique', () => {
-      gear.setPotential(PotentialGrade.Unique, [
-        { grade: 1, summary: '', option: {} },
-      ]);
+      it('잠재능력 옵션을 설정한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+        const potentials = [
+          createPotentialData({ summary: '테스트용 잠재능력 1' }),
+          createPotentialData({ summary: '테스트용 잠재능력 2' }),
+          createPotentialData({ summary: '테스트용 잠재능력 3' }),
+        ];
 
-      expect(gear.potentialGrade).toBe(PotentialGrade.Unique);
+        gear.setPotential(PotentialGrade.Unique, potentials);
+
+        expect(gear.potentials).toEqual(potentials);
+      });
     });
 
-    it('sets potentials', () => {
-      gear.setPotential(PotentialGrade.Unique, [
-        {
-          grade: PotentialGrade.Legendary,
-          summary: '마력 : +12%',
-          option: { magicPowerRate: 12 },
-        },
-      ]);
+    describe('resetPotential', () => {
+      it('잠재능력 등급을 Normal로 설정한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-      expect(gear.potentials).toEqual([
-        {
-          grade: PotentialGrade.Legendary,
-          summary: '마력 : +12%',
-          option: { magicPowerRate: 12 },
-        },
-      ]);
-    });
-  });
+        gear.resetPotential();
 
-  describe('resetPotential', () => {
-    it('resets potentialGrade to Normal', () => {
-      gear.resetPotential();
+        expect(gear.potentialGrade).toBe(PotentialGrade.Normal);
+      });
 
-      expect(gear.potentialGrade).toBe(PotentialGrade.Normal);
+      it('잠재능력 옵션을 초기화한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          potentials: [
+            createPotentialData({ summary: '테스트용 잠재능력 1' }),
+            createPotentialData({ summary: '테스트용 잠재능력 2' }),
+            createPotentialData({ summary: '테스트용 잠재능력 3' }),
+          ],
+        });
+
+        gear.resetPotential();
+
+        expect(gear.potentials).toEqual([]);
+      });
     });
 
-    it('resets potentials', () => {
-      gear.resetPotential();
+    describe('supportsAdditionalPotential', () => {
+      it('에디셔널 잠재능력 설정을 지원하는 장비는 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-      expect(gear.potentials).toEqual([]);
-    });
-  });
-
-  describe('supportsAdditionalPotential', () => {
-    it('is true', () => {
-      expect(gear.supportsAdditionalPotential).toBe(true);
+        expect(gear.supportsAdditionalPotential).toBe(true);
+      });
     });
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'supportsAdditionalPotential' because it is a read-only property.
-      expect(() => (gear.supportsAdditionalPotential = false)).toThrow();
-    });
-  });
+    describe('canSetAdditionalPotential', () => {
+      it('에디셔널 잠재능력 설정을 지원하는 장비는 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-  describe('canSetAdditionalPotential', () => {
-    it('is true', () => {
-      expect(gear.canSetAdditionalPotential).toBe(true);
+        expect(gear.canSetAdditionalPotential).toBe(true);
+      });
     });
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'canSetAdditionalPotential' because it is a read-only property.
-      expect(() => (gear.canSetAdditionalPotential = false)).toThrow();
+    describe('setAdditionalPotential', () => {
+      it('에디셔널 잠재능력 등급을 설정한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        gear.setAdditionalPotential(PotentialGrade.Epic, [
+          createPotentialData(),
+        ]);
+
+        expect(gear.additionalPotentialGrade).toBe(PotentialGrade.Epic);
+      });
+
+      it('에디셔널 잠재능력 옵션을 설정한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+        const potentials = [
+          createPotentialData({ summary: '테스트용 에디셔널 잠재능력 1' }),
+          createPotentialData({ summary: '테스트용 에디셔널 잠재능력 2' }),
+          createPotentialData({ summary: '테스트용 에디셔널 잠재능력 3' }),
+        ];
+
+        gear.setAdditionalPotential(PotentialGrade.Epic, potentials);
+
+        expect(gear.additionalPotentials).toEqual(potentials);
+      });
     });
-  });
 
-  describe('setAdditionalPotential', () => {
-    it('sets additionalPotentialGrade to Legendary', () => {
-      gear.setAdditionalPotential(PotentialGrade.Legendary, [
-        { grade: 1, summary: '', option: {} },
-      ]);
+    describe('resetAdditionalPotential', () => {
+      it('에디셔널 잠재능력 등급을 Normal로 설정한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-      expect(gear.additionalPotentialGrade).toBe(PotentialGrade.Legendary);
-    });
+        gear.resetAdditionalPotential();
 
-    it('sets additionalPotentials', () => {
-      gear.setAdditionalPotential(PotentialGrade.Legendary, [
-        {
-          grade: PotentialGrade.Legendary,
-          summary: '마력 : +12%',
-          option: { magicPowerRate: 12 },
-        },
-      ]);
+        expect(gear.additionalPotentialGrade).toBe(PotentialGrade.Normal);
+      });
 
-      expect(gear.additionalPotentials).toEqual([
-        {
-          grade: PotentialGrade.Legendary,
-          summary: '마력 : +12%',
-          option: { magicPowerRate: 12 },
-        },
-      ]);
+      it('에디셔널 잠재능력 옵션을 초기화한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          additionalPotentials: [
+            createPotentialData({ summary: '테스트용 에디셔널 잠재능력 1' }),
+            createPotentialData({ summary: '테스트용 에디셔널 잠재능력 2' }),
+            createPotentialData({ summary: '테스트용 에디셔널 잠재능력 3' }),
+          ],
+        });
+
+        gear.resetAdditionalPotential();
+
+        expect(gear.additionalPotentials).toEqual([]);
+      });
     });
   });
 
-  describe('resetAdditionalPotential', () => {
-    it('resets additionalPotentialGrade to Normal', () => {
-      gear.resetAdditionalPotential();
+  describe('소울 웨폰', () => {
+    describe('supportsSoul', () => {
+      it('장비 분류가 무기일 경우 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-      expect(gear.additionalPotentialGrade).toBe(PotentialGrade.Normal);
+        expect(gear.supportsSoul).toBe(true);
+      });
     });
 
-    it('resets additionalPotentials', () => {
-      gear.resetAdditionalPotential();
+    describe('canApplySoulEnchant', () => {
+      it('장비 분류가 무기일 경우 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-      expect(gear.additionalPotentials).toEqual([]);
-    });
-  });
-
-  describe('supportsSoul', () => {
-    it('is true', () => {
-      expect(gear.supportsSoul).toBe(true);
+        expect(gear.canApplySoulEnchant).toBe(true);
+      });
     });
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'supportsSoul' because it is a read-only property.
-      expect(() => (gear.supportsSoul = true)).toThrow();
-    });
-  });
+    describe('applySoulEnchant', () => {
+      it('소울 인챈트를 적용한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-  describe('canApplySoulEnchant', () => {
-    it('is false', () => {
-      expect(gear.canApplySoulEnchant).toBe(false);
-    });
-
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'canApplySoulEnchant' because it is a read-only property.
-      expect(() => (gear.canApplySoulEnchant = true)).toThrow();
-    });
-  });
-
-  describe('applySoulEnchant', () => {
-    it('throws TypeError', () => {
-      expect(() => {
         gear.applySoulEnchant();
-      }).toThrow();
-    });
-  });
 
-  describe('canSetSoul', () => {
-    it('is true', () => {
-      expect(gear.canSetSoul).toBe(true);
+        expect(gear.soulEnchanted).toBe(true);
+      });
     });
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'canSetSoul' because it is a read-only property.
-      expect(() => (gear.canSetSoul = true)).toThrow();
-    });
-  });
+    describe('canSetSoul', () => {
+      it('소울 인챈트가 적용된 장비는 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', [soulPatch()]);
 
-  describe('setSoul', () => {
-    it('sets soul name to 위대한 카링의 소울', () => {
-      gear.setSoul({
-        name: '위대한 카링의 소울',
-        skill: '',
-        option: {},
+        expect(gear.canSetSoul).toBe(true);
       });
 
-      expect(gear.soul?.name).toBe('위대한 카링의 소울');
+      it('소울 인챈트가 적용되지 않은 장비는 false를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        expect(gear.canSetSoul).toBe(false);
+      });
     });
 
-    it('sets soul charge option', () => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      gear.data.soulSlot!.chargeOption = {};
+    describe('setSoul', () => {
+      it('소울을 설정한다.', () => {
+        const soul = createSoulData();
+        const gear = createGear('아케인셰이드 샤이닝로드', [soulPatch()]);
 
-      gear.setSoul({
-        name: '',
-        skill: '',
-        option: {},
-        chargeFactor: 2,
+        gear.setSoul(soul);
+
+        expect(gear.soul).toEqual(soul);
       });
 
-      expect(gear.soulChargeOption).toEqual({ magicPower: 20 });
+      it('소울 인챈트가 적용되지 않은 장비는 TypeError가 발생한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        expect(() => {
+          gear.setSoul(createSoulData());
+        }).toThrow(TypeError);
+      });
+    });
+
+    describe('canSetSoulCharge', () => {
+      it('소울 인챈트가 적용된 장비는 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', [soulPatch()]);
+
+        expect(gear.canSetSoulCharge).toBe(true);
+      });
+
+      it('소울 인챈트가 적용되지 않은 장비는 false를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        expect(gear.canSetSoulCharge).toBe(false);
+      });
+    });
+
+    describe('setSoulCharge', () => {
+      it('소울 충전량을 설정한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', [soulPatch()]);
+
+        gear.setSoulCharge(100);
+
+        expect(gear.soulCharge).toBe(100);
+      });
+
+      it('소울 인챈트가 적용되지 않은 장비는 TypeError가 발생한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        expect(() => {
+          gear.setSoulCharge(100);
+        }).toThrow(TypeError);
+      });
+    });
+
+    describe('resetSoulEnchant', () => {
+      it('소울 인챈트를 초기화한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          soulSlot: {},
+        });
+
+        gear.resetSoulEnchant();
+
+        expect(gear.soulEnchanted).toBe(false);
+      });
     });
   });
 
-  describe('canSetSoulCharge', () => {
-    it('is true', () => {
-      expect(gear.canSetSoulCharge).toBe(true);
+  describe('익셉셔널', () => {
+    describe('supportsExceptional', () => {
+      it('익셉셔널 강화를 지원하는 장비는 true를 반환한다.', () => {
+        const gear = createGear('몽환의 벨트');
+
+        expect(gear.supportsExceptional).toBe(true);
+      });
+
+      it('익셉셔널 강화를 지원하지 않는 장비는 false를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        expect(gear.supportsExceptional).toBe(false);
+      });
     });
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'canSetSoulCharge' because it is a read-only property.
-      expect(() => (gear.canSetSoulCharge = true)).toThrow();
-    });
-  });
+    describe('canApplyExceptional', () => {
+      it('익셉셔널 강화를 지원하는 장비는 true를 반환한다.', () => {
+        const gear = createGear('몽환의 벨트');
 
-  describe('setSoulCharge', () => {
-    it('sets soul charge option', () => {
-      gear.setSoulCharge(200);
+        expect(gear.canApplyExceptional).toBe(true);
+      });
 
-      expect(gear.soulChargeOption).toEqual({ magicPower: 12 });
-    });
-  });
+      it('익셉셔널 강화를 지원하지 않는 장비는 false를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
 
-  describe('resetSoulEnchant', () => {
-    it('resets soulEnchanted', () => {
-      gear.resetSoulEnchant();
-
-      expect(gear.soulEnchanted).toBe(false);
-    });
-  });
-
-  describe('supportsExceptional', () => {
-    it('is false', () => {
-      expect(gear.supportsExceptional).toBe(false);
+        expect(gear.canApplyExceptional).toBe(false);
+      });
     });
 
-    it('is true for exceptionalUpgradeCount === 1', () => {
-      gear.data.exceptionalUpgradeCount = 1;
-
-      expect(gear.supportsExceptional).toBe(true);
-    });
-  });
-
-  describe('canApplyExceptional', () => {
-    it('is false', () => {
-      expect(gear.canApplyExceptional).toBe(false);
-    });
-
-    it('is true for exceptionalUpgradeableCount === 1', () => {
-      gear.data.exceptionalUpgradeableCount = 1;
-
-      expect(gear.canApplyExceptional).toBe(true);
-    });
-  });
-
-  describe('applyExceptional', () => {
-    it('increments exceptionalUpgradeCount for exceptionalUpgradeableCount === 1', () => {
-      gear.data.exceptionalUpgradeableCount = 1;
-      const hammer = { name: '', option: {} };
-
-      gear.applyExceptional(hammer);
-
-      expect(gear.exceptionalUpgradeCount).toBe(1);
-    });
-  });
-
-  describe('canResetExceptional', () => {
-    it('is false', () => {
-      expect(gear.canResetExceptional).toBe(false);
-    });
-  });
-
-  describe('resetExceptional', () => {
-    it('resets exceptionalOption', () => {
-      gear.data.exceptionalUpgradeCount = 1;
-      gear.data.exceptionalOption = { dex: 1 };
-
-      gear.resetExceptional();
-
-      expect(gear.exceptionalOption).toEqual({});
-    });
-  });
-
-  beforeEach(() => {
-    gear = new Gear({
-      meta: {
-        id: 1212128,
-        version: 1,
-      },
-      name: '제네시스 샤이닝로드',
-      icon: '1212128',
-      desc: '해방 무기',
-      shape: {
-        name: '모루 아이템',
-        icon: '1010101',
-      },
-      type: GearType.shiningRod,
-      req: {
-        level: 200,
-        job: 2,
-      },
-      attributes: {
-        only: true,
-        trade: GearTrade.TradeBlock,
-        onlyEquip: true,
-        canAddOption: GearCapability.Can,
-        canPotential: GearCapability.Can,
-        canAdditionalPotential: GearCapability.Can,
-        canScroll: GearCapability.Can,
-        canStarforce: GearCapability.Can,
-      },
-
-      baseOption: {
-        int: 150,
-        luk: 150,
-        attackPower: 237,
-        magicPower: 400,
-        bossDamage: 30,
-        ignoreMonsterArmor: 20,
-      },
-      addOption: {
-        int: 55,
-        magicPower: 192,
-        bossDamage: 14,
-        allStat: 4,
-      },
-      upgradeOption: {
-        int: 32,
-        magicPower: 72,
-      },
-      starforceOption: {
-        int: 145,
-        luk: 145,
-        maxHp: 255,
-        maxMp: 255,
-        attackPower: 193,
-        magicPower: 274,
-      },
-
-      scrollUpgradeCount: 8,
-      scrollResilienceCount: 0,
-      scrollUpgradeableCount: 0,
-
-      star: 22,
-      starScroll: false,
-
-      soulSlot: {
-        soul: {
-          name: '위대한 데미안의 소울',
-          skill: '파멸의 검',
+    describe('applyExceptional', () => {
+      it('익셉셔널 옵션을 설정한다.', () => {
+        const gear = createGear('몽환의 벨트');
+        const scroll = createExceptional({
           option: {
-            attackPowerRate: 3,
+            int: 10,
           },
-          chargeFactor: 2,
-        },
-        charge: 1000,
-        chargeOption: {
-          magicPower: 20,
-        },
-      },
+        });
 
-      potentialGrade: PotentialGrade.Legendary,
-      potentials: [
-        {
-          grade: PotentialGrade.Legendary,
-          summary: '보스 몬스터 공격 시 데미지 : +40%',
-          option: {
-            bossDamage: 40,
-          },
-        },
-        {
-          grade: PotentialGrade.Legendary,
-          summary: '마력 : +12%',
-          option: {
-            magicPowerRate: 12,
-          },
-        },
-        {
-          grade: PotentialGrade.Unique,
-          summary: '마력 : +9%',
-          option: {
-            magicPowerRate: 9,
-          },
-        },
-      ],
-      additionalPotentialGrade: PotentialGrade.Unique,
-      additionalPotentials: [
-        {
-          grade: PotentialGrade.Unique,
-          summary: '마력 : +9%',
-          option: {
-            magicPowerRate: 9,
-          },
-        },
-        {
-          grade: PotentialGrade.Unique,
-          summary: '마력 : +9%',
-          option: {
-            magicPowerRate: 9,
-          },
-        },
-        {
-          grade: PotentialGrade.Epic,
-          summary: '크리티컬 확률 : +6%',
-          option: {
-            criticalRate: 6,
-          },
-        },
-      ],
+        gear.applyExceptional(scroll);
 
-      exceptionalOption: {},
-      exceptionalUpgradeCount: 0,
-      exceptionalUpgradeableCount: 0,
+        expect(gear.exceptionalOption).toEqual({
+          int: 10,
+        });
+      });
+
+      it('익셉셔널 강화 횟수가 1회 증가한다.', () => {
+        const gear = createGear('몽환의 벨트');
+        const expected = gear.exceptionalUpgradeCount + 1;
+
+        gear.applyExceptional(createExceptional());
+
+        expect(gear.exceptionalUpgradeCount).toBe(expected);
+      });
+
+      it('익셉셔널 강화를 지원하지 않는 장비는 TypeError가 발생한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        expect(() => {
+          gear.applyExceptional(createScroll());
+        }).toThrow(TypeError);
+      });
+    });
+
+    describe('canResetExceptional', () => {
+      it('익셉셔널 강화를 지원하는 장비는 true를 반환한다.', () => {
+        const gear = createGear('몽환의 벨트');
+
+        expect(gear.canResetExceptional).toBe(true);
+      });
+
+      it('익셉셔널 강화를 지원하지 않는 장비는 false를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        expect(gear.canResetExceptional).toBe(false);
+      });
+    });
+
+    describe('resetExceptional', () => {
+      it('익셉셔널 옵션을 초기화한다.', () => {
+        const gear = createGear('몽환의 벨트', {
+          exceptionalOption: {
+            int: 10,
+          },
+        });
+
+        gear.resetExceptional();
+
+        expect(gear.exceptionalOption).toEqual({});
+      });
+
+      it('익셉셔널 강화 횟수를 0으로 설정한다.', () => {
+        const gear = createGear('몽환의 벨트', {
+          exceptionalUpgradeCount: 1,
+        });
+
+        gear.resetExceptional();
+
+        expect(gear.exceptionalUpgradeCount).toBe(0);
+      });
     });
   });
 });

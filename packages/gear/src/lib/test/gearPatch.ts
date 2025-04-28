@@ -91,13 +91,15 @@ export function addiPotentialPatch(
   };
 }
 
-export function soulPatch(arg: [SoulData] | [SoulData, number]): Patch {
+export function soulPatch(arg?: [SoulData] | [SoulData, number]): Patch {
   return (gear: Gear) => {
-    const [soul, charge] = arg;
     gear.applySoulEnchant();
-    gear.setSoul(soul);
-    if (charge) {
-      gear.setSoulCharge(charge);
+    if (arg) {
+      const [soul, charge] = arg;
+      gear.setSoul(soul);
+      if (charge) {
+        gear.setSoulCharge(charge);
+      }
     }
   };
 }

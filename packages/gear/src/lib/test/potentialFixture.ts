@@ -1,5 +1,17 @@
-import { PotentialGrade } from '../data';
+import { PotentialData, PotentialGrade } from '../data';
 import { potentialPatch } from './gearPatch';
+
+export function createPotentialData(
+  data?: Partial<PotentialData>,
+): PotentialData {
+  return {
+    grade: PotentialGrade.Rare,
+    summary: '테스트용 잠재능력',
+    option: {},
+
+    ...data,
+  };
+}
 
 type PotentialFixture = Parameters<typeof potentialPatch>[0];
 

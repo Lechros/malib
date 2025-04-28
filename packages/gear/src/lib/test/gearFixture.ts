@@ -1,5 +1,6 @@
 import { GearData } from '../data';
 import { Gear } from '../Gear';
+import { ReadonlyGear } from '../ReadonlyGear';
 import { resources } from './gearFixtureResources';
 import { Patch } from './gearPatch';
 
@@ -39,6 +40,31 @@ export function createGear(
   } else if (typeof name_data === 'object') {
     // createGear(data)
     return new Gear(createGearData('', name_data));
+  } else {
+    throw new TypeError('Invalid argument');
+  }
+}
+
+export function createReadonlyGear(
+  name?: GearNames,
+  data?: Partial<GearData>,
+): ReadonlyGear;
+export function createReadonlyGear(data: Partial<GearData>): ReadonlyGear;
+export function createReadonlyGear(
+  name_data: GearNames | Partial<GearData> = '',
+  data?: Partial<GearData>,
+): ReadonlyGear {
+  if (typeof name_data === 'string') {
+    if (typeof data === 'undefined') {
+      // createReadonlyGear(name)
+      return new ReadonlyGear(createGearData(name_data));
+    } else {
+      // createReadonlyGear(name, data)
+      return new ReadonlyGear(createGearData(name_data, data));
+    }
+  } else if (typeof name_data === 'object') {
+    // createReadonlyGear(data)
+    return new ReadonlyGear(createGearData('', name_data));
   } else {
     throw new TypeError('Invalid argument');
   }
