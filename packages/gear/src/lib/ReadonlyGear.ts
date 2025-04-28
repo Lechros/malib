@@ -21,8 +21,9 @@ import { GearReq } from './GearReq';
 
 type _Gear = Omit<
   GearData,
-  'potentials' | 'additionalPotentials' | 'addOptions'
+  'attributes' | 'potentials' | 'additionalPotentials' | 'addOptions'
 > & {
+  attributes: GearAttribute;
   addOptions: readonly Readonly<AddOptionData>[];
   potentials: readonly ReadonlyPotential[];
   additionalPotentials: readonly ReadonlyPotential[];

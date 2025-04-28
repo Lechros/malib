@@ -37,12 +37,16 @@ export interface GearAttributeData {
   totalCuttableCount?: number;
   /** 쉐어 네임 텍을 사용 가능 여부 */
   accountShareTag?: boolean;
+  /** 세트 효과 ID */
+  setItemId?: number;
   /** 럭키 아이템 */
   lucky?: boolean;
   /** 장착 시 획득 경험치 */
   incline?: Partial<GearIncline>;
   /** 보스 드롭 여부 */
   bossReward?: boolean;
+  /** 사용 가능 스킬 */
+  skills?: string[];
 
   /** 성장 경험치 */
   growthExp?: number;

@@ -11,12 +11,18 @@ type OptionalProperty =
   | 'attackSpeed'
   | 'cuttableCount'
   | 'totalCuttableCount'
+  | 'setItemId'
   | 'growthExp'
   | 'growthLevel'
   | 'dateExpire';
 
-type _GearAttribute = Omit<Required<GearAttributeData>, OptionalProperty> &
-  Pick<GearAttributeData, OptionalProperty>;
+type _GearAttribute = Omit<
+  Omit<Required<GearAttributeData>, OptionalProperty> &
+    Pick<GearAttributeData, OptionalProperty>,
+  'skills'
+> & {
+  skills: readonly string[];
+};
 
 export class GearAttribute implements _GearAttribute {
   /** 장비 속성 정보 */
@@ -114,6 +120,11 @@ export class GearAttribute implements _GearAttribute {
     return this.data.accountShareTag ?? false;
   }
 
+  /** 세트 효과 ID */
+  get setItemId(): number | undefined {
+    return this.data.setItemId;
+  }
+
   /** 럭키 아이템 */
   get lucky(): boolean {
     return this.data.lucky ?? false;
@@ -139,6 +150,11 @@ export class GearAttribute implements _GearAttribute {
   /** 보스 드롭 여부 */
   get bossReward(): boolean {
     return this.data.bossReward ?? false;
+  }
+
+  /** 사용 가능 스킬 */
+  get skills(): readonly string[] {
+    return this.data.skills ?? [];
   }
 
   /** 성장 경험치 */

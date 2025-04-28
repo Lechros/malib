@@ -263,6 +263,23 @@ describe('GearAttribute', () => {
     });
   });
 
+  describe('setItemId', () => {
+    it('returns undefined by default', () => {
+      expect(attr.setItemId).toBe(undefined);
+    });
+
+    it('returns 100', () => {
+      attr.data.setItemId = 100;
+
+      expect(attr.setItemId).toBe(100);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'setItemId' because it is a read-only property.
+      expect(() => (attr.setItemId = 100)).toThrow();
+    });
+  });
+
   describe('lucky', () => {
     it('returns false by default', () => {
       expect(attr.lucky).toBe(false);
@@ -326,6 +343,23 @@ describe('GearAttribute', () => {
     it('is readonly property', () => {
       // @ts-expect-error: Cannot assign to 'bossReward' because it is a read-only property.
       expect(() => (attr.bossReward = true)).toThrow();
+    });
+  });
+
+  describe('skills', () => {
+    it('returns empty array by default', () => {
+      expect(attr.skills).toEqual([]);
+    });
+
+    it('returns data value', () => {
+      attr.data.skills = ['스킬1', '스킬2'];
+
+      expect(attr.skills).toEqual(['스킬1', '스킬2']);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'skills' because it is a read-only property.
+      expect(() => (attr.skills = ['스킬1', '스킬2'])).toThrow();
     });
   });
 
