@@ -2,23 +2,44 @@
   "mode": "pre",
   "tag": "next",
   "initialVersions": {
-    "@malib/gear": "0.15.1"
+    "@malib/gear": "0.15.1",
+    "@malib/wz-gear": "0.0.1"
   },
   "changesets": [
     "big-ways-live",
     "breezy-monkeys-dress",
     "chatty-pets-unite",
     "cuddly-oranges-rescue",
+    "cute-kids-change",
+    "dull-yaks-glow",
     "eight-peas-enjoy",
+    "full-dots-throw",
     "giant-pens-sneeze",
+    "grumpy-kings-shave",
+    "grumpy-pigs-say",
     "healthy-apes-flash",
     "heavy-monkeys-rest",
     "odd-comics-chew",
+    "pink-turtles-swim",
+    "poor-sides-drum",
+    "pretty-tigers-sing",
     "red-dryers-bow",
+    "salty-plants-trade",
     "shaggy-dingos-sniff",
+    "short-masks-hang",
+    "silly-flies-camp",
     "silver-dodos-unite",
+    "six-zoos-dance",
     "sixty-mangos-jog",
+    "sweet-otters-cut",
     "tame-sides-work",
-    "thirty-snakes-serve"
+    "thirty-snakes-serve",
+    "tired-steaks-care",
+    "twelve-pears-read",
+    "two-carpets-throw",
+    "violet-steaks-wish",
+    "whole-lions-happen",
+    "young-eagles-like",
+    "young-nails-warn"
   ]
 }

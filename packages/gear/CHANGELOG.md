@@ -1,5 +1,32 @@
 # @malib/gear
 
+## 1.0.0-next.5
+
+### Minor Changes
+
+- 5c71ccb: feat: rename Gear scroll fail, resile methods
+- 72abb2b: feat: remove soul enchant req level
+- adcb667: feat: move gear capability calculations to wz-gear
+- dae7acb: feat: increase maxStar from 25 to 30
+- 6d680f0: feat: include req level increase in GearReq
+- 6351736: feat: update gear with add option history and set max add option count
+- 14b62f4: feat: move add option logic to wz-gear
+- 64486a3: feat: support set item and weapon skill information
+- e5fc428: feat: correctly support unlimited items starforce
+- 3b25044: feat: implement ReadonlyGear class
+- 39fbb6b: feat: remove golden hammer and add total cuttable count
+- 6351736: feat: remove stat reqs from GearReq
+- ae66f8c: feat: add grade property to PotentialData
+
+### Patch Changes
+
+- 1afadb7: feat: remove knockback option
+- fd7352f: fix: respect reqLevelIncrease when creating SpellTrace
+- 9c92893: feat: export potential types
+- 82780d3: feat: add Fixed option to AddOptionCan enum in GearAttributeData
+- 8476395: docs: remove golden hammer example
+- e704e37: fix: removed attackPower, magicPower bonus from gloves with req level < 130
+
 ## 1.0.0-next.4
 
 ### Minor Changes
