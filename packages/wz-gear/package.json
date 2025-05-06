@@ -2,7 +2,7 @@
   "name": "@malib/wz-gear",
   "private": true,
   "description": "KMS gear data parser",
-  "version": "0.1.0-next.0",
+  "version": "0.1.0-next.1",
   "type": "module",
   "repository": {
     "type": "git",
