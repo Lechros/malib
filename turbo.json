@@ -14,7 +14,11 @@
       "dependsOn": ["^typecheck:lib"]
     },
     "test": {
-      "dependsOn": []
+      "dependsOn": ["transit", "@repo/vitest-config#build"],
+      "outputs": ["coverage.json"]
+    },
+    "transit": {
+      "dependsOn": ["^transit"]
     }
   }
 }

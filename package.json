@@ -13,18 +13,17 @@
     "lint": "turbo run lint",
     "typecheck:lib": "turbo run typecheck:lib",
     "typecheck:test": "turbo run typecheck:test",
-    "test": "vitest run",
+    "test": "turbo run test",
+    "view-report": "turbo run view-report",
     "watch": "vitest watch",
     "build": "node scripts/build.mjs",
     "format": "prettier . --write"
   },
   "devDependencies": {
     "@changesets/cli": "^2.28.1",
-    "@vitest/coverage-v8": "^3.0.7",
     "esbuild": "^0.25.0",
     "prettier": "^3.5.3",
     "turbo": "^2.5.2",
-    "typescript": "^5.6.2",
-    "vitest": "^3.0.7"
+    "typescript": "^5.6.2"
   }
 }
