@@ -6,13 +6,11 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
 
-    /* Build mode */
     "moduleResolution": "Node",
     "isolatedModules": true,
     "moduleDetection": "force",
     "incremental": true,
 
-    /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

@@ -739,7 +739,9 @@ __metadata:
   resolution: "@malib/gear@workspace:packages/gear"
   dependencies:
     "@repo/eslint-config": "workspace:^"
+    "@repo/typescript-config": "workspace:^"
     eslint: "npm:^9.26.0"
+    typescript: "npm:^5.6.2"
     vitest: "npm:^3.0.7"
   languageName: unknown
   linkType: soft
@@ -750,8 +752,10 @@ __metadata:
   dependencies:
     "@malib/gear": "workspace:^"
     "@repo/eslint-config": "workspace:^"
+    "@repo/typescript-config": "workspace:^"
     "@types/node": "npm:^22.14.1"
     eslint: "npm:^9.26.0"
+    typescript: "npm:^5.6.2"
     vitest: "npm:^3.0.7"
   languageName: unknown
   linkType: soft
@@ -872,11 +876,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@repo/typescript-config@workspace:packages/typescript-config":
+"@repo/typescript-config@workspace:^, @repo/typescript-config@workspace:packages/typescript-config":
   version: 0.0.0-use.local
   resolution: "@repo/typescript-config@workspace:packages/typescript-config"
-  dependencies:
-    vitest: "npm:^3.0.7"
   languageName: unknown
   linkType: soft
 

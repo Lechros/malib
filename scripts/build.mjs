@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import esbuild from 'esbuild';
-import { cpSync, readdirSync, rmSync } from 'fs';
+import { cpSync, existsSync, readdirSync, rmSync } from 'fs';
 import { join } from 'path';
 import ts from 'typescript';
 
