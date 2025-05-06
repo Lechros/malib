@@ -9,7 +9,6 @@
     "moduleResolution": "Node",
     "isolatedModules": true,
     "moduleDetection": "force",
-    "incremental": true,
 
     "strict": true,
     "noUnusedLocals": true,

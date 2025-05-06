@@ -10,13 +10,13 @@
     ]
   },
   "scripts": {
+    "build": "turbo run build",
     "lint": "turbo run lint",
     "typecheck:lib": "turbo run typecheck:lib",
     "typecheck:test": "turbo run typecheck:test",
     "test": "turbo run test",
     "view-report": "turbo run view-report",
     "watch": "vitest watch",
-    "build": "node scripts/build.mjs",
     "format": "prettier . --write"
   },
   "devDependencies": {
