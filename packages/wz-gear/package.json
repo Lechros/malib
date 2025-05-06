@@ -11,7 +11,8 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "test:type": "tsc -p tsconfig.lib.json --noEmit && tsc -p tsconfig.test.json --noEmit"
+    "typecheck:lib": "tsc -p tsconfig.lib.json --noEmit",
+    "typecheck:test": "tsc -p tsconfig.test.json --noEmit"
   },
   "devDependencies": {
     "@malib/gear": "workspace:^",

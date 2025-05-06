@@ -10,11 +10,12 @@
     ]
   },
   "scripts": {
+    "lint": "turbo run lint",
+    "typecheck:lib": "turbo run typecheck:lib",
+    "typecheck:test": "turbo run typecheck:test",
     "test": "vitest run",
-    "test:type": "yarn workspaces foreach -Aptv run test:type",
     "watch": "vitest watch",
     "build": "node scripts/build.mjs",
-    "lint": "turbo run lint",
     "format": "prettier . --write"
   },
   "devDependencies": {

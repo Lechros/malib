@@ -7,8 +7,11 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
-    "test:type": {
-      "dependsOn": ["^test:type"]
+    "typecheck:lib": {
+      "dependsOn": ["^typecheck:lib"]
+    },
+    "typecheck:test": {
+      "dependsOn": ["^typecheck:lib"]
     },
     "test": {
       "dependsOn": []
