@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 1.0.0-next.6
+
+### Patch Changes
+
+- 89c3662: refactor: use null coalescing assignment
+
 ## 1.0.0-next.5
 
 ### Minor Changes
