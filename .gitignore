@@ -49,5 +49,5 @@ Thumbs.db
 !.yarn/versions
 
 .turbo
-.coverage.json
+coverage.json
 coverage/
