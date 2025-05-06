@@ -37,7 +37,7 @@ jobs:
         run: yarn lint
 
       - name: Check types
-        run: yarn typecheck:lib && yarn typecheck:types
+        run: yarn typecheck:lib && yarn typecheck:test
 
       - name: Test
         run: yarn test
