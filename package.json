@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "packageManager": "yarn@4.5.0",
   "workspaces": {
     "packages": [
       "packages/*"
@@ -23,5 +22,6 @@
     "prettier": "^3.5.3",
     "turbo": "^2.5.2",
     "typescript": "^5.6.2"
-  }
+  },
+  "packageManager": "pnpm@9.15.2"
 }
