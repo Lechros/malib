@@ -57,15 +57,11 @@ export function applyAddOption(
   if (!canApplyAddOption(gear)) {
     throw TypeError(ErrorMessage.AddOption_InvalidApplyGear);
   }
-  if (gear.data.addOption === undefined) {
-    gear.data.addOption = {};
-  }
+  gear.data.addOption ??= {};
   const option = getAddOption(gear, type, grade);
   addOptions(gear.data.addOption, option);
 
-  if (gear.data.addOptions === undefined) {
-    gear.data.addOptions = [];
-  }
+  gear.data.addOptions ??= [];
   const value = getAddOptionValue(gear, type, grade);
   gear.data.addOptions.push({ type, grade, value });
 }

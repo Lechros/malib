@@ -356,9 +356,7 @@ function _getValue(data: number[][], gear: ReadonlyGear): number {
 }
 
 function _getStarforceOption(gear: Gear): GearStarforceOption {
-  if (gear.data.starforceOption === undefined) {
-    gear.data.starforceOption = {};
-  }
+  gear.data.starforceOption ??= {};
   return toGearOption(gear.data.starforceOption);
 }
 
