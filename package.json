@@ -14,21 +14,17 @@
     "test:type": "yarn workspaces foreach -Aptv run test:type",
     "watch": "vitest watch",
     "build": "node scripts/build.mjs",
-    "lint": "eslint .",
+    "lint": "turbo run lint",
     "format": "prettier . --write"
   },
   "devDependencies": {
     "@changesets/cli": "^2.28.1",
-    "@eslint/js": "^9.21.0",
+    "@repo/eslint-config": "workspace:^",
     "@vitest/coverage-v8": "^3.0.7",
     "esbuild": "^0.25.0",
-    "eslint": "^9.21.0",
-    "eslint-config-prettier": "^10.0.2",
-    "eslint-plugin-prettier": "^5.2.3",
     "prettier": "^3.5.3",
     "turbo": "^2.5.2",
     "typescript": "^5.6.2",
-    "typescript-eslint": "^8.26.0",
     "vitest": "^3.0.7"
   }
 }

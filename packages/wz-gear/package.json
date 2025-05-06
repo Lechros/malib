@@ -10,11 +10,14 @@
     "directory": "packages/wz-gear"
   },
   "scripts": {
+    "lint": "eslint .",
     "test:type": "tsc -p tsconfig.lib.json --noEmit && tsc -p tsconfig.test.json --noEmit"
   },
   "devDependencies": {
     "@malib/gear": "workspace:^",
+    "@repo/eslint-config": "workspace:^",
     "@types/node": "^22.14.1",
+    "eslint": "^9.26.0",
     "vitest": "^3.0.7"
   }
 }

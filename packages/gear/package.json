@@ -20,9 +20,12 @@
     "directory": "packages/gear"
   },
   "scripts": {
+    "lint": "eslint .",
     "test:type": "tsc -p tsconfig.lib.json --noEmit && tsc -p tsconfig.test.json --noEmit"
   },
   "devDependencies": {
+    "@repo/eslint-config": "workspace:^",
+    "eslint": "^9.26.0",
     "vitest": "^3.0.7"
   }
 }

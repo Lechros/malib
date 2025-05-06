@@ -1,8 +1,5 @@
 {
   "extends": "./tsconfig.base.json",
-  "compilerOptions": {
-    "types": ["eslint"]
-  },
   "include": ["*.ts", "packages/*/*.ts"],
   "exclude": ["node_modules", "tmp", "**/src/*"]
 }
