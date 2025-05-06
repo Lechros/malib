@@ -2,7 +2,6 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "tsBuildInfoFile": "tmp/test.tsbuildinfo",
     "types": ["vitest/globals"]
   },
   "include": ["src/**/*.ts"]
