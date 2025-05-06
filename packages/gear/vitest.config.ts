@@ -1,11 +1,3 @@
-import { defineProject, mergeConfig } from 'vitest/config';
-import configShared from '../../vitest.shared';
+import { baseConfig } from '@repo/vitest-config/base';
 
-export default mergeConfig(
-  configShared,
-  defineProject({
-    test: {
-      name: 'gear',
-    },
-  }),
-);
+export default baseConfig;

@@ -49,9 +49,7 @@ export function applyExceptional(
   if (!canApplyExceptional(gear)) {
     throw TypeError(ErrorMessage.Exceptional_InvalidEnhanceGear);
   }
-  if (gear.data.exceptionalOption === undefined) {
-    gear.data.exceptionalOption = {};
-  }
+  gear.data.exceptionalOption ??= {};
   addOptions(gear.data.exceptionalOption, exceptionalHammer.option);
   gear.data.exceptionalUpgradeableCount = gear.exceptionalUpgradeableCount - 1;
   gear.data.exceptionalUpgradeCount = gear.exceptionalUpgradeCount + 1;

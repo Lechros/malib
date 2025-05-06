@@ -1,0 +1,24 @@
+{
+  "name": "@repo/vitest-config",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./base": "./dist/configs/base-config.js",
+    "./ui": "./dist/configs/ui-config.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "collect-json-reports": "node dist/scripts/collect-json-outputs.js",
+    "merge-json-reports": "nyc merge coverage/raw coverage/merged/merged-coverage.json",
+    "report": "nyc report -t coverage/merged --report-dir coverage/report --reporter=html --exclude-after-remap false",
+    "view-report": "open coverage/report/index.html"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "^22.15.12",
+    "@vitest/coverage-istanbul": "^3.1.3",
+    "glob": "^11.0.1",
+    "nyc": "^17.1.0",
+    "vitest": "^3.1.3"
+  }
+}

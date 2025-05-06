@@ -3,31 +3,25 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "packageManager": "yarn@4.5.0",
   "workspaces": {
     "packages": [
       "packages/*"
     ]
   },
   "scripts": {
-    "test": "vitest run",
-    "test:type": "yarn workspaces foreach -Aptv run test:type",
-    "watch": "vitest watch",
-    "build": "node scripts/build.mjs",
-    "lint": "eslint .",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck:lib": "turbo run typecheck:lib",
+    "typecheck:test": "turbo run typecheck:test",
+    "test": "turbo run test",
+    "view-report": "turbo run view-report",
     "format": "prettier . --write"
   },
   "devDependencies": {
     "@changesets/cli": "^2.28.1",
-    "@eslint/js": "^9.21.0",
-    "@vitest/coverage-v8": "^3.0.7",
-    "esbuild": "^0.25.0",
-    "eslint": "^9.21.0",
-    "eslint-config-prettier": "^10.0.2",
-    "eslint-plugin-prettier": "^5.2.3",
     "prettier": "^3.5.3",
-    "typescript": "^5.6.2",
-    "typescript-eslint": "^8.26.0",
-    "vitest": "^3.0.7"
-  }
+    "turbo": "^2.5.2",
+    "typescript": "^5.6.2"
+  },
+  "packageManager": "pnpm@9.15.2"
 }
