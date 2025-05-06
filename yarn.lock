@@ -4135,7 +4135,6 @@ __metadata:
   resolution: "malib@workspace:."
   dependencies:
     "@changesets/cli": "npm:^2.28.1"
-    esbuild: "npm:^0.25.0"
     prettier: "npm:^3.5.3"
     turbo: "npm:^2.5.2"
     typescript: "npm:^5.6.2"
