@@ -16,7 +16,6 @@
     "typecheck:test": "turbo run typecheck:test",
     "test": "turbo run test",
     "view-report": "turbo run view-report",
-    "watch": "vitest watch",
     "format": "prettier . --write"
   },
   "devDependencies": {
