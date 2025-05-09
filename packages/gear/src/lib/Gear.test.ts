@@ -7,9 +7,9 @@ import {
   createPotentialData,
   createScroll,
   createSoulData,
+  soulPatch,
   starforcePatch,
 } from './test';
-import { soulPatch } from './test/gearPatch';
 
 describe('Gear', () => {
   describe('shape', () => {
