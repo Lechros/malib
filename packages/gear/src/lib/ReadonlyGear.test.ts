@@ -1,6 +1,6 @@
 import { GearData, GearTrade, GearType, PotentialGrade } from './data';
 import { createGear, createReadonlyGear, createSoulData } from './test';
-import { createPotentialData } from './test/potentialFixture';
+import { createPotentialData } from './test';
 
 describe('ReadonlyGear', () => {
   describe('meta', () => {
