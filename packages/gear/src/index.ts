@@ -11,6 +11,7 @@ export {
   GearCuttable,
   type GearIncline,
   /* GearData */
+  GearGender,
   type GearData,
   type GearMetadata,
   type GearShapeData,
