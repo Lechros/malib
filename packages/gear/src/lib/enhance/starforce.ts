@@ -216,6 +216,45 @@ export function getMaxStar(gear: ReadonlyGear): number {
   return baseMaxStar;
 }
 
+/**
+ * 장비의 스타포스 강화 옵션를 다시 계산할 수 있는 상태인지 여부를 확인합니다.
+ * @param gear 확인할 장비.
+ * @returns 다시 계산할 수 있을 경우 `true`; 아닐 경우 `false`.
+ */
+export function canRecalculateStarforce(gear: ReadonlyGear): boolean {
+  if (gear.attributes.canStarforce === GearCapability.Cannot) {
+    return false;
+  }
+  if (gear.starScroll) {
+    return false;
+  }
+  return true;
+}
+
+/**
+ * 장비의 스타포스 강화 옵션을 다시 계산합니다.
+ * @param gear 계산할 장비.
+ *
+ * @throws {@link TypeError}
+ * 스타포스 강화 옵션을 다시 계산할 수 없는 경우.
+ */
+export function recalculateStarforce(gear: Gear) {
+  if (!canRecalculateStarforce(gear)) {
+    throw TypeError(ErrorMessage.Starforce_InvalidRecalculateGear);
+  }
+  const canStarforce = gear.attributes.canStarforce;
+  const star = gear.star;
+
+  gear.data.attributes.canStarforce = GearCapability.Can;
+  resetStarforce(gear);
+
+  for (let i = 0; i < star; i++) {
+    starforce(gear, true);
+  }
+
+  gear.data.attributes.canStarforce = canStarforce;
+}
+
 function _superiorStarforce(gear: Gear) {
   const stat = _getValue(superiorStat, gear);
   const power = _getValue(superiorPower, gear);
