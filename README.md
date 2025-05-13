@@ -31,15 +31,19 @@ pnpm add @malib/gear
 
 장비 정보는 `GearData` 타입의 순수한 JS 객체로 저장됩니다. `JSON.stringify` 및 `JSON.parse` 후에도 동일한 상태를 유지합니다.
 
+#### ReadonlyGear
+
+`ReadonlyGear` 클래스는 `GearData` 객체에 대한 가벼운 래퍼입니다. `GearData`의 모든 속성을 읽기 전용으로 제공하며, 어떠한 작업도 `GearData`의 상태를 변경하지 않습니다.
+
+`GearData`가 외부에서 변경될 경우, `ReadonlyGear` 인스턴스에도 투명하게 노출됩니다. 따라서 하나의 `GearData`로부터 여러 `ReadonlyGear`를 생성하는 것도 가능합니다.
+
+`ReadonlyGear`의 참조형 속성(`baseOption` 등)은 호출 간 같은 값을 가지는 다른 객체를 반환할 수 있습니다. 다시 말해, 깊은 동등은 보장되지만 참조 동등은 보장되지 않습니다.
+
 #### Gear
 
-`Gear` 클래스는 `GearData` 객체에 대한 가벼운 래퍼입니다. `GearData`의 모든 속성을 읽기 전용으로 포함하며, 상태를 변경하는 메서드를 제공합니다. 잘못된 `GearData` 상태에 대해 검사하지 않습니다.
+`Gear` 클래스는 `ReadonlyGear` 클래스를 상속합니다.
 
-`Gear` 생성 시 하나의 `GearData`만을 받으며, 이를 제외한 어떠한 상태도 가지지 않습니다. 모든 작업은 `GearData` 객체를 직접 수정하는 방식으로 작동합니다. 따라서 하나의 `GearData`로부터 여러 `Gear`를 생성해도 변경 사항은 `Gear` 인스턴스 간에 공유됩니다.
-
-`Gear`의 참조형 속성은 완전한 동등(`===`)이 보장되지 않으며, 깊은 동등만이 보장됩니다.
-
-`GearData` 객체에 대해해 불변성이 필요한 경우 직접 구현해야 합니다.
+`GearData`를 변경할 수 있는 속성과 메서드를 추가로 제공합니다. 모든 작업은 내부의 `GearData` 객체를 직접 수정하는 방식으로 작동합니다. 따라서 불변성이 필요한 경우 `Immer` 등을 사용하여 직접 구현해야 합니다.
 
 ## Example
 
@@ -56,16 +60,22 @@ const data: GearData = {
   meta: {
     id: 1009876,
     version: 1,
-    add: [],
   },
   name: 'Example cap',
+  icon: '1000000',
   type: GearType.cap,
   req: { level: 100 },
   attributes: {},
   baseOption: { str: 1 },
-  potentials: [null, null, null],
-  additionalPotentials: [null, null, null],
 };
+```
+
+### Creating ReadonlyGear
+
+```ts
+import { ReadonlyGear } from '@malib/gear';
+
+const gear = new ReadonlyGear(data);
 ```
 
 ### Creating Gear
@@ -141,9 +151,6 @@ if (gear.supportsUpgrade) {
 #### 스타포스 강화 적용
 
 ```ts
-// Example, modify data with caution.
-gear.data.maxStar = 8;
-
 if (gear.canApplyStarforce) {
   gear.applyStarforce();
 }
