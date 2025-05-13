@@ -48,9 +48,11 @@ import {
   SpellTraceType,
 } from './enhance/spellTrace';
 import {
+  canRecalculateStarforce,
   canResetStarforce,
   canStarforce,
   canStarScroll,
+  recalculateStarforce,
   resetStarforce,
   starforce,
   starScroll,
@@ -206,6 +208,9 @@ export class Gear extends ReadonlyGear {
    */
   resetUpgrade() {
     resetUpgrade(this);
+    if (canRecalculateStarforce(this)) {
+      recalculateStarforce(this);
+    }
   }
 
   /**
@@ -224,6 +229,9 @@ export class Gear extends ReadonlyGear {
    */
   applyScroll(scroll: Scroll) {
     applyScroll(this, scroll);
+    if (canRecalculateStarforce(this)) {
+      recalculateStarforce(this);
+    }
   }
 
   /**
@@ -239,6 +247,9 @@ export class Gear extends ReadonlyGear {
    */
   applySpellTrace(type: SpellTraceType, rate: SpellTraceRate) {
     applySpellTrace(this, type, rate);
+    if (canRecalculateStarforce(this)) {
+      recalculateStarforce(this);
+    }
   }
 
   /**
