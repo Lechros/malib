@@ -1,4 +1,4 @@
-import { GearReqData } from './data';
+import { GearGender, GearReqData } from './data';
 
 /**
  * 장비 착용 제한
@@ -42,6 +42,13 @@ export class GearReq implements GearReqData {
    */
   get class(): number {
     return this.data.class ?? 0;
+  }
+
+  /**
+   * 착용 가능 성별
+   */
+  get gender(): GearGender | undefined {
+    return this.data.gender;
   }
 
   /**
