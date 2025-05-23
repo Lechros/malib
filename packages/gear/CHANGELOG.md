@@ -1,5 +1,19 @@
 # @malib/gear
 
+## 1.0.0-next.7
+
+### Minor Changes
+
+- 2de0613: feat: add support for gear gender
+- c4c75fd: feat: recalculate starforce after upgrade modification by gear method
+
+### Patch Changes
+
+- b0d526a: docs: update README
+- 9be0de0: feat: add starforce recalculate function
+- 3dbd393: feat: add TradeOnce option to GearTrade enum
+- 2fcdf2f: docs: add README per package
+
 ## 1.0.0-next.6
 
 ### Patch Changes

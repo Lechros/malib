@@ -1,5 +1,21 @@
 # @malib/wz-gear
 
+## 0.1.0-next.2
+
+### Minor Changes
+
+- 2de0613: feat: add support for gear gender
+
+### Patch Changes
+
+- Updated dependencies [2de0613]
+- Updated dependencies [b0d526a]
+- Updated dependencies [9be0de0]
+- Updated dependencies [3dbd393]
+- Updated dependencies [2fcdf2f]
+- Updated dependencies [c4c75fd]
+  - @malib/gear@1.0.0-next.7
+
 ## 0.1.0-next.1
 
 ### Patch Changes
