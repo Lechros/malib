@@ -15,7 +15,8 @@
     "typecheck:test": "turbo run typecheck:test",
     "test": "turbo run test",
     "view-report": "turbo run view-report",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "precommit": "turbo run lint typecheck:lib typecheck:test test"
   },
   "devDependencies": {
     "@changesets/cli": "^2.28.1",

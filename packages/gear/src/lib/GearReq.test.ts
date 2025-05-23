@@ -1,3 +1,4 @@
+import { GearGender } from './data';
 import { GearReq } from './GearReq';
 
 describe('GearReq', () => {
@@ -64,6 +65,17 @@ describe('GearReq', () => {
     it('is readonly property', () => {
       // @ts-expect-error: Cannot assign to 'class' because it
       expect(() => (req.class = 16)).toThrow();
+    });
+  });
+
+  describe('gender', () => {
+    it('is undefined by default', () => {
+      expect(req.gender).toBeUndefined();
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'gender' because it is a read-only property.
+      expect(() => (req.gender = GearGender.Male)).toThrow();
     });
   });
 

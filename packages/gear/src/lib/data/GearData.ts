@@ -107,6 +107,18 @@ export interface GearReqData {
   job?: number;
   /** 착용 가능 직업 */
   class?: number;
+  /** 착용 가능 성별 */
+  gender?: GearGender;
+}
+
+/**
+ * 착용 가능 성별
+ */
+export enum GearGender {
+  /** 남 */
+  Male = 0,
+  /** 여 */
+  Female = 1,
 }
 
 /**

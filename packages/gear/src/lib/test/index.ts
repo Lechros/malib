@@ -8,6 +8,7 @@ export {
   addiPotentialPatch,
   addOptionPatch,
   potentialPatch,
+  soulPatch,
   starforcePatch,
   upgradePatch,
 } from './gearPatch';

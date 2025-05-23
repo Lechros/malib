@@ -8,10 +8,11 @@ import {
 } from '@malib/gear';
 import { getCanAddOption } from './addOption';
 import { getGearType } from './gearType';
+import { getGender } from './gender';
 import { getCanAdditionalPotential, getCanPotential } from './potential';
 import { getCanStarforce } from './starforce';
-import { WzGear } from './wz';
 import { getCanScroll } from './upgrade';
+import { WzGear } from './wz';
 
 /**
  * WzGear 형식의 아이템 정보를 GearData 객체로 변환합니다.
@@ -50,6 +51,10 @@ export function convert(info: WzGear): GearData {
   }
   if (info.reqSpecJob) {
     data.req.class = info.reqSpecJob;
+  }
+  const gender = getGender(info, getGearType(info.id));
+  if (gender !== undefined) {
+    data.req.gender = gender;
   }
 
   // Equip, trade
