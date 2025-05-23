@@ -5,13 +5,15 @@ import {
   GearType,
 } from '../data';
 import { Gear } from '../Gear';
-import { createGear, upgradePatch } from '../test';
+import { createGear, starforcePatch, upgradePatch } from '../test';
 import { SpellTraceType } from './spellTrace';
 import {
+  canRecalculateStarforce,
   canResetStarforce,
   canStarforce,
   canStarScroll,
   getMaxStar,
+  recalculateStarforce,
   resetStarforce,
   starforce,
   starScroll,
@@ -1143,6 +1145,73 @@ describe('getMaxStar', () => {
     });
 
     expect(getMaxStar(gear)).toBe(20);
+  });
+});
+
+describe('canRecalculateStarforce', () => {
+  it('canStarforce = Cannot일 경우 false를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canStarforce: GearCapability.Cannot },
+    });
+
+    expect(canRecalculateStarforce(gear)).toBe(false);
+  });
+
+  it('canStarforce = Fixed일 경우 true를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canStarforce: GearCapability.Fixed },
+    });
+
+    expect(canRecalculateStarforce(gear)).toBe(true);
+  });
+
+  it('canStarforce = Can일 경우 true를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canStarforce: GearCapability.Can },
+    });
+
+    expect(canRecalculateStarforce(gear)).toBe(true);
+  });
+
+  it('스타포스 강화가 0일 경우 true를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canStarforce: GearCapability.Can },
+      star: 0,
+    });
+
+    expect(canRecalculateStarforce(gear)).toBe(true);
+  });
+
+  it('놀라운 장비 강화 주문서가 적용되었을 경우 false를 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canStarforce: GearCapability.Can },
+      starScroll: true,
+    });
+
+    expect(canRecalculateStarforce(gear)).toBe(false);
+  });
+});
+
+describe('recalculateStarforce', () => {
+  it('스타포스 강화 옵션을 다시 계산한다.', () => {
+    const gear = createGear('앱솔랩스 시프슈즈', [starforcePatch(22)]);
+    gear.data.upgradeOption = {
+      str: 3,
+      armor: 3,
+    };
+
+    recalculateStarforce(gear);
+
+    expect(gear.starforceOption).toEqual({
+      str: 91,
+      dex: 131,
+      luk: 131,
+      attackPower: 92,
+      magicPower: 92,
+      armor: 315,
+      speed: 18,
+      jump: 18,
+    });
   });
 });
 

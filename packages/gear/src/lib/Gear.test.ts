@@ -9,6 +9,7 @@ import {
   createSoulData,
   soulPatch,
   starforcePatch,
+  upgradePatch,
 } from './test';
 
 describe('Gear', () => {
@@ -253,6 +254,18 @@ describe('Gear', () => {
 
         expect(gear.scrollUpgradeCount).toBe(0);
       });
+
+      it('스타포스 강화 수치가 업데이트된다.', () => {
+        const gear = createGear('앱솔랩스 시프슈즈', [
+          upgradePatch([{ str: 1, armor: 1 }]),
+          starforcePatch(22),
+        ]);
+
+        gear.resetUpgrade();
+
+        expect(gear.starforceOption).not.toHaveProperty('str');
+        expect(gear.starforceOption).toHaveProperty('armor', 306);
+      });
     });
 
     describe('canApplyScroll', () => {
@@ -288,6 +301,21 @@ describe('Gear', () => {
 
         expect(gear.scrollUpgradeCount).toBe(expected);
       });
+
+      it('스타포스 강화 수치가 업데이트된다.', () => {
+        const gear = createGear('앱솔랩스 시프슈즈', [starforcePatch(22)]);
+        const scroll = createScroll({
+          option: {
+            str: 3,
+            armor: 15,
+          },
+        });
+
+        gear.applyScroll(scroll);
+
+        expect(gear.starforceOption).toHaveProperty('str', 91);
+        expect(gear.starforceOption).toHaveProperty('armor', 337);
+      });
     });
 
     describe('applySpellTrace', () => {
@@ -309,6 +337,15 @@ describe('Gear', () => {
         gear.applySpellTrace(SpellTraceType.int, 15);
 
         expect(gear.scrollUpgradeCount).toBe(expected);
+      });
+
+      it('스타포스 강화 수치가 업데이트된다.', () => {
+        const gear = createGear('앱솔랩스 시프슈즈', [starforcePatch(22)]);
+
+        gear.applySpellTrace(SpellTraceType.str, 100);
+
+        expect(gear.starforceOption).toHaveProperty('str', 91);
+        expect(gear.starforceOption).toHaveProperty('armor', 315);
       });
     });
   });
