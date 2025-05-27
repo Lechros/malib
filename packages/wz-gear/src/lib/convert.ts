@@ -126,6 +126,7 @@ export function convert(info: WzGear): GearData {
   }
   if (info.potentials) {
     data.potentials = info.potentials.map((pot) => ({
+      id: pot.id,
       grade:
         pot.grade === 6 && data.potentialGrade
           ? data.potentialGrade

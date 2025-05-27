@@ -5,6 +5,8 @@ import { PotentialGrade } from './PotentialGrade';
  * 잠재옵션 정보
  */
 export interface PotentialData {
+  /** 잠재능력 ID */
+  id?: number;
   /** 잠재능력 등급 */
   grade: PotentialGrade;
   /** 장비에 표시되는 이름 */
