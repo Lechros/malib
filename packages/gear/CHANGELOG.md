@@ -1,5 +1,12 @@
 # @malib/gear
 
+## 1.0.0-next.8
+
+### Patch Changes
+
+- 9c3aaa0: feat: add optional id field to PotentialData
+- 5113376: fix: fix reqLevel 111 ~ 137 gears starforce above 25
+
 ## 1.0.0-next.7
 
 ### Minor Changes
