@@ -1,5 +1,14 @@
 # @malib/wz-gear
 
+## 0.1.0-next.3
+
+### Patch Changes
+
+- 9c3aaa0: feat: add optional id field to PotentialData
+- Updated dependencies [9c3aaa0]
+- Updated dependencies [5113376]
+  - @malib/gear@1.0.0-next.8
+
 ## 0.1.0-next.2
 
 ### Minor Changes
