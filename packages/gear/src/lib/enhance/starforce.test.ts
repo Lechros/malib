@@ -403,6 +403,37 @@ describe('starforce', () => {
     );
 
     it.each([
+      ...gso(createGear('블랙 가리나 글로브'), {
+        19: {
+          dex: 52,
+          luk: 52,
+          attackPower: 26,
+          magicPower: 26,
+          armor: 82,
+        },
+      }),
+      ...gso(createGear('리버스 휀넬'), {
+        29: {
+          str: 75,
+          dex: 75,
+          maxHp: 255,
+          attackPower: 194,
+          magicPower: 194,
+          armor: 408,
+        },
+      }),
+    ])(
+      '%s를 %d성까지 최대 강화 단계를 초과해서 스타포스 강화하면 %o 옵션이 설정된다.',
+      (_, star, expected, gear) => {
+        for (let i = gear.star; i < star; i++) {
+          starforce(gear, true);
+        }
+
+        expect(gear.starforceOption).toEqual(expected);
+      },
+    );
+
+    it.each([
       [4, 0],
       [5, 1],
       [6, 1],
