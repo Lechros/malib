@@ -1244,6 +1244,18 @@ describe('recalculateStarforce', () => {
       jump: 18,
     });
   });
+
+  it('착용 레벨이 100 + 30이고 20성인 장비에 적용한 이후에도 20성을 유지한다.', () => {
+    const gear = createGear({
+      req: { level: 100, levelIncrease: 30 },
+      attributes: { canStarforce: GearCapability.Can },
+      star: 20,
+    });
+
+    recalculateStarforce(gear);
+
+    expect(gear.star).toBe(20);
+  });
 });
 
 function gso(

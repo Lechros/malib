@@ -435,7 +435,7 @@ function _getBaseMaxStar(gear: ReadonlyGear): number {
 }
 
 function _getBaseMaxStarWithToadsHammer(gear: ReadonlyGear): number {
-  const reqLevel = gear.req.level;
+  const reqLevel = gear.req.level + gear.req.levelIncrease;
   let data: readonly number[] | undefined = undefined;
   for (const item of maxStarDataWithToadsHammer) {
     if (reqLevel >= item[0]) data = item;
