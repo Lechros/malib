@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 1.0.0-next.9
+
+### Patch Changes
+
+- 2ac4ece: fix: fix recalculateStarforce error on reqLevelIncrease gear
+
 ## 1.0.0-next.8
 
 ### Patch Changes

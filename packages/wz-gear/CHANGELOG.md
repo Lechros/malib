@@ -1,5 +1,12 @@
 # @malib/wz-gear
 
+## 0.1.0-next.4
+
+### Patch Changes
+
+- Updated dependencies [2ac4ece]
+  - @malib/gear@1.0.0-next.9
+
 ## 0.1.0-next.3
 
 ### Patch Changes
