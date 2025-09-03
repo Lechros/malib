@@ -49,6 +49,8 @@ export enum GearType {
   tuner = 1213,
   /** 브레스 슈터 */
   breathShooter = 1214,
+  /** 장검 */
+  longSword2 = 1215,
   /** 소울 슈터 */
   soulShooter = 122,
   /** 데스페라도 */
@@ -197,6 +199,8 @@ export enum GearType {
   ornament = 135402,
   /** 헥스시커 */
   hexSeeker = 135403,
+  /** 여의보주 */
+  sacredJewel = 135404,
   /** 펫장비 */
   petEquip = 180,
   /** 메카닉 엔진 */
