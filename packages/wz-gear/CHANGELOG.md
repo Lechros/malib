@@ -1,5 +1,15 @@
 # @malib/wz-gear
 
+## 0.1.0-next.4
+
+### Patch Changes
+
+- 943793d: fix: set correct gender for wz-gear
+- 2c1f0e0: feat: add support for Len
+- Updated dependencies [2c1f0e0]
+- Updated dependencies [2ac4ece]
+  - @malib/gear@1.0.0-next.9
+
 ## 0.1.0-next.3
 
 ### Patch Changes
