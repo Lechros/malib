@@ -11,5 +11,13 @@ export function getGender(
     case GearType.jewel:
       return undefined;
   }
-  return Math.floor(info.id / 1000) % 10;
+  const value = Math.floor(info.id / 1000) % 10;
+  switch (value) {
+    case GearGender.Male:
+      return GearGender.Male;
+    case GearGender.Female:
+      return GearGender.Female;
+    default:
+      return undefined;
+  }
 }
