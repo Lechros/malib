@@ -36,6 +36,7 @@ function getWeaponTypes() {
     GearType.shiningRod,
     GearType.tuner,
     GearType.breathShooter,
+    GearType.longSword2,
     GearType.soulShooter,
     GearType.desperado,
     GearType.energySword,
@@ -75,6 +76,7 @@ function getLeftWeaponTypes() {
     GearType.shiningRod,
     GearType.tuner,
     GearType.breathShooter,
+    GearType.longSword2,
     GearType.soulShooter,
     GearType.desperado,
     GearType.energySword,
@@ -158,6 +160,7 @@ function getSubWeaponTypes() {
     GearType.weaponBelt,
     GearType.ornament,
     GearType.hexSeeker,
+    GearType.sacredJewel,
   ];
 }
 

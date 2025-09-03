@@ -13,6 +13,8 @@ export function getGearType(code: number): GearType {
         return GearType.tuner;
       case 1214:
         return GearType.breathShooter;
+      case 1215:
+        return GearType.longSword2;
       case 1404:
         return GearType.chakram;
     }
