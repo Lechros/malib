@@ -25,7 +25,7 @@ describe('Gear', () => {
       expect(gear.shape).toEqual({ name: '모루 아이템', icon: '1001234' });
     });
 
-    it('직접 설정할 수 있있다.', () => {
+    it('직접 설정할 수 있다.', () => {
       const gear = createGear();
 
       gear.shape = { name: '새로운 모루 아이템', icon: '1002000' };
@@ -45,6 +45,20 @@ describe('Gear', () => {
       });
 
       gear.shape = undefined;
+
+      expect(gear.shape).toBeUndefined();
+    });
+
+    it('외형을 변경할 수 없는 장비는 TypeError가 발생한다.', () => {
+      const gear = createGear('몽환의 벨트', {
+        attributes: {
+          noShapeChange: true,
+        },
+      });
+
+      expect(() => {
+        gear.shape = { name: '새로운 모루 아이템', icon: '1002000' };
+      }).toThrow(TypeError);
 
       expect(gear.shape).toBeUndefined();
     });

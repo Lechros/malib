@@ -263,6 +263,23 @@ describe('GearAttribute', () => {
     });
   });
 
+  describe('noShapeChange', () => {
+    it('returns false by default', () => {
+      expect(attr.noShapeChange).toBe(false);
+    });
+
+    it('returns true', () => {
+      attr.data.noShapeChange = true;
+
+      expect(attr.noShapeChange).toBe(true);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'noShapeChange' because it is a read-only property.
+      expect(() => (attr.noShapeChange = true)).toThrow();
+    });
+  });
+
   describe('setItemId', () => {
     it('returns undefined by default', () => {
       expect(attr.setItemId).toBe(undefined);

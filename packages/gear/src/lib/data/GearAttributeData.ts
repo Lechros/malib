@@ -37,6 +37,8 @@ export interface GearAttributeData {
   totalCuttableCount?: number;
   /** 쉐어 네임 텍을 사용 가능 여부 */
   accountShareTag?: boolean;
+  /** 훈장 신비의 모루 사용 불가 여부 */
+  noShapeChange?: boolean;
   /** 세트 효과 ID */
   setItemId?: number;
   /** 럭키 아이템 */

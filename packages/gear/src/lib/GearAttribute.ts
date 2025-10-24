@@ -120,6 +120,11 @@ export class GearAttribute implements _GearAttribute {
     return this.data.accountShareTag ?? false;
   }
 
+  /** 훈장 신비의 모루 사용 불가 여부 */
+  get noShapeChange(): boolean {
+    return this.data.noShapeChange ?? false;
+  }
+
   /** 세트 효과 ID */
   get setItemId(): number | undefined {
     return this.data.setItemId;
