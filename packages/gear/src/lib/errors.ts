@@ -1,4 +1,6 @@
 export const enum ErrorMessage {
+  Shape_InvalidShapeChangeGear = '외형을 변경할 수 없는 장비입니다.',
+
   AddOption_InvalidApplyGear = '추가 옵션을 적용할 수 없는 상태의 장비입니다.',
   AddOption_InvalidResetGear = '추가 옵션을 초기화할 수 없는 상태의 장비입니다.',
   AddOption_InvalidAttackPowerGear = '공격력/마력 추가 옵션은 착용 가능 레벨 60 이상의 무기 장비에만 부여할 수 있습니다.',

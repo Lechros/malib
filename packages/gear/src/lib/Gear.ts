@@ -70,6 +70,7 @@ import {
   Scroll,
   supportsUpgrade,
 } from './enhance/upgrade';
+import { ErrorMessage } from './errors';
 import { ReadonlyGear } from './ReadonlyGear';
 
 /**
@@ -102,7 +103,19 @@ export class Gear extends ReadonlyGear {
     return this.data.shape;
   }
 
+  /**
+   * 장비 외형 변경
+   *
+   * @param shape 변경할 장비 외형.
+   *
+   * @throws {@link TypeError}
+   * 외형을 변경할 수 없는 장비일 경우.
+   */
   override set shape(shape: GearShapeData | undefined) {
+    if (this.attributes.noShapeChange) {
+      throw new TypeError(ErrorMessage.Shape_InvalidShapeChangeGear);
+    }
+
     this.data.shape = shape;
   }
 
