@@ -14,7 +14,7 @@
 
 #### @malib/wz-gear
 
-KMS 장비 데이터를 `GearData` 형식으로 변환하는 기능을 제공합니다.
+모든 기능은 WzPipeline에 통합되어 더 이상 사용되지 않습니다.
 
 ## Support
 
