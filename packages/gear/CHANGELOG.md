@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 1.0.0-next.10
+
+### Patch Changes
+
+- fe03ad8: feat: add noShapeChange attribute
+
 ## 1.0.0-next.9
 
 ### Patch Changes
