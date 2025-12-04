@@ -1,4 +1,5 @@
 import { GearType } from '../data';
+import { GearError } from '../errors';
 import { createGear, createSoulData } from '../test';
 import {
   _updateChargeOption,
@@ -90,17 +91,17 @@ describe('applySoulEnchant', () => {
     expect(gear.soulEnchanted).toBe(true);
   });
 
-  it('무기가 아닌 장비일 경우 TypeError가 발생한다.', () => {
+  it('무기가 아닌 장비일 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       type: GearType.cape,
     });
 
     expect(() => {
       applySoulEnchant(gear);
-    }).toThrow(TypeError);
+    }).toThrow(GearError);
   });
 
-  it('이미 소울 인챈트가 적용되었을 경우 TypeError가 발생한다.', () => {
+  it('이미 소울 인챈트가 적용되었을 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       type: GearType.bow,
       soulSlot: {},
@@ -179,7 +180,7 @@ describe('setSoul', () => {
     expect(gear.soulChargeOption).toEqual({ magicPower: 10 });
   });
 
-  it('소울 인챈트가 적용되지 않았을 경우 TypeError가 발생한다.', () => {
+  it('소울 인챈트가 적용되지 않았을 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       type: GearType.bow,
     });
@@ -187,7 +188,7 @@ describe('setSoul', () => {
 
     expect(() => {
       setSoul(gear, soul);
-    }).toThrow();
+    }).toThrow(GearError);
   });
 });
 
@@ -234,7 +235,7 @@ describe('setSoulCharge', () => {
   });
 
   it.each([-1000, -100, -1, 1001, 2000])(
-    '소울 충전량이 0 미만 또는 1000 초과일 경우 TypeError가 발생한다.',
+    '소울 충전량이 0 미만 또는 1000 초과일 경우 RangeError가 발생한다.',
     (charge) => {
       const gear = createGear({
         type: GearType.bow,
@@ -243,18 +244,18 @@ describe('setSoulCharge', () => {
 
       expect(() => {
         setSoulCharge(gear, charge);
-      }).toThrow();
+      }).toThrow(RangeError);
     },
   );
 
-  it('소울 인챈트가 적용되지 않았을 경우 TypeError가 발생한다.', () => {
+  it('소울 인챈트가 적용되지 않았을 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       type: GearType.bow,
     });
 
     expect(() => {
       setSoulCharge(gear, 700);
-    }).toThrow();
+    }).toThrow(GearError);
   });
 });
 

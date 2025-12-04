@@ -1,5 +1,5 @@
 import { GearUpgradeOption } from '../data';
-import { ErrorMessage } from '../errors';
+import { ErrorMessage, GearError } from '../errors';
 import { Gear } from '../Gear';
 import { addOptions } from '../gearOption';
 import { ReadonlyGear } from '../ReadonlyGear';
@@ -39,7 +39,7 @@ export function canApplyExceptional(gear: ReadonlyGear): boolean {
  * @param gear 적용할 장비.
  * @param exceptionalHammer 적용할 익셉셔널 해머.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 익셉셔널 강화를 적용할 수 없는 상태의 장비일 경우.
  */
 export function applyExceptional(
@@ -47,7 +47,10 @@ export function applyExceptional(
   exceptionalHammer: ExceptionalHammer,
 ) {
   if (!canApplyExceptional(gear)) {
-    throw TypeError(ErrorMessage.Exceptional_InvalidEnhanceGear);
+    throw new GearError(ErrorMessage.Exceptional_InvalidEnhanceGear, gear, {
+      exceptionalTotalUpgradeableCount: gear.exceptionalTotalUpgradeableCount,
+      exceptionalUpgradeableCount: gear.exceptionalUpgradeableCount,
+    });
   }
   gear.data.exceptionalOption ??= {};
   addOptions(gear.data.exceptionalOption, exceptionalHammer.option);
@@ -68,12 +71,14 @@ export function canResetExceptional(gear: ReadonlyGear): boolean {
  * 장비의 익셉셔널 강화를 초기화합니다.
  * @param gear 초기화할 장비.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 익셉셔널 강화를 초기화할 수 없는 장비일 경우.
  */
 export function resetExceptional(gear: Gear) {
   if (!canResetExceptional(gear)) {
-    throw TypeError(ErrorMessage.Upgrade_InvalidResetScrollGear);
+    throw new GearError(ErrorMessage.Exceptional_InvalidResetGear, gear, {
+      exceptionalTotalUpgradeableCount: gear.exceptionalTotalUpgradeableCount,
+    });
   }
   gear.data.exceptionalOption = {};
   gear.data.exceptionalUpgradeableCount = gear.exceptionalTotalUpgradeableCount;

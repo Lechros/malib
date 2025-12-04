@@ -1,5 +1,5 @@
 import { GearType } from '../data';
-import { ErrorMessage } from '../errors';
+import { ErrorMessage, GearError } from '../errors';
 import { Gear } from '../Gear';
 import { isAccessory, isArmor, isWeapon } from '../gearType';
 import { ReadonlyGear } from '../ReadonlyGear';
@@ -44,10 +44,10 @@ export type SpellTrace = Scroll & {
  * @param type 주문의 흔적 종류.
  * @param rate 주문의 흔적 성공 확률.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 주문서를 적용할 수 없는 상태의 장비일 경우.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 장비에 적용할 수 없는 주문의 흔적을 지정했을 경우.
  */
 export function applySpellTrace(
@@ -66,7 +66,7 @@ export function applySpellTrace(
  * @param rate 주문의 흔적 성공 확률.
  * @returns 주문의 흔적 주문서.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 주문의 흔적을 장비에 적용할 수 없는 경우.
  */
 export function getSpellTraceScroll(
@@ -89,7 +89,9 @@ export function getSpellTraceScroll(
   if (gear.type === GearType.machineHeart) {
     return _getHeartSpellTrace(gear, type, rate);
   }
-  throw TypeError(ErrorMessage.SpellTrace_InvalidGearType);
+  throw new GearError(ErrorMessage.SpellTrace_InvalidGearType, gear, {
+    type: gear.type,
+  });
 }
 
 export function _getWeaponSpellTrace(
@@ -98,7 +100,11 @@ export function _getWeaponSpellTrace(
   rate: SpellTraceRate,
 ): SpellTrace {
   if (type === SpellTraceType.allStat) {
-    throw TypeError(ErrorMessage.SpellTrace_InvalidSpellTrace);
+    throw new GearError(ErrorMessage.SpellTrace_InvalidSpellTrace, gear, {
+      type: gear.type,
+      input_type: type,
+      input_rate: rate,
+    });
   }
   const tier = _getTier(gear);
   // eslint-disable-next-line prefer-const
@@ -161,7 +167,11 @@ export function _getArmorSpellTrace(
       break;
     case SpellTraceType.allStat: {
       if (!(rate in armorAllStat)) {
-        throw TypeError(ErrorMessage.SpellTrace_InvalidSpellTrace);
+        throw new GearError(ErrorMessage.SpellTrace_InvalidSpellTrace, gear, {
+          type: gear.type,
+          input_type: type,
+          input_rate: rate,
+        });
       }
       // @ts-expect-error: rate is checked above
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
@@ -195,7 +205,11 @@ export function _getAccSpellTrace(
   rate: SpellTraceRate,
 ): SpellTrace {
   if (!(rate in accStat)) {
-    throw TypeError(ErrorMessage.SpellTrace_InvalidSpellTrace);
+    throw new GearError(ErrorMessage.SpellTrace_InvalidSpellTrace, gear, {
+      type: gear.type,
+      input_type: type,
+      input_rate: rate,
+    });
   }
   const tier = _getTier(gear);
   // @ts-expect-error: rate is checked above
@@ -215,7 +229,11 @@ export function _getAccSpellTrace(
       break;
     case SpellTraceType.allStat: {
       if (!(rate in accAllStat)) {
-        throw TypeError(ErrorMessage.SpellTrace_InvalidSpellTrace);
+        throw new GearError(ErrorMessage.SpellTrace_InvalidSpellTrace, gear, {
+          type: gear.type,
+          input_type: type,
+          input_rate: rate,
+        });
       }
       // @ts-expect-error: rate is checked above
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
@@ -238,7 +256,11 @@ export function _getHeartSpellTrace(
   rate: SpellTraceRate,
 ): SpellTrace {
   if (!(rate in accStat)) {
-    throw TypeError(ErrorMessage.SpellTrace_InvalidSpellTrace);
+    throw new GearError(ErrorMessage.SpellTrace_InvalidSpellTrace, gear, {
+      type: gear.type,
+      input_type: type,
+      input_rate: rate,
+    });
   }
   const tier = _getTier(gear);
   // @ts-expect-error: rate is checked above

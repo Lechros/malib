@@ -1,4 +1,5 @@
 import { GearCapability, PotentialGrade } from '../data';
+import { GearError } from '../errors';
 import { createGear, createPotentialData } from '../test';
 import {
   canSetAdditionalPotential,
@@ -138,7 +139,7 @@ describe('setPotential', () => {
     expect(gear.potentials).toEqual(potentials);
   });
 
-  it('canPotential = Cannot일 경우 TypeError가 발생한다.', () => {
+  it('canPotential = Cannot일 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       attributes: {
         canPotential: GearCapability.Cannot,
@@ -147,10 +148,10 @@ describe('setPotential', () => {
 
     expect(() => {
       setPotential(gear, PotentialGrade.Unique, [createPotentialData()]);
-    }).toThrow(TypeError);
+    }).toThrow(GearError);
   });
 
-  it('설정하려는 잠재능력 등급이 Normal일 경우 TypeError가 발생한다.', () => {
+  it('설정하려는 잠재능력 등급이 Normal일 경우 RangeError가 발생한다.', () => {
     const gear = createGear({
       attributes: {
         canPotential: GearCapability.Can,
@@ -159,7 +160,7 @@ describe('setPotential', () => {
 
     expect(() => {
       setPotential(gear, PotentialGrade.Normal, [createPotentialData()]);
-    }).toThrow(TypeError);
+    }).toThrow(RangeError);
   });
 
   it('설정하려는 잠재능력 옵션의 길이가 0일 경우 TypeError가 발생한다.', () => {
@@ -349,7 +350,7 @@ describe('setAdditionalPotential', () => {
     expect(gear.additionalPotentials).toEqual(potentials);
   });
 
-  it('canAdditionalPotential = Cannot일 경우 TypeError가 발생한다.', () => {
+  it('canAdditionalPotential = Cannot일 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Cannot,
@@ -360,10 +361,10 @@ describe('setAdditionalPotential', () => {
       setAdditionalPotential(gear, PotentialGrade.Unique, [
         createPotentialData(),
       ]);
-    }).toThrow(TypeError);
+    }).toThrow(GearError);
   });
 
-  it('설정하려는 에디셔널 잠재능력 등급이 Normal일 경우 TypeError가 발생한다.', () => {
+  it('설정하려는 에디셔널 잠재능력 등급이 Normal일 경우 RangeError가 발생한다.', () => {
     const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Can,
@@ -374,10 +375,10 @@ describe('setAdditionalPotential', () => {
       setAdditionalPotential(gear, PotentialGrade.Normal, [
         createPotentialData(),
       ]);
-    }).toThrow(TypeError);
+    }).toThrow(RangeError);
   });
 
-  it('설정하려는 에디셔널 잠재능력 옵션의 길이가 0일 경우 TypeError가 발생한다.', () => {
+  it('설정하려는 에디셔널 잠재능력 옵션의 길이가 0일 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Can,
@@ -386,10 +387,10 @@ describe('setAdditionalPotential', () => {
 
     expect(() => {
       setAdditionalPotential(gear, PotentialGrade.Unique, []);
-    }).toThrow(TypeError);
+    }).toThrow(GearError);
   });
 
-  it('설정하려는 에디셔널 잠재능력 옵션의 길이가 3보다 클 경우 TypeError가 발생한다.', () => {
+  it('설정하려는 에디셔널 잠재능력 옵션의 길이가 3보다 클 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Can,
@@ -403,7 +404,7 @@ describe('setAdditionalPotential', () => {
         createPotentialData(),
         createPotentialData(),
       ]);
-    }).toThrow(TypeError);
+    }).toThrow(GearError);
   });
 });
 
