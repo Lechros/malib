@@ -5,10 +5,12 @@ import {
   GearCapability,
   GearType,
 } from '../data';
+import { GearError } from '../errors';
 import { Gear } from '../Gear';
 import { createGear } from '../test';
 import { joinEach } from '../test/util';
 import {
+  _DeferredGearError,
   _getAddOptionKeys,
   _getAllStatValue,
   _getBossDamageValue,
@@ -83,14 +85,14 @@ describe('canApplyAddOption', () => {
 });
 
 describe('applyAddOption', () => {
-  it('추가 옵션을 부여할 수 없는 장비일 경우 TypeError가 발생한다.', () => {
+  it('추가 옵션을 부여할 수 없는 장비일 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       attributes: { canAddOption: GearCapability.Cannot },
     });
 
     expect(() => {
       applyAddOption(gear, AddOptionType.attackPower, 1);
-    }).toThrow(TypeError);
+    }).toThrow(GearError);
   });
 
   it('추가 옵션에 옵션이 추가된다.', () => {
@@ -164,14 +166,14 @@ describe('canResetAddOption', () => {
 });
 
 describe('resetAddOption', () => {
-  it('canAddOption = Cannot일 경우 TypeError가 발생한다.', () => {
+  it('canAddOption = Cannot일 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       attributes: { canAddOption: GearCapability.Cannot },
     });
 
     expect(() => {
       resetAddOption(gear);
-    }).toThrow(TypeError);
+    }).toThrow(GearError);
   });
 
   it('추가 옵션을 초기화한다.', () => {
@@ -888,9 +890,9 @@ test.each([
   ctx(GearType.earrings, 50, 5, 5, false, AddOptionType.attackPower),
   ctx(GearType.belt, 59, 5, 5, false, AddOptionType.attackPower),
 ])(
-  '_getPowerValue(ctx=%p, grade=%d) 요구 레벨이 60 미만이면 TypeError가 발생한다.',
+  '_getPowerValue(ctx=%p, grade=%d) 요구 레벨이 60 미만이면 _DeferredGearError가 발생한다.',
   (context) => {
-    expect(() => _getPowerValue(4, context)).toThrow(TypeError);
+    expect(() => _getPowerValue(4, context)).toThrow(_DeferredGearError);
   },
 );
 
@@ -959,9 +961,12 @@ test.each([
   GearType.bow,
   GearType.tuner,
   GearType.dagger,
-])('_getSpeedValue(gearType=%d) 무기는 TypeError가 발생한다.', (gearType) => {
-  expect(() => _getSpeedValue(4, { gearType })).toThrow(TypeError);
-});
+])(
+  '_getSpeedValue(gearType=%d) 무기는 _DeferredGearError가 발생한다.',
+  (gearType) => {
+    expect(() => _getSpeedValue(4, { gearType })).toThrow(_DeferredGearError);
+  },
+);
 
 test.each([
   [GearType.cap, 1, 1],
@@ -988,9 +993,12 @@ test.each([
   GearType.bow,
   GearType.tuner,
   GearType.dagger,
-])('_getJumpValue(gearType=%d) 무기는 TypeError가 발생한다.', (gearType) => {
-  expect(() => _getJumpValue(4, { gearType })).toThrow(TypeError);
-});
+])(
+  '_getJumpValue(gearType=%d) 무기는 _DeferredGearError가 발생한다.',
+  (gearType) => {
+    expect(() => _getJumpValue(4, { gearType })).toThrow(_DeferredGearError);
+  },
+);
 
 test.each([
   [GearType.shiningRod, 1, 1],
@@ -1018,9 +1026,9 @@ test.each([
   GearType.belt,
   GearType.pocket,
 ])(
-  '_getDamageValue(gearType=%d) 무기가 아닌 장비는 TypeError가 발생한다.',
+  '_getDamageValue(gearType=%d) 무기가 아닌 장비는 _DeferredGearError가 발생한다.',
   (gearType) => {
-    expect(() => _getDamageValue(4, { gearType })).toThrow(TypeError);
+    expect(() => _getDamageValue(4, { gearType })).toThrow(_DeferredGearError);
   },
 );
 
@@ -1050,20 +1058,20 @@ test.each([
   GearType.belt,
   GearType.pocket,
 ])(
-  '_getBossDamageValue(gearType=%d) 무기가 아닌 장비는 TypeError가 발생한다.',
+  '_getBossDamageValue(gearType=%d) 무기가 아닌 장비는 _DeferredGearError가 발생한다.',
   (gearType) => {
     expect(() => _getBossDamageValue(4, { gearType, reqLevel: 200 })).toThrow(
-      TypeError,
+      _DeferredGearError,
     );
   },
 );
 
 test.each([0, 10, 20, 40, 60, 80, 89])(
-  '_getBossDamageValue(reqLevel=%d) 요구 레벨이 90 미만인 장비는 TypeError가 발생한다.',
+  '_getBossDamageValue(reqLevel=%d) 요구 레벨이 90 미만인 장비는 _DeferredGearError가 발생한다.',
   (reqLevel) => {
     expect(() =>
       _getBossDamageValue(4, { gearType: GearType.staff, reqLevel }),
-    ).toThrow(TypeError);
+    ).toThrow(_DeferredGearError);
   },
 );
 
@@ -1101,10 +1109,10 @@ test.each([
   [GearType.longcoat, 50],
   [GearType.shoes, 69],
 ] satisfies [GearType, number][])(
-  '_getAllStatValue(gearType=%d, reqLevel=%d) 요구 레벨이 70 미만인 무기가 아닌 장비는 TypeError가 발생한다.',
+  '_getAllStatValue(gearType=%d, reqLevel=%d) 요구 레벨이 70 미만인 무기가 아닌 장비는 _DeferredGearError가 발생한다.',
   (gearType, reqLevel) => {
     expect(() => _getAllStatValue(4, { gearType, reqLevel })).toThrow(
-      TypeError,
+      _DeferredGearError,
     );
   },
 );
@@ -1140,9 +1148,9 @@ test.each([
   },
 );
 
-test('_getReqLevelDecreaseValue(reqLevel=0)가 TypeError를 발생한다.', () => {
+test('_getReqLevelDecreaseValue(reqLevel=0)가 _DeferredGearError가 발생한다.', () => {
   expect(() => _getReqLevelDecreaseValue(1, { reqLevel: 0 })).toThrow(
-    TypeError,
+    _DeferredGearError,
   );
 });
 

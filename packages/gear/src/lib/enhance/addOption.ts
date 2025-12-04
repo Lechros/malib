@@ -5,7 +5,7 @@ import {
   GearCapability,
   GearType,
 } from '../data';
-import { ErrorMessage } from '../errors';
+import { ErrorMessage, GearError } from '../errors';
 import { Gear } from '../Gear';
 import { addOptions } from '../gearOption';
 import { isWeapon } from '../gearType';
@@ -43,10 +43,10 @@ export function canApplyAddOption(gear: ReadonlyGear): boolean {
  * @param type 추가 옵션 종류.
  * @param grade 추가 옵션 단계.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 추가 옵션을 적용할 수 없는 상태의 장비일 경우.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 장비에 부여할 수 없는 추가 옵션을 지정했을 경우.
  */
 export function applyAddOption(
@@ -55,7 +55,10 @@ export function applyAddOption(
   grade: AddOptionGrade,
 ) {
   if (!canApplyAddOption(gear)) {
-    throw TypeError(ErrorMessage.AddOption_InvalidApplyGear);
+    throw new GearError(ErrorMessage.AddOption_InvalidApplyGear, gear, {
+      'attributes.canAddOption': gear.attributes.canAddOption,
+      'addOptions.length': gear.addOptions.length,
+    });
   }
   gear.data.addOption ??= {};
   const option = getAddOption(gear, type, grade);
@@ -82,12 +85,14 @@ export function canResetAddOption(gear: ReadonlyGear): boolean {
  * 장비의 추가 옵션을 초기화합니다.
  * @param gear 초기화할 장비.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 추가 옵션을 초기화할 수 없는 상태의 장비일 경우.
  */
 export function resetAddOption(gear: Gear) {
   if (!canResetAddOption(gear)) {
-    throw TypeError(ErrorMessage.AddOption_InvalidApplyGear);
+    throw new GearError(ErrorMessage.AddOption_InvalidResetGear, gear, {
+      'attributes.canAddOption': gear.attributes.canAddOption,
+    });
   }
   gear.data.addOption = undefined;
   gear.data.addOptions = undefined;
@@ -100,7 +105,7 @@ export function resetAddOption(gear: Gear) {
  * @param grade 추가 옵션 단계.
  * @returns 추가 옵션 종류 및 단계에 해당하는 옵션.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 장비에 부여할 수 없는 추가 옵션을 지정했을 경우.
  */
 export function getAddOption(
@@ -122,7 +127,7 @@ export function getAddOption(
  * @param grade 추가 옵션 단계.
  * @returns 추가 옵션 값.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 장비에 부여할 수 없는 추가 옵션을 지정했을 경우.
  */
 export function getAddOptionValue(
@@ -139,39 +144,46 @@ export function getAddOptionValue(
     magicPower: gear.baseOption.magicPower,
   };
 
-  switch (type) {
-    case AddOptionType.str:
-    case AddOptionType.dex:
-    case AddOptionType.int:
-    case AddOptionType.luk:
-      return _getSingleStatValue(grade, ctx);
-    case AddOptionType.str_dex:
-    case AddOptionType.str_int:
-    case AddOptionType.str_luk:
-    case AddOptionType.dex_int:
-    case AddOptionType.dex_luk:
-    case AddOptionType.int_luk:
-      return _getDoubleStatValue(grade, ctx);
-    case AddOptionType.armor:
-      return _getSingleStatValue(grade, ctx);
-    case AddOptionType.attackPower:
-    case AddOptionType.magicPower:
-      return _getPowerValue(grade, ctx);
-    case AddOptionType.maxHp:
-    case AddOptionType.maxMp:
-      return _getHpMpValue(grade, ctx);
-    case AddOptionType.speed:
-      return _getSpeedValue(grade, ctx);
-    case AddOptionType.jump:
-      return _getJumpValue(grade, ctx);
-    case AddOptionType.damage:
-      return _getDamageValue(grade, ctx);
-    case AddOptionType.bossDamage:
-      return _getBossDamageValue(grade, ctx);
-    case AddOptionType.allStat:
-      return _getAllStatValue(grade, ctx);
-    case AddOptionType.reqLevelDecrease:
-      return _getReqLevelDecreaseValue(grade, ctx);
+  try {
+    switch (type) {
+      case AddOptionType.str:
+      case AddOptionType.dex:
+      case AddOptionType.int:
+      case AddOptionType.luk:
+        return _getSingleStatValue(grade, ctx);
+      case AddOptionType.str_dex:
+      case AddOptionType.str_int:
+      case AddOptionType.str_luk:
+      case AddOptionType.dex_int:
+      case AddOptionType.dex_luk:
+      case AddOptionType.int_luk:
+        return _getDoubleStatValue(grade, ctx);
+      case AddOptionType.armor:
+        return _getSingleStatValue(grade, ctx);
+      case AddOptionType.attackPower:
+      case AddOptionType.magicPower:
+        return _getPowerValue(grade, ctx);
+      case AddOptionType.maxHp:
+      case AddOptionType.maxMp:
+        return _getHpMpValue(grade, ctx);
+      case AddOptionType.speed:
+        return _getSpeedValue(grade, ctx);
+      case AddOptionType.jump:
+        return _getJumpValue(grade, ctx);
+      case AddOptionType.damage:
+        return _getDamageValue(grade, ctx);
+      case AddOptionType.bossDamage:
+        return _getBossDamageValue(grade, ctx);
+      case AddOptionType.allStat:
+        return _getAllStatValue(grade, ctx);
+      case AddOptionType.reqLevelDecrease:
+        return _getReqLevelDecreaseValue(grade, ctx);
+    }
+  } catch (error) {
+    if (error instanceof _DeferredGearError) {
+      throw error.gear(gear);
+    }
+    throw error;
   }
 }
 
@@ -211,7 +223,13 @@ export function _getPowerValue(
   } else if (reqLevel >= 60) {
     return grade;
   } else {
-    throw TypeError(ErrorMessage.AddOption_InvalidAttackPowerGear);
+    throw new _DeferredGearError(
+      ErrorMessage.AddOption_InvalidAttackPowerGear,
+      {
+        'req.level': reqLevel,
+        'gear.type': gearType,
+      },
+    );
   }
 }
 
@@ -265,7 +283,10 @@ export function _getZeroWeaponAttackPower(
   ]);
   const mappedAttackPower = longToHeavyAttackPowerMap.get(attackPower);
   if (mappedAttackPower === undefined) {
-    throw TypeError(ErrorMessage.AddOption_UnknownLongSwordGear);
+    throw new _DeferredGearError(ErrorMessage.AddOption_UnknownLongSwordGear, {
+      'gear.type': gearType,
+      'gear.baseOption.attackPower': attackPower,
+    });
   }
   return mappedAttackPower;
 }
@@ -288,7 +309,9 @@ export function _getSpeedValue(
   { gearType }: Pick<AddOptionContext, 'gearType'>,
 ): number {
   if (isWeapon(gearType)) {
-    throw TypeError(ErrorMessage.AddOption_InvalidSpeedGear);
+    throw new _DeferredGearError(ErrorMessage.AddOption_InvalidSpeedGear, {
+      'gear.type': gearType,
+    });
   }
   return grade;
 }
@@ -298,7 +321,9 @@ export function _getJumpValue(
   { gearType }: Pick<AddOptionContext, 'gearType'>,
 ): number {
   if (isWeapon(gearType)) {
-    throw TypeError(ErrorMessage.AddOption_InvalidJumpGear);
+    throw new _DeferredGearError(ErrorMessage.AddOption_InvalidJumpGear, {
+      'gear.type': gearType,
+    });
   }
   return grade;
 }
@@ -308,7 +333,9 @@ export function _getDamageValue(
   { gearType }: Pick<AddOptionContext, 'gearType'>,
 ): number {
   if (!isWeapon(gearType)) {
-    throw TypeError(ErrorMessage.AddOption_InvalidDamageGear);
+    throw new _DeferredGearError(ErrorMessage.AddOption_InvalidDamageGear, {
+      'gear.type': gearType,
+    });
   }
   return grade;
 }
@@ -318,7 +345,10 @@ export function _getBossDamageValue(
   { reqLevel, gearType }: Pick<AddOptionContext, 'reqLevel' | 'gearType'>,
 ): number {
   if (reqLevel < 90 || !isWeapon(gearType)) {
-    throw TypeError(ErrorMessage.AddOption_InvalidBossDamageGear);
+    throw new _DeferredGearError(ErrorMessage.AddOption_InvalidBossDamageGear, {
+      'req.level': reqLevel,
+      'gear.type': gearType,
+    });
   }
   return 2 * grade;
 }
@@ -328,7 +358,10 @@ export function _getAllStatValue(
   { reqLevel, gearType }: Pick<AddOptionContext, 'reqLevel' | 'gearType'>,
 ): number {
   if (reqLevel < 70 && !isWeapon(gearType)) {
-    throw TypeError(ErrorMessage.AddOption_InvalidAllStatGear);
+    throw new _DeferredGearError(ErrorMessage.AddOption_InvalidAllStatGear, {
+      'req.level': reqLevel,
+      'gear.type': gearType,
+    });
   }
   return grade;
 }
@@ -338,7 +371,10 @@ export function _getReqLevelDecreaseValue(
   { reqLevel }: Pick<AddOptionContext, 'reqLevel'>,
 ): number {
   if (reqLevel <= 0) {
-    throw TypeError(ErrorMessage.AddOption_InvalidReqLevelDecreaseGear);
+    throw new _DeferredGearError(
+      ErrorMessage.AddOption_InvalidReqLevelDecreaseGear,
+      { 'req.level': reqLevel },
+    );
   }
   return Math.min(reqLevel, 5 * grade);
 }
@@ -347,4 +383,17 @@ export function _getAddOptionKeys(
   type: AddOptionType,
 ): (keyof GearAddOption)[] {
   return type.split(',') as (keyof GearAddOption)[];
+}
+
+export class _DeferredGearError extends Error {
+  private readonly status: Record<string, unknown>;
+
+  constructor(message: string, status: Record<string, unknown>) {
+    super(message);
+    this.status = status;
+  }
+
+  gear(gear: ReadonlyGear): GearError {
+    return new GearError(this.message, gear, this.status);
+  }
 }

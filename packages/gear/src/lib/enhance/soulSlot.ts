@@ -1,5 +1,5 @@
 import { SoulChargeOption, SoulData } from '../data';
-import { ErrorMessage } from '../errors';
+import { ErrorMessage, GearError } from '../errors';
 import { Gear } from '../Gear';
 import { isWeapon } from '../gearType';
 import { ReadonlyGear } from '../ReadonlyGear';
@@ -26,12 +26,15 @@ export function canApplySoulEnchant(gear: ReadonlyGear): boolean {
  * 장비에 소울 인챈터를 적용합니다.
  * @param gear 적용할 장비.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 소울 인챈터를 적용할 수 없는 경우.
  */
 export function applySoulEnchant(gear: Gear) {
   if (!canApplySoulEnchant(gear)) {
-    throw TypeError(ErrorMessage.Soul_AlreadyEnchanted);
+    throw new GearError(ErrorMessage.Soul_AlreadyEnchanted, gear, {
+      type: gear.type,
+      soulEnchanted: gear.soulEnchanted,
+    });
   }
   gear.data.soulSlot = {};
 }
@@ -50,12 +53,15 @@ export function canSetSoul(gear: ReadonlyGear): boolean {
  * @param gear 대상 장비.
  * @param soul 장착할 소울 아이템.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 소울을 장착할 수 없는 경우.
  */
 export function setSoul(gear: Gear, soul: SoulData) {
   if (!canSetSoul(gear)) {
-    throw TypeError(ErrorMessage.Soul_SetSoulUnenchanted);
+    throw new GearError(ErrorMessage.Soul_SetSoulUnenchanted, gear, {
+      type: gear.type,
+      soulEnchanted: gear.soulEnchanted,
+    });
   }
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   gear.data.soulSlot!.soul = soul;
@@ -76,15 +82,21 @@ export function canSetSoulCharge(gear: ReadonlyGear): boolean {
  * @param gear 대상 장비.
  * @param charge 소울 충전량.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 소울 충전량을 설정할 수 없는 경우.
+ *
+ * @throws {@link RangeError}
+ * 소울 충전량이 0 미만 또는 1000 초과인 경우.
  */
 export function setSoulCharge(gear: Gear, charge: number) {
   if (!canSetSoulCharge(gear)) {
-    throw TypeError(ErrorMessage.Soul_SetChargeUnenchanted);
+    throw new GearError(ErrorMessage.Soul_SetChargeUnenchanted, gear, {
+      type: gear.type,
+      soulEnchanted: gear.soulEnchanted,
+    });
   }
   if (charge < 0 || charge > 1000) {
-    throw TypeError(ErrorMessage.Soul_InvalidSoulCharge);
+    throw new RangeError(ErrorMessage.Soul_InvalidSoulCharge);
   }
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   gear.data.soulSlot!.charge = charge;

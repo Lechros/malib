@@ -1,3 +1,23 @@
+import { ReadonlyGear } from './ReadonlyGear';
+
+export class GearError extends Error {
+  readonly gearId: number;
+  readonly gearName: string;
+  readonly status: Record<string, unknown>;
+
+  constructor(
+    message: string,
+    gear: ReadonlyGear,
+    status: Record<string, unknown>,
+  ) {
+    super(message);
+    this.name = 'GearError';
+    this.gearId = gear.meta.id;
+    this.gearName = gear.name;
+    this.status = status;
+  }
+}
+
 export const enum ErrorMessage {
   Shape_InvalidShapeChangeGear = '외형을 변경할 수 없는 장비입니다.',
 

@@ -1,4 +1,5 @@
 import { GearCapability } from '../data';
+import { GearError } from '../errors';
 import { createGear, createScroll } from '../test';
 import {
   applyScroll,
@@ -66,14 +67,14 @@ describe('canFailScroll', () => {
 });
 
 describe('failScroll', () => {
-  it('잔여 주문서 강화 횟수가 0일 경우 TypeError가 발생한다.', () => {
+  it('잔여 주문서 강화 횟수가 0일 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       attributes: { canScroll: GearCapability.Can },
     });
 
     expect(() => {
       failScroll(gear);
-    }).toThrow(TypeError);
+    }).toThrow(GearError);
   });
 
   it('복구 가능 주문서 강화 횟수가 1회 증가한다.', () => {
@@ -129,14 +130,14 @@ describe('canResileScroll', () => {
 });
 
 describe('resileScroll', () => {
-  it('복구 가능 주문서 강화 횟수가 0일 경우 TypeError가 발생한다.', () => {
+  it('복구 가능 주문서 강화 횟수가 0일 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       attributes: { canScroll: GearCapability.Can },
     });
 
     expect(() => {
       resileScroll(gear);
-    }).toThrow(TypeError);
+    }).toThrow(GearError);
   });
 
   it('잔여 주문서 강화 횟수가 1회 증가한다.', () => {
@@ -183,13 +184,13 @@ describe('canResetUpgrade', () => {
 });
 
 describe('resetUpgrade', () => {
-  it('canScroll = Cannot일 경우 TypeError가 발생한다.', () => {
+  it('canScroll = Cannot일 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       attributes: { canScroll: GearCapability.Cannot },
     });
     expect(() => {
       resetUpgrade(gear);
-    }).toThrow(TypeError);
+    }).toThrow(GearError);
   });
 
   it('복구 가능 주문서 강화 횟수가 0으로 설정된다.', () => {
@@ -266,7 +267,7 @@ describe('canApplyScroll', () => {
 });
 
 describe('applyScroll', () => {
-  it('canScroll = Cannot일 경우 TypeError가 발생한다.', () => {
+  it('canScroll = Cannot일 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       attributes: { canScroll: GearCapability.Cannot },
     });
@@ -274,10 +275,10 @@ describe('applyScroll', () => {
 
     expect(() => {
       applyScroll(gear, scroll);
-    }).toThrow(TypeError);
+    }).toThrow(GearError);
   });
 
-  it('잔여 주문서 강화 횟수가 0회일 경우 TypeError가 발생한다.', () => {
+  it('잔여 주문서 강화 횟수가 0회일 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       attributes: { canScroll: GearCapability.Can },
     });
@@ -285,7 +286,7 @@ describe('applyScroll', () => {
 
     expect(() => {
       applyScroll(gear, scroll);
-    }).toThrow(TypeError);
+    }).toThrow(GearError);
   });
 
   it('주문서 강화 횟수가 1회 증가한다.', () => {

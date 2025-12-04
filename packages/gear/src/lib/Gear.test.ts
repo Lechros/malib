@@ -1,5 +1,6 @@
 import { AddOptionType, PotentialGrade } from './data';
 import { SpellTraceType } from './enhance/spellTrace';
+import { GearError } from './errors';
 import { sumOptions } from './gearOption';
 import {
   createExceptional,
@@ -49,7 +50,7 @@ describe('Gear', () => {
       expect(gear.shape).toBeUndefined();
     });
 
-    it('외형을 변경할 수 없는 장비는 TypeError가 발생한다.', () => {
+    it('외형을 변경할 수 없는 장비는 GearError가 발생한다.', () => {
       const gear = createGear('몽환의 벨트', {
         attributes: {
           noShapeChange: true,
@@ -58,7 +59,7 @@ describe('Gear', () => {
 
       expect(() => {
         gear.shape = { name: '새로운 모루 아이템', icon: '1002000' };
-      }).toThrow(TypeError);
+      }).toThrow(GearError);
 
       expect(gear.shape).toBeUndefined();
     });
@@ -222,12 +223,12 @@ describe('Gear', () => {
     });
 
     describe('applyScrollResile', () => {
-      it('복구 가능 주문서 강화 횟수가 0인 경우 TypeError가 발생한다.', () => {
+      it('복구 가능 주문서 강화 횟수가 0인 경우 GearError가 발생한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드');
 
         expect(() => {
           gear.applyResileScroll();
-        }).toThrow(TypeError);
+        }).toThrow(GearError);
       });
     });
 
@@ -451,12 +452,12 @@ describe('Gear', () => {
     });
 
     describe('applyStarScroll', () => {
-      it('요구 레벨이 Lv.150을 넘는 장비는 TypeError가 발생한다.', () => {
+      it('요구 레벨이 Lv.150을 넘는 장비는 GearError가 발생한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드');
 
         expect(() => {
           gear.applyStarScroll();
-        }).toThrow(TypeError);
+        }).toThrow(GearError);
       });
     });
 
@@ -713,12 +714,12 @@ describe('Gear', () => {
         expect(gear.soul).toEqual(soul);
       });
 
-      it('소울 인챈트가 적용되지 않은 장비는 TypeError가 발생한다.', () => {
+      it('소울 인챈트가 적용되지 않은 장비는 GearError가 발생한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드');
 
         expect(() => {
           gear.setSoul(createSoulData());
-        }).toThrow(TypeError);
+        }).toThrow(GearError);
       });
     });
 
@@ -745,12 +746,12 @@ describe('Gear', () => {
         expect(gear.soulCharge).toBe(100);
       });
 
-      it('소울 인챈트가 적용되지 않은 장비는 TypeError가 발생한다.', () => {
+      it('소울 인챈트가 적용되지 않은 장비는 GearError가 발생한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드');
 
         expect(() => {
           gear.setSoulCharge(100);
-        }).toThrow(TypeError);
+        }).toThrow(GearError);
       });
     });
 
@@ -821,12 +822,12 @@ describe('Gear', () => {
         expect(gear.exceptionalUpgradeCount).toBe(expected);
       });
 
-      it('익셉셔널 강화를 지원하지 않는 장비는 TypeError가 발생한다.', () => {
+      it('익셉셔널 강화를 지원하지 않는 장비는 GearError가 발생한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드');
 
         expect(() => {
           gear.applyExceptional(createScroll());
-        }).toThrow(TypeError);
+        }).toThrow(GearError);
       });
     });
 

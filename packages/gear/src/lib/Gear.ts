@@ -70,7 +70,7 @@ import {
   Scroll,
   supportsUpgrade,
 } from './enhance/upgrade';
-import { ErrorMessage } from './errors';
+import { ErrorMessage, GearError } from './errors';
 import { ReadonlyGear } from './ReadonlyGear';
 
 /**
@@ -108,12 +108,14 @@ export class Gear extends ReadonlyGear {
    *
    * @param shape 변경할 장비 외형.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 외형을 변경할 수 없는 장비일 경우.
    */
   override set shape(shape: GearShapeData | undefined) {
     if (this.attributes.noShapeChange) {
-      throw new TypeError(ErrorMessage.Shape_InvalidShapeChangeGear);
+      throw new GearError(ErrorMessage.Shape_InvalidShapeChangeGear, this, {
+        'attributes.noShapeChange': this.attributes.noShapeChange,
+      });
     }
 
     this.data.shape = shape;
@@ -138,10 +140,10 @@ export class Gear extends ReadonlyGear {
    * @param type 추가 옵션 종류.
    * @param grade 추가 옵션 단계.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 추가 옵션을 적용할 수 없는 상태일 경우.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 부여할 수 없는 추가 옵션을 지정했을 경우.
    */
   applyAddOption(type: AddOptionType, grade: AddOptionGrade) {
@@ -158,7 +160,7 @@ export class Gear extends ReadonlyGear {
   /**
    * 장비의 추가 옵션을 초기화합니다.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 추가 옵션을 초기화할 수 없는 상태의 장비일 경우.
    */
   resetAddOption() {
@@ -182,7 +184,7 @@ export class Gear extends ReadonlyGear {
   /**
    * 장비에 주문서 실패를 1회 적용합니다.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 주문서 실패를 적용할 수 없는 상태일 경우.
    */
   applyScrollFail() {
@@ -199,7 +201,7 @@ export class Gear extends ReadonlyGear {
   /**
    * 장비의 주문서 실패로 차감된 업그레이드 가능 횟수를 1회 복구합니다.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 업그레이드 가능 횟수를 복구할 수 없는 상태일 경우.
    */
   applyResileScroll() {
@@ -216,7 +218,7 @@ export class Gear extends ReadonlyGear {
   /**
    * 장비의 주문서 강화를 초기화합니다.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 주문서 강화를 초기화할 수 없는 장비일 경우.
    */
   resetUpgrade() {
@@ -237,7 +239,7 @@ export class Gear extends ReadonlyGear {
    * 장비에 주문서를 1회 적용합니다.
    * @param scroll 적용할 주문서.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 주문서를 적용할 수 없는 상태일 경우.
    */
   applyScroll(scroll: Scroll) {
@@ -252,10 +254,10 @@ export class Gear extends ReadonlyGear {
    * @param type 주문의 흔적 종류.
    * @param rate 주문의 흔적 성공 확률.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 주문서를 적용할 수 없는 상태일 경우.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 적용할 수 없는 주문의 흔적을 지정했을 경우.
    */
   applySpellTrace(type: SpellTraceType, rate: SpellTraceRate) {
@@ -282,7 +284,7 @@ export class Gear extends ReadonlyGear {
   /**
    * 장비에 스타포스 강화를 1회 적용합니다.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 스타포스 강화를 적용할 수 없는 경우.
    */
   applyStarforce() {
@@ -299,7 +301,7 @@ export class Gear extends ReadonlyGear {
   /**
    * 장비에 최대 강화 단계를 무시하고 스타포스 강화를 1회 적용합니다.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 스타포스 강화를 적용할 수 없는 경우.
    */
   applyStarforceIgnoringMaxStar() {
@@ -317,7 +319,7 @@ export class Gear extends ReadonlyGear {
    * 장비에 놀라운 장비 강화 주문서를 1회 적용합니다.
    * @param bonus 보너스 스탯 적용 여부.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 놀라운 장비 강화 주문서를 적용할 수 없는 경우.
    */
   applyStarScroll(bonus = false) {
@@ -335,7 +337,7 @@ export class Gear extends ReadonlyGear {
    * 장비에 놀라운 장비 강화 주문서를 1회 적용합니다.
    * @param bonus 보너스 스탯 적용 여부.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 놀라운 장비 강화 주문서를 적용할 수 없는 경우.
    */
   applyStarScrollIgnoringMaxStar(bonus = false) {
@@ -379,10 +381,10 @@ export class Gear extends ReadonlyGear {
    * @param grade 잠재능력 등급.
    * @param options 잠재옵션 목록.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 잠재능력을 설정할 수 없는 경우.
    *
-   * @throws {@link TypeError}
+   * @throws {@link RangeError}
    * 설정하려는 잠재능력 등급이 Normal일 경우.
    *
    * @throws {@link TypeError}
@@ -397,7 +399,7 @@ export class Gear extends ReadonlyGear {
    *
    * 에디셔널 잠재능력은 변경되지 않습니다.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 잠재능력을 초기화할 수 없는 경우.
    */
   resetPotential() {
@@ -427,10 +429,10 @@ export class Gear extends ReadonlyGear {
    * @param grade 에디셔널 잠재능력 등급.
    * @param options 에디셔널 잠재옵션 목록.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 에디셔널 잠재능력을 설정할 수 없는 경우.
    *
-   * @throws {@link TypeError}
+   * @throws {@link RangeError}
    * 설정하려는 에디셔널 잠재능력 등급이 Normal일 경우.
    *
    * @throws {@link TypeError}
@@ -443,7 +445,7 @@ export class Gear extends ReadonlyGear {
   /**
    * 장비의 에디셔널 잠재능력을 초기화합니다.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 에디셔널 잠재능력을 초기화할 수 없는 경우.
    */
   resetAdditionalPotential() {
@@ -482,7 +484,7 @@ export class Gear extends ReadonlyGear {
    * 장비에 소울을 장착합니다.
    * @param soul 장착할 소울 아이템.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 소울을 장착할 수 없는 경우.
    */
   setSoul(soul: SoulData) {
@@ -500,7 +502,7 @@ export class Gear extends ReadonlyGear {
    * 장비의 소울 충전량을 설정합니다.
    * @param charge 소울 충전량.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 소울 충전량을 설정할 수 없는 경우.
    */
   setSoulCharge(charge: number) {
@@ -532,7 +534,7 @@ export class Gear extends ReadonlyGear {
    * 장비에 익셉셔널 강화를 적용합니다.
    * @param exceptionalHammer 적용할 익셉셔널 해머.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 익셉셔널 강화를 적용할 수 없는 상태일 경우.
    */
   applyExceptional(exceptionalHammer: ExceptionalHammer) {
@@ -549,7 +551,7 @@ export class Gear extends ReadonlyGear {
   /**
    * 장비의 익셉셔널 강화를 초기화합니다.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 익셉셔널 강화를 초기화할 수 없는 경우.
    */
   resetExceptional() {

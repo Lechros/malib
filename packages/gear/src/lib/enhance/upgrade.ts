@@ -1,5 +1,5 @@
 import { GearUpgradeOption, GearCapability } from '../data';
-import { ErrorMessage } from '../errors';
+import { ErrorMessage, GearError } from '../errors';
 import { Gear } from '../Gear';
 import { addOptions } from '../gearOption';
 import { ReadonlyGear } from '../ReadonlyGear';
@@ -38,12 +38,15 @@ export function canFailScroll(gear: ReadonlyGear): boolean {
  * 장비에 주문서 실패를 적용합니다.
  * @param gear 적용할 장비.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 주문서 실패를 적용할 수 없는 상태의 장비일 경우.
  */
 export function failScroll(gear: Gear) {
   if (!canFailScroll(gear)) {
-    throw TypeError(ErrorMessage.Upgrade_InvalidFailScrollGear);
+    throw new GearError(ErrorMessage.Upgrade_InvalidFailScrollGear, gear, {
+      'attributes.canScroll': gear.attributes.canScroll,
+      scrollUpgradeableCount: gear.scrollUpgradeableCount,
+    });
   }
   gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount - 1;
   gear.data.scrollResilienceCount = gear.scrollResilienceCount + 1;
@@ -62,12 +65,15 @@ export function canResileScroll(gear: ReadonlyGear): boolean {
  * 장비의 주문서 실패로 차감된 업그레이드 가능 횟수를 1회 복구합니다.
  * @param gear 복구할 장비.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 업그레이드 가능 횟수를 복구할 수 없는 상태의 장비일 경우.
  */
 export function resileScroll(gear: Gear) {
   if (!canResileScroll(gear)) {
-    throw TypeError(ErrorMessage.Upgrade_InvalidResileScrollGear);
+    throw new GearError(ErrorMessage.Upgrade_InvalidResileScrollGear, gear, {
+      'attributes.canScroll': gear.attributes.canScroll,
+      scrollResilienceCount: gear.scrollResilienceCount,
+    });
   }
   gear.data.scrollResilienceCount = gear.scrollResilienceCount - 1;
   gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount + 1;
@@ -86,12 +92,14 @@ export function canResetUpgrade(gear: ReadonlyGear): boolean {
  * 장비의 주문서 강화를 초기화합니다.
  * @param gear 초기화할 장비.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 주문서 강화를 초기화할 수 없는 장비일 경우.
  */
 export function resetUpgrade(gear: Gear) {
   if (!canResetUpgrade(gear)) {
-    throw TypeError(ErrorMessage.Upgrade_InvalidResetScrollGear);
+    throw new GearError(ErrorMessage.Upgrade_InvalidResetScrollGear, gear, {
+      'attributes.canScroll': gear.attributes.canScroll,
+    });
   }
   gear.data.upgradeOption = {};
   gear.data.scrollUpgradeableCount = gear.scrollTotalUpgradeableCount;
@@ -113,12 +121,15 @@ export function canApplyScroll(gear: ReadonlyGear): boolean {
  * @param gear 적용할 장비.
  * @param scroll 적용할 주문서.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 주문서를 적용할 수 없는 상태의 장비일 경우.
  */
 export function applyScroll(gear: Gear, scroll: Scroll) {
   if (!canApplyScroll(gear)) {
-    throw TypeError(ErrorMessage.Upgrade_InvalidApplyScrollGear);
+    throw new GearError(ErrorMessage.Upgrade_InvalidApplyScrollGear, gear, {
+      'attributes.canScroll': gear.attributes.canScroll,
+      scrollUpgradeableCount: gear.scrollUpgradeableCount,
+    });
   }
   gear.data.upgradeOption ??= {};
   addOptions(gear.data.upgradeOption, scroll.option);
