@@ -1,5 +1,5 @@
 import { GearStarforceOption, GearType, GearCapability } from '../data';
-import { ErrorMessage } from '../errors';
+import { ErrorMessage, GearError } from '../errors';
 import { Gear } from '../Gear';
 import { toGearOption } from '../gearOption';
 import { isAccessory, isArmor, isWeapon } from '../gearType';
@@ -57,12 +57,21 @@ export function canStarforce(
  * @param gear 적용할 장비.
  * @param exceedMaxStar 장비의 최대 강화 단계를 초과하여 강화할 지 여부.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 스타포스 강화를 적용할 수 없는 경우.
  */
 export function starforce(gear: Gear, exceedMaxStar = false) {
   if (!canStarforce(gear, exceedMaxStar)) {
-    throw TypeError(ErrorMessage.Starforce_InvalidStarforceGear);
+    throw new GearError(ErrorMessage.Starforce_InvalidStarforceGear, gear, {
+      'attributes.canStarforce': gear.attributes.canStarforce,
+      'attributes.superior': gear.attributes.superior,
+      'req.level': gear.req.level,
+      'req.levelIncrease': gear.req.levelIncrease,
+      star: gear.star,
+      maxStar: gear.maxStar,
+      starScroll: gear.starScroll,
+      input_exceedMaxStar: exceedMaxStar,
+    });
   }
   gear.data.star = gear.star + 1;
 
@@ -119,7 +128,7 @@ export function canStarScroll(
  * @param bonus 보너스 스탯 적용 여부.
  * @param exceedMaxStar 장비의 최대 강화 단계를 초과하여 강화할 지 여부.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 놀라운 장비 강화 주문서를 적용할 수 없는 경우.
  */
 export function starScroll(
@@ -128,7 +137,16 @@ export function starScroll(
   exceedMaxStar = false,
 ): void {
   if (!canStarScroll(gear, exceedMaxStar)) {
-    throw TypeError(ErrorMessage.StarScroll_InvalidStarScrollGear);
+    throw new GearError(ErrorMessage.StarScroll_InvalidStarScrollGear, gear, {
+      'attributes.canStarforce': gear.attributes.canStarforce,
+      'attributes.superior': gear.attributes.superior,
+      'req.level': gear.req.level,
+      'req.levelIncrease': gear.req.levelIncrease,
+      star: gear.star,
+      maxStar: gear.maxStar,
+      starScroll: gear.starScroll,
+      input_exceedMaxStar: exceedMaxStar,
+    });
   }
   gear.data.starScroll = true;
   gear.data.star = gear.star + 1;
@@ -186,12 +204,14 @@ export function canResetStarforce(gear: ReadonlyGear): boolean {
  * 장비의 스타포스 강화를 초기화합니다.
  * @param gear 초기화할 장비.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 스타포스 강화를 초기화할 수 없는 장비일 경우.
  */
 export function resetStarforce(gear: Gear) {
   if (!canResetStarforce(gear)) {
-    throw TypeError(ErrorMessage.Starforce_InvalidResetGear);
+    throw new GearError(ErrorMessage.Starforce_InvalidResetGear, gear, {
+      'attributes.canStarforce': gear.attributes.canStarforce,
+    });
   }
   gear.data.starforceOption = {};
   gear.data.star = undefined;
@@ -235,12 +255,15 @@ export function canRecalculateStarforce(gear: ReadonlyGear): boolean {
  * 장비의 스타포스 강화 옵션을 다시 계산합니다.
  * @param gear 계산할 장비.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 스타포스 강화 옵션을 다시 계산할 수 없는 경우.
  */
 export function recalculateStarforce(gear: Gear) {
   if (!canRecalculateStarforce(gear)) {
-    throw TypeError(ErrorMessage.Starforce_InvalidRecalculateGear);
+    throw new GearError(ErrorMessage.Starforce_InvalidRecalculateGear, gear, {
+      'attributes.canStarforce': gear.attributes.canStarforce,
+      starScroll: gear.starScroll,
+    });
   }
   const canStarforce = gear.attributes.canStarforce;
   const star = gear.star;
@@ -391,7 +414,9 @@ function _getValue(data: number[][], gear: ReadonlyGear): number {
       return item[gear.star];
     }
   }
-  throw TypeError(ErrorMessage.Starforce_InvalidReqLevelGear);
+  throw new GearError(ErrorMessage.Starforce_InvalidReqLevelGear, gear, {
+    'req.level': gear.req.level,
+  });
 }
 
 function _getStarforceOption(gear: Gear): GearStarforceOption {

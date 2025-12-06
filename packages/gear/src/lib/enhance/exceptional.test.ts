@@ -1,3 +1,4 @@
+import { GearError } from '../errors';
 import { createGear } from '../test';
 import {
   applyExceptional,
@@ -97,13 +98,13 @@ describe('applyExceptional', () => {
     expect(gear.exceptionalOption).toEqual(expected);
   });
 
-  it('익셉셔널 강화 가능 횟수가 0회일 경우 TypeError가 발생한다.', () => {
+  it('익셉셔널 강화 가능 횟수가 0회일 경우 GearError가 발생한다.', () => {
     const gear = createGear();
     const hammer: ExceptionalHammer = { name: '', option: {} };
 
     expect(() => {
       applyExceptional(gear, hammer);
-    }).toThrow(TypeError);
+    }).toThrow(GearError);
   });
 });
 
