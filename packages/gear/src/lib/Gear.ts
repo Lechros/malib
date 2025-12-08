@@ -120,6 +120,22 @@ export class Gear extends ReadonlyGear {
   }
 
   /**
+   * 이름 새기기
+   */
+  override get itemTag(): string | undefined {
+    return this.data.itemTag;
+  }
+
+  /**
+   * 이름 새기기 변경
+   *
+   * @param itemTag 적용할 이름.
+   */
+  override set itemTag(itemTag: string | undefined) {
+    this.data.itemTag = itemTag;
+  }
+
+  /**
    * 장비가 추가 옵션을 지원하는지 여부
    */
   get supportsAddOption(): boolean {

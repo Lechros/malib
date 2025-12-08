@@ -20,6 +20,8 @@ export interface GearData {
   desc?: string;
   /** 장비 외형 */
   shape?: GearShapeData;
+  /** 이름 새기기 */
+  itemTag?: string;
   /** 장비 분류 */
   type: GearType;
   /** 장비 착용 제한 */
