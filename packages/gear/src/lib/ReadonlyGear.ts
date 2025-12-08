@@ -114,6 +114,13 @@ export class ReadonlyGear implements _Gear {
   }
 
   /**
+   * 이름 새기기
+   */
+  get itemTag(): string | undefined {
+    return this.data.itemTag;
+  }
+
+  /**
    * 장비 분류
    */
   get type(): GearType {

@@ -65,6 +65,34 @@ describe('Gear', () => {
     });
   });
 
+  describe('itemTag', () => {
+    it('undefined이다.', () => {
+      const gear = createGear();
+      expect(gear.itemTag).toBeUndefined();
+    });
+
+    it('값이 설정되어 있을 경우 해당 값을 반환한다.', () => {
+      const gear = createGear({
+        itemTag: '내 장비',
+      });
+      expect(gear.itemTag).toBe('내 장비');
+    });
+
+    it('직접 설정할 수 있다.', () => {
+      const gear = createGear();
+      gear.itemTag = '새로운 이름';
+      expect(gear.itemTag).toBe('새로운 이름');
+    });
+
+    it('undefined로 설정할 수 있다.', () => {
+      const gear = createGear({
+        itemTag: '기존 이름',
+      });
+      gear.itemTag = undefined;
+      expect(gear.itemTag).toBeUndefined();
+    });
+  });
+
   describe('추가 옵션', () => {
     describe('supportsAddOption', () => {
       it('추가 옵션 부여가 가능한 장비는true를 반환한다.', () => {
