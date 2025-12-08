@@ -2,10 +2,8 @@ import { GearData, GearType } from '../data';
 
 export const resources = {
   '': {
-    meta: {
-      id: 1000000,
-      version: 1,
-    },
+    id: 1000000,
+    version: 2,
     name: '테스트용 장비',
     icon: '1000000',
     type: 100,
@@ -13,10 +11,8 @@ export const resources = {
     attributes: {},
   },
   '핑크빈 모자': {
-    meta: {
-      id: 1003450,
-      version: 1,
-    },
+    id: 1003450,
+    version: 2,
     name: '핑크빈 모자',
     icon: '1002971',
     type: 100,
@@ -39,10 +35,8 @@ export const resources = {
     scrollUpgradeableCount: 11,
   },
   '리버스 휀넬': {
-    meta: {
-      id: 1002790,
-      version: 1,
-    },
+    id: 1002790,
+    version: 2,
     name: '리버스 휀넬',
     icon: '1002776',
     type: 100,
@@ -65,10 +59,8 @@ export const resources = {
     scrollUpgradeableCount: 8,
   },
   '노가다 목장갑': {
-    meta: {
-      id: 1082002,
-      version: 1,
-    },
+    id: 1082002,
+    version: 2,
     name: '노가다 목장갑',
     icon: '1082002',
     type: 108,
@@ -88,10 +80,8 @@ export const resources = {
     scrollUpgradeableCount: 6,
   },
   '튼튼한 기계 장갑': {
-    meta: {
-      id: 1082283,
-      version: 1,
-    },
+    id: 1082283,
+    version: 2,
     name: '튼튼한 기계 장갑',
     icon: '1082222',
     type: 108,
@@ -111,10 +101,8 @@ export const resources = {
     scrollUpgradeableCount: 6,
   },
   '블랙 가리나 글로브': {
-    meta: {
-      id: 1082167,
-      version: 1,
-    },
+    id: 1082167,
+    version: 2,
     name: '블랙 가리나 글로브',
     icon: '1082167',
     type: 108,
@@ -137,10 +125,8 @@ export const resources = {
     scrollUpgradeableCount: 6,
   },
   '펜살리르 스키퍼부츠': {
-    meta: {
-      id: 1072971,
-      version: 1,
-    },
+    id: 1072971,
+    version: 2,
     name: '펜살리르 스키퍼부츠',
     icon: '1072967',
     type: 107,
@@ -165,10 +151,8 @@ export const resources = {
     scrollUpgradeableCount: 7,
   },
   '앱솔랩스 시프슈즈': {
-    meta: {
-      id: 1073034,
-      version: 1,
-    },
+    id: 1073034,
+    version: 2,
     name: '앱솔랩스 시프슈즈',
     icon: '1073030',
     type: 107,
@@ -200,10 +184,8 @@ export const resources = {
     scrollUpgradeableCount: 8,
   },
   '노바 히아데스 클록': {
-    meta: {
-      id: 1102476,
-      version: 1,
-    },
+    id: 1102476,
+    version: 2,
     name: '노바 히아데스 클록',
     icon: '1102476',
     type: 110,
@@ -233,10 +215,8 @@ export const resources = {
     scrollUpgradeableCount: 2,
   },
   '타일런트 케이론 클록': {
-    meta: {
-      id: 1102483,
-      version: 1,
-    },
+    id: 1102483,
+    version: 2,
     name: '타일런트 케이론 클록',
     icon: '1102481',
     type: 110,
@@ -267,10 +247,8 @@ export const resources = {
     scrollUpgradeableCount: 3,
   },
   '에테르넬 나이트케이프': {
-    meta: {
-      id: 1103433,
-      version: 1,
-    },
+    id: 1103433,
+    version: 2,
     name: '에테르넬 나이트케이프',
     icon: '1103433',
     type: 110,
@@ -303,10 +281,8 @@ export const resources = {
     scrollUpgradeableCount: 8,
   },
   '스칼렛 숄더': {
-    meta: {
-      id: 1152155,
-      version: 1,
-    },
+    id: 1152155,
+    version: 2,
     name: '스칼렛 숄더',
     icon: '1152155',
     type: 115,
@@ -336,10 +312,8 @@ export const resources = {
     scrollUpgradeableCount: 2,
   },
   '카오스 혼테일의 목걸이': {
-    meta: {
-      id: 1122076,
-      version: 1,
-    },
+    id: 1122076,
+    version: 2,
     name: '카오스 혼테일의 목걸이',
     icon: '1122076',
     type: 112,
@@ -373,10 +347,8 @@ export const resources = {
     scrollUpgradeableCount: 3,
   },
   '데아 시두스 이어링': {
-    meta: {
-      id: 1032241,
-      version: 1,
-    },
+    id: 1032241,
+    version: 2,
     name: '데아 시두스 이어링',
     icon: '1032241',
     type: 103,
@@ -405,10 +377,8 @@ export const resources = {
     scrollUpgradeableCount: 7,
   },
   '몽환의 벨트': {
-    meta: {
-      id: 1132308,
-      version: 1,
-    },
+    id: 1132308,
+    version: 2,
     name: '몽환의 벨트',
     icon: '1132308',
     type: 113,
@@ -442,10 +412,8 @@ export const resources = {
     exceptionalUpgradeableCount: 1,
   },
   '스칼렛 링': {
-    meta: {
-      id: 1113070,
-      version: 1,
-    },
+    id: 1113070,
+    version: 2,
     name: '스칼렛 링',
     icon: '1113070',
     type: 111,
@@ -477,10 +445,8 @@ export const resources = {
     scrollUpgradeableCount: 2,
   },
   '근원의 속삭임': {
-    meta: {
-      id: 1113341,
-      version: 1,
-    },
+    id: 1113341,
+    version: 2,
     name: '근원의 속삭임',
     icon: '1113341',
     type: 111,
@@ -512,10 +478,8 @@ export const resources = {
     scrollUpgradeableCount: 4,
   },
   '데이브레이크 펜던트': {
-    meta: {
-      id: 1122443,
-      version: 1,
-    },
+    id: 1122443,
+    version: 2,
     name: '데이브레이크 펜던트',
     icon: '1122443',
     type: 112,
@@ -549,10 +513,8 @@ export const resources = {
     scrollUpgradeableCount: 6,
   },
   '리튬 하트': {
-    meta: {
-      id: 1672007,
-      version: 1,
-    },
+    id: 1672007,
+    version: 2,
     name: '리튬 하트',
     icon: '1672007',
     type: 167,
@@ -576,10 +538,8 @@ export const resources = {
     scrollUpgradeableCount: 8,
   },
   '페어리 하트': {
-    meta: {
-      id: 1672073,
-      version: 1,
-    },
+    id: 1672073,
+    version: 2,
     name: '페어리 하트',
     icon: '1672073',
     type: 167,
@@ -599,10 +559,8 @@ export const resources = {
     scrollUpgradeableCount: 10,
   },
   '리퀴드메탈 하트': {
-    meta: {
-      id: 1672077,
-      version: 1,
-    },
+    id: 1672077,
+    version: 2,
     name: '리퀴드메탈 하트',
     icon: '1672077',
     type: 167,
@@ -626,10 +584,8 @@ export const resources = {
     scrollUpgradeableCount: 10,
   },
   '컴플리트 언더컨트롤': {
-    meta: {
-      id: 1672095,
-      version: 1,
-    },
+    id: 1672095,
+    version: 2,
     name: '컴플리트 언더컨트롤',
     icon: '1672095',
     type: 167,
@@ -656,10 +612,8 @@ export const resources = {
     scrollUpgradeableCount: 10,
   },
   '쟈이힌 스태프': {
-    meta: {
-      id: 1382244,
-      version: 1,
-    },
+    id: 1382244,
+    version: 2,
     name: '쟈이힌 스태프',
     icon: '1382244',
     type: 138,
@@ -682,10 +636,8 @@ export const resources = {
     scrollUpgradeableCount: 8,
   },
   '앱솔랩스 ESP리미터': {
-    meta: {
-      id: 1262017,
-      version: 1,
-    },
+    id: 1262017,
+    version: 2,
     name: '앱솔랩스 ESP리미터',
     icon: '1262017',
     type: 126,
@@ -719,10 +671,8 @@ export const resources = {
     scrollUpgradeableCount: 9,
   },
   '아케인셰이드 샤이닝로드': {
-    meta: {
-      id: 1212120,
-      version: 1,
-    },
+    id: 1212120,
+    version: 2,
     name: '아케인셰이드 샤이닝로드',
     icon: '1212120',
     type: GearType.shiningRod,
@@ -754,10 +704,8 @@ export const resources = {
     scrollUpgradeableCount: 9,
   },
   '아케인셰이드 초선': {
-    meta: {
-      id: 1292018,
-      version: 1,
-    },
+    id: 1292018,
+    version: 2,
     name: '아케인셰이드 초선',
     icon: '1292018',
     type: 129,
@@ -789,10 +737,8 @@ export const resources = {
     scrollUpgradeableCount: 9,
   },
   '레드 보우': {
-    meta: {
-      id: 1452220,
-      version: 1,
-    },
+    id: 1452220,
+    version: 2,
     name: '레드 보우',
     icon: '1452220',
     type: 145,
@@ -815,10 +761,8 @@ export const resources = {
     scrollUpgradeableCount: 8,
   },
   '라즐리 9형': {
-    meta: {
-      id: 1572009,
-      version: 1,
-    },
+    id: 1572009,
+    version: 2,
     name: '라즐리 9형',
     icon: '1572009',
     type: 157,
@@ -846,10 +790,8 @@ export const resources = {
     scrollUpgradeableCount: 9,
   },
   '제네시스 브레스 슈터': {
-    meta: {
-      id: 1214022,
-      version: 1,
-    },
+    id: 1214022,
+    version: 2,
     name: '제네시스 브레스 슈터',
     icon: '1214021',
     type: 1214,

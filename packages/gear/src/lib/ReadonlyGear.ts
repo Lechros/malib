@@ -4,7 +4,6 @@ import {
   GearBaseOption,
   GearData,
   GearExceptionalOption,
-  GearMetadata,
   GearShapeData,
   GearStarforceOption,
   GearType,
@@ -12,9 +11,11 @@ import {
   PotentialGrade,
   ReadonlySoulData,
   SoulChargeOption,
+  VERSION,
 } from './data';
 import { ReadonlyPotential } from './enhance/potential';
 import { getMaxStar } from './enhance/starforce';
+import { ErrorMessage, GearError } from './errors';
 import { GearAttribute } from './GearAttribute';
 import { sumOptions, toGearOption } from './gearOption';
 import { GearReq } from './GearReq';
@@ -43,8 +44,14 @@ export class ReadonlyGear implements _Gear {
   /**
    * 장비 정보를 참조하는 장비 인스턴스를 생성합니다.
    * @param data 장비 정보.
+   * 
+   * @throws {@link GearError}
+   * 지원하지 않는 장비 정보 버전일 경우.
    */
   constructor(data: GearData) {
+    if (data.version as unknown !== VERSION) {
+      throw new GearError(ErrorMessage.Constructor_InvalidVersion, { id: data.id, name: data.name }, { expected: VERSION, actual: data.version });
+    }
     this._data = data;
   }
 
@@ -56,10 +63,17 @@ export class ReadonlyGear implements _Gear {
   }
 
   /**
-   * 장비 메타데이터
+   * 장비 정보 버전
    */
-  get meta(): GearMetadata {
-    return this.data.meta;
+  get version(): typeof VERSION {
+    return this.data.version;
+  }
+  
+  /**
+   * 장비 ID
+   */
+  get id(): number {
+    return this.data.id;
   }
 
   /**
@@ -73,7 +87,7 @@ export class ReadonlyGear implements _Gear {
    * 장비 아이콘
    */
   get icon(): string {
-    return this.data.icon ?? '';
+    return this.data.icon;
   }
 
   /**

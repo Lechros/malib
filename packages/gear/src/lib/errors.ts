@@ -1,5 +1,3 @@
-import { ReadonlyGear } from './ReadonlyGear';
-
 export class GearError extends Error {
   readonly gearId: number;
   readonly gearName: string;
@@ -7,12 +5,12 @@ export class GearError extends Error {
 
   constructor(
     message: string,
-    gear: ReadonlyGear,
+    gear: { id: number, name: string },
     status: Record<string, unknown>,
   ) {
     super(message);
     this.name = 'GearError';
-    this.gearId = gear.meta.id;
+    this.gearId = gear.id;
     this.gearName = gear.name;
     this.status = status;
   }
@@ -60,4 +58,11 @@ export const enum ErrorMessage {
 
   Exceptional_InvalidEnhanceGear = '익셉셔널 강화를 적용할 수 없는 상태의 장비입니다.',
   Exceptional_InvalidResetGear = '익셉셔널 강화를 초기화할 수 없는 장비입니다.',
+
+  Constructor_InvalidVersion = '지원하지 않는 장비 정보 버전입니다. 업그레이드 후 생성해야 합니다.',
+  
+  Migrate_InvalidGearData = '입력 데이터가 유효하지 않습니다.',
+  Migrate_UnknownDataVersion = '입력 데이터의 버전이 잘못되었습니다.',
+  Migrate_DataVersionTooNew = '입력 데이터의 버전이 지원하는 버전보다 최신입니다.',
+  Migrate_DataPropertyWillBeOverwritten = '입력 데이터의 속성이 덮어쓰여집니다. 제거하고 다시 실행해 주세요.',
 }

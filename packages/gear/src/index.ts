@@ -13,7 +13,6 @@ export {
   /* GearData */
   GearGender,
   type GearData,
-  type GearMetadata,
   type GearShapeData,
   type GearReqData,
   type GearBaseOption,
@@ -104,6 +103,7 @@ export {
   canApplyScroll,
   applyScroll,
 } from './lib/enhance/upgrade';
+export { migrate } from './lib/manage/migrate';
 export { Gear } from './lib/Gear';
 export { ReadonlyGear } from './lib/ReadonlyGear';
 export { GearAttribute } from './lib/GearAttribute';

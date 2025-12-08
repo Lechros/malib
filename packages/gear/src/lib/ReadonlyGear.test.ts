@@ -7,20 +7,28 @@ import {
 } from './test';
 
 describe('ReadonlyGear', () => {
-  describe('meta', () => {
+  describe('version', () => {
     const gear = createReadonlyGear();
-
-    it('id 속성을 포함한다.', () => {
-      expect(gear.meta.id).toBe(1000000);
+    it('2이다.', () => {
+      expect(gear.version).toBe(2);
     });
 
-    it('version이 1이다.', () => {
-      expect(gear.meta.version).toBe(1);
+    it('직접 설정할 수 없다.', () => {
+      // @ts-expect-error: Cannot assign to 'version' because it is a read-only property.
+      expect(() => (gear.version = 1)).toThrow();
+    });
+  });
+  
+  describe('id', () => {
+    const gear = createReadonlyGear();
+
+    it('1000000이다.', () => {
+      expect(gear.id).toBe(1000000);
     });
 
     it('직접 설정할 수 없다.', () => {
       // @ts-expect-error: Cannot assign to 'id' because it is a read-only property.
-      expect(() => (gear.meta = { id: 0, version: 1 })).toThrow();
+      expect(() => (gear.id = 0)).toThrow();
     });
   });
 

@@ -39,16 +39,12 @@ pnpm add @malib/gear
 
 `GearData` 객체를 생성하는 별도의 기능은 없으며 직접 생성해야 합니다.
 
-라이브러리 업데이트로 인해 `GearData`의 형태가 변경될 경우 `meta.version` 속성에 반영되며, 기존의 장비를 새로운 버전으로 변환하는 함수가 제공됩니다.
-
 ```ts
 import { type GearData, type GearType } from '@malib/gear';
 
 const data: GearData = {
-  meta: {
-    id: 1009876,
-    version: 1,
-  },
+  version: 2,
+  id: 1009876,
   name: 'Example cap',
   icon: '1000000',
   type: GearType.cap,
@@ -58,7 +54,25 @@ const data: GearData = {
 };
 ```
 
+### Migrating GearData
+
+라이브러리 업데이트로 인해 `GearData`의 형태가 변경될 경우 `version` 속성에 반영되며, `migrate` 함수를 사용해 기존의 데이터를 새로운 버전으로 변환할 수 있습니다. 별도의 데이터 검증은 수행하지 않습니다.
+
+```ts
+import { migrate } from '@malib/gear';
+
+const dataV2 = migrate(data, 2);
+
+try {
+  const invalid = migrate({}, 2);
+} catch (e) {
+  console.log(e); // 입력 데이터가 유효하지 않습니다.
+}
+```
+
 ### Creating ReadonlyGear
+
+`ReadonlyGear` 및 `Gear`를 생성 시 오직 데이터의 `version` 속성만을 검사합니다.
 
 ```ts
 import { ReadonlyGear } from '@malib/gear';
