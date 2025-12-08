@@ -3,11 +3,10 @@ import { Gear } from './Gear';
 
 export function defaultGear(data: Partial<GearData>): Gear {
   return new Gear({
-    meta: {
-      id: 1234567,
-      version: 1,
-    },
+    id: 1234567,
+    version: 2,
     name: '',
+    icon: '',
     type: GearType.cap,
     req: {},
     attributes: {},
