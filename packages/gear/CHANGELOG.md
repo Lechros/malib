@@ -1,5 +1,16 @@
 # @malib/gear
 
+## 1.0.0-next.11
+
+### Minor Changes
+
+- 200d5f9: feat: update GearData interface and add migrate function
+
+### Patch Changes
+
+- f3aab9e: refactor: throw GearError with more information
+- 27b4468: feat: implement itemTag in Gear
+
 ## 1.0.0-next.10
 
 ### Patch Changes
