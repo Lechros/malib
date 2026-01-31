@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 1.0.0-next.15
+
+### Patch Changes
+
+- 0d81d4a: fix: fix starforce subWeapon condition
+
 ## 1.0.0-next.14
 
 ### Patch Changes
