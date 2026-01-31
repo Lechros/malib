@@ -120,6 +120,7 @@ function getSubWeaponTypes() {
   return [
     GearType.shield,
     GearType.katara,
+    GearType.hourGlass,
     GearType.soulShield,
     GearType.demonShield,
     GearType.magicArrow,

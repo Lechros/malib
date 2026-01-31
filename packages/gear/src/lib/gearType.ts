@@ -18,7 +18,8 @@ export function isWeapon(type: GearType): boolean {
 export function isLeftWeapon(type: GearType): boolean {
   return (
     (121 <= type && type <= 139 && type !== GearType.katara) ||
-    Math.floor(type / 10) === 121
+    Math.floor(type / 10) === 121 ||
+    Math.floor(type / 10) === 125
   );
 }
 
@@ -31,7 +32,7 @@ export function isDoubleHandWeapon(type: GearType): boolean {
   return (
     (type >= 140 && type <= 149) ||
     (type >= 152 && type <= 159) ||
-    Math.floor(type / 10) === 140
+    type === GearType.chakram
   );
 }
 
@@ -46,6 +47,7 @@ export function isSubWeapon(type: GearType): boolean {
   }
   switch (type) {
     case GearType.katara:
+    case GearType.hourGlass:
       return true;
     default:
       if (Math.floor(type / 1000) === 135) {

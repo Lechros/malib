@@ -213,6 +213,8 @@ export enum GearType {
   machineBody = 164,
   /** 메카닉 트렌지스터 */
   machineTransistors = 165,
+  /** 모래시계 */
+  hourGlass = 17237,
   /** 드래곤 모자 */
   dragonMask = 194,
   /** 드래곤 펜던트 */

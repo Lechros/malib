@@ -110,6 +110,7 @@ test('getAllGearTypes contains all gear types', () => {
     [GearType.machineLegs]: false,
     [GearType.machineBody]: false,
     [GearType.machineTransistors]: false,
+    [GearType.hourGlass]: false,
     [GearType.dragonMask]: false,
     [GearType.dragonPendant]: false,
     [GearType.dragonWings]: false,

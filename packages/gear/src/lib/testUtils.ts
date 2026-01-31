@@ -124,6 +124,7 @@ export function getAllGearTypes() {
     GearType.machineLegs,
     GearType.machineBody,
     GearType.machineTransistors,
+    GearType.hourGlass,
     GearType.dragonMask,
     GearType.dragonPendant,
     GearType.dragonWings,
