@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 1.0.0-next.13
+
+### Patch Changes
+
+- 3a2feb3: feat: add hourGlass GearType
+
 ## 1.0.0-next.12
 
 ### Patch Changes
