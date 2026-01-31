@@ -1,4 +1,10 @@
-import { GearData, GearTrade, GearType, PotentialGrade } from './data';
+import {
+  GearCapability,
+  GearData,
+  GearTrade,
+  GearType,
+  PotentialGrade,
+} from './data';
 import {
   createGear,
   createPotentialData,
@@ -507,6 +513,17 @@ describe('ReadonlyGear', () => {
       (gear.data as GearData).starScroll = true;
 
       expect(gear.maxStar).toBe(15);
+    });
+
+    it('fixedMaxStar가 설정되어 있으면 해당 값을 반환한다.', () => {
+      const gear = createReadonlyGear({
+        attributes: {
+          canStarforce: GearCapability.Can,
+          fixedMaxStar: 25,
+        },
+      });
+
+      expect(gear.maxStar).toBe(25);
     });
 
     it('직접 설정할 수 없다.', () => {

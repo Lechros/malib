@@ -145,9 +145,45 @@ describe('canStarforce', () => {
       expect(canStarforce(gear)).toBe(expected);
     },
   );
+
+  it.each([
+    [24, true],
+    [25, false],
+    [26, false],
+  ])(
+    'fixedMaxStar가 25로 설정된 장비에서 스타포스 %d성일 때 %p를 반환한다.',
+    (star, expected) => {
+      const gear = createGear({
+        req: { level: 140 },
+        attributes: {
+          canStarforce: GearCapability.Can,
+          fixedMaxStar: 25,
+        },
+        star,
+      });
+
+      expect(canStarforce(gear)).toBe(expected);
+    },
+  );
 });
 
 describe('starforce', () => {
+  it('fixedMaxStar가 설정된 장비는 해당 값까지 스타포스 강화할 수 있다.', () => {
+    const gear = createGear({
+      req: { level: 140 },
+      attributes: {
+        canStarforce: GearCapability.Can,
+        fixedMaxStar: 25,
+      },
+      star: 24,
+    });
+
+    starforce(gear);
+
+    expect(gear.star).toBe(25);
+    expect(gear.maxStar).toBe(25);
+  });
+
   it('스타포스 강화가 1성 증가한다.', () => {
     const gear = createGear({
       attributes: { canStarforce: GearCapability.Can },
@@ -484,6 +520,54 @@ describe('starforce', () => {
       }
 
       expect(gear.starforceOption.attackPower).toBe(expected);
+    });
+  });
+
+  describe('보조무기(subWeapon) starforce 시 armor 미적용', () => {
+    it('보조무기(방패)는 스타포스 강화 시 armor 수치를 올리지 않는다.', () => {
+      const gear = createGear({
+        type: GearType.shield,
+        req: { level: 140 },
+        attributes: { canStarforce: GearCapability.Can },
+        baseOption: { str: 2, armor: 100 },
+      });
+
+      for (let i = 0; i < 5; i++) {
+        starforce(gear);
+      }
+
+      expect(gear.star).toBe(5);
+      expect(gear.starforceOption.armor).toBe(0);
+    });
+
+    it('보조무기(마법화살)는 스타포스 강화 시 armor 수치를 올리지 않는다.', () => {
+      const gear = createGear({
+        type: GearType.magicArrow,
+        req: { level: 140 },
+        attributes: { canStarforce: GearCapability.Can },
+        baseOption: { str: 2, attackPower: 5 },
+      });
+
+      for (let i = 0; i < 5; i++) {
+        starforce(gear);
+      }
+
+      expect(gear.star).toBe(5);
+      expect(gear.starforceOption.armor).toBe(0);
+    });
+
+    it('보조무기가 아닌 방어구는 스타포스 강화 시 armor 수치를 올린다.', () => {
+      const gear = createGear({
+        type: GearType.cap,
+        req: { level: 140 },
+        attributes: { canStarforce: GearCapability.Can },
+        baseOption: { str: 2, armor: 10 },
+      });
+
+      starforce(gear);
+
+      expect(gear.star).toBe(1);
+      expect(gear.starforceOption.armor).toBeGreaterThan(0);
     });
   });
 
