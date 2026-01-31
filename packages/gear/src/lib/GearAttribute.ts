@@ -14,7 +14,8 @@ type OptionalProperty =
   | 'setItemId'
   | 'growthExp'
   | 'growthLevel'
-  | 'dateExpire';
+  | 'dateExpire'
+  | 'fixedMaxStar';
 
 type _GearAttribute = Omit<
   Omit<Required<GearAttributeData>, OptionalProperty> &
@@ -94,6 +95,11 @@ export class GearAttribute implements _GearAttribute {
   /** 스페셜 아이템 여부 */
   get specialGrade(): boolean {
     return this.data.specialGrade ?? false;
+  }
+
+  /** 최대 스타포스 강화 단계 */
+  get fixedMaxStar(): number | undefined {
+    return this.data.fixedMaxStar;
   }
 
   /** 카르마의 가위 사용 가능 여부 */

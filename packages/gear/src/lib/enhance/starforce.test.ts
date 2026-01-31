@@ -1177,6 +1177,25 @@ describe('getMaxStar', () => {
 
     expect(getMaxStar(gear)).toBe(20);
   });
+
+  it('fixedMaxStar가 설정되어 있으면 해당 값을 우선 반환한다.', () => {
+    const gear = createGear({
+      req: { level: 140 },
+      attributes: { canStarforce: GearCapability.Can, fixedMaxStar: 25 },
+    });
+
+    expect(getMaxStar(gear)).toBe(25);
+  });
+
+  it('fixedMaxStar가 설정되어 있고 starScroll이 적용된 경우 15 이하로 반환한다.', () => {
+    const gear = createGear({
+      req: { level: 140 },
+      attributes: { canStarforce: GearCapability.Can, fixedMaxStar: 25 },
+      starScroll: true,
+    });
+
+    expect(getMaxStar(gear)).toBe(15);
+  });
 });
 
 describe('canRecalculateStarforce', () => {

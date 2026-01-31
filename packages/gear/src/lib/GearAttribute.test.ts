@@ -194,6 +194,23 @@ describe('GearAttribute', () => {
     });
   });
 
+  describe('fixedMaxStar', () => {
+    it('returns undefined by default', () => {
+      expect(attr.fixedMaxStar).toBe(undefined);
+    });
+
+    it('returns 20 when set', () => {
+      attr.data.fixedMaxStar = 20;
+
+      expect(attr.fixedMaxStar).toBe(20);
+    });
+
+    it('is readonly property', () => {
+      // @ts-expect-error: Cannot assign to 'fixedMaxStar' because it is a read-only property.
+      expect(() => (attr.fixedMaxStar = 25)).toThrow();
+    });
+  });
+
   describe('cuttable', () => {
     it('returns None by default', () => {
       expect(attr.cuttable).toBe(GearCuttable.None);

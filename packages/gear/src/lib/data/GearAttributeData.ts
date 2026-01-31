@@ -28,6 +28,8 @@ export interface GearAttributeData {
   canAdditionalPotential?: GearCapability;
   /** 스페셜 아이템 여부 */
   specialGrade?: boolean;
+  /** 최대 스타포스 강화 단계 */
+  fixedMaxStar?: number;
 
   /** 카르마의 가위 사용 가능 여부 */
   cuttable?: GearCuttable;

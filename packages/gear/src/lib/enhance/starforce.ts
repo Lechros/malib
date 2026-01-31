@@ -229,7 +229,7 @@ export function getMaxStar(gear: ReadonlyGear): number {
   if (gear.attributes.canStarforce === GearCapability.Cannot) {
     return 0;
   }
-  const baseMaxStar = _getBaseMaxStar(gear);
+  const baseMaxStar = gear.attributes.fixedMaxStar ?? _getBaseMaxStar(gear);
   if (gear.starScroll) {
     return Math.min(MAX_STARSCROLL, baseMaxStar);
   }
