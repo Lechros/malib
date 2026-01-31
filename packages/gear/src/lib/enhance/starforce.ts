@@ -2,7 +2,7 @@ import { GearStarforceOption, GearType, GearCapability } from '../data';
 import { ErrorMessage, GearError } from '../errors';
 import { Gear } from '../Gear';
 import { toGearOption } from '../gearOption';
-import { isAccessory, isArmor, isWeapon } from '../gearType';
+import { isAccessory, isArmor, isSubWeapon, isWeapon } from '../gearType';
 import { ReadonlyGear } from '../ReadonlyGear';
 
 export const MAX_STARFORCE = 30;
@@ -364,7 +364,7 @@ function _otherStarforce(gear: Gear) {
     }
   }
   // armor
-  if (gear.type !== GearType.machineHeart) {
+  if (gear.type !== GearType.machineHeart && isSubWeapon(gear.type)) {
     const armor = _getStarforceBaseValue(gear, 'armor');
     _getStarforceOption(gear).armor += Math.floor(armor / 20) + 1;
   }
