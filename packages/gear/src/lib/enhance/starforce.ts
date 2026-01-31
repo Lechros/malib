@@ -364,7 +364,7 @@ function _otherStarforce(gear: Gear) {
     }
   }
   // armor
-  if (gear.type !== GearType.machineHeart && isSubWeapon(gear.type)) {
+  if (gear.type !== GearType.machineHeart && !isSubWeapon(gear.type)) {
     const armor = _getStarforceBaseValue(gear, 'armor');
     _getStarforceOption(gear).armor += Math.floor(armor / 20) + 1;
   }
