@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 1.0.0-next.14
+
+### Patch Changes
+
+- 253fc48: fix: update starforce armor logic to exclude subWeapon type
+
 ## 1.0.0-next.13
 
 ### Patch Changes
