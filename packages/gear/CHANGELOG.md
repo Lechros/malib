@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 1.0.0-next.12
+
+### Patch Changes
+
+- aa1a212: feat: support fixedMaxStar attribute
+
 ## 1.0.0-next.11
 
 ### Minor Changes
