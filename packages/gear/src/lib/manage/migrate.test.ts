@@ -1,5 +1,5 @@
-import { GearType } from "../data";
-import { migrate } from "./migrate";
+import { GearType } from '../data';
+import { migrate } from './migrate';
 
 describe('migrate', () => {
   it('GearDataV1을 GearDataV2로 마이그레이션한다.', () => {

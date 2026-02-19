@@ -44,13 +44,17 @@ export class ReadonlyGear implements _Gear {
   /**
    * 장비 정보를 참조하는 장비 인스턴스를 생성합니다.
    * @param data 장비 정보.
-   * 
+   *
    * @throws {@link GearError}
    * 지원하지 않는 장비 정보 버전일 경우.
    */
   constructor(data: GearData) {
-    if (data.version as unknown !== VERSION) {
-      throw new GearError(ErrorMessage.Constructor_InvalidVersion, { id: data.id, name: data.name }, { expected: VERSION, actual: data.version });
+    if ((data.version as unknown) !== VERSION) {
+      throw new GearError(
+        ErrorMessage.Constructor_InvalidVersion,
+        { id: data.id, name: data.name },
+        { expected: VERSION, actual: data.version },
+      );
     }
     this._data = data;
   }
@@ -68,7 +72,7 @@ export class ReadonlyGear implements _Gear {
   get version(): typeof VERSION {
     return this.data.version;
   }
-  
+
   /**
    * 장비 ID
    */

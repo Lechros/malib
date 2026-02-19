@@ -24,7 +24,7 @@ describe('ReadonlyGear', () => {
       expect(() => (gear.version = 1)).toThrow();
     });
   });
-  
+
   describe('id', () => {
     const gear = createReadonlyGear();
 
