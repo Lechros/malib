@@ -1,0 +1,7 @@
+{
+  "extends": "../typescript-config/base.json",
+  "references": [
+    { "path": "./tsconfig.lib.json" },
+    { "path": "./tsconfig.test.json" }
+  ]
+}
