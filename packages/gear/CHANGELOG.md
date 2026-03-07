@@ -1,5 +1,71 @@
 # @malib/gear
 
+## 1.0.0
+
+### Major Changes
+
+- 99422d0: Major rewrite of gear package.
+
+### Minor Changes
+
+- 2de0613: feat: add support for gear gender
+- 4e902fc: feat: add getHardMaxStar function
+- bbf5207: fix: add maxDemonForce and knockback to GearBaseOption type
+- bfeab46: feat: make potentials var-length and optional in GearData
+- 5c71ccb: feat: rename Gear scroll fail, resile methods
+- 7013d3a: feat: add maxDemonForce, knockback, and normalDamage properties to GearOption
+- ea9724c: feat: refactor gear shape to use value object
+- 200d5f9: feat: update GearData interface and add migrate function
+- 4c6f0e6: feat: change req.class type to array
+- bbf5207: refactor: rename 'title' to 'summary' in PotentialData
+- 72abb2b: feat: remove soul enchant req level
+- adcb667: feat: move gear capability calculations to wz-gear
+- d5fbf5f: fix: export enum as non-type to consumer
+- 2f199cb: feat: add attackSpeed property to GearAttribute with tests
+- dae7acb: feat: increase maxStar from 25 to 30
+- 6d680f0: feat: include req level increase in GearReq
+- 6351736: feat: update gear with add option history and set max add option count
+- bbf5207: feat: implement potential and additional potential management in Gear class
+- c4c75fd: feat: recalculate starforce after upgrade modification by gear method
+- 14b62f4: feat: move add option logic to wz-gear
+- f4a1bef: feat: return mutable gear potentials
+- 64486a3: feat: support set item and weapon skill information
+- e5fc428: feat: correctly support unlimited items starforce
+- 3b25044: feat: implement ReadonlyGear class
+- 39fbb6b: feat: remove golden hammer and add total cuttable count
+- 6351736: feat: remove stat reqs from GearReq
+- ae66f8c: feat: add grade property to PotentialData
+
+### Patch Changes
+
+- 6f3e05f: feat: implement stronger type check in Gear and GearAttribute classes
+- bbf5207: feat: add normalDamage to PotentialOption
+- 89c3662: refactor: use null coalescing assignment
+- b0d526a: docs: update README
+- 1afadb7: feat: remove knockback option
+- f3aab9e: refactor: throw GearError with more information
+- 3a2feb3: feat: add hourGlass GearType
+- 9be0de0: feat: add starforce recalculate function
+- fd7352f: fix: respect reqLevelIncrease when creating SpellTrace
+- 9c92893: feat: export potential types
+- 9fc45e7: fix: correct type union to intersection for totalOption in Gear class
+- 9c3aaa0: feat: add optional id field to PotentialData
+- 82780d3: feat: add Fixed option to AddOptionCan enum in GearAttributeData
+- fe03ad8: feat: add noShapeChange attribute
+- 2c1f0e0: feat: add support for Len
+- 253fc48: fix: update starforce armor logic to exclude subWeapon type
+- 8476395: docs: remove golden hammer example
+- 3dbd393: feat: add TradeOnce option to GearTrade enum
+- 2ac4ece: fix: fix recalculateStarforce error on reqLevelIncrease gear
+- d8a8d2c: fix: respect canAddOption attribute in supportsAddOption
+- 2fcdf2f: docs: add README per package
+- aa1a212: feat: support fixedMaxStar attribute
+- 0d81d4a: fix: fix starforce subWeapon condition
+- ba1f65f: refactor: replace const enum with enum
+- e704e37: fix: removed attackPower, magicPower bonus from gloves with req level < 130
+- 5113376: fix: fix reqLevel 111 ~ 137 gears starforce above 25
+- 27b4468: feat: implement itemTag in Gear
+
 ## 1.0.0-next.15
 
 ### Patch Changes
