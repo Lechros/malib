@@ -15,8 +15,8 @@ import {
 describe('ReadonlyGear', () => {
   describe('version', () => {
     const gear = createReadonlyGear();
-    it('2이다.', () => {
-      expect(gear.version).toBe(2);
+    it('3이다.', () => {
+      expect(gear.version).toBe(3);
     });
 
     it('직접 설정할 수 없다.', () => {
@@ -160,8 +160,8 @@ describe('ReadonlyGear', () => {
       expect(gear.req.job).toBe(0);
     });
 
-    it('class가 0이다.', () => {
-      expect(gear.req.class).toBe(0);
+    it('class가 []이다.', () => {
+      expect(gear.req.class).toEqual([]);
     });
 
     it('직접 설정할 수 없다.', () => {

@@ -1,8 +1,8 @@
-import { GearData, GearType } from '../data';
+import { GearType } from '../data';
 import { getVersion } from './version';
 
 describe('getVersion', () => {
-  it('GearDataV1에서 1을 추출한다.', () => {
+  it('GearDataV1에서 버전을 추출한다.', () => {
     const data = {
       meta: {
         id: 1000000,
@@ -16,17 +16,17 @@ describe('getVersion', () => {
     expect(getVersion(data)).toBe(1);
   });
 
-  it('GearDataV2에서 2를 추출한다.', () => {
+  it('GearDataV2+에서 버전을 추출한다.', () => {
     const data = {
       id: 1000000,
-      version: 2,
+      version: 999,
       name: '테스트용 장비',
       icon: '1000000',
       type: GearType.cap,
       req: {},
       attributes: {},
-    } satisfies GearData;
-    expect(getVersion(data)).toBe(2);
+    };
+    expect(getVersion(data)).toBe(999);
   });
 
   it('빈 객체인 경우 undefined를 반환한다.', () => {

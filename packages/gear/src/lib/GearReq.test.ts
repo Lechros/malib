@@ -53,13 +53,13 @@ describe('GearReq', () => {
   });
 
   describe('class', () => {
-    it('is 12345', () => {
-      expect(req.class).toBe(12345);
+    it('is [12345]', () => {
+      expect(req.class).toEqual([12345]);
     });
 
-    it('is 0 by default', () => {
+    it('is [] by default', () => {
       req.data.class = undefined;
-      expect(req.class).toBe(0);
+      expect(req.class).toEqual([]);
     });
 
     it('is readonly property', () => {
@@ -164,7 +164,7 @@ describe('GearReq', () => {
       level: 200,
       levelIncrease: 10,
       job: 1,
-      class: 12345,
+      class: [12345],
     });
   });
 });

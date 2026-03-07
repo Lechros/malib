@@ -40,8 +40,8 @@ export class GearReq implements GearReqData {
   /**
    * 착용 가능 직업
    */
-  get class(): number {
-    return this.data.class ?? 0;
+  get class(): number[] {
+    return this.data.class ?? [];
   }
 
   /**
