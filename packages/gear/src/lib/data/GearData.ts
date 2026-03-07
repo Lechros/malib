@@ -6,7 +6,7 @@ import { PotentialData } from './PotentialData';
 import { PotentialGrade } from './PotentialGrade';
 import { SoulSlotData } from './SoulSlotData';
 
-export const VERSION = 2;
+export const VERSION = 3;
 
 /**
  * 장비 정보
@@ -98,7 +98,7 @@ export interface GearReqData {
   /** 착용 가능 직업 분류 */
   job?: number;
   /** 착용 가능 직업 */
-  class?: number;
+  class?: number[];
   /** 착용 가능 성별 */
   gender?: GearGender;
 }

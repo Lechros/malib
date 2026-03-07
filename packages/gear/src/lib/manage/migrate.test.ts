@@ -13,7 +13,7 @@ describe('migrate', () => {
       req: {},
       attributes: {},
     };
-    expect(migrate(data)).toEqual({
+    expect(migrate(data, 2)).toEqual({
       id: 1000000,
       version: 2,
       name: '테스트용 장비',
@@ -32,13 +32,53 @@ describe('migrate', () => {
       req: {},
       attributes: {},
     };
-    expect(migrate(data)).toEqual(data);
+    expect(migrate(data, 2)).toEqual(data);
   });
 
-  it('GearDataV3을 전달하면 TypeError가 발생한다.', () => {
+  it('GearDataV1을 GearDataV3로 마이그레이션한다.', () => {
     const data = {
+      meta: {
+        id: 1000000,
+        version: 1,
+      },
+      name: '테스트용 장비',
+      type: GearType.cap,
+      req: { class: 123 },
+      attributes: {},
+    };
+    expect(migrate(data, 3)).toEqual({
       id: 1000000,
       version: 3,
+      name: '테스트용 장비',
+      type: GearType.cap,
+      req: { class: [123] },
+      attributes: {},
+    });
+  });
+
+  it('인자를 전달하지 않으면 GearDataV3로 마이그레이션한다.', () => {
+    const data = {
+      id: 1000000,
+      version: 2,
+      name: '테스트용 장비',
+      type: GearType.cap,
+      req: { class: 123 },
+      attributes: {},
+    };
+    expect(migrate(data)).toEqual({
+      id: 1000000,
+      version: 3,
+      name: '테스트용 장비',
+      type: GearType.cap,
+      req: { class: [123] },
+      attributes: {},
+    });
+  });
+
+  it('GearDataV4을 전달하면 TypeError가 발생한다.', () => {
+    const data = {
+      id: 1000000,
+      version: 4,
       name: '테스트용 장비',
       type: GearType.cap,
     };
@@ -60,7 +100,7 @@ describe('migrate', () => {
       req: {},
       attributes: {},
     };
-    expect(() => migrate(data)).toThrow(TypeError);
+    expect(() => migrate(data, 2)).toThrow(TypeError);
   });
 
   it('GearDataV1에서 id가 없는 경우 TypeError가 발생한다.', () => {
@@ -71,10 +111,10 @@ describe('migrate', () => {
       name: '테스트용 장비',
       type: GearType.cap,
     };
-    expect(() => migrate(data)).toThrow(TypeError);
+    expect(() => migrate(data, 2)).toThrow(TypeError);
   });
 
-  it('GearData에 포함되지 않는 속성도 함께 마이그레이션한다.', () => {
+  it('V1 -> V2에서 GearData에 포함되지 않는 속성도 함께 마이그레이션한다.', () => {
     const data = {
       id: 1000000,
       version: 2,
@@ -86,7 +126,7 @@ describe('migrate', () => {
       attributes: {},
       unknown: 'unknown',
     };
-    expect(migrate(data)).toEqual({
+    expect(migrate(data, 2)).toEqual({
       id: 1000000,
       version: 2,
       name: '테스트용 장비',

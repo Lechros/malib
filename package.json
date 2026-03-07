@@ -11,12 +11,10 @@
   "scripts": {
     "build": "turbo run build",
     "lint": "turbo run lint",
-    "typecheck:lib": "turbo run typecheck:lib",
-    "typecheck:test": "turbo run typecheck:test",
+    "check": "turbo run check",
     "test": "turbo run test",
-    "view-report": "turbo run view-report",
     "format": "prettier . --write",
-    "precommit": "turbo run lint typecheck:lib typecheck:test test"
+    "precommit": "turbo run lint check test"
   },
   "devDependencies": {
     "@changesets/cli": "^2.28.1",

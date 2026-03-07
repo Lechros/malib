@@ -1,19 +1,4 @@
-import { GearData, GearType } from './data';
-import { Gear } from './Gear';
-
-export function defaultGear(data: Partial<GearData>): Gear {
-  return new Gear({
-    id: 1234567,
-    version: 2,
-    name: '',
-    icon: '',
-    type: GearType.cap,
-    req: {},
-    attributes: {},
-
-    ...data,
-  });
-}
+import { GearType } from './data';
 
 export function getAllGearTypes() {
   return [
