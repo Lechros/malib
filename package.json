@@ -10,15 +10,19 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
-    "lint": "oxfmt --check && turbo run lint",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
     "check": "turbo run check",
     "test": "turbo run test",
-    "format": "oxfmt",
     "precommit": "turbo run lint check test"
   },
   "devDependencies": {
     "@changesets/cli": "^2.30.0",
     "oxfmt": "^0.36.0",
+    "oxlint": "^1.51.0",
+    "oxlint-tsgolint": "^0.16.0",
     "turbo": "^2.8.14",
     "typescript": "^5.9.3"
   },

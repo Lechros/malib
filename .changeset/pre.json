@@ -4,7 +4,6 @@
   "initialVersions": {
     "@malib/gear": "0.15.1",
     "@malib/wz-gear": "0.0.1",
-    "@repo/eslint-config": "0.0.0",
     "@repo/typescript-config": "0.0.0",
     "@repo/vitest-config": "0.0.0"
   },
