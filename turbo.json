@@ -8,6 +8,9 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
+    "check": {
+      "dependsOn": ["typecheck:lib", "typecheck:test"]
+    },
     "typecheck:lib": {
       "dependsOn": ["^typecheck:lib"]
     },
