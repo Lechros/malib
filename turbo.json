@@ -5,9 +5,6 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
-    "lint": {
-      "dependsOn": ["^lint"]
-    },
     "check": {
       "dependsOn": ["typecheck:lib", "typecheck:test"]
     },
@@ -18,8 +15,7 @@
       "dependsOn": ["^typecheck:lib"]
     },
     "test": {
-      "dependsOn": ["transit", "@repo/vitest-config#build"],
-      "outputs": ["coverage.json"]
+      "dependsOn": ["transit"]
     },
     "transit": {
       "dependsOn": ["^transit"]

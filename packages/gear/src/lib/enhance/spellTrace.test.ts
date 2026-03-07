@@ -122,6 +122,7 @@ describe('getSpellTraceScroll', () => {
 
 describe('_getWeaponSpellTrace', () => {
   it.each([
+    // prettier-ignore
     ...joinEach([GearType.bow, 20], [
       [SpellTraceType.str, 100, '100% 공격력 주문서', { attackPower: 1 }],
       [SpellTraceType.str, 70, '70% 공격력 주문서', { attackPower: 2 }],
@@ -143,7 +144,8 @@ describe('_getWeaponSpellTrace', () => {
       [SpellTraceType.maxHp, 70, '70% 공격력 주문서', { attackPower: 2 }],
       [SpellTraceType.maxHp, 30, '30% 공격력(체력) 주문서', { attackPower: 3, maxHp: 50 }],
       [SpellTraceType.maxHp, 15, '15% 공격력(체력) 주문서', { attackPower: 5, maxHp: 100 }],
-    ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]), // prettier-ignore
+    ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]),
+    // prettier-ignore
     ...joinEach([GearType.bow, 100], [
       [SpellTraceType.str, 100, '100% 공격력 주문서', { attackPower: 2 }],
       [SpellTraceType.str, 70, '70% 공격력(힘) 주문서', { attackPower: 3, str: 1 }],
@@ -165,7 +167,8 @@ describe('_getWeaponSpellTrace', () => {
       [SpellTraceType.maxHp, 70, '70% 공격력(체력) 주문서', { attackPower: 3, maxHp: 50 }],
       [SpellTraceType.maxHp, 30, '30% 공격력(체력) 주문서', { attackPower: 5, maxHp: 100 }],
       [SpellTraceType.maxHp, 15, '15% 공격력(체력) 주문서', { attackPower: 7, maxHp: 150 }],
-    ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]), // prettier-ignore
+    ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]),
+    // prettier-ignore
     ...joinEach([GearType.bow, 200], [
       [SpellTraceType.str, 100, '100% 공격력(힘) 주문서', { attackPower: 3, str: 1 }],
       [SpellTraceType.str, 70, '70% 공격력(힘) 주문서', { attackPower: 5, str: 2 }],
@@ -187,7 +190,7 @@ describe('_getWeaponSpellTrace', () => {
       [SpellTraceType.maxHp, 70, '70% 공격력(체력) 주문서', { attackPower: 5, maxHp: 100 }],
       [SpellTraceType.maxHp, 30, '30% 공격력(체력) 주문서', { attackPower: 7, maxHp: 150 }],
       [SpellTraceType.maxHp, 15, '15% 공격력(체력) 주문서', { attackPower: 9, maxHp: 200 }],
-    ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]), // prettier-ignore
+    ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]),
   ] satisfies [
     GearType,
     number,
@@ -281,6 +284,7 @@ describe('_getGloveSpellTrace', () => {
 
 describe('_getArmorSpellTrace', () => {
   it.each([
+    // prettier-ignore
     ...joinEach([GearType.shoulder, 20], [
       [SpellTraceType.str, 100,'100% 힘 주문서', { str: 1, maxHp: 5, armor: 1 }],
       [SpellTraceType.str, 70,'70% 힘 주문서', { str: 2, maxHp: 15, armor: 2 }],
@@ -304,7 +308,8 @@ describe('_getArmorSpellTrace', () => {
       [SpellTraceType.maxHp, 15,'15% 체력 주문서', { maxHp: 200 + 45, armor: 6 }],
       [SpellTraceType.allStat, 30,'30% 올스탯 주문서', { str: 1, dex: 1, int: 1, luk: 1, maxHp: 30, armor: 4 }],
       [SpellTraceType.allStat, 15,'15% 올스탯 주문서', { str: 2, dex: 2, int: 2, luk: 2, maxHp: 45, armor: 6 }],
-    ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]), // prettier-ignore
+    ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]),
+    // prettier-ignore
     ...joinEach([GearType.shoulder, 100], [
       [SpellTraceType.str, 100, '100% 힘 주문서', { str: 2, maxHp: 20, armor: 2 }],
       [SpellTraceType.str, 70, '70% 힘 주문서', { str: 3, maxHp: 40, armor: 4 }],
@@ -328,7 +333,8 @@ describe('_getArmorSpellTrace', () => {
       [SpellTraceType.maxHp, 15, '15% 체력 주문서', { maxHp: 460, armor: 10 }],
       [SpellTraceType.allStat, 30, '30% 올스탯 주문서', { str: 2, dex: 2, int: 2, luk: 2, maxHp: 70, armor: 7 }],
       [SpellTraceType.allStat, 15, '15% 올스탯 주문서', { str: 3, dex: 3, int: 3, luk: 3, maxHp: 110, armor: 10 }],
-    ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]), // prettier-ignore
+    ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]),
+    // prettier-ignore
     ...joinEach([GearType.shoulder, 200], [
       [SpellTraceType.str, 100, '100% 힘 주문서', { str: 3, maxHp: 30, armor: 3 }],
       [SpellTraceType.str, 70, '70% 힘 주문서', { str: 4, maxHp: 70, armor: 5 }],
@@ -352,7 +358,7 @@ describe('_getArmorSpellTrace', () => {
       [SpellTraceType.maxHp, 15, '15% 체력 주문서', { maxHp: 670, armor: 15 }],
       [SpellTraceType.allStat, 30, '30% 올스탯 주문서', { str: 3, dex: 3, int: 3, luk: 3, maxHp: 120, armor: 10 }],
       [SpellTraceType.allStat, 15, '15% 올스탯 주문서', { str: 4, dex: 4, int: 4, luk: 4, maxHp: 170, armor: 15 }],
-    ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]), // prettier-ignore
+    ] as [SpellTraceType, SpellTraceRate, string, Partial<GearOption>][]),
   ])(
     '올바른 이름과 옵션을 반환한다. 장비분류: %d, 요구 레벨: %d, 종류: %s, 확률: %d -> 이름: %s, 옵션: %p',
     (gearType, reqLevel, type, rate, expectedName, expectedOption) => {

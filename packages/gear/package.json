@@ -1,40 +1,32 @@
 {
   "name": "@malib/gear",
-  "description": "MapleStory gear logic simulator",
   "version": "1.0.0-next.15",
-  "type": "module",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
-  "typings": "src/index.ts",
-  "publishConfig": {
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "typings": "dist/index.d.ts"
-  },
-  "files": [
-    "dist"
-  ],
+  "description": "MapleStory gear logic simulator",
   "repository": {
     "type": "git",
     "url": "https://github.com/Lechros/malib",
     "directory": "packages/gear"
   },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "publishConfig": {
+    "main": "dist/index.mjs",
+    "types": "dist/index.d.mts"
+  },
   "scripts": {
-    "build": "tsup src/index.ts --tsconfig tsconfig.lib.json --format esm,cjs --experimental-dts --minify --clean",
-    "lint": "eslint .",
+    "build": "tsdown",
     "typecheck:lib": "tsc -p tsconfig.lib.json --noEmit",
     "typecheck:test": "tsc -p tsconfig.test.json --noEmit",
     "test": "vitest run"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.52.7",
-    "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@repo/vitest-config": "workspace:*",
-    "@vitest/coverage-istanbul": "^3.1.3",
-    "eslint": "^9.26.0",
-    "tsup": "^8.4.0",
-    "typescript": "^5.6.2",
-    "vitest": "^3.1.3"
+    "tsdown": "^0.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
   }
 }

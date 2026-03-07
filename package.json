@@ -2,25 +2,28 @@
   "name": "malib",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "workspaces": {
     "packages": [
       "packages/*"
     ]
   },
+  "type": "module",
   "scripts": {
     "build": "turbo run build",
-    "lint": "turbo run lint",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
     "check": "turbo run check",
-    "test": "turbo run test",
-    "format": "prettier . --write",
-    "precommit": "turbo run lint check test"
+    "test": "turbo run test"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.28.1",
-    "prettier": "^3.5.3",
-    "turbo": "^2.5.2",
-    "typescript": "^5.6.2"
+    "@changesets/cli": "^2.30.0",
+    "oxfmt": "^0.36.0",
+    "oxlint": "^1.51.0",
+    "oxlint-tsgolint": "^0.16.0",
+    "turbo": "^2.8.14",
+    "typescript": "^5.9.3"
   },
-  "packageManager": "pnpm@9.15.2"
+  "packageManager": "pnpm@10.30.3"
 }
