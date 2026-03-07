@@ -57,9 +57,7 @@ async function collectCoverageFiles() {
 
     if (directoriesWithCoverage.length > 0) {
       console.log(
-        `Found coverage.json in: ${directoriesWithCoverage
-          .map(replaceDotPatterns)
-          .join(', ')}`,
+        `Found coverage.json in: ${directoriesWithCoverage.map(replaceDotPatterns).join(', ')}`,
       );
     }
 
