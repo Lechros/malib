@@ -369,7 +369,7 @@ function _otherStarforce(gear: Gear) {
     _getStarforceOption(gear).armor += Math.floor(armor / 20) + 1;
   }
   // maxHp, maxMp
-  if (maxHpTypes.includes(gear.type)) {
+  if (maxHpTypes.has(gear.type)) {
     const maxHp = starforceMaxHpMp[gear.star];
     _getStarforceOption(gear).maxHp += maxHp;
   }
@@ -490,7 +490,7 @@ const statTypes = ['str', 'dex', 'int', 'luk'] as const;
 
 const powerTypes = ['attackPower', 'magicPower'] as const;
 
-const maxHpTypes = [
+const maxHpTypes = new Set([
   GearType.cap,
   GearType.coat,
   GearType.longcoat,
@@ -501,7 +501,7 @@ const maxHpTypes = [
   GearType.belt,
   GearType.shoulder,
   GearType.shield,
-];
+]);
 
 // prettier-ignore
 const starforceStat = [
