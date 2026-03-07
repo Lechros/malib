@@ -15,8 +15,7 @@
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "check": "turbo run check",
-    "test": "turbo run test",
-    "precommit": "turbo run lint check test"
+    "test": "turbo run test"
   },
   "devDependencies": {
     "@changesets/cli": "^2.30.0",
@@ -26,5 +25,5 @@
     "turbo": "^2.8.14",
     "typescript": "^5.9.3"
   },
-  "packageManager": "pnpm@9.15.9"
+  "packageManager": "pnpm@10.30.3"
 }

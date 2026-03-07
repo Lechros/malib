@@ -14,6 +14,11 @@
     "typecheck:test": {
       "dependsOn": ["^typecheck:lib"]
     },
-    "test": {}
+    "test": {
+      "dependsOn": ["transit"]
+    },
+    "transit": {
+      "dependsOn": ["^transit"]
+    }
   }
 }

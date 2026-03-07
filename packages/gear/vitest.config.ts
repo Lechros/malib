@@ -1,3 +1,7 @@
-import { baseConfig } from '@repo/vitest-config/base';
+import { defineConfig } from "vitest/config";
 
-export default baseConfig;
+export default defineConfig({
+  test: {
+    globals: true,
+  },
+});
