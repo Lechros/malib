@@ -90,6 +90,7 @@ export {
   canResetStarforce,
   resetStarforce,
   getMaxStar,
+  getHardMaxStar,
 } from './lib/enhance/starforce';
 export {
   type Scroll,

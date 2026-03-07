@@ -237,6 +237,26 @@ export function getMaxStar(gear: ReadonlyGear): number {
 }
 
 /**
+ * exceedMaxStar가 true일 경우의 최대 스타포스 강화를 계산합니다.
+ * 장비 강화 주문서 및 언리미티드 아이템을 토드하는 경우를 고려합니다.
+ *
+ * 놀라운 장비 강화 주문서가 사용되었을 경우 최대 `15`입니다.
+ * @param gear 계산할 장비.
+ * @returns exceedMaxStar가 true일 경우의 최대 스타포스 강화.
+ */
+export function getHardMaxStar(gear: ReadonlyGear): number {
+  if (gear.attributes.canStarforce === GearCapability.Cannot) {
+    return 0;
+  }
+  const baseMaxStar =
+    gear.attributes.fixedMaxStar ?? _getBaseMaxStarWithToadsHammer(gear);
+  if (gear.starScroll) {
+    return Math.min(MAX_STARSCROLL, baseMaxStar);
+  }
+  return baseMaxStar;
+}
+
+/**
  * 장비의 스타포스 강화 옵션를 다시 계산할 수 있는 상태인지 여부를 확인합니다.
  * @param gear 확인할 장비.
  * @returns 다시 계산할 수 있을 경우 `true`; 아닐 경우 `false`.

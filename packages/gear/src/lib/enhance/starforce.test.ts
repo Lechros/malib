@@ -12,6 +12,7 @@ import {
   canResetStarforce,
   canStarforce,
   canStarScroll,
+  getHardMaxStar,
   getMaxStar,
   recalculateStarforce,
   resetStarforce,
@@ -1279,6 +1280,89 @@ describe('getMaxStar', () => {
     });
 
     expect(getMaxStar(gear)).toBe(15);
+  });
+});
+
+describe('getHardMaxStar', () => {
+  it('canStarforce = Cannot일 경우 0을 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canStarforce: GearCapability.Cannot },
+    });
+
+    expect(getHardMaxStar(gear)).toBe(0);
+  });
+
+  it('canStarforce = Fixed일 경우 0이 아닌 값을 반환한다.', () => {
+    const gear = createGear({
+      attributes: { canStarforce: GearCapability.Fixed },
+    });
+
+    expect(getHardMaxStar(gear)).not.toBe(0);
+  });
+
+  it.each([
+    [0, 15],
+    [100, 15],
+    [101, 19],
+    [110, 19],
+    [111, 29],
+    [139, 29],
+    [140, 30],
+    [250, 30],
+  ] satisfies [number, number][])(
+    '요구 레벨이 %d일 경우 %d를 반환한다.',
+    (reqLevel, expected) => {
+      const gear = createGear({
+        req: { level: reqLevel },
+        attributes: { canStarforce: GearCapability.Can },
+      });
+
+      expect(getHardMaxStar(gear)).toBe(expected);
+    },
+  );
+
+  it('요구 레벨이 100 + 1일 경우 19를 반환한다.', () => {
+    const gear = createGear({
+      req: { level: 100, levelIncrease: 1 },
+      attributes: { canStarforce: GearCapability.Can },
+    });
+
+    expect(getHardMaxStar(gear)).toBe(19);
+  });
+
+  it.each([
+    [0, 15],
+    [140, 15],
+  ] satisfies [number, number][])(
+    '요구 레벨 %d, 놀라운 장비 강화 주문서가 적용된 경우 %d를 반환한다.',
+    (reqLevel, expected) => {
+      const gear = createGear({
+        req: { level: reqLevel },
+        attributes: { canStarforce: GearCapability.Can },
+        starScroll: true,
+      });
+
+      expect(getHardMaxStar(gear)).toBe(expected);
+    },
+  );
+
+  it('fixedMaxStar가 설정되어 있으면 해당 값을 우선 반환한다.', () => {
+    const gear = createGear({
+      req: { level: 140 },
+      attributes: { canStarforce: GearCapability.Can, fixedMaxStar: 25 },
+    });
+
+    expect(getHardMaxStar(gear)).toBe(25);
+  });
+
+  it('fixedMaxStar가 설정되어 있고 starScroll이 적용된 경우 15 이하로 반환한다.', () => {
+    const gear = createGear({
+      req: { level: 140 },
+      attributes: { canStarforce: GearCapability.Can, fixedMaxStar: 25 },
+      starScroll: true,
+    });
+
+    expect(getHardMaxStar(gear)).toBe(15);
   });
 });
 
