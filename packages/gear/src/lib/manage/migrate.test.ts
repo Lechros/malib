@@ -43,7 +43,7 @@ describe('migrate', () => {
       },
       name: '테스트용 장비',
       type: GearType.cap,
-      req: { class: 123 },
+      req: { job: 10, class: 123 },
       attributes: {},
     };
     expect(migrate(data, 3)).toEqual({
@@ -51,7 +51,7 @@ describe('migrate', () => {
       version: 3,
       name: '테스트용 장비',
       type: GearType.cap,
-      req: { class: [123] },
+      req: { job: 10, specJobs: [123] },
       attributes: {},
     });
   });
@@ -62,7 +62,7 @@ describe('migrate', () => {
       version: 2,
       name: '테스트용 장비',
       type: GearType.cap,
-      req: { class: 123 },
+      req: { job: 10, class: 123 },
       attributes: {},
     };
     expect(migrate(data)).toEqual({
@@ -70,7 +70,7 @@ describe('migrate', () => {
       version: 3,
       name: '테스트용 장비',
       type: GearType.cap,
-      req: { class: [123] },
+      req: { job: 10, specJobs: [123] },
       attributes: {},
     });
   });

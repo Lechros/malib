@@ -52,19 +52,19 @@ describe('GearReq', () => {
     });
   });
 
-  describe('class', () => {
+  describe('specJobs', () => {
     it('is [12345]', () => {
-      expect(req.class).toEqual([12345]);
+      expect(req.specJobs).toEqual([12345]);
     });
 
     it('is [] by default', () => {
-      req.data.class = undefined;
-      expect(req.class).toEqual([]);
+      req.data.specJobs = undefined;
+      expect(req.specJobs).toEqual([]);
     });
 
     it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'class' because it
-      expect(() => (req.class = 16)).toThrow();
+      // @ts-expect-error: Cannot assign to 'specJobs' because it is a read-only property.
+      expect(() => (req.specJobs = [12345])).toThrow();
     });
   });
 
@@ -164,7 +164,7 @@ describe('GearReq', () => {
       level: 200,
       levelIncrease: 10,
       job: 1,
-      class: [12345],
+      specJobs: [12345],
     });
   });
 });
