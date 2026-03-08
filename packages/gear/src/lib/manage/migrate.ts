@@ -78,7 +78,8 @@ function migrateV2ToV3(data: object): object {
     if (typeof data.req.class !== 'number') {
       throw new TypeError(ErrorMessage.Migrate_InvalidGearData);
     }
-    data.req.class = [data.req.class];
+    (data.req as { specJobs?: number[] }).specJobs = [data.req.class];
+    delete data.req.class;
   }
   (data as { version: number }).version = 3;
   return data;

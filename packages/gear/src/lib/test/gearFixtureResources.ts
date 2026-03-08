@@ -644,7 +644,7 @@ export const resources = {
     req: {
       level: 160,
       job: 2,
-      class: [142],
+      specJobs: [142],
     },
     attributes: {
       trade: 2,
@@ -769,7 +769,7 @@ export const resources = {
     req: {
       level: 200,
       job: 1,
-      class: [101],
+      specJobs: [101],
     },
     attributes: {
       trade: 1,
@@ -798,7 +798,7 @@ export const resources = {
     req: {
       level: 200,
       job: 4,
-      class: [63],
+      specJobs: [63],
     },
     attributes: {
       only: true,

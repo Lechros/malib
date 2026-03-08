@@ -31,17 +31,17 @@ export class GearReq implements GearReqData {
   }
 
   /**
-   * 착용 가능 직업 분류
-   * */
+   * 착용 가능 직업 분류 마스크 (전사, 마법사, 궁수, 도적, 해적)
+   */
   get job(): number {
     return this.data.job ?? 0;
   }
 
   /**
-   * 착용 가능 직업
+   * 착용 가능 직업 코드 목록
    */
-  get class(): number[] {
-    return this.data.class ?? [];
+  get specJobs(): number[] {
+    return this.data.specJobs ?? [];
   }
 
   /**
@@ -52,11 +52,11 @@ export class GearReq implements GearReqData {
   }
 
   /**
-   * 초보자 및 전 직업 착용 가능 여부를 계산합니다.
+   * 초보자 착용 가능 여부를 계산합니다.
    * @returns 착용할 수 있을 경우 `true`; 아닐 경우 `false`.
    */
   beginner(): boolean {
-    return this.job === 0;
+    return this.job <= 0;
   }
 
   /**

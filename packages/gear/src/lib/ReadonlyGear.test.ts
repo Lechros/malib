@@ -156,12 +156,12 @@ describe('ReadonlyGear', () => {
       expect(gear.req.levelIncrease).toBe(10);
     });
 
-    it('job이 0이다.', () => {
+    it('class가 0이다.', () => {
       expect(gear.req.job).toBe(0);
     });
 
-    it('class가 []이다.', () => {
-      expect(gear.req.class).toEqual([]);
+    it('jobs가 []이다.', () => {
+      expect(gear.req.specJobs).toEqual([]);
     });
 
     it('직접 설정할 수 없다.', () => {
@@ -170,7 +170,7 @@ describe('ReadonlyGear', () => {
           // @ts-expect-error: Cannot assign to 'req' because it is a read-only property.
           (gear.req = {
             level: 100,
-            job: 0,
+            class: 0,
           }),
       ).toThrow();
     });
