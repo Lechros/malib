@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 1.1.0
+
+### Minor Changes
+
+- adff361: feat: change req.class name to specJobs
+
 ## 1.0.0
 
 ### Major Changes
