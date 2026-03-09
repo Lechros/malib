@@ -30,8 +30,8 @@ importers:
   packages/gear:
     devDependencies:
       '@malib/gearV1':
-        specifier: npm:@malib/gear@1.0.0-next.10
-        version: '@malib/gear@1.0.0-next.10'
+        specifier: npm:@malib/gear@1.1.0
+        version: '@malib/gear@1.1.0'
       '@malib/gearV2':
         specifier: npm:@malib/gear@1.0.0-next.15
         version: '@malib/gear@1.0.0-next.15'
@@ -319,11 +319,11 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@malib/gear@1.0.0-next.10':
-    resolution: {integrity: sha512-OG3ocIC4R4dQj2thQImpvjwbwWITroA2TzaA8zKiSz9N6WV6uNJtvQdl5+w0SBFbb2rp6U03FMCdyEnHciT2Yw==}
-
   '@malib/gear@1.0.0-next.15':
     resolution: {integrity: sha512-pU0+h+uN1z4kONmAA45U+B1oR7E2147lNifvHe8ALAzZMZd9S/eqFIP8iR12Cegc3jWu7OhvhsBrgNhYEx5sRg==}
+
+  '@malib/gear@1.1.0':
+    resolution: {integrity: sha512-1YOLWC09oMTY/YANaR8JJOPsa7C/qPCSpUzb3KWKEbjxEC5+SB8bPwiejDPHyRaEeiA98KDpupykHFYU9KE8Cg==}
 
   '@manypkg/find-root@1.1.0':
     resolution: {integrity: sha512-mki5uBvhHzO8kYYix/WRy2WX8S3B5wdVSc9D6KcU5lQNglP2yt58/VfLuAK49glRXChosY8ap2oJ1qgma3GUVA==}
@@ -1846,9 +1846,9 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@malib/gear@1.0.0-next.10': {}
-
   '@malib/gear@1.0.0-next.15': {}
+
+  '@malib/gear@1.1.0': {}
 
   '@manypkg/find-root@1.1.0':
     dependencies:
