@@ -64,5 +64,6 @@ export const enum ErrorMessage {
   Migrate_InvalidGearData = '입력 데이터가 유효하지 않습니다.',
   Migrate_UnknownDataVersion = '입력 데이터의 버전이 잘못되었습니다.',
   Migrate_DataVersionTooNew = '입력 데이터의 버전이 지원하는 버전보다 최신입니다.',
+  Migrate_RequiresIcon = '입력 데이터에 icon 속성이 필요합니다.',
   Migrate_DataPropertyWillBeOverwritten = '입력 데이터의 속성이 덮어쓰여집니다. 제거하고 다시 실행해 주세요.',
 }

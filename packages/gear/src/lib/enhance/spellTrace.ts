@@ -185,10 +185,10 @@ export function _getArmorSpellTrace(
   }
 
   if (gear.scrollUpgradeCount === 3) {
-    if (gear.req.beginner()) {
+    if (gear.req.job.beginner()) {
       option.attackPower = 1;
       option.magicPower = 1;
-    } else if (gear.req.magician()) {
+    } else if (gear.req.job.magician()) {
       option.magicPower = 1;
     } else {
       option.attackPower = 1;

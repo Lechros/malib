@@ -156,12 +156,10 @@ describe('ReadonlyGear', () => {
       expect(gear.req.levelIncrease).toBe(10);
     });
 
-    it('class가 0이다.', () => {
-      expect(gear.req.job).toBe(0);
-    });
-
-    it('jobs가 []이다.', () => {
-      expect(gear.req.specJobs).toEqual([]);
+    it('job이 기본값을 반환한다.', () => {
+      expect(gear.req.job.class).toBe(0);
+      expect(gear.req.job.jobs).toEqual([]);
+      expect(gear.req.job.fullJobs).toEqual([]);
     });
 
     it('직접 설정할 수 없다.', () => {

@@ -388,7 +388,7 @@ describe('_getArmorSpellTrace', () => {
 
   it('전사 장비의 4번째 주문서 옵션은 공격력 1, 마력 0으로 설정된다.', () => {
     const gear = createGear({
-      req: { level: 120, job: 1 },
+      req: { level: 120, job: { class: 1 } },
       scrollUpgradeCount: 3,
     });
 
@@ -400,7 +400,7 @@ describe('_getArmorSpellTrace', () => {
 
   it('마법사 장비의 4번째 주문서 옵션은 공격력 0, 마력 1로 설정된다.', () => {
     const gear = createGear({
-      req: { level: 120, job: 2 },
+      req: { level: 120, job: { class: 2 } },
       scrollUpgradeCount: 3,
     });
 

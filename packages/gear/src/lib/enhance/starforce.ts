@@ -334,7 +334,7 @@ function _weaponStarforce(gear: Gear) {
     }
   }
   // power
-  const isMagic = gear.req.magician() || gear.upgradeOption.magicPower > 0;
+  const isMagic = gear.req.job.magician() || gear.upgradeOption.magicPower > 0;
   if (gear.star > 15) {
     _getStarforceOption(gear).attackPower += power;
     if (isMagic) {
@@ -374,10 +374,10 @@ function _otherStarforce(gear: Gear) {
   _getStarforceOption(gear).magicPower += power;
   if (gear.type === GearType.glove && gear.req.level >= 130) {
     const bonusPower = starforceGloveBonusPower[gear.star];
-    if (gear.req.beginner()) {
+    if (gear.req.job.beginner()) {
       _getStarforceOption(gear).attackPower += bonusPower;
       _getStarforceOption(gear).magicPower += bonusPower;
-    } else if (gear.req.magician()) {
+    } else if (gear.req.job.magician()) {
       _getStarforceOption(gear).magicPower += bonusPower;
     } else {
       _getStarforceOption(gear).attackPower += bonusPower;
@@ -404,23 +404,23 @@ function _otherStarforce(gear: Gear) {
 function _getJobOptionTypes(
   gear: ReadonlyGear,
 ): Set<'str' | 'dex' | 'int' | 'luk'> {
-  if (gear.req.beginner()) {
+  if (gear.req.job.beginner()) {
     return new Set(statTypes);
   }
   const stats = [];
-  if (gear.req.warrior()) {
+  if (gear.req.job.warrior()) {
     stats.push('str', 'dex');
   }
-  if (gear.req.magician()) {
+  if (gear.req.job.magician()) {
     stats.push('int', 'luk');
   }
-  if (gear.req.bowman()) {
+  if (gear.req.job.bowman()) {
     stats.push('dex', 'str');
   }
-  if (gear.req.thief()) {
+  if (gear.req.job.thief()) {
     stats.push('luk', 'dex');
   }
-  if (gear.req.pirate()) {
+  if (gear.req.job.pirate()) {
     stats.push('str', 'dex');
   }
   return new Set(stats) as Set<'str' | 'dex' | 'int' | 'luk'>;
