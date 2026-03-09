@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 1.2.0
+
+### Minor Changes
+
+- 7ef2a7f: feat: change req.job from number to GearReqJobData object
+
 ## 1.1.0
 
 ### Minor Changes
