@@ -44,8 +44,6 @@ importers:
 
   packages/typescript-config: {}
 
-  packages/wz-gear: {}
-
 packages:
 
   '@babel/generator@8.0.0-rc.2':
