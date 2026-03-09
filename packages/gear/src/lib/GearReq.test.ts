@@ -1,5 +1,5 @@
 import { GearGender } from './data';
-import { GearReq } from './GearReq';
+import { GearReq, GearReqJob } from './GearReq';
 
 describe('GearReq', () => {
   let req: GearReq;
@@ -37,34 +37,138 @@ describe('GearReq', () => {
   });
 
   describe('job', () => {
-    it('is 1', () => {
-      expect(req.job).toBe(1);
+    it('returns GearReqJob instance', () => {
+      expect(req.job).toBeInstanceOf(GearReqJob);
     });
 
-    it('is 0 by default', () => {
+    it('returns empty GearReqJob by default', () => {
       req.data.job = undefined;
-      expect(req.job).toBe(0);
+      expect(req.job.class).toBe(0);
+      expect(req.job.jobs).toEqual([]);
+      expect(req.job.fullJobs).toEqual([]);
     });
 
     it('is readonly property', () => {
       // @ts-expect-error: Cannot assign to 'job' because it is a read-only property.
-      expect(() => (req.job = 16)).toThrow();
-    });
-  });
-
-  describe('specJobs', () => {
-    it('is [12345]', () => {
-      expect(req.specJobs).toEqual([12345]);
+      expect(() => (req.job = new GearReqJob({}))).toThrow();
     });
 
-    it('is [] by default', () => {
-      req.data.specJobs = undefined;
-      expect(req.specJobs).toEqual([]);
+    describe('class', () => {
+      it('is 1', () => {
+        expect(req.job.class).toBe(1);
+      });
+
+      it('is 0 by default', () => {
+        req.data.job = {};
+        expect(req.job.class).toBe(0);
+      });
+
+      it('is readonly property', () => {
+        // @ts-expect-error: Cannot assign to 'class' because it is a read-only property.
+        expect(() => (req.job.class = 0)).toThrow();
+      });
     });
 
-    it('is readonly property', () => {
-      // @ts-expect-error: Cannot assign to 'specJobs' because it is a read-only property.
-      expect(() => (req.specJobs = [12345])).toThrow();
+    describe('jobs', () => {
+      it('is [110]', () => {
+        expect(req.job.jobs).toEqual([110]);
+      });
+
+      it('is [] by default', () => {
+        req.data.job = {};
+        expect(req.job.jobs).toEqual([]);
+      });
+
+      it('is readonly property', () => {
+        // @ts-expect-error: Cannot assign to 'jobs' because it is a read-only property.
+        expect(() => (req.job.jobs = [])).toThrow();
+      });
+    });
+
+    describe('fullJobs', () => {
+      it('is [112]', () => {
+        expect(req.job.fullJobs).toEqual([112]);
+      });
+
+      it('is [] by default', () => {
+        req.data.job = {};
+        expect(req.job.fullJobs).toEqual([]);
+      });
+
+      it('is readonly property', () => {
+        // @ts-expect-error: Cannot assign to 'fullJobs' because it is a read-only property.
+        expect(() => (req.job.fullJobs = [])).toThrow();
+      });
+    });
+
+    test.each([
+      [0, true],
+      [1, true],
+      [2, false],
+      [4, false],
+      [8, false],
+      [16, false],
+      [24, false],
+    ])('warrior() for class=%d is %p', (cls, expected) => {
+      req.data.job = { class: cls };
+
+      expect(req.job.warrior()).toBe(expected);
+    });
+
+    test.each([
+      [0, true],
+      [1, false],
+      [2, true],
+      [4, false],
+      [8, false],
+      [16, false],
+      [24, false],
+    ])('magician() for class=%d is %p', (cls, expected) => {
+      req.data.job = { class: cls };
+
+      expect(req.job.magician()).toBe(expected);
+    });
+
+    test.each([
+      [0, true],
+      [1, false],
+      [2, false],
+      [4, true],
+      [8, false],
+      [16, false],
+      [24, false],
+    ])('bowman() for class=%d is %p', (cls, expected) => {
+      req.data.job = { class: cls };
+
+      expect(req.job.bowman()).toBe(expected);
+    });
+
+    test.each([
+      [0, true],
+      [1, false],
+      [2, false],
+      [4, false],
+      [8, true],
+      [16, false],
+      [24, true],
+    ])('thief() for class=%d is %p', (cls, expected) => {
+      req.data.job = { class: cls };
+
+      expect(req.job.thief()).toBe(expected);
+    });
+
+    test.each([
+      [0, true],
+      [1, false],
+      [2, false],
+      [4, false],
+      [8, false],
+      [16, true],
+      [24, true],
+    ])('pirate() for class=%d is %p', (cls, expected) => {
+      req.data.job = { class: cls };
+
+      expect(req.job.pirate()).toBe(expected);
     });
   });
 
@@ -79,92 +183,15 @@ describe('GearReq', () => {
     });
   });
 
-  test.each([
-    [0, true],
-    [1, true],
-    [2, false],
-    [4, false],
-    [8, false],
-    [16, false],
-    [24, false],
-  ])('warrior() for job=%d is %p', (job, expected) => {
-    req.data.job = job;
-
-    const actual = req.warrior();
-
-    expect(actual).toBe(expected);
-  });
-
-  test.each([
-    [0, true],
-    [1, false],
-    [2, true],
-    [4, false],
-    [8, false],
-    [16, false],
-    [24, false],
-  ])('magician() for job=%d is %p', (job, expected) => {
-    req.data.job = job;
-
-    const actual = req.magician();
-
-    expect(actual).toBe(expected);
-  });
-
-  test.each([
-    [0, true],
-    [1, false],
-    [2, false],
-    [4, true],
-    [8, false],
-    [16, false],
-    [24, false],
-  ])('bowman() for job=%d is %p', (job, expected) => {
-    req.data.job = job;
-
-    const actual = req.bowman();
-
-    expect(actual).toBe(expected);
-  });
-
-  test.each([
-    [0, true],
-    [1, false],
-    [2, false],
-    [4, false],
-    [8, true],
-    [16, false],
-    [24, true],
-  ])('thief() for job=%d is %p', (job, expected) => {
-    req.data.job = job;
-
-    const actual = req.thief();
-
-    expect(actual).toBe(expected);
-  });
-
-  test.each([
-    [0, true],
-    [1, false],
-    [2, false],
-    [4, false],
-    [8, false],
-    [16, true],
-    [24, true],
-  ])('pirate() for job=%d is %p', (job, expected) => {
-    req.data.job = job;
-
-    const actual = req.pirate();
-
-    expect(actual).toBe(expected);
-  });
-
   beforeEach(() => {
     req = new GearReq({
       level: 200,
       levelIncrease: 10,
-      job: 1,
-      specJobs: [12345],
+      job: {
+        class: 1,
+        jobs: [110],
+        fullJobs: [112],
+      },
     });
   });
 });

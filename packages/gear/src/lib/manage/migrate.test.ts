@@ -1,5 +1,11 @@
-import { GearType } from '../data';
 import { migrate } from './migrate';
+import {
+  GearDataV1,
+  GearDataV2,
+  GearTypeV1,
+  GearTypeV2,
+  GearTypeV3,
+} from './types';
 
 describe('migrate', () => {
   it('GearDataV1을 GearDataV2로 마이그레이션한다.', () => {
@@ -9,15 +15,17 @@ describe('migrate', () => {
         version: 1,
       },
       name: '테스트용 장비',
-      type: GearType.cap,
+      icon: '1000000',
+      type: GearTypeV1.cap,
       req: {},
       attributes: {},
-    };
+    } satisfies GearDataV1;
     expect(migrate(data, 2)).toEqual({
       id: 1000000,
       version: 2,
       name: '테스트용 장비',
-      type: GearType.cap,
+      icon: '1000000',
+      type: GearTypeV3.cap,
       req: {},
       attributes: {},
     });
@@ -28,10 +36,11 @@ describe('migrate', () => {
       id: 1000000,
       version: 2,
       name: '테스트용 장비',
-      type: GearType.cap,
+      icon: '1000000',
+      type: GearTypeV2.cap,
       req: {},
       attributes: {},
-    };
+    } satisfies GearDataV2;
     expect(migrate(data, 2)).toEqual(data);
   });
 
@@ -42,100 +51,103 @@ describe('migrate', () => {
         version: 1,
       },
       name: '테스트용 장비',
-      type: GearType.cap,
+      icon: '1000000',
+      type: GearTypeV1.cap,
       req: { job: 10, class: 123 },
       attributes: {},
-    };
+    } satisfies GearDataV1;
     expect(migrate(data, 3)).toEqual({
       id: 1000000,
       version: 3,
       name: '테스트용 장비',
-      type: GearType.cap,
-      req: { job: 10, specJobs: [123] },
+      icon: '1000000',
+      type: GearTypeV3.cap,
+      req: { job: { class: 10, jobs: [123] } },
       attributes: {},
     });
   });
 
-  it('인자를 전달하지 않으면 GearDataV3로 마이그레이션한다.', () => {
+  it('version 인자를 전달하지 않으면 GearDataV3로 마이그레이션한다.', () => {
     const data = {
       id: 1000000,
       version: 2,
       name: '테스트용 장비',
-      type: GearType.cap,
+      icon: '1000000',
+      type: GearTypeV2.cap,
       req: { job: 10, class: 123 },
       attributes: {},
-    };
+    } satisfies GearDataV2;
     expect(migrate(data)).toEqual({
       id: 1000000,
       version: 3,
       name: '테스트용 장비',
-      type: GearType.cap,
-      req: { job: 10, specJobs: [123] },
+      icon: '1000000',
+      type: GearTypeV3.cap,
+      req: { job: { class: 10, jobs: [123] } },
       attributes: {},
     });
   });
 
-  it('GearDataV4을 전달하면 TypeError가 발생한다.', () => {
+  it('GearDataV2에서 job만 있는 경우 마이그레이션한다.', () => {
     const data = {
       id: 1000000,
-      version: 4,
+      version: 2,
       name: '테스트용 장비',
-      type: GearType.cap,
-    };
-    expect(() => migrate(data)).toThrow(TypeError);
+      icon: '1000000',
+      type: GearTypeV2.cap,
+      req: { job: 1 },
+      attributes: {},
+    } satisfies GearDataV2;
+    expect(migrate(data)).toEqual({
+      id: 1000000,
+      version: 3,
+      name: '테스트용 장비',
+      icon: '1000000',
+      type: GearTypeV3.cap,
+      req: { job: { class: 1 } },
+      attributes: {},
+    });
   });
 
-  it('빈 객체를 전달하면 TypeError가 발생한다.', () => {
-    expect(() => migrate({})).toThrow(TypeError);
-  });
-
-  it('GearDataV1에서 id가 숫자가 아닌 경우 TypeError가 발생한다.', () => {
+  it('GearDataV2에서 class만 있는 경우 마이그레이션한다.', () => {
     const data = {
-      meta: {
-        id: '1000000',
-        version: 1,
-      },
+      id: 1000000,
+      version: 2,
       name: '테스트용 장비',
-      type: GearType.cap,
+      icon: '1000000',
+      type: GearTypeV2.cap,
+      req: { class: 101 },
+      attributes: {},
+    } satisfies GearDataV2;
+    expect(migrate(data)).toEqual({
+      id: 1000000,
+      version: 3,
+      name: '테스트용 장비',
+      icon: '1000000',
+      type: GearTypeV3.cap,
+      req: { job: { jobs: [101] } },
+      attributes: {},
+    });
+  });
+
+  it('GearDataV2에서 job, class 모두 없는 경우 마이그레이션한다.', () => {
+    const data = {
+      id: 1000000,
+      version: 2,
+      name: '테스트용 장비',
+      icon: '1000000',
+      type: GearTypeV2.cap,
       req: {},
       attributes: {},
-    };
-    expect(() => migrate(data, 2)).toThrow(TypeError);
-  });
-
-  it('GearDataV1에서 id가 없는 경우 TypeError가 발생한다.', () => {
-    const data = {
-      meta: {
-        version: 1,
-      },
-      name: '테스트용 장비',
-      type: GearType.cap,
-    };
-    expect(() => migrate(data, 2)).toThrow(TypeError);
-  });
-
-  it('V1 -> V2에서 GearData에 포함되지 않는 속성도 함께 마이그레이션한다.', () => {
-    const data = {
+    } satisfies GearDataV2;
+    expect(migrate(data)).toEqual({
       id: 1000000,
-      version: 2,
+      version: 3,
       name: '테스트용 장비',
-      type: GearType.cap,
-      req: {
-        unknown: 123,
-      },
+      icon: '1000000',
+      type: GearTypeV3.cap,
+      req: {},
       attributes: {},
-      unknown: 'unknown',
-    };
-    expect(migrate(data, 2)).toEqual({
-      id: 1000000,
-      version: 2,
-      name: '테스트용 장비',
-      type: GearType.cap,
-      req: {
-        unknown: 123,
-      },
-      attributes: {},
-      unknown: 'unknown',
     });
   });
 });

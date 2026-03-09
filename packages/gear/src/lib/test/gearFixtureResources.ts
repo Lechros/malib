@@ -42,7 +42,9 @@ export const resources = {
     type: 100,
     req: {
       level: 120,
-      job: 1,
+      job: {
+        class: 1,
+      },
     },
     attributes: {
       trade: 2,
@@ -108,7 +110,9 @@ export const resources = {
     type: 108,
     req: {
       level: 110,
-      job: 8,
+      job: {
+        class: 8,
+      },
     },
     attributes: {
       canStarforce: 1,
@@ -132,7 +136,9 @@ export const resources = {
     type: 107,
     req: {
       level: 140,
-      job: 16,
+      job: {
+        class: 16,
+      },
     },
     attributes: {
       canStarforce: 1,
@@ -158,7 +164,9 @@ export const resources = {
     type: 107,
     req: {
       level: 160,
-      job: 8,
+      job: {
+        class: 8,
+      },
     },
     attributes: {
       trade: 2,
@@ -191,7 +199,9 @@ export const resources = {
     type: 110,
     req: {
       level: 110,
-      job: 1,
+      job: {
+        class: 1,
+      },
     },
     attributes: {
       trade: 1,
@@ -222,7 +232,9 @@ export const resources = {
     type: 110,
     req: {
       level: 150,
-      job: 4,
+      job: {
+        class: 4,
+      },
     },
     attributes: {
       trade: 1,
@@ -254,7 +266,9 @@ export const resources = {
     type: 110,
     req: {
       level: 250,
-      job: 1,
+      job: {
+        class: 1,
+      },
     },
     attributes: {
       trade: 2,
@@ -619,7 +633,9 @@ export const resources = {
     type: 138,
     req: {
       level: 130,
-      job: 2,
+      job: {
+        class: 2,
+      },
     },
     attributes: {
       attackSpeed: 8,
@@ -643,8 +659,10 @@ export const resources = {
     type: 126,
     req: {
       level: 160,
-      job: 2,
-      specJobs: [142],
+      job: {
+        class: 2,
+        jobs: [142],
+      },
     },
     attributes: {
       trade: 2,
@@ -678,7 +696,10 @@ export const resources = {
     type: GearType.shiningRod,
     req: {
       level: 200,
-      job: 2,
+      job: {
+        class: 2,
+        jobs: [142],
+      },
     },
     attributes: {
       trade: 2,
@@ -711,7 +732,10 @@ export const resources = {
     type: 129,
     req: {
       level: 200,
-      job: 8,
+      job: {
+        class: 8,
+        jobs: [142],
+      },
     },
     attributes: {
       trade: 2,
@@ -744,7 +768,9 @@ export const resources = {
     type: 145,
     req: {
       level: 75,
-      job: 4,
+      job: {
+        class: 4,
+      },
     },
     attributes: {
       trade: 2,
@@ -768,8 +794,10 @@ export const resources = {
     type: 157,
     req: {
       level: 200,
-      job: 1,
-      specJobs: [101],
+      job: {
+        class: 1,
+        jobs: [101],
+      },
     },
     attributes: {
       trade: 1,
@@ -797,8 +825,10 @@ export const resources = {
     type: 1214,
     req: {
       level: 200,
-      job: 4,
-      specJobs: [63],
+      job: {
+        class: 4,
+        jobs: [63],
+      },
     },
     attributes: {
       only: true,

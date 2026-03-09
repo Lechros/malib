@@ -802,7 +802,11 @@ describe('starforce', () => {
     (reqLevel, reqLevelIncrease, star, expected) => {
       const gear = createGear({
         type: GearType.coat,
-        req: { level: reqLevel, levelIncrease: reqLevelIncrease, job: 1 },
+        req: {
+          level: reqLevel,
+          levelIncrease: reqLevelIncrease,
+          job: { class: 1 },
+        },
         attributes: { canStarforce: GearCapability.Can },
         baseOption: {
           str: 2,

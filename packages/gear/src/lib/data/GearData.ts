@@ -95,12 +95,32 @@ export interface GearReqData {
   level?: number;
   /** 착용 가능 레벨 증가 */
   levelIncrease?: number;
-  /** 착용 가능 직업 분류 마스크 (전사, 마법사, 궁수, 도적, 해적) */
-  job?: number;
-  /** 착용 가능 직업 코드 목록 */
-  specJobs?: number[];
+  /** 착용 가능 직업 정보 */
+  job?: GearReqJobData;
   /** 착용 가능 성별 */
   gender?: GearGender;
+}
+
+/**
+ * 장비 착용 가능 직업 정보
+ */
+export interface GearReqJobData {
+  /**
+   * 착용 가능 전직 계열 비트마스크 (전사, 마법사, 궁수, 도적, 해적)
+   */
+  class?: number;
+  /**
+   * 착용 가능 직업 코드 목록
+   *
+   * 차수 무관한 직업 코드 목록입니다.
+   */
+  jobs?: number[];
+  /**
+   * 착용 가능 세부 직업 코드 목록
+   *
+   * 차수를 고려한 직업 코드 목록입니다.
+   */
+  fullJobs?: number[];
 }
 
 /**
