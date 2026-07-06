@@ -48,6 +48,7 @@ export function isSubWeapon(type: GearType): boolean {
   switch (type) {
     case GearType.katara:
     case GearType.hourGlass:
+    case GearType.magicQuill:
       return true;
     default:
       if (Math.floor(type / 1000) === 135) {

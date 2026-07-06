@@ -51,6 +51,8 @@ export enum GearType {
   breathShooter = 1214,
   /** 장검 */
   longSword2 = 1215,
+  /** 카르타 */
+  carta = 1216,
   /** 소울 슈터 */
   soulShooter = 122,
   /** 데스페라도 */
@@ -215,6 +217,8 @@ export enum GearType {
   machineTransistors = 165,
   /** 모래시계 */
   hourGlass = 17237,
+  /** 마법깃펜 */
+  magicQuill = 1726,
   /** 드래곤 모자 */
   dragonMask = 194,
   /** 드래곤 펜던트 */
