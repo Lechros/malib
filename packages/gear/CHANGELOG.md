@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 1.2.1
+
+### Patch Changes
+
+- 8d6de92: feat: add lethe gear type
+
 ## 1.2.0
 
 ### Minor Changes
