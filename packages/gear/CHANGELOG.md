@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 1.2.2
+
+### Patch Changes
+
+- edbacf6: fix: support destiny lazuli attack add option
+
 ## 1.2.1
 
 ### Patch Changes
