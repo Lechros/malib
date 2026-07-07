@@ -280,6 +280,7 @@ export function _getZeroWeaponAttackPower(
     [203, 207],
     [293, 297],
     [337, 342],
+    [370, 375],
   ]);
   const mappedAttackPower = longToHeavyAttackPowerMap.get(attackPower);
   if (mappedAttackPower === undefined) {
