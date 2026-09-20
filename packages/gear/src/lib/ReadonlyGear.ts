@@ -10,10 +10,11 @@ import {
   GearUpgradeOption,
   PotentialGrade,
   ReadonlySoulData,
-  SoulChargeOption,
+  SoulBaseOption,
   VERSION,
 } from './data';
 import { ReadonlyPotential } from './enhance/potential';
+import { getSoulBaseOption } from './enhance/soulSlot';
 import { getMaxStar } from './enhance/starforce';
 import { ErrorMessage, GearError } from './errors';
 import { GearAttribute } from './GearAttribute';
@@ -278,17 +279,10 @@ export class ReadonlyGear implements _Gear {
   }
 
   /**
-   * 소울 충전량
+   * 소울 상시 적용 옵션
    */
-  get soulCharge(): number {
-    return this.data.soulSlot?.charge ?? 0;
-  }
-
-  /**
-   * 소울 충전 옵션
-   */
-  get soulChargeOption(): Readonly<SoulChargeOption> {
-    return toGearOption(this.data.soulSlot?.chargeOption ?? {});
+  get soulBaseOption(): Readonly<SoulBaseOption> {
+    return toGearOption(getSoulBaseOption(this) ?? {});
   }
 
   /**

@@ -175,7 +175,6 @@ const godSoul = {
   name: 'God Soul',
   skill: 'Jung Sang Hwa',
   option: { attackPowerRate: 3 },
-  chargeFactor: 2,
 };
 
 // Example, modify data with caution.
@@ -184,7 +183,6 @@ gear.data.type = GearType.bow;
 if (gear.canApplySoulEnchant) {
   gear.applySoulEnchant();
   gear.setSoul(godSoul);
-  gear.setSoulCharge(1000);
 }
 ```
 

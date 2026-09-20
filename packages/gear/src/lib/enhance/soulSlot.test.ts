@@ -2,14 +2,12 @@ import { GearType } from '../data';
 import { GearError } from '../errors';
 import { createGear, createSoulData } from '../test';
 import {
-  _updateChargeOption,
   applySoulEnchant,
   canApplySoulEnchant,
   canSetSoul,
-  canSetSoulCharge,
+  getSoulBaseOption,
   resetSoulEnchant,
   setSoul,
-  setSoulCharge,
   supportsSoul,
 } from './soulSlot';
 
@@ -154,32 +152,6 @@ describe('setSoul', () => {
     expect(gear.soul).toEqual(soul);
   });
 
-  it('공격력 무기의 소울 충전 옵션을 갱신한다.', () => {
-    const gear = createGear({
-      type: GearType.bow,
-      baseOption: { attackPower: 170 },
-      soulSlot: { charge: 1000 },
-    });
-    const soul = createSoulData({ chargeFactor: 2 });
-
-    setSoul(gear, soul);
-
-    expect(gear.soulChargeOption).toEqual({ attackPower: 20 });
-  });
-
-  it('마력 무기의 소울 충전 옵션을 갱신한다.', () => {
-    const gear = createGear({
-      type: GearType.staff,
-      baseOption: { attackPower: 90, magicPower: 200 },
-      soulSlot: { charge: 100 },
-    });
-    const soul = createSoulData({ chargeFactor: 2 });
-
-    setSoul(gear, soul);
-
-    expect(gear.soulChargeOption).toEqual({ magicPower: 10 });
-  });
-
   it('소울 인챈트가 적용되지 않았을 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       type: GearType.bow,
@@ -188,73 +160,6 @@ describe('setSoul', () => {
 
     expect(() => {
       setSoul(gear, soul);
-    }).toThrow(GearError);
-  });
-});
-
-describe('canSetSoulCharge', () => {
-  it('소울 인챈트가 적용되었을 경우 true를 반환한다.', () => {
-    const gear = createGear({
-      type: GearType.bow,
-      soulSlot: {},
-    });
-
-    expect(canSetSoulCharge(gear)).toBe(true);
-  });
-
-  it('소울 인챈트가 적용되지 않았을 경우 false를 반환한다.', () => {
-    const gear = createGear({
-      type: GearType.bow,
-    });
-
-    expect(canSetSoulCharge(gear)).toBe(false);
-  });
-});
-
-describe('setSoulCharge', () => {
-  it.each([0, 1, 100, 500, 999, 1000])('소울 충전량을 설정한다.', (charge) => {
-    const gear = createGear({
-      type: GearType.bow,
-      soulSlot: {},
-    });
-
-    setSoulCharge(gear, charge);
-
-    expect(gear.soulCharge).toBe(charge);
-  });
-
-  it('소울 충전 옵션을 설정한다.', () => {
-    const gear = createGear({
-      type: GearType.bow,
-      soulSlot: {},
-    });
-
-    setSoulCharge(gear, 200);
-
-    expect(gear.soulChargeOption).toEqual({ attackPower: 6 });
-  });
-
-  it.each([-1000, -100, -1, 1001, 2000])(
-    '소울 충전량이 0 미만 또는 1000 초과일 경우 RangeError가 발생한다.',
-    (charge) => {
-      const gear = createGear({
-        type: GearType.bow,
-        soulSlot: {},
-      });
-
-      expect(() => {
-        setSoulCharge(gear, charge);
-      }).toThrow(RangeError);
-    },
-  );
-
-  it('소울 인챈트가 적용되지 않았을 경우 GearError가 발생한다.', () => {
-    const gear = createGear({
-      type: GearType.bow,
-    });
-
-    expect(() => {
-      setSoulCharge(gear, 700);
     }).toThrow(GearError);
   });
 });
@@ -281,72 +186,29 @@ describe('resetSoulEnchant', () => {
 
     expect(gear.soul).toBeUndefined();
   });
-
-  it('소울 충전량을 초기화한다.', () => {
-    const gear = createGear({
-      type: GearType.bow,
-      soulSlot: {},
-    });
-
-    resetSoulEnchant(gear);
-
-    expect(gear.soulCharge).toBe(0);
-  });
-
-  it('소울 충전 옵션을 초기화한다.', () => {
-    const gear = createGear({
-      type: GearType.bow,
-      soulSlot: {},
-    });
-
-    resetSoulEnchant(gear);
-
-    expect(gear.soulChargeOption).toEqual({});
-  });
 });
 
-describe('_updateChargeOption', () => {
+describe('getSoulBaseOption', () => {
   it.each([
-    [1, 0, 0],
-    [1, 1, 10],
-    [1, 99, 10],
-    [1, 100, 10],
-    [1, 101, 11],
-    [1, 200, 11],
-    [1, 300, 12],
-    [1, 399, 13],
-    [1, 400, 13],
-    [1, 401, 14],
-    [1, 500, 14],
-    [1, 501, 15],
-    [1, 1000, 15],
-    [2, 0, 0],
-    [2, 1, 10],
-    [2, 99, 10],
-    [2, 100, 10],
-    [2, 101, 12],
-    [2, 200, 12],
-    [2, 300, 14],
-    [2, 399, 16],
-    [2, 400, 16],
-    [2, 401, 18],
-    [2, 500, 18],
-    [2, 501, 20],
-    [2, 1000, 20],
-  ] as const)(
-    '소울 충전 옵션 배율=%d, 소울 충전량=%d일 때 공격력을 %d로 설정한다.',
-    (chargeFactor, charge, expected) => {
+    [170, 0, { attackPower: 20 }],
+    [90, 200, { magicPower: 20 }],
+    [100, 100, { attackPower: 20 }],
+  ])(
+    '기본 공격력 %d, 마력 %d에 따라 고정 옵션을 반환한다.',
+    (attackPower, magicPower, expected) => {
       const gear = createGear({
         type: GearType.bow,
-        soulSlot: {
-          soul: createSoulData({ chargeFactor }),
-          charge,
-        },
+        baseOption: { attackPower, magicPower },
+        soulSlot: { soul: createSoulData() },
       });
 
-      _updateChargeOption(gear);
-
-      expect(gear.soulChargeOption.attackPower).toBe(expected);
+      expect(getSoulBaseOption(gear)).toEqual(expected);
     },
   );
+
+  it.each([undefined, {}])('소울이 없으면 옵션이 없다: %j', (soulSlot) => {
+    const gear = createGear({ type: GearType.bow, soulSlot });
+
+    expect(getSoulBaseOption(gear)).toBeUndefined();
+  });
 });

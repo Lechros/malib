@@ -36,10 +36,8 @@ import {
   applySoulEnchant,
   canApplySoulEnchant,
   canSetSoul,
-  canSetSoulCharge,
   resetSoulEnchant,
   setSoul,
-  setSoulCharge,
   supportsSoul,
 } from './enhance/soulSlot';
 import {
@@ -505,24 +503,6 @@ export class Gear extends ReadonlyGear {
    */
   setSoul(soul: SoulData) {
     setSoul(this, soul);
-  }
-
-  /**
-   * 장비의 소울 충전량을 설정할 수 있는지 여부
-   */
-  get canSetSoulCharge(): boolean {
-    return canSetSoulCharge(this);
-  }
-
-  /**
-   * 장비의 소울 충전량을 설정합니다.
-   * @param charge 소울 충전량.
-   *
-   * @throws {@link GearError}
-   * 소울 충전량을 설정할 수 없는 경우.
-   */
-  setSoulCharge(charge: number) {
-    setSoulCharge(this, charge);
   }
 
   /**

@@ -751,38 +751,6 @@ describe('Gear', () => {
       });
     });
 
-    describe('canSetSoulCharge', () => {
-      it('소울 인챈트가 적용된 장비는 true를 반환한다.', () => {
-        const gear = createGear('아케인셰이드 샤이닝로드', [soulPatch()]);
-
-        expect(gear.canSetSoulCharge).toBe(true);
-      });
-
-      it('소울 인챈트가 적용되지 않은 장비는 false를 반환한다.', () => {
-        const gear = createGear('아케인셰이드 샤이닝로드');
-
-        expect(gear.canSetSoulCharge).toBe(false);
-      });
-    });
-
-    describe('setSoulCharge', () => {
-      it('소울 충전량을 설정한다.', () => {
-        const gear = createGear('아케인셰이드 샤이닝로드', [soulPatch()]);
-
-        gear.setSoulCharge(100);
-
-        expect(gear.soulCharge).toBe(100);
-      });
-
-      it('소울 인챈트가 적용되지 않은 장비는 GearError가 발생한다.', () => {
-        const gear = createGear('아케인셰이드 샤이닝로드');
-
-        expect(() => {
-          gear.setSoulCharge(100);
-        }).toThrow(GearError);
-      });
-    });
-
     describe('resetSoulEnchant', () => {
       it('소울 인챈트를 초기화한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드', {

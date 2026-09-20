@@ -614,62 +614,27 @@ describe('ReadonlyGear', () => {
     });
   });
 
-  describe('soulCharge', () => {
-    it('소울 충전량을 반환한다.', () => {
-      const gear = createReadonlyGear({
-        soulSlot: {
-          charge: 1000,
-        },
-      });
+  describe('soulBaseOption', () => {
+    it('소울이 없는 경우 빈 옵션을 반환한다.', () => {
+      const gear = createReadonlyGear();
 
-      expect(gear.soulCharge).toBe(1000);
+      expect(gear.soulBaseOption).toEqual({});
     });
 
-    it('소울 충전량이 저장되지 않은 경우 0를 반환한다.', () => {
+    it('장착된 소울의 상시 옵션을 반환한다.', () => {
       const gear = createReadonlyGear({
-        soulSlot: {},
+        baseOption: { attackPower: 170 },
+        soulSlot: { soul: createSoulData() },
       });
 
-      expect(gear.soulCharge).toBe(0);
-    });
-
-    it('소울 웨폰이 아닌 경우 0을 반환한다.', () => {
-      const gear = createReadonlyGear({
-        soulSlot: {},
-      });
-
-      expect(gear.soulCharge).toBe(0);
+      expect(gear.soulBaseOption).toEqual({ attackPower: 20 });
     });
 
     it('직접 설정할 수 없다.', () => {
       const gear = createReadonlyGear();
 
-      // @ts-expect-error: Cannot assign to 'soulCharge' because it is a read-only property.
-      expect(() => (gear.soulCharge = 1000)).toThrow();
-    });
-  });
-
-  describe('soulChargeOption', () => {
-    it('소울 충전 효과를 반환한다.', () => {
-      const gear = createReadonlyGear({
-        soulSlot: {
-          chargeOption: {
-            attackPower: 10,
-          },
-        },
-      });
-
-      expect(gear.soulChargeOption).toEqual({
-        attackPower: 10,
-      });
-    });
-
-    it('소울 웨폰이 아닌 경우 빈 객체를 반환한다.', () => {
-      const gear = createReadonlyGear({
-        soulSlot: {},
-      });
-
-      expect(gear.soulChargeOption).toEqual({});
+      // @ts-expect-error: Cannot assign to 'soulBaseOption' because it is a read-only property.
+      expect(() => (gear.soulBaseOption = {})).toThrow();
     });
   });
 

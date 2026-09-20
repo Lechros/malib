@@ -6,10 +6,6 @@ import { GearOption } from './GearOption';
 export interface SoulSlotData {
   /** 소울 아이템 */
   soul?: SoulData;
-  /** 소울 충전량 */
-  charge?: number;
-  /** 소울 충전 옵션 */
-  chargeOption?: Partial<SoulChargeOption>;
 }
 
 /**
@@ -20,11 +16,8 @@ export interface SoulData {
   name: string;
   /** 소울 스킬 명 */
   skill: string;
-  /** 소울 옵션 */
+  /** 소울 추가 능력치 */
   option: Partial<SoulOption>;
-
-  /** 소울 충전 옵션 배율 */
-  chargeFactor?: 1 | 2;
 }
 
 /**
@@ -35,9 +28,9 @@ export type ReadonlySoulData = Readonly<
 >;
 
 /**
- * 소울 충전 옵션
+ * 소울 상시 적용 옵션
  */
-export type SoulChargeOption = Pick<GearOption, 'attackPower' | 'magicPower'>;
+export type SoulBaseOption = Pick<GearOption, 'attackPower' | 'magicPower'>;
 
 /**
  * 소울 옵션
