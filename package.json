@@ -18,12 +18,12 @@
     "test": "turbo run test"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.30.0",
+    "@changesets/cli": "^2.31.1",
     "oxfmt": "^0.36.0",
-    "oxlint": "^1.51.0",
-    "oxlint-tsgolint": "^0.22.0",
-    "turbo": "^2.8.14",
-    "typescript": "^5.9.3"
+    "oxlint": "^1.83.0",
+    "oxlint-tsgolint": "^7.0.2002",
+    "turbo": "^2.11.2",
+    "typescript": "^7.0.2"
   },
-  "packageManager": "pnpm@10.33.4"
+  "packageManager": "pnpm@10.34.5"
 }
