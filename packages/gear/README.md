@@ -173,7 +173,6 @@ if (gear.canApplyStarScroll) {
 ```ts
 const godSoul = {
   name: 'God Soul',
-  skill: 'Jung Sang Hwa',
   option: { attackPowerRate: 3 },
 };
 

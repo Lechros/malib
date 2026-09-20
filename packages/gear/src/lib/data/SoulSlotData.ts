@@ -14,8 +14,6 @@ export interface SoulSlotData {
 export interface SoulData {
   /** 소울 명 */
   name: string;
-  /** 소울 스킬 명 */
-  skill: string;
   /** 소울 추가 능력치 */
   option: Partial<SoulOption>;
 }
