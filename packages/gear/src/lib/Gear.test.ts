@@ -11,7 +11,7 @@ import {
   soulPatch,
   starforcePatch,
   upgradePatch,
-} from './test';
+} from './testing';
 
 describe('Gear', () => {
   describe('shape', () => {

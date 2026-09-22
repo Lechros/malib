@@ -1,6 +1,6 @@
 import { GearType, PotentialGrade } from '../data';
 import { GearError } from '../errors';
-import { createGear, createPotentialData, createSoulData } from '../test';
+import { createGear, createPotentialData, createSoulData } from '../testing';
 import {
   amplifySoul,
   applySoulEnchant,

@@ -9,7 +9,7 @@ import {
   isSubWeapon,
   isWeapon,
 } from './gearType';
-import { getGearTypeContains } from './testUtils';
+import { getGearTypeContains } from './testing/testUtils';
 
 describe.each([
   { predicate: isWeapon, types: getWeaponTypes() },

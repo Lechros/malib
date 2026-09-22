@@ -1,6 +1,6 @@
 import { GearCapability, PotentialGrade } from '../data';
 import { GearError } from '../errors';
-import { createGear, createPotentialData } from '../test';
+import { createGear, createPotentialData } from '../testing';
 import {
   canSetAdditionalPotential,
   canSetPotential,

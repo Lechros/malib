@@ -1,6 +1,6 @@
 import { GearCapability } from '../data';
 import { GearError } from '../errors';
-import { createGear, createScroll } from '../test';
+import { createGear, createScroll } from '../testing';
 import {
   applyScroll,
   canApplyScroll,

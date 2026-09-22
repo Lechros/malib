@@ -1,4 +1,4 @@
-import { GearType } from './data';
+import { GearType } from '../data';
 import { getAllGearTypes } from './testUtils';
 
 test('getAllGearTypes contains all gear types', () => {

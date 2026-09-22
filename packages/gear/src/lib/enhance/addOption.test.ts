@@ -7,8 +7,8 @@ import {
 } from '../data';
 import { GearError } from '../errors';
 import { Gear } from '../Gear';
-import { createGear } from '../test';
-import { joinEach } from '../test/util';
+import { createGear } from '../testing';
+import { joinEach } from '../testing/util';
 import {
   _DeferredGearError,
   _getAddOptionKeys,

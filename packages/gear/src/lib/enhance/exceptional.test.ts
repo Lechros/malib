@@ -1,5 +1,5 @@
 import { GearError } from '../errors';
-import { createGear } from '../test';
+import { createGear } from '../testing';
 import {
   applyExceptional,
   canApplyExceptional,

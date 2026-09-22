@@ -1,6 +1,6 @@
 import { GearOption, GearType } from '../data';
-import { createGear } from '../test';
-import { joinEach } from '../test/util';
+import { createGear } from '../testing';
+import { joinEach } from '../testing/util';
 import {
   _getAccSpellTrace,
   _getArmorSpellTrace,

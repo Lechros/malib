@@ -10,7 +10,7 @@ import {
   createPotentialData,
   createReadonlyGear,
   createSoulData,
-} from './test';
+} from './testing';
 
 describe('ReadonlyGear', () => {
   describe('version', () => {

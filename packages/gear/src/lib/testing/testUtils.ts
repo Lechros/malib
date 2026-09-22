@@ -1,4 +1,4 @@
-import { GearType } from './data';
+import { GearType } from '../data';
 
 export function getAllGearTypes() {
   return [

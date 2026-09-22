@@ -5,7 +5,7 @@ import {
   GearType,
 } from '../data';
 import { Gear } from '../Gear';
-import { createGear, starforcePatch, upgradePatch } from '../test';
+import { createGear, starforcePatch, upgradePatch } from '../testing';
 import { SpellTraceType } from './spellTrace';
 import {
   canRecalculateStarforce,
