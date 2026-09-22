@@ -709,7 +709,7 @@ describe('Gear', () => {
     });
 
     describe('applySoulEnchant', () => {
-      it('소울 인챈트를 적용한다.', () => {
+      it('장비를 소울웨폰으로 변환한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드');
 
         gear.applySoulEnchant();
@@ -719,16 +719,32 @@ describe('Gear', () => {
     });
 
     describe('canSetSoul', () => {
-      it('소울 인챈트가 적용된 장비는 true를 반환한다.', () => {
+      it.each([
+        [undefined, false],
+        [false, false],
+        [true, true],
+      ])(
+        '증폭된 소울웨폰에 canAmplify가 %s인 소울을 장착하려는 경우 %p를 반환한다.',
+        (canAmplify, expected) => {
+          const gear = createGear('아케인셰이드 샤이닝로드', {
+            soulSlot: { enchanted: true, amplificationLevel: 1 },
+          });
+          const soul = createSoulData({ canAmplify });
+
+          expect(gear.canSetSoul(soul)).toBe(expected);
+        },
+      );
+
+      it('소울웨폰으로 변환된 장비는 true를 반환한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드', [soulPatch()]);
 
-        expect(gear.canSetSoul).toBe(true);
+        expect(gear.canSetSoul(createSoulData())).toBe(true);
       });
 
-      it('소울 인챈트가 적용되지 않은 장비는 false를 반환한다.', () => {
+      it('소울웨폰으로 변환되지 않은 장비는 false를 반환한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드');
 
-        expect(gear.canSetSoul).toBe(false);
+        expect(gear.canSetSoul(createSoulData())).toBe(false);
       });
     });
 
@@ -739,10 +755,10 @@ describe('Gear', () => {
 
         gear.setSoul(soul);
 
-        expect(gear.soul).toEqual(soul);
+        expect(gear.soul).toEqual({ ...soul, canAmplify: false });
       });
 
-      it('소울 인챈트가 적용되지 않은 장비는 GearError가 발생한다.', () => {
+      it('소울웨폰으로 변환되지 않은 장비는 GearError가 발생한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드');
 
         expect(() => {
@@ -751,10 +767,162 @@ describe('Gear', () => {
       });
     });
 
-    describe('resetSoulEnchant', () => {
-      it('소울 인챈트를 초기화한다.', () => {
+    describe('canSetNormalSoul', () => {
+      it('증폭하지 않은 소울웨폰인 경우 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', [soulPatch()]);
+
+        expect(gear.canSetNormalSoul).toBe(true);
+      });
+
+      it('증폭된 소울웨폰인 경우 false를 반환한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드', {
-          soulSlot: {},
+          soulSlot: { enchanted: true, amplificationLevel: 1 },
+        });
+
+        expect(gear.canSetNormalSoul).toBe(false);
+      });
+
+      it('소울웨폰이 아닌 경우 false를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        expect(gear.canSetNormalSoul).toBe(false);
+      });
+    });
+
+    describe('canSetMagnificentSoul', () => {
+      it('증폭하지 않은 소울웨폰인 경우 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', [soulPatch()]);
+
+        expect(gear.canSetMagnificentSoul).toBe(true);
+      });
+
+      it('증폭된 소울웨폰인 경우 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          soulSlot: { enchanted: true, amplificationLevel: 1 },
+        });
+
+        expect(gear.canSetMagnificentSoul).toBe(true);
+      });
+
+      it('소울웨폰이 아닌 경우 false를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        expect(gear.canSetMagnificentSoul).toBe(false);
+      });
+    });
+
+    describe('canAmplifySoul', () => {
+      it('증폭 가능한 위대한 소울이 장착된 경우 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', [
+          soulPatch(createSoulData({ canAmplify: true })),
+        ]);
+
+        expect(gear.canAmplifySoul).toBe(true);
+      });
+
+      it('소울이 장착되지 않은 경우 false를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', [soulPatch()]);
+
+        expect(gear.canAmplifySoul).toBe(false);
+      });
+    });
+
+    describe('amplifySoul', () => {
+      it('소울 증폭 단계가 하나 증가한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', [
+          soulPatch(createSoulData({ canAmplify: true })),
+        ]);
+
+        gear.amplifySoul();
+
+        expect(gear.soulAmplificationLevel).toBe(1);
+      });
+
+      it('소울을 증폭할 수 없는 경우 GearError가 발생한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        expect(() => {
+          gear.amplifySoul();
+        }).toThrow(GearError);
+      });
+    });
+
+    describe('canSetSoulPotential', () => {
+      it('증폭한 위대한 소울이 장착된 경우 true를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          soulSlot: {
+            enchanted: true,
+            soul: createSoulData({ canAmplify: true }),
+            amplificationLevel: 1,
+          },
+        });
+
+        expect(gear.canSetSoulPotential).toBe(true);
+      });
+
+      it('위대한 소울을 증폭하지 않은 경우 false를 반환한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', [
+          soulPatch(createSoulData({ canAmplify: true })),
+        ]);
+
+        expect(gear.canSetSoulPotential).toBe(false);
+      });
+    });
+
+    describe('setSoulPotential', () => {
+      it('소울 잠재능력 등급을 설정한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          soulSlot: {
+            enchanted: true,
+            soul: createSoulData({ canAmplify: true }),
+            amplificationLevel: 1,
+          },
+        });
+
+        gear.setSoulPotential(PotentialGrade.Unique, [
+          createPotentialData(),
+          createPotentialData(),
+          createPotentialData(),
+        ]);
+
+        expect(gear.soulPotentialGrade).toBe(PotentialGrade.Unique);
+      });
+
+      it('소울 잠재능력 옵션을 설정한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          soulSlot: {
+            enchanted: true,
+            soul: createSoulData({ canAmplify: true }),
+            amplificationLevel: 1,
+          },
+        });
+        const potentials = [
+          createPotentialData({ summary: '테스트용 소울 잠재능력 1' }),
+          createPotentialData({ summary: '테스트용 소울 잠재능력 2' }),
+          createPotentialData({ summary: '테스트용 소울 잠재능력 3' }),
+        ];
+
+        gear.setSoulPotential(PotentialGrade.Rare, potentials);
+
+        expect(gear.soulPotentials).toEqual(potentials);
+      });
+
+      it('소울 잠재능력을 설정할 수 없는 경우 GearError가 발생한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드');
+
+        expect(() => {
+          gear.setSoulPotential(PotentialGrade.Rare, [
+            createPotentialData(),
+            createPotentialData(),
+            createPotentialData(),
+          ]);
+        }).toThrow(GearError);
+      });
+    });
+    describe('resetSoulEnchant', () => {
+      it('소울웨폰을 초기화한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          soulSlot: { enchanted: true },
         });
 
         gear.resetSoulEnchant();

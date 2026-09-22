@@ -71,6 +71,10 @@ export {
   canSetSoul,
   setSoul,
   getSoulBaseOption,
+  canAmplifySoul,
+  amplifySoul,
+  canSetSoulPotential,
+  setSoulPotential,
   resetSoulEnchant,
 } from './lib/enhance/soulSlot';
 export {

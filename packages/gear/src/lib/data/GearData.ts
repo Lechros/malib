@@ -6,7 +6,7 @@ import { PotentialData } from './PotentialData';
 import { PotentialGrade } from './PotentialGrade';
 import { SoulSlotData } from './SoulSlotData';
 
-export const VERSION = 3;
+export const VERSION = 4;
 
 /**
  * 장비 정보

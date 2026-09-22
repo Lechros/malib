@@ -193,6 +193,9 @@ importers:
       '@malib/gearV2':
         specifier: npm:@malib/gear@1.0.0-next.15
         version: '@malib/gear@1.0.0-next.15'
+      '@malib/gearV3':
+        specifier: npm:@malib/gear@1.2.2
+        version: '@malib/gear@1.2.2'
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
@@ -452,6 +455,9 @@ packages:
 
   '@malib/gear@1.0.0-next.15':
     resolution: {integrity: sha512-pU0+h+uN1z4kONmAA45U+B1oR7E2147lNifvHe8ALAzZMZd9S/eqFIP8iR12Cegc3jWu7OhvhsBrgNhYEx5sRg==}
+
+  '@malib/gear@1.2.2':
+    resolution: {integrity: sha512-TUkyqKoOxTt4IyuCRL0neUKyGcjt5tNhVP+O6iakTaahijYGzYC6J4fdwWfh1Yny7W39r9IOUg9VlMklqrKCmg==}
 
   '@manypkg/find-root@3.1.0':
     resolution: {integrity: sha512-BcSqCyKhBVZ5YkSzOiheMCV41kqAFptW6xGqYSTjkVTl9XQpr+pqHhwgGCOHQtjDCv7Is6EFyA14Sm5GVbVABA==}
@@ -2089,6 +2095,8 @@ snapshots:
   '@malib/gear@1.0.0-next.10': {}
 
   '@malib/gear@1.0.0-next.15': {}
+
+  '@malib/gear@1.2.2': {}
 
   '@manypkg/find-root@3.1.0':
     dependencies:
