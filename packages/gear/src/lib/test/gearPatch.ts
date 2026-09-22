@@ -96,14 +96,11 @@ export function addiPotentialPatch(
   };
 }
 
-export function soulPatch(soul?: SoulData, charge = 0): Patch {
+export function soulPatch(soul?: SoulData): Patch {
   return (gear: Gear) => {
     gear.applySoulEnchant();
     if (soul) {
       gear.setSoul(soul);
-    }
-    if (charge) {
-      gear.setSoulCharge(charge);
     }
   };
 }

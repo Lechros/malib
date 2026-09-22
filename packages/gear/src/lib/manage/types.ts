@@ -6,4 +6,8 @@ export {
   GearType as GearTypeV2,
   type GearData as GearDataV2,
 } from '@malib/gearV2';
-export { GearType as GearTypeV3, type GearData as GearDataV3 } from '../data';
+export {
+  GearType as GearTypeV3,
+  type GearData as GearDataV3,
+} from '@malib/gearV3';
+export { GearType as GearTypeV4, type GearData as GearDataV4 } from '../data';

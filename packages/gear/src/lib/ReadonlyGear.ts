@@ -10,10 +10,11 @@ import {
   GearUpgradeOption,
   PotentialGrade,
   ReadonlySoulData,
-  SoulChargeOption,
+  SoulBaseOption,
   VERSION,
 } from './data';
 import { ReadonlyPotential } from './enhance/potential';
+import { getSoulBaseOption } from './enhance/soulSlot';
 import { getMaxStar } from './enhance/starforce';
 import { ErrorMessage, GearError } from './errors';
 import { GearAttribute } from './GearAttribute';
@@ -261,7 +262,7 @@ export class ReadonlyGear implements _Gear {
    * 소울 인챈트 여부
    */
   get soulEnchanted(): boolean {
-    return this.data.soulSlot !== undefined;
+    return this.data.soulSlot?.enchanted === true;
   }
 
   /**
@@ -274,21 +275,42 @@ export class ReadonlyGear implements _Gear {
     return {
       ...this.data.soulSlot.soul,
       option: toGearOption(this.data.soulSlot.soul.option),
+      canAmplify: this.data.soulSlot.soul.canAmplify ?? false,
     };
   }
 
   /**
-   * 소울 충전량
+   * 소울 상시 적용 옵션
    */
-  get soulCharge(): number {
-    return this.data.soulSlot?.charge ?? 0;
+  get soulBaseOption(): Readonly<SoulBaseOption> {
+    return toGearOption(getSoulBaseOption(this) ?? {});
   }
 
   /**
-   * 소울 충전 옵션
+   * 소울 증폭 단계
    */
-  get soulChargeOption(): Readonly<SoulChargeOption> {
-    return toGearOption(this.data.soulSlot?.chargeOption ?? {});
+  get soulAmplificationLevel(): number {
+    return this.data.soulSlot?.amplificationLevel ?? 0;
+  }
+
+  /**
+   * 소울 잠재능력 등급
+   */
+  get soulPotentialGrade(): PotentialGrade {
+    return this.data.soulSlot?.potentialGrade ?? PotentialGrade.Normal;
+  }
+
+  /**
+   * 소울 잠재능력 목록
+   */
+  get soulPotentials(): readonly ReadonlyPotential[] {
+    if (!this.data.soulSlot?.potentials) {
+      return [];
+    }
+    return this.data.soulSlot.potentials.map((potential) => ({
+      ...potential,
+      option: toGearOption(potential.option),
+    }));
   }
 
   /**

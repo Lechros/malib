@@ -33,7 +33,7 @@ export {
   type SoulSlotData,
   type SoulData,
   type ReadonlySoulData,
-  type SoulChargeOption,
+  type SoulBaseOption,
   type SoulOption,
 } from './lib/data';
 export {
@@ -70,8 +70,11 @@ export {
   applySoulEnchant,
   canSetSoul,
   setSoul,
-  canSetSoulCharge,
-  setSoulCharge,
+  getSoulBaseOption,
+  canAmplifySoul,
+  amplifySoul,
+  canSetSoulPotential,
+  setSoulPotential,
   resetSoulEnchant,
 } from './lib/enhance/soulSlot';
 export {

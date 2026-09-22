@@ -33,13 +33,15 @@ import {
   supportsPotential,
 } from './enhance/potential';
 import {
+  amplifySoul,
+  canAmplifySoul,
+  canSetSoulPotential,
+  setSoulPotential,
   applySoulEnchant,
   canApplySoulEnchant,
   canSetSoul,
-  canSetSoulCharge,
   resetSoulEnchant,
   setSoul,
-  setSoulCharge,
   supportsSoul,
 } from './enhance/soulSlot';
 import {
@@ -476,24 +478,39 @@ export class Gear extends ReadonlyGear {
   }
 
   /**
-   * 장비에 소울 인챈터를 적용할 수 있는 상태인지 여부
+   * 장비를 소울웨폰으로 변환할 수 있는 상태인지 여부
    */
   get canApplySoulEnchant(): boolean {
     return canApplySoulEnchant(this);
   }
 
   /**
-   * 장비에 소울 인챈터를 적용합니다.
+   * 장비를 소울웨폰으로 변환합니다.
    */
   applySoulEnchant() {
     applySoulEnchant(this);
   }
 
   /**
-   * 장비에 소울을 장착할 수 있는지 여부
+   * 장비에 해당 소울을 장착할 수 있는지 여부를 반환합니다.
+   * @param soul 확인할 소울 아이템.
    */
-  get canSetSoul(): boolean {
-    return canSetSoul(this);
+  canSetSoul(soul: SoulData): boolean {
+    return canSetSoul(this, soul);
+  }
+
+  /**
+   * 장비에 일반 소울을 장착할 수 있는지 여부
+   */
+  get canSetNormalSoul(): boolean {
+    return canSetSoul(this, { name: '', option: {} });
+  }
+
+  /**
+   * 장비에 위대한 소울을 장착할 수 있는지 여부
+   */
+  get canSetMagnificentSoul(): boolean {
+    return canSetSoul(this, { name: '', option: {}, canAmplify: true });
   }
 
   /**
@@ -508,21 +525,42 @@ export class Gear extends ReadonlyGear {
   }
 
   /**
-   * 장비의 소울 충전량을 설정할 수 있는지 여부
+   * 장비에 소울 증폭을 진행할 수 있는지 여부
    */
-  get canSetSoulCharge(): boolean {
-    return canSetSoulCharge(this);
+  get canAmplifySoul(): boolean {
+    return canAmplifySoul(this);
   }
 
   /**
-   * 장비의 소울 충전량을 설정합니다.
-   * @param charge 소울 충전량.
+   * 장비에 소울 증폭을 진행합니다.
    *
    * @throws {@link GearError}
-   * 소울 충전량을 설정할 수 없는 경우.
+   * 소울 증폭을 진행할 수 없는 경우.
    */
-  setSoulCharge(charge: number) {
-    setSoulCharge(this, charge);
+  amplifySoul() {
+    amplifySoul(this);
+  }
+
+  /**
+   * 장비에 소울 잠재능력을 설정할 수 있는지 여부
+   */
+  get canSetSoulPotential(): boolean {
+    return canSetSoulPotential(this);
+  }
+
+  /**
+   * 장비에 소울 잠재능력을 설정합니다.
+   * @param grade 설정할 소울 잠재능력 등급.
+   * @param options 설정할 소울 잠재능력 옵션.
+   *
+   * @throws {@link GearError}
+   * 소울 잠재능력을 설정할 수 없는 경우 또는 옵션이 세 개가 아닌 경우.
+   *
+   * @throws {@link RangeError}
+   * 설정할 소울 잠재능력 등급이 Normal인 경우.
+   */
+  setSoulPotential(grade: PotentialGrade, options: PotentialData[]) {
+    setSoulPotential(this, grade, options);
   }
 
   /**

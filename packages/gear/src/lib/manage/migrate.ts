@@ -1,14 +1,16 @@
 import { GearReqData, GearReqJobData, VERSION } from '../data';
 import { ErrorMessage } from '../errors';
-import { GearDataV1, GearDataV2, GearDataV3 } from './types';
+import { GearDataV1, GearDataV2, GearDataV3, GearDataV4 } from './types';
 import { getVersion } from './version';
 
-type AnyGearData = GearDataV1 | GearDataV2 | GearDataV3;
-type AnyVersion = 1 | 2 | 3;
+type AnyGearData = GearDataV1 | GearDataV2 | GearDataV3 | GearDataV4;
+type AnyVersion = 1 | 2 | 3 | 4;
+type CurrentGearData = GearDataV4;
 
 const migrators = {
   1: migrateV1ToV2,
   2: migrateV2ToV3,
+  3: migrateV3ToV4,
 };
 
 /**
@@ -21,17 +23,13 @@ const migrators = {
  *
  * @throws {@link TypeError}
  * 입력 데이터가 유효하지 않은 경우.
- * 입력 데이터의 버전이 잘못되었거나 지원하는 버전보다 최신인 경우.
+ * 입력 데이터의 버전이 잘못되었거나 지정한 버전보다 최신인 경우.
  */
-export function migrate(data: GearDataV1): GearDataV3;
-export function migrate(data: GearDataV1, version: 1): GearDataV1;
-export function migrate(data: GearDataV1, version: 2): GearDataV2;
-export function migrate(data: GearDataV1, version: 3): GearDataV3;
-export function migrate(data: GearDataV2): GearDataV3;
-export function migrate(data: GearDataV2, version: 2): GearDataV2;
-export function migrate(data: GearDataV2, version: 3): GearDataV3;
-export function migrate(data: GearDataV3): GearDataV3;
-export function migrate(data: GearDataV3, version: 3): GearDataV3;
+export function migrate(data: AnyGearData, version: 1): GearDataV1;
+export function migrate(data: AnyGearData, version: 2): GearDataV2;
+export function migrate(data: AnyGearData, version: 3): GearDataV3;
+export function migrate(data: AnyGearData, version: 4): GearDataV4;
+export function migrate(data: AnyGearData): CurrentGearData;
 export function migrate(
   data: AnyGearData,
   version: AnyVersion = VERSION,
@@ -51,7 +49,7 @@ export function migrate(
     data = migrators[currentVersion as keyof typeof migrators](data as any);
     currentVersion++;
   }
-  return data as GearDataV3;
+  return data;
 }
 
 function migrateV1ToV2(data: GearDataV1): GearDataV2 {
@@ -98,4 +96,31 @@ function migrateV2ToV3(data: GearDataV2): GearDataV3 {
     version: 3,
     req: newReq,
   };
+}
+
+function migrateV3ToV4(data: GearDataV3): GearDataV4 {
+  const { soulSlot, ...rest } = data;
+  if (soulSlot === undefined) {
+    return {
+      ...rest,
+      version: 4,
+    };
+  } else {
+    return {
+      ...rest,
+      version: 4,
+      soulSlot: {
+        enchanted: true,
+        ...(soulSlot.soul && {
+          soul: {
+            name: soulSlot.soul.name,
+            option: soulSlot.soul.option,
+            ...(soulSlot.soul.name.startsWith('위대한') && {
+              canAmplify: true,
+            }),
+          },
+        }),
+      },
+    };
+  }
 }
