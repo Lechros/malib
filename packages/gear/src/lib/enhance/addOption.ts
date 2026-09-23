@@ -5,7 +5,7 @@ import {
   GearCapability,
   GearType,
 } from '../data';
-import { ErrorMessage, GearError } from '../errors';
+import { ErrorCode, GearError } from '../error';
 import { Gear } from '../Gear';
 import { addOptions } from '../gearOption';
 import { isWeapon } from '../gearType';
@@ -28,13 +28,14 @@ export function supportsAddOption(gear: ReadonlyGear): boolean {
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canApplyAddOption(gear: ReadonlyGear): boolean {
-  if (!supportsAddOption(gear)) {
-    return false;
-  }
-  if (gear.addOptions.length === MAX_ADDOPTION) {
-    return false;
-  }
-  return true;
+  return checkApplyAddOption(gear) === undefined;
+}
+
+function checkApplyAddOption(gear: ReadonlyGear) {
+  if (!supportsAddOption(gear)) return ErrorCode.AddOption_Apply_NotSupported;
+  if (gear.addOptions.length >= MAX_ADDOPTION)
+    return ErrorCode.AddOption_Apply_MaxCountOf4Reached;
+  return undefined;
 }
 
 /**
@@ -54,18 +55,15 @@ export function applyAddOption(
   type: AddOptionType,
   grade: AddOptionGrade,
 ) {
-  if (!canApplyAddOption(gear)) {
-    throw new GearError(ErrorMessage.AddOption_InvalidApplyGear, gear, {
-      'attributes.canAddOption': gear.attributes.canAddOption,
-      'addOptions.length': gear.addOptions.length,
-    });
+  const code = checkApplyAddOption(gear);
+  if (code !== undefined) {
+    throw new GearError(code, { gear });
   }
-  gear.data.addOption ??= {};
   const option = getAddOption(gear, type, grade);
-  addOptions(gear.data.addOption, option);
-
-  gear.data.addOptions ??= [];
   const value = getAddOptionValue(gear, type, grade);
+  gear.data.addOption ??= {};
+  addOptions(gear.data.addOption, option);
+  gear.data.addOptions ??= [];
   gear.data.addOptions.push({ type, grade, value });
 }
 
@@ -75,10 +73,12 @@ export function applyAddOption(
  * @returns 초기화할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canResetAddOption(gear: ReadonlyGear): boolean {
-  if (!supportsAddOption(gear)) {
-    return false;
-  }
-  return true;
+  return checkResetAddOption(gear) === undefined;
+}
+
+function checkResetAddOption(gear: ReadonlyGear) {
+  if (!supportsAddOption(gear)) return ErrorCode.AddOption_Reset_NotSupported;
+  return undefined;
 }
 
 /**
@@ -89,10 +89,9 @@ export function canResetAddOption(gear: ReadonlyGear): boolean {
  * 추가 옵션을 초기화할 수 없는 상태의 장비일 경우.
  */
 export function resetAddOption(gear: Gear) {
-  if (!canResetAddOption(gear)) {
-    throw new GearError(ErrorMessage.AddOption_InvalidResetGear, gear, {
-      'attributes.canAddOption': gear.attributes.canAddOption,
-    });
+  const code = checkResetAddOption(gear);
+  if (code !== undefined) {
+    throw new GearError(code, { gear });
   }
   gear.data.addOption = undefined;
   gear.data.addOptions = undefined;
@@ -224,11 +223,10 @@ export function _getPowerValue(
     return grade;
   } else {
     throw new _DeferredGearError(
-      ErrorMessage.AddOption_InvalidAttackPowerGear,
-      {
-        'req.level': reqLevel,
-        'gear.type': gearType,
-      },
+      ctx.type === AddOptionType.magicPower
+        ? ErrorCode.AddOption_Calculate_MagicPowerRequiresWeaponOrReqLevelAtLeast60
+        : ErrorCode.AddOption_Calculate_AttackPowerRequiresWeaponOrReqLevelAtLeast60,
+      {},
     );
   }
 }
@@ -284,10 +282,10 @@ export function _getZeroWeaponAttackPower(
   ]);
   const mappedAttackPower = longToHeavyAttackPowerMap.get(attackPower);
   if (mappedAttackPower === undefined) {
-    throw new _DeferredGearError(ErrorMessage.AddOption_UnknownLongSwordGear, {
-      'gear.type': gearType,
-      'gear.baseOption.attackPower': attackPower,
-    });
+    throw new _DeferredGearError(
+      ErrorCode.AddOption_Calculate_UnknownLongSwordAttackPower,
+      {},
+    );
   }
   return mappedAttackPower;
 }
@@ -310,9 +308,10 @@ export function _getSpeedValue(
   { gearType }: Pick<AddOptionContext, 'gearType'>,
 ): number {
   if (isWeapon(gearType)) {
-    throw new _DeferredGearError(ErrorMessage.AddOption_InvalidSpeedGear, {
-      'gear.type': gearType,
-    });
+    throw new _DeferredGearError(
+      ErrorCode.AddOption_Calculate_SpeedRequiresNonWeapon,
+      {},
+    );
   }
   return grade;
 }
@@ -322,9 +321,10 @@ export function _getJumpValue(
   { gearType }: Pick<AddOptionContext, 'gearType'>,
 ): number {
   if (isWeapon(gearType)) {
-    throw new _DeferredGearError(ErrorMessage.AddOption_InvalidJumpGear, {
-      'gear.type': gearType,
-    });
+    throw new _DeferredGearError(
+      ErrorCode.AddOption_Calculate_JumpRequiresNonWeapon,
+      {},
+    );
   }
   return grade;
 }
@@ -334,9 +334,10 @@ export function _getDamageValue(
   { gearType }: Pick<AddOptionContext, 'gearType'>,
 ): number {
   if (!isWeapon(gearType)) {
-    throw new _DeferredGearError(ErrorMessage.AddOption_InvalidDamageGear, {
-      'gear.type': gearType,
-    });
+    throw new _DeferredGearError(
+      ErrorCode.AddOption_Calculate_DamageRequiresWeapon,
+      {},
+    );
   }
   return grade;
 }
@@ -346,10 +347,12 @@ export function _getBossDamageValue(
   { reqLevel, gearType }: Pick<AddOptionContext, 'reqLevel' | 'gearType'>,
 ): number {
   if (reqLevel < 90 || !isWeapon(gearType)) {
-    throw new _DeferredGearError(ErrorMessage.AddOption_InvalidBossDamageGear, {
-      'req.level': reqLevel,
-      'gear.type': gearType,
-    });
+    throw new _DeferredGearError(
+      !isWeapon(gearType)
+        ? ErrorCode.AddOption_Calculate_BossDamageRequiresWeapon
+        : ErrorCode.AddOption_Calculate_BossDamageReqLevelBelow90,
+      {},
+    );
   }
   return 2 * grade;
 }
@@ -359,10 +362,10 @@ export function _getAllStatValue(
   { reqLevel, gearType }: Pick<AddOptionContext, 'reqLevel' | 'gearType'>,
 ): number {
   if (reqLevel < 70 && !isWeapon(gearType)) {
-    throw new _DeferredGearError(ErrorMessage.AddOption_InvalidAllStatGear, {
-      'req.level': reqLevel,
-      'gear.type': gearType,
-    });
+    throw new _DeferredGearError(
+      ErrorCode.AddOption_Calculate_AllStatRequiresWeaponOrReqLevelAtLeast70,
+      {},
+    );
   }
   return grade;
 }
@@ -373,8 +376,8 @@ export function _getReqLevelDecreaseValue(
 ): number {
   if (reqLevel <= 0) {
     throw new _DeferredGearError(
-      ErrorMessage.AddOption_InvalidReqLevelDecreaseGear,
-      { 'req.level': reqLevel },
+      ErrorCode.AddOption_Calculate_ReqLevelDecreaseRequiresPositiveReqLevel,
+      {},
     );
   }
   return Math.min(reqLevel, 5 * grade);
@@ -386,15 +389,27 @@ export function _getAddOptionKeys(
   return type.split(',') as (keyof GearAddOption)[];
 }
 
-export class _DeferredGearError extends Error {
-  private readonly status: Record<string, unknown>;
+type AddOptionCalculationErrorCode =
+  | ErrorCode.AddOption_Calculate_AttackPowerRequiresWeaponOrReqLevelAtLeast60
+  | ErrorCode.AddOption_Calculate_UnknownLongSwordAttackPower
+  | ErrorCode.AddOption_Calculate_SpeedRequiresNonWeapon
+  | ErrorCode.AddOption_Calculate_JumpRequiresNonWeapon
+  | ErrorCode.AddOption_Calculate_DamageRequiresWeapon
+  | ErrorCode.AddOption_Calculate_BossDamageRequiresWeapon
+  | ErrorCode.AddOption_Calculate_AllStatRequiresWeaponOrReqLevelAtLeast70
+  | ErrorCode.AddOption_Calculate_ReqLevelDecreaseRequiresPositiveReqLevel
+  | ErrorCode.AddOption_Calculate_MagicPowerRequiresWeaponOrReqLevelAtLeast60
+  | ErrorCode.AddOption_Calculate_BossDamageReqLevelBelow90;
 
-  constructor(message: string, status: Record<string, unknown>) {
-    super(message);
-    this.status = status;
+export class _DeferredGearError extends Error {
+  constructor(
+    readonly code: AddOptionCalculationErrorCode,
+    private readonly context: Record<string, unknown>,
+  ) {
+    super();
   }
 
   gear(gear: ReadonlyGear): GearError {
-    return new GearError(this.message, gear, this.status);
+    return new GearError(this.code, { gear, ...this.context });
   }
 }

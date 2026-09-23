@@ -4,7 +4,7 @@ import {
   SoulBaseOption,
   SoulData,
 } from '../data';
-import { ErrorMessage, GearError } from '../errors';
+import { ErrorCode, GearError } from '../error';
 import { Gear } from '../Gear';
 import { isWeapon } from '../gearType';
 import { ReadonlyGear } from '../ReadonlyGear';
@@ -24,7 +24,13 @@ export function supportsSoul(gear: ReadonlyGear): boolean {
  * @returns 변환할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canApplySoulEnchant(gear: ReadonlyGear): boolean {
-  return supportsSoul(gear) && !gear.soulEnchanted;
+  return checkApplySoulEnchant(gear) === undefined;
+}
+
+function checkApplySoulEnchant(gear: ReadonlyGear) {
+  if (!supportsSoul(gear)) return ErrorCode.SoulWeapon_Enchant_NotWeapon;
+  if (gear.soulEnchanted) return ErrorCode.SoulWeapon_Enchant_AlreadyEnchanted;
+  return undefined;
 }
 
 /**
@@ -35,11 +41,9 @@ export function canApplySoulEnchant(gear: ReadonlyGear): boolean {
  * 소울웨폰으로 변환할 수 없는 경우.
  */
 export function applySoulEnchant(gear: Gear) {
-  if (!canApplySoulEnchant(gear)) {
-    throw new GearError(ErrorMessage.Soul_AlreadyEnchanted, gear, {
-      type: gear.type,
-      soulEnchanted: gear.soulEnchanted,
-    });
+  const code = checkApplySoulEnchant(gear);
+  if (code !== undefined) {
+    throw new GearError(code, { gear });
   }
   gear.data.soulSlot ??= {};
   gear.data.soulSlot.enchanted = true;
@@ -52,10 +56,14 @@ export function applySoulEnchant(gear: Gear) {
  * @returns 장착할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canSetSoul(gear: ReadonlyGear, soul: SoulData): boolean {
-  if (!gear.soulEnchanted) {
-    return false;
-  }
-  return gear.soulAmplificationLevel === 0 || soul.canAmplify === true;
+  return checkSetSoul(gear, soul) === undefined;
+}
+
+function checkSetSoul(gear: ReadonlyGear, soul: SoulData) {
+  if (!gear.soulEnchanted) return ErrorCode.SoulWeapon_Equip_NotEnchanted;
+  if (gear.soulAmplificationLevel !== 0 && soul.canAmplify !== true)
+    return ErrorCode.SoulWeapon_Equip_AmplifiedSlotRequiresAmplifiableSoul;
+  return undefined;
 }
 
 /**
@@ -67,11 +75,9 @@ export function canSetSoul(gear: ReadonlyGear, soul: SoulData): boolean {
  * 소울을 장착할 수 없는 경우.
  */
 export function setSoul(gear: Gear, soul: SoulData) {
-  if (!canSetSoul(gear, soul)) {
-    throw new GearError(ErrorMessage.Soul_SetSoulUnenchanted, gear, {
-      type: gear.type,
-      soulEnchanted: gear.soulEnchanted,
-    });
+  const code = checkSetSoul(gear, soul);
+  if (code !== undefined) {
+    throw new GearError(code, { gear });
   }
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   gear.data.soulSlot!.soul = soul;
@@ -102,13 +108,19 @@ export function getSoulBaseOption(
  * @returns 진행할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canAmplifySoul(gear: ReadonlyGear): boolean {
-  if (gear.req.level < 200) {
-    return false;
-  }
-  if (gear.data.soulSlot?.enchanted && gear.soul?.canAmplify) {
-    return (gear.data.soulSlot?.amplificationLevel ?? 0) < 4;
-  }
-  return false;
+  return checkAmplifySoul(gear) === undefined;
+}
+
+function checkAmplifySoul(gear: ReadonlyGear) {
+  if (gear.req.level < 200)
+    return ErrorCode.SoulWeapon_Amplify_ReqLevelBelow200;
+  if (!gear.soulEnchanted) return ErrorCode.SoulWeapon_Amplify_NotEnchanted;
+  if (!gear.soul) return ErrorCode.SoulWeapon_Amplify_NoSoulEquipped;
+  if (!gear.soul.canAmplify)
+    return ErrorCode.SoulWeapon_Amplify_EquippedSoulNotAmplifiable;
+  if ((gear.data.soulSlot?.amplificationLevel ?? 0) >= 4)
+    return ErrorCode.SoulWeapon_Amplify_MaxLevelReached;
+  return undefined;
 }
 
 /**
@@ -119,13 +131,9 @@ export function canAmplifySoul(gear: ReadonlyGear): boolean {
  * 소울 증폭을 진행할 수 없는 경우.
  */
 export function amplifySoul(gear: Gear) {
-  if (!canAmplifySoul(gear)) {
-    throw new GearError(ErrorMessage.Soul_CannotAmplify, gear, {
-      type: gear.type,
-      soulEnchanted: gear.soulEnchanted,
-      amplificationLevel: gear.data.soulSlot?.amplificationLevel ?? 0,
-      soul: gear.soul,
-    });
+  const code = checkAmplifySoul(gear);
+  if (code !== undefined) {
+    throw new GearError(code, { gear });
   }
   if (gear.soulAmplificationLevel === 0) {
     gear.data.soulSlot!.potentialGrade = PotentialGrade.Rare;
@@ -141,13 +149,26 @@ export function amplifySoul(gear: Gear) {
  * @returns 소울 잠재능력을 설정할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canSetSoulPotential(gear: ReadonlyGear): boolean {
-  if (!gear.data.soulSlot?.enchanted) {
-    return false;
-  }
-  if ((gear.data.soulSlot.amplificationLevel ?? 0) === 0) {
-    return false;
-  }
-  return gear.soul?.canAmplify === true;
+  return checkSetSoulPotential(gear) === undefined;
+}
+
+function checkSetSoulPotential(
+  gear: ReadonlyGear,
+  grade?: PotentialGrade,
+  options?: PotentialData[],
+) {
+  if (!gear.soulEnchanted)
+    return ErrorCode.SoulWeapon_SetPotential_NotEnchanted;
+  if ((gear.data.soulSlot?.amplificationLevel ?? 0) === 0)
+    return ErrorCode.SoulWeapon_SetPotential_NotAmplified;
+  if (!gear.soul) return ErrorCode.SoulWeapon_SetPotential_NoSoulEquipped;
+  if (!gear.soul.canAmplify)
+    return ErrorCode.SoulWeapon_SetPotential_EquippedSoulNotAmplifiable;
+  if (grade === PotentialGrade.Normal)
+    return ErrorCode.SoulWeapon_SetPotential_NormalGradeNotAllowed;
+  if (options && options.length !== 3)
+    return ErrorCode.SoulWeapon_SetPotential_OptionCountNotThree;
+  return undefined;
 }
 
 /**
@@ -163,19 +184,11 @@ export function setSoulPotential(
   grade: PotentialGrade,
   options: PotentialData[],
 ) {
-  if (!canSetSoulPotential(gear)) {
-    throw new GearError(ErrorMessage.Soul_InvalidSoulPotentialGear, gear, {
-      type: gear.type,
-      soulEnchanted: gear.soulEnchanted,
-      amplificationLevel: gear.data.soulSlot?.amplificationLevel,
-      soul: gear.soul,
-    });
-  }
-  if (grade === PotentialGrade.Normal) {
-    throw new RangeError(ErrorMessage.Soul_InvalidSoulPotentialGrade);
-  }
-  if (options.length !== 3) {
-    throw new GearError(ErrorMessage.Soul_InvalidSoulPotentialOptions, gear, {
+  const code = checkSetSoulPotential(gear, grade, options);
+  if (code !== undefined) {
+    throw new GearError(code, {
+      gear,
+      grade,
       'options.length': options.length,
     });
   }

@@ -4,7 +4,7 @@ import {
   PotentialGrade,
   PotentialOption,
 } from '../data';
-import { ErrorMessage, GearError } from '../errors';
+import { ErrorCode, GearError } from '../error';
 import { Gear } from '../Gear';
 import { ReadonlyGear } from '../ReadonlyGear';
 
@@ -31,7 +31,27 @@ export function supportsPotential(gear: ReadonlyGear): boolean {
  * @returns 설정할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canSetPotential(gear: ReadonlyGear): boolean {
-  return gear.attributes.canPotential === GearCapability.Can;
+  return checkSetPotential(gear) === undefined;
+}
+
+function checkSetPotential(
+  gear: ReadonlyGear,
+  grade?: PotentialGrade,
+  options?: PotentialData[],
+) {
+  if (gear.attributes.canPotential === GearCapability.Fixed)
+    return ErrorCode.Potential_Set_Fixed;
+  if (!supportsPotential(gear)) return ErrorCode.Potential_Set_NotSupported;
+  if (grade === PotentialGrade.Normal)
+    return ErrorCode.Potential_Set_NormalGradeNotAllowed;
+  if (options && (options.length < 1 || options.length > 3))
+    return ErrorCode.Potential_Set_OptionCountOutOfRange;
+  return undefined;
+}
+
+function checkResetPotential(gear: ReadonlyGear) {
+  if (!supportsPotential(gear)) return ErrorCode.Potential_Reset_NotSupported;
+  return undefined;
 }
 
 /**
@@ -43,10 +63,10 @@ export function canSetPotential(gear: ReadonlyGear): boolean {
  * @throws {@link GearError}
  * 잠재능력을 설정할 수 없는 장비일 경우.
  *
- * @throws {@link RangeError}
+ * @throws {@link GearError}
  * 설정하려는 잠재능력 등급이 Normal일 경우.
  *
- * @throws {@link TypeError}
+ * @throws {@link GearError}
  * 잘못된 잠재옵션 목록을 지정했을 경우.
  */
 export function setPotential(
@@ -54,16 +74,13 @@ export function setPotential(
   grade: PotentialGrade,
   options: PotentialData[],
 ) {
-  if (!canSetPotential(gear)) {
-    throw new GearError(ErrorMessage.Potential_InvalidPotentialGear, gear, {
-      'attributes.canPotential': gear.attributes.canPotential,
+  const code = checkSetPotential(gear, grade, options);
+  if (code !== undefined) {
+    throw new GearError(code, {
+      gear,
+      grade,
+      'options.length': options.length,
     });
-  }
-  if (grade === PotentialGrade.Normal) {
-    throw new RangeError(ErrorMessage.Potential_InvalidPotentialGrade);
-  }
-  if (options.length < 1 || options.length > 3) {
-    throw new TypeError(ErrorMessage.Potential_InvalidPotentialOptions);
   }
   gear.data.potentialGrade = grade;
   gear.data.potentials = options;
@@ -79,10 +96,9 @@ export function setPotential(
  * 잠재능력을 초기화할 수 없는 장비일 경우.
  */
 export function resetPotential(gear: Gear) {
-  if (!canSetPotential(gear)) {
-    throw new GearError(ErrorMessage.Potential_InvalidPotentialGear, gear, {
-      'attributes.canPotential': gear.attributes.canPotential,
-    });
+  const code = checkResetPotential(gear);
+  if (code !== undefined) {
+    throw new GearError(code, { gear });
   }
   gear.data.potentialGrade = PotentialGrade.Normal;
   gear.data.potentials = undefined;
@@ -103,7 +119,29 @@ export function supportsAdditionalPotential(gear: ReadonlyGear): boolean {
  * @returns 설정할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canSetAdditionalPotential(gear: ReadonlyGear): boolean {
-  return gear.attributes.canAdditionalPotential === GearCapability.Can;
+  return checkSetAdditionalPotential(gear) === undefined;
+}
+
+function checkSetAdditionalPotential(
+  gear: ReadonlyGear,
+  grade?: PotentialGrade,
+  options?: PotentialData[],
+) {
+  if (gear.attributes.canAdditionalPotential === GearCapability.Fixed)
+    return ErrorCode.AdditionalPotential_Set_Fixed;
+  if (!supportsAdditionalPotential(gear))
+    return ErrorCode.AdditionalPotential_Set_NotSupported;
+  if (grade === PotentialGrade.Normal)
+    return ErrorCode.AdditionalPotential_Set_NormalGradeNotAllowed;
+  if (options && (options.length < 1 || options.length > 3))
+    return ErrorCode.AdditionalPotential_Set_OptionCountOutOfRange;
+  return undefined;
+}
+
+function checkResetAdditionalPotential(gear: ReadonlyGear) {
+  if (!supportsAdditionalPotential(gear))
+    return ErrorCode.AdditionalPotential_Reset_NotSupported;
+  return undefined;
 }
 
 /**
@@ -115,7 +153,7 @@ export function canSetAdditionalPotential(gear: ReadonlyGear): boolean {
  * @throws {@link GearError}
  * 에디셔널 잠재능력을 설정할 수 없는 장비일 경우.
  *
- * @throws {@link RangeError}
+ * @throws {@link GearError}
  * 설정하려는 에디셔널 잠재능력 등급이 Normal일 경우.
  *
  * @throws {@link GearError}
@@ -126,27 +164,13 @@ export function setAdditionalPotential(
   grade: PotentialGrade,
   options: PotentialData[],
 ) {
-  if (!canSetAdditionalPotential(gear)) {
-    throw new GearError(
-      ErrorMessage.Potential_InvalidAdditionalPotentialGear,
+  const code = checkSetAdditionalPotential(gear, grade, options);
+  if (code !== undefined) {
+    throw new GearError(code, {
       gear,
-      {
-        'attributes.canAdditionalPotential':
-          gear.attributes.canAdditionalPotential,
-      },
-    );
-  }
-  if (grade === PotentialGrade.Normal) {
-    throw new RangeError(
-      ErrorMessage.Potential_InvalidAdditionalPotentialGrade,
-    );
-  }
-  if (options.length < 1 || options.length > 3) {
-    throw new GearError(
-      ErrorMessage.Potential_InvalidAdditionalPotentialOptions,
-      gear,
-      { 'options.length': options.length },
-    );
+      grade,
+      'options.length': options.length,
+    });
   }
   gear.data.additionalPotentialGrade = grade;
   gear.data.additionalPotentials = options;
@@ -160,15 +184,9 @@ export function setAdditionalPotential(
  * 에디셔널 잠재능력을 초기화할 수 없는 장비일 경우.
  */
 export function resetAdditionalPotential(gear: Gear) {
-  if (!canSetAdditionalPotential(gear)) {
-    throw new GearError(
-      ErrorMessage.Potential_InvalidAdditionalPotentialGear,
-      gear,
-      {
-        'attributes.canAdditionalPotential':
-          gear.attributes.canAdditionalPotential,
-      },
-    );
+  const code = checkResetAdditionalPotential(gear);
+  if (code !== undefined) {
+    throw new GearError(code, { gear });
   }
   gear.data.additionalPotentialGrade = PotentialGrade.Normal;
   gear.data.additionalPotentials = undefined;

@@ -1,4 +1,4 @@
-import { GearError } from '../errors';
+import { ErrorCode, GearError } from '../error';
 import { createGear } from '../testing';
 import {
   applyExceptional,
@@ -156,5 +156,37 @@ describe('resetExceptional', () => {
     resetExceptional(gear);
 
     expect(gear.exceptionalOption).toEqual({});
+  });
+});
+
+describe('익셉셔널 오류 우선순위', () => {
+  it('지원 여부를 잔여 횟수보다 먼저 검사한다.', () => {
+    const gear = createGear({
+      exceptionalUpgradeableCount: 0,
+      exceptionalUpgradeCount: 0,
+    });
+    const hammer = { name: '', option: {} };
+    const before = structuredClone(gear.data);
+    expect(canApplyExceptional(gear)).toBe(false);
+    expect(() => applyExceptional(gear, hammer)).toThrow(
+      expect.objectContaining({
+        code: ErrorCode.Exceptional_Apply_NotSupported,
+      }),
+    );
+    expect(gear.data).toEqual(before);
+    expect(canResetExceptional(gear)).toBe(false);
+    expect(() => resetExceptional(gear)).toThrow(
+      expect.objectContaining({
+        code: ErrorCode.Exceptional_Reset_NotSupported,
+      }),
+    );
+
+    gear.data.exceptionalUpgradeCount = 1;
+    expect(canApplyExceptional(gear)).toBe(false);
+    expect(() => applyExceptional(gear, hammer)).toThrow(
+      expect.objectContaining({
+        code: ErrorCode.Exceptional_Apply_NoRemainingUpgradeCount,
+      }),
+    );
   });
 });

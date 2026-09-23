@@ -1,5 +1,5 @@
 import { GearCapability } from '../data';
-import { GearError } from '../errors';
+import { ErrorCode, GearError } from '../error';
 import { createGear, createScroll } from '../testing';
 import {
   applyScroll,
@@ -381,5 +381,63 @@ describe('applyScroll', () => {
       maxHp: 100,
       magicPower: 20,
     });
+  });
+});
+
+describe('주문서 오류 우선순위', () => {
+  it.each([
+    [
+      canApplyScroll,
+      (gear: Parameters<typeof applyScroll>[0]) =>
+        applyScroll(gear, { name: '', option: {} }),
+      ErrorCode.Upgrade_ApplyScroll_NotSupported,
+      ErrorCode.Upgrade_ApplyScroll_NoRemainingUpgradeCount,
+    ],
+    [
+      canFailScroll,
+      failScroll,
+      ErrorCode.Upgrade_FailScroll_NotSupported,
+      ErrorCode.Upgrade_FailScroll_NoRemainingUpgradeCount,
+    ],
+    [
+      canResileScroll,
+      resileScroll,
+      ErrorCode.Upgrade_ResileScroll_NotSupported,
+      ErrorCode.Upgrade_ResileScroll_NoResilienceCount,
+    ],
+  ])(
+    '지원 여부를 잔여 횟수보다 먼저 검사한다 (%#).',
+    (can, execute, unsupported, exhausted) => {
+      const gear = createGear({
+        attributes: { canScroll: GearCapability.Cannot },
+        scrollUpgradeableCount: 0,
+        scrollResilienceCount: 0,
+      });
+      const before = structuredClone(gear.data);
+      expect(can(gear)).toBe(false);
+      expect(() => execute(gear)).toThrow(
+        expect.objectContaining({
+          code: unsupported,
+          context: { gear },
+        }),
+      );
+      expect(gear.data).toEqual(before);
+
+      gear.data.attributes.canScroll = GearCapability.Can;
+      expect(can(gear)).toBe(false);
+      expect(() => execute(gear)).toThrow(
+        expect.objectContaining({ code: exhausted }),
+      );
+    },
+  );
+
+  it('주문서 강화를 지원하지 않으면 초기화할 수 없다.', () => {
+    const gear = createGear({
+      attributes: { canScroll: GearCapability.Cannot },
+    });
+    expect(canResetUpgrade(gear)).toBe(false);
+    expect(() => resetUpgrade(gear)).toThrow(
+      expect.objectContaining({ code: ErrorCode.Upgrade_Reset_NotSupported }),
+    );
   });
 });

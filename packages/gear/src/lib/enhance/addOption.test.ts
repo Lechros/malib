@@ -5,7 +5,7 @@ import {
   GearCapability,
   GearType,
 } from '../data';
-import { GearError } from '../errors';
+import { ErrorCode, GearError } from '../error';
 import { Gear } from '../Gear';
 import { createGear } from '../testing';
 import { joinEach } from '../testing/util';
@@ -1236,3 +1236,137 @@ function longSwordCtx(
     10: ctx(GearType.longSword, 200, 337, 0, false, AddOptionType.attackPower),
   }[type];
 }
+
+describe('추가옵션 오류 우선순위', () => {
+  it('지원 여부, 옵션 개수, 추가옵션 계산 순서로 검사한다.', () => {
+    const gear = createGear({
+      type: GearType.cap,
+      attributes: { canAddOption: GearCapability.Cannot },
+      addOptions: Array.from({ length: 4 }, () => ({
+        type: AddOptionType.str,
+        grade: 1 as const,
+        value: 1,
+      })),
+    });
+    const before = structuredClone(gear.data);
+    expect(canApplyAddOption(gear)).toBe(false);
+    expect(() => applyAddOption(gear, AddOptionType.bossDamage, 1)).toThrow(
+      expect.objectContaining({ code: ErrorCode.AddOption_Apply_NotSupported }),
+    );
+    expect(gear.data).toEqual(before);
+    expect(canResetAddOption(gear)).toBe(false);
+    expect(() => resetAddOption(gear)).toThrow(
+      expect.objectContaining({ code: ErrorCode.AddOption_Reset_NotSupported }),
+    );
+
+    gear.data.attributes.canAddOption = GearCapability.Can;
+    expect(canApplyAddOption(gear)).toBe(false);
+    expect(() => applyAddOption(gear, AddOptionType.bossDamage, 1)).toThrow(
+      expect.objectContaining({
+        code: ErrorCode.AddOption_Apply_MaxCountOf4Reached,
+      }),
+    );
+
+    gear.data.addOptions = [];
+    const empty = structuredClone(gear.data);
+    expect(canApplyAddOption(gear)).toBe(true);
+    expect(() => applyAddOption(gear, AddOptionType.bossDamage, 1)).toThrow(
+      expect.objectContaining({
+        code: ErrorCode.AddOption_Calculate_BossDamageRequiresWeapon,
+      }),
+    );
+    expect(gear.data).toEqual(empty);
+  });
+
+  it.each([
+    [
+      AddOptionType.attackPower,
+      GearType.cap,
+      59,
+      ErrorCode.AddOption_Calculate_AttackPowerRequiresWeaponOrReqLevelAtLeast60,
+    ],
+    [
+      AddOptionType.magicPower,
+      GearType.cap,
+      59,
+      ErrorCode.AddOption_Calculate_MagicPowerRequiresWeaponOrReqLevelAtLeast60,
+    ],
+    [
+      AddOptionType.attackPower,
+      GearType.longSword,
+      200,
+      ErrorCode.AddOption_Calculate_UnknownLongSwordAttackPower,
+    ],
+    [
+      AddOptionType.speed,
+      GearType.thSword,
+      200,
+      ErrorCode.AddOption_Calculate_SpeedRequiresNonWeapon,
+    ],
+    [
+      AddOptionType.jump,
+      GearType.thSword,
+      200,
+      ErrorCode.AddOption_Calculate_JumpRequiresNonWeapon,
+    ],
+    [
+      AddOptionType.damage,
+      GearType.cap,
+      200,
+      ErrorCode.AddOption_Calculate_DamageRequiresWeapon,
+    ],
+    [
+      AddOptionType.bossDamage,
+      GearType.cap,
+      0,
+      ErrorCode.AddOption_Calculate_BossDamageRequiresWeapon,
+    ],
+    [
+      AddOptionType.bossDamage,
+      GearType.thSword,
+      89,
+      ErrorCode.AddOption_Calculate_BossDamageReqLevelBelow90,
+    ],
+    [
+      AddOptionType.allStat,
+      GearType.cap,
+      69,
+      ErrorCode.AddOption_Calculate_AllStatRequiresWeaponOrReqLevelAtLeast70,
+    ],
+    [
+      AddOptionType.reqLevelDecrease,
+      GearType.cap,
+      0,
+      ErrorCode.AddOption_Calculate_ReqLevelDecreaseRequiresPositiveReqLevel,
+    ],
+  ])(
+    '계산 실패 원인을 구분하고 GearError로 전달한다 (%#).',
+    (type, gearType, level, code) => {
+      const gear = createGear({
+        type: gearType,
+        req: { level },
+        baseOption: { attackPower: 1 },
+      });
+      expect(() => getAddOptionValue(gear, type, 1)).toThrow(
+        expect.objectContaining({
+          name: 'GearError',
+          code,
+          context: expect.objectContaining({ gear }),
+        }),
+      );
+    },
+  );
+
+  it('추가옵션 계산 오류의 장비 정보는 context.gear로 제공한다.', () => {
+    const gear = createGear({
+      type: GearType.cap,
+      req: { level: 50, levelIncrease: 9 },
+    });
+    expect(() => getAddOptionValue(gear, AddOptionType.magicPower, 1)).toThrow(
+      expect.objectContaining({
+        code: ErrorCode.AddOption_Calculate_MagicPowerRequiresWeaponOrReqLevelAtLeast60,
+        context: { gear },
+      }),
+    );
+  });
+});

@@ -1,3 +1,4 @@
+import { ErrorCode } from '../error';
 import {
   GearCapability,
   GearOption,
@@ -1462,3 +1463,225 @@ function gso(
     ];
   });
 }
+
+describe('스타포스 오류 우선순위', () => {
+  it.each([
+    ['ko', '착용 레벨이 -1인 아이템은 스타포스 강화를 지원하지 않습니다.'],
+    [
+      'en',
+      'Star Force enhancement is not supported for items with a required level of -1.',
+    ],
+  ] as const)(
+    '장비의 언어 설정과 context로 예외 메시지를 생성한다 (%s).',
+    (errorLanguage, message) => {
+      const data = createGear({
+        attributes: { canStarforce: GearCapability.Can, fixedMaxStar: 5 },
+        req: { level: -1 },
+      }).data;
+      const gear = new Gear(data, { errorLanguage });
+      expect(() => starforce(gear)).toThrow(
+        expect.objectContaining({
+          name: 'GearError',
+          code: ErrorCode.Starforce_Calculate_UnsupportedReqLevel,
+          message,
+          context: { gear, exceedMaxStar: false },
+        }),
+      );
+    },
+  );
+
+  it.each([
+    [
+      GearCapability.Cannot,
+      true,
+      30,
+      15,
+      ErrorCode.Starforce_Apply_NotSupported,
+    ],
+    [GearCapability.Fixed, true, 30, 15, ErrorCode.Starforce_Apply_Fixed],
+    [
+      GearCapability.Can,
+      true,
+      30,
+      15,
+      ErrorCode.Starforce_Apply_MaxStarReached,
+    ],
+    [
+      GearCapability.Can,
+      true,
+      15,
+      30,
+      ErrorCode.Starforce_Apply_SuperiorMaxStarReached,
+    ],
+    [
+      GearCapability.Can,
+      false,
+      30,
+      30,
+      ErrorCode.Starforce_Apply_MaxStarReached,
+    ],
+    [
+      GearCapability.Can,
+      false,
+      30,
+      31,
+      ErrorCode.Starforce_Apply_AbsoluteMaxStarReached,
+    ],
+  ])(
+    '강화 가능 여부, 장비 최대 단계, 절대 최대 단계 순서로 검사한다 (%#).',
+    (canStarforceValue, superior, star, fixedMaxStar, code) => {
+      const gear = createGear({
+        attributes: { canStarforce: canStarforceValue, superior, fixedMaxStar },
+        req: { level: 200 },
+        star,
+      });
+      const before = structuredClone(gear.data);
+      expect(canStarforce(gear)).toBe(false);
+      expect(() => starforce(gear)).toThrow(
+        expect.objectContaining({
+          code,
+          context: {
+            gear,
+            exceedMaxStar: false,
+          },
+        }),
+      );
+      expect(gear.data).toEqual(before);
+    },
+  );
+
+  it('최대 단계 초과를 허용해도 토드로 도달할 수 있는 단계를 넘길 수 없다.', () => {
+    const gear = createGear({
+      attributes: { canStarforce: GearCapability.Can },
+      req: { level: 100 },
+      star: 15,
+    });
+    expect(canStarforce(gear, true)).toBe(false);
+    expect(() => starforce(gear, true)).toThrow(
+      expect.objectContaining({
+        code: ErrorCode.Starforce_Apply_MaxStarReached,
+      }),
+    );
+  });
+
+  it('놀라운 장비강화 주문서가 적용된 장비는 15성을 넘길 수 없다.', () => {
+    const gear = createGear({
+      attributes: { canStarforce: GearCapability.Can },
+      req: { level: 140 },
+      star: 15,
+      starScroll: true,
+    });
+    expect(canStarforce(gear, true)).toBe(false);
+    expect(() => starforce(gear, true)).toThrow(
+      expect.objectContaining({
+        code: ErrorCode.Starforce_Apply_AbsoluteMaxStarReached,
+      }),
+    );
+  });
+
+  it.each([
+    [
+      GearCapability.Cannot,
+      true,
+      200,
+      false,
+      ErrorCode.StarScroll_Apply_NotSupported,
+    ],
+    [GearCapability.Fixed, true, 200, false, ErrorCode.StarScroll_Apply_Fixed],
+    [
+      GearCapability.Can,
+      true,
+      200,
+      false,
+      ErrorCode.StarScroll_Apply_SuperiorNotSupported,
+    ],
+    [
+      GearCapability.Can,
+      false,
+      200,
+      false,
+      ErrorCode.StarScroll_Apply_ReqLevelAbove150,
+    ],
+    [
+      GearCapability.Can,
+      false,
+      150,
+      false,
+      ErrorCode.StarScroll_Apply_MaxStarReached,
+    ],
+    [
+      GearCapability.Can,
+      false,
+      150,
+      true,
+      ErrorCode.StarScroll_Apply_AbsoluteMaxStarReached,
+    ],
+  ])(
+    '놀라운 장비강화 주문서는 장비 속성, 착용 레벨, 강화 단계 순서로 검사한다 (%#).',
+    (capability, superior, level, exceedMaxStar, code) => {
+      const gear = createGear({
+        attributes: { canStarforce: capability, superior, fixedMaxStar: 15 },
+        req: { level },
+        star: 15,
+      });
+      const before = structuredClone(gear.data);
+      expect(canStarScroll(gear, exceedMaxStar)).toBe(false);
+      expect(() => starScroll(gear, false, exceedMaxStar)).toThrow(
+        expect.objectContaining({ code }),
+      );
+      expect(gear.data).toEqual(before);
+    },
+  );
+
+  it.each([
+    [GearCapability.Cannot, ErrorCode.Starforce_Reset_NotSupported],
+    [GearCapability.Fixed, ErrorCode.Starforce_Reset_Fixed],
+  ])('초기화가 불가능한 이유를 구분한다 (%d).', (capability, code) => {
+    const gear = createGear({ attributes: { canStarforce: capability } });
+    expect(canResetStarforce(gear)).toBe(false);
+    expect(() => resetStarforce(gear)).toThrow(
+      expect.objectContaining({ code }),
+    );
+  });
+
+  it.each([
+    [GearCapability.Cannot, ErrorCode.Starforce_Recalculate_NotSupported],
+    [GearCapability.Fixed, ErrorCode.Starforce_Recalculate_StarScrollApplied],
+    [GearCapability.Can, ErrorCode.Starforce_Recalculate_StarScrollApplied],
+  ])(
+    '재계산은 지원 여부를 놀라운 장비강화 주문서 적용 여부보다 먼저 검사한다 (%d).',
+    (capability, code) => {
+      const gear = createGear({
+        attributes: { canStarforce: capability },
+        starScroll: true,
+      });
+      expect(canRecalculateStarforce(gear)).toBe(false);
+      expect(() => recalculateStarforce(gear)).toThrow(
+        expect.objectContaining({ code }),
+      );
+    },
+  );
+
+  it.each([
+    [canStarforce, starforce],
+    [canStarScroll, starScroll],
+    [canRecalculateStarforce, recalculateStarforce],
+  ])(
+    '착용 레벨이 잘못되면 장비 데이터를 변경하기 전에 실패한다 (%#).',
+    (can, execute) => {
+      const gear = createGear({
+        attributes: { canStarforce: GearCapability.Can, fixedMaxStar: 5 },
+        req: { level: -1 },
+        star: 1,
+      });
+      const before = structuredClone(gear.data);
+      expect(can(gear)).toBe(false);
+      expect(() => execute(gear)).toThrow(
+        expect.objectContaining({
+          code: ErrorCode.Starforce_Calculate_UnsupportedReqLevel,
+        }),
+      );
+      expect(gear.data).toEqual(before);
+    },
+  );
+});

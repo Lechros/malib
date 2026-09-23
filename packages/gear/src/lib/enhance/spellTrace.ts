@@ -1,5 +1,5 @@
 import { GearType } from '../data';
-import { ErrorMessage, GearError } from '../errors';
+import { ErrorCode, GearError } from '../error';
 import { Gear } from '../Gear';
 import { isAccessory, isArmor, isWeapon } from '../gearType';
 import { ReadonlyGear } from '../ReadonlyGear';
@@ -89,8 +89,8 @@ export function getSpellTraceScroll(
   if (gear.type === GearType.machineHeart) {
     return _getHeartSpellTrace(gear, type, rate);
   }
-  throw new GearError(ErrorMessage.SpellTrace_InvalidGearType, gear, {
-    type: gear.type,
+  throw new GearError(ErrorCode.SpellTrace_CreateScroll_UnsupportedGearType, {
+    gear,
   });
 }
 
@@ -99,12 +99,9 @@ export function _getWeaponSpellTrace(
   type: SpellTraceType,
   rate: SpellTraceRate,
 ): SpellTrace {
-  if (type === SpellTraceType.allStat) {
-    throw new GearError(ErrorMessage.SpellTrace_InvalidSpellTrace, gear, {
-      type: gear.type,
-      input_type: type,
-      input_rate: rate,
-    });
+  const code = checkWeaponSpellTrace(type);
+  if (code !== undefined) {
+    throw new GearError(code, { gear, type, rate });
   }
   const tier = _getTier(gear);
   // eslint-disable-next-line prefer-const
@@ -150,6 +147,10 @@ export function _getArmorSpellTrace(
   type: SpellTraceType,
   rate: SpellTraceRate,
 ): SpellTrace {
+  const code = checkArmorSpellTrace(type, rate);
+  if (code !== undefined) {
+    throw new GearError(code, { gear, type, rate });
+  }
   const tier = _getTier(gear);
   const [stat, maxHp, armor] = armorStatMaxHpArmor[rate][tier];
 
@@ -166,13 +167,6 @@ export function _getArmorSpellTrace(
       option.maxHp! += stat * 50;
       break;
     case SpellTraceType.allStat: {
-      if (!(rate in armorAllStat)) {
-        throw new GearError(ErrorMessage.SpellTrace_InvalidSpellTrace, gear, {
-          type: gear.type,
-          input_type: type,
-          input_rate: rate,
-        });
-      }
       // @ts-expect-error: rate is checked above
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       const allStat: number = armorAllStat[rate][tier];
@@ -204,12 +198,9 @@ export function _getAccSpellTrace(
   type: SpellTraceType,
   rate: SpellTraceRate,
 ): SpellTrace {
-  if (!(rate in accStat)) {
-    throw new GearError(ErrorMessage.SpellTrace_InvalidSpellTrace, gear, {
-      type: gear.type,
-      input_type: type,
-      input_rate: rate,
-    });
+  const code = checkAccSpellTrace(type, rate);
+  if (code !== undefined) {
+    throw new GearError(code, { gear, type, rate });
   }
   const tier = _getTier(gear);
   // @ts-expect-error: rate is checked above
@@ -228,13 +219,6 @@ export function _getAccSpellTrace(
       option.maxHp = stat * 50;
       break;
     case SpellTraceType.allStat: {
-      if (!(rate in accAllStat)) {
-        throw new GearError(ErrorMessage.SpellTrace_InvalidSpellTrace, gear, {
-          type: gear.type,
-          input_type: type,
-          input_rate: rate,
-        });
-      }
       // @ts-expect-error: rate is checked above
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       const allStat: number = accAllStat[rate][tier];
@@ -255,12 +239,9 @@ export function _getHeartSpellTrace(
   type: SpellTraceType,
   rate: SpellTraceRate,
 ): SpellTrace {
-  if (!(rate in accStat)) {
-    throw new GearError(ErrorMessage.SpellTrace_InvalidSpellTrace, gear, {
-      type: gear.type,
-      input_type: type,
-      input_rate: rate,
-    });
+  const code = checkHeartSpellTrace(rate);
+  if (code !== undefined) {
+    throw new GearError(code, { gear, type, rate });
   }
   const tier = _getTier(gear);
   // @ts-expect-error: rate is checked above
@@ -388,3 +369,29 @@ const heartPower = {
   70: [2, 3, 5],
   30: [3, 5, 7],
 };
+
+function checkWeaponSpellTrace(type: SpellTraceType) {
+  if (type === SpellTraceType.allStat)
+    return ErrorCode.SpellTrace_CreateScroll_UnsupportedSpellTraceType;
+  return undefined;
+}
+
+function checkArmorSpellTrace(type: SpellTraceType, rate: SpellTraceRate) {
+  if (type === SpellTraceType.allStat && !(rate in armorAllStat))
+    return ErrorCode.SpellTrace_CreateScroll_UnsupportedTypeRateCombination;
+  return undefined;
+}
+
+function checkAccSpellTrace(type: SpellTraceType, rate: SpellTraceRate) {
+  if (!(rate in accStat))
+    return ErrorCode.SpellTrace_CreateScroll_UnsupportedSpellTraceRate;
+  if (type === SpellTraceType.allStat && !(rate in accAllStat))
+    return ErrorCode.SpellTrace_CreateScroll_UnsupportedTypeRateCombination;
+  return undefined;
+}
+
+function checkHeartSpellTrace(rate: SpellTraceRate) {
+  if (!(rate in heartPower))
+    return ErrorCode.SpellTrace_CreateScroll_UnsupportedSpellTraceRate;
+  return undefined;
+}
