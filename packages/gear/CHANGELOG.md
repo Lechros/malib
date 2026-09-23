@@ -1,5 +1,12 @@
 # @malib/gear
 
+## 2.1.0
+
+### Minor Changes
+
+- f997015: feat(soul): rename soulSlot property to soulWeapon
+- 83aa2d8: feat(soul): rename Soul.canAmplify to magnificent
+
 ## 2.0.0
 
 ### Major Changes
