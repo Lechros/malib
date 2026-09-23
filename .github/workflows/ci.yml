@@ -26,13 +26,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v6
+      - name: Setup pnpm and install dependencies
+        uses: pnpm/setup@v1
         with:
           cache: true
-
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
 
       - name: Run all checks
         run: pnpm all
