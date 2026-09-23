@@ -14,9 +14,9 @@ import {
   VERSION,
 } from './data';
 import { ReadonlyPotential } from './enhance/potential';
-import { getSoulBaseOption } from './enhance/soulSlot';
+import { getSoulBaseOption } from './enhance/soulWeapon';
 import { getMaxStar } from './enhance/starforce';
-import { ErrorMessage, GearError } from './errors';
+import { ErrorCode, type ErrorLanguage, GearError } from './error';
 import { GearAttribute } from './GearAttribute';
 import { sumOptions, toGearOption } from './gearOption';
 import { GearReq } from './GearReq';
@@ -31,6 +31,10 @@ type _Gear = Omit<
   additionalPotentials: readonly ReadonlyPotential[];
 };
 
+export interface GearConfig {
+  errorLanguage?: ErrorLanguage;
+}
+
 /**
  * 장비 (읽기 전용)
  *
@@ -41,23 +45,28 @@ type _Gear = Omit<
 export class ReadonlyGear implements _Gear {
   /** 장비 정보 */
   protected readonly _data: Readonly<GearData>;
+  /** 에러 메시지 언어 설정 */
+  readonly errorLanguage: ErrorLanguage;
 
   /**
    * 장비 정보를 참조하는 장비 인스턴스를 생성합니다.
    * @param data 장비 정보.
+   * @param config 장비 인스턴스의 동작 설정.
    *
    * @throws {@link GearError}
    * 지원하지 않는 장비 정보 버전일 경우.
    */
-  constructor(data: GearData) {
+  constructor(data: GearData, config: GearConfig = {}) {
+    const errorLanguage = config.errorLanguage ?? 'ko';
     if ((data.version as unknown) !== VERSION) {
-      throw new GearError(
-        ErrorMessage.Constructor_InvalidVersion,
-        { id: data.id, name: data.name },
-        { expected: VERSION, actual: data.version },
-      );
+      throw new GearError(ErrorCode.Gear_Construct_UnsupportedDataVersion, {
+        gear: { id: data.id ?? -1, name: data.name, errorLanguage },
+        expected: VERSION,
+        actual: data.version,
+      });
     }
     this._data = data;
+    this.errorLanguage = errorLanguage;
   }
 
   /**

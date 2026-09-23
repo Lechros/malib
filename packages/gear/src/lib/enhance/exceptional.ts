@@ -1,5 +1,5 @@
 import { GearUpgradeOption } from '../data';
-import { ErrorMessage, GearError } from '../errors';
+import { ErrorCode, GearError } from '../error';
 import { Gear } from '../Gear';
 import { addOptions } from '../gearOption';
 import { ReadonlyGear } from '../ReadonlyGear';
@@ -31,7 +31,15 @@ export function supportsExceptional(gear: ReadonlyGear): boolean {
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canApplyExceptional(gear: ReadonlyGear): boolean {
-  return supportsExceptional(gear) && gear.exceptionalUpgradeableCount > 0;
+  return checkApplyExceptional(gear) === undefined;
+}
+
+function checkApplyExceptional(gear: ReadonlyGear) {
+  if (!supportsExceptional(gear))
+    return ErrorCode.Exceptional_Apply_NotSupported;
+  if (gear.exceptionalUpgradeableCount <= 0)
+    return ErrorCode.Exceptional_Apply_NoRemainingUpgradeCount;
+  return undefined;
 }
 
 /**
@@ -46,11 +54,9 @@ export function applyExceptional(
   gear: Gear,
   exceptionalHammer: ExceptionalHammer,
 ) {
-  if (!canApplyExceptional(gear)) {
-    throw new GearError(ErrorMessage.Exceptional_InvalidEnhanceGear, gear, {
-      exceptionalTotalUpgradeableCount: gear.exceptionalTotalUpgradeableCount,
-      exceptionalUpgradeableCount: gear.exceptionalUpgradeableCount,
-    });
+  const code = checkApplyExceptional(gear);
+  if (code !== undefined) {
+    throw new GearError(code, { gear });
   }
   gear.data.exceptionalOption ??= {};
   addOptions(gear.data.exceptionalOption, exceptionalHammer.option);
@@ -64,7 +70,13 @@ export function applyExceptional(
  * @returns 초기화할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canResetExceptional(gear: ReadonlyGear): boolean {
-  return supportsExceptional(gear);
+  return checkResetExceptional(gear) === undefined;
+}
+
+function checkResetExceptional(gear: ReadonlyGear) {
+  if (!supportsExceptional(gear))
+    return ErrorCode.Exceptional_Reset_NotSupported;
+  return undefined;
 }
 
 /**
@@ -75,10 +87,9 @@ export function canResetExceptional(gear: ReadonlyGear): boolean {
  * 익셉셔널 강화를 초기화할 수 없는 장비일 경우.
  */
 export function resetExceptional(gear: Gear) {
-  if (!canResetExceptional(gear)) {
-    throw new GearError(ErrorMessage.Exceptional_InvalidResetGear, gear, {
-      exceptionalTotalUpgradeableCount: gear.exceptionalTotalUpgradeableCount,
-    });
+  const code = checkResetExceptional(gear);
+  if (code !== undefined) {
+    throw new GearError(code, { gear });
   }
   gear.data.exceptionalOption = {};
   gear.data.exceptionalUpgradeableCount = gear.exceptionalTotalUpgradeableCount;

@@ -43,7 +43,7 @@ import {
   resetSoulEnchant,
   setSoul,
   supportsSoul,
-} from './enhance/soulSlot';
+} from './enhance/soulWeapon';
 import {
   applySpellTrace,
   SpellTraceRate,
@@ -72,7 +72,7 @@ import {
   Scroll,
   supportsUpgrade,
 } from './enhance/upgrade';
-import { ErrorMessage, GearError } from './errors';
+import { ErrorCode, GearError } from './error';
 import { ReadonlyGear } from './ReadonlyGear';
 
 /**
@@ -115,9 +115,7 @@ export class Gear extends ReadonlyGear {
    */
   override set shape(shape: GearShapeData | undefined) {
     if (this.attributes.noShapeChange) {
-      throw new GearError(ErrorMessage.Shape_InvalidShapeChangeGear, this, {
-        'attributes.noShapeChange': this.attributes.noShapeChange,
-      });
+      throw new GearError(ErrorCode.Shape_Set_ChangeNotAllowed, { gear: this });
     }
 
     this.data.shape = shape;
@@ -400,12 +398,12 @@ export class Gear extends ReadonlyGear {
    * @param options 잠재옵션 목록.
    *
    * @throws {@link GearError}
-   * 잠재능력을 설정할 수 없는 경우.
+   * 잠재능력을 지원하지 않는 경우.
    *
-   * @throws {@link RangeError}
+   * @throws {@link GearError}
    * 설정하려는 잠재능력 등급이 Normal일 경우.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 잘못된 잠재옵션 목록을 지정했을 경우.
    */
   setPotential(grade: PotentialGrade, options: PotentialData[]) {
@@ -448,12 +446,12 @@ export class Gear extends ReadonlyGear {
    * @param options 에디셔널 잠재옵션 목록.
    *
    * @throws {@link GearError}
-   * 에디셔널 잠재능력을 설정할 수 없는 경우.
+   * 에디셔널 잠재능력을 지원하지 않는 경우.
    *
-   * @throws {@link RangeError}
+   * @throws {@link GearError}
    * 설정하려는 에디셔널 잠재능력 등급이 Normal일 경우.
    *
-   * @throws {@link TypeError}
+   * @throws {@link GearError}
    * 잘못된 에디셔널 잠재옵션 목록을 지정했을 경우.
    */
   setAdditionalPotential(grade: PotentialGrade, options: PotentialData[]) {
@@ -554,10 +552,13 @@ export class Gear extends ReadonlyGear {
    * @param options 설정할 소울 잠재능력 옵션.
    *
    * @throws {@link GearError}
-   * 소울 잠재능력을 설정할 수 없는 경우 또는 옵션이 세 개가 아닌 경우.
+   * 소울 잠재능력을 설정할 수 없는 경우.
    *
-   * @throws {@link RangeError}
+   * @throws {@link GearError}
    * 설정할 소울 잠재능력 등급이 Normal인 경우.
+   *
+   * @throws {@link GearError}
+   * 잘못된 소울 잠재옵션 목록을 지정했을 경우.
    */
   setSoulPotential(grade: PotentialGrade, options: PotentialData[]) {
     setSoulPotential(this, grade, options);

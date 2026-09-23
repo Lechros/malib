@@ -1,6 +1,6 @@
 import { GearCapability, PotentialGrade } from '../data';
-import { GearError } from '../errors';
-import { createGear, createPotentialData } from '../test';
+import { ErrorCode, GearError } from '../error';
+import { createGear, createPotentialData } from '../testing';
 import {
   canSetAdditionalPotential,
   canSetPotential,
@@ -151,7 +151,7 @@ describe('setPotential', () => {
     }).toThrow(GearError);
   });
 
-  it('설정하려는 잠재능력 등급이 Normal일 경우 RangeError가 발생한다.', () => {
+  it('설정하려는 잠재능력 등급이 Normal일 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       attributes: {
         canPotential: GearCapability.Can,
@@ -160,10 +160,10 @@ describe('setPotential', () => {
 
     expect(() => {
       setPotential(gear, PotentialGrade.Normal, [createPotentialData()]);
-    }).toThrow(RangeError);
+    }).toThrow(GearError);
   });
 
-  it('설정하려는 잠재능력 옵션의 길이가 0일 경우 TypeError가 발생한다.', () => {
+  it('설정하려는 잠재능력 옵션의 길이가 0일 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       attributes: {
         canPotential: GearCapability.Can,
@@ -172,10 +172,10 @@ describe('setPotential', () => {
 
     expect(() => {
       setPotential(gear, PotentialGrade.Unique, []);
-    }).toThrow(TypeError);
+    }).toThrow(GearError);
   });
 
-  it('설정하려는 잠재능력 옵션의 길이가 3보다 클 경우 TypeError가 발생한다.', () => {
+  it('설정하려는 잠재능력 옵션의 길이가 3보다 클 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       attributes: {
         canPotential: GearCapability.Can,
@@ -189,7 +189,7 @@ describe('setPotential', () => {
         createPotentialData(),
         createPotentialData(),
       ]);
-    }).toThrow(TypeError);
+    }).toThrow(GearError);
   });
 });
 
@@ -364,7 +364,7 @@ describe('setAdditionalPotential', () => {
     }).toThrow(GearError);
   });
 
-  it('설정하려는 에디셔널 잠재능력 등급이 Normal일 경우 RangeError가 발생한다.', () => {
+  it('설정하려는 에디셔널 잠재능력 등급이 Normal일 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       attributes: {
         canAdditionalPotential: GearCapability.Can,
@@ -375,7 +375,7 @@ describe('setAdditionalPotential', () => {
       setAdditionalPotential(gear, PotentialGrade.Normal, [
         createPotentialData(),
       ]);
-    }).toThrow(RangeError);
+    }).toThrow(GearError);
   });
 
   it('설정하려는 에디셔널 잠재능력 옵션의 길이가 0일 경우 GearError가 발생한다.', () => {
@@ -434,4 +434,154 @@ describe('resetAdditionalPotential', () => {
 
     expect(gear.additionalPotentials).toEqual([]);
   });
+});
+
+describe('Potential 오류 우선순위', () => {
+  it.each([
+    [
+      GearCapability.Cannot,
+      PotentialGrade.Normal,
+      0,
+      ErrorCode.Potential_Set_NotSupported,
+      false,
+    ],
+    [
+      GearCapability.Fixed,
+      PotentialGrade.Normal,
+      0,
+      ErrorCode.Potential_Set_Fixed,
+      false,
+    ],
+    [
+      GearCapability.Can,
+      PotentialGrade.Normal,
+      0,
+      ErrorCode.Potential_Set_NormalGradeNotAllowed,
+      true,
+    ],
+    [
+      GearCapability.Can,
+      PotentialGrade.Rare,
+      0,
+      ErrorCode.Potential_Set_OptionCountOutOfRange,
+      true,
+    ],
+    [
+      GearCapability.Can,
+      PotentialGrade.Rare,
+      4,
+      ErrorCode.Potential_Set_OptionCountOutOfRange,
+      true,
+    ],
+  ])(
+    '장비 상태, 등급, 옵션 개수 순서로 검사한다 (%#).',
+    (capability, grade, count, code, canSet) => {
+      const gear = createGear({ attributes: { canPotential: capability } });
+      const options = Array.from({ length: count }, () =>
+        createPotentialData(),
+      );
+      const before = structuredClone(gear.data);
+      expect(canSetPotential(gear)).toBe(canSet);
+      expect(() => setPotential(gear, grade, options)).toThrow(
+        expect.objectContaining({
+          code,
+          context: {
+            gear,
+            grade,
+            'options.length': count,
+          },
+        }),
+      );
+      expect(gear.data).toEqual(before);
+    },
+  );
+
+  it.each([GearCapability.Cannot, GearCapability.Fixed])(
+    '설정을 지원하지 않는 장비는 초기화할 수 없다 (%d).',
+    (capability) => {
+      const gear = createGear({ attributes: { canPotential: capability } });
+      expect(() => resetPotential(gear)).toThrow(
+        expect.objectContaining({
+          code: ErrorCode.Potential_Reset_NotSupported,
+        }),
+      );
+    },
+  );
+});
+
+describe('AdditionalPotential 오류 우선순위', () => {
+  it.each([
+    [
+      GearCapability.Cannot,
+      PotentialGrade.Normal,
+      0,
+      ErrorCode.AdditionalPotential_Set_NotSupported,
+      false,
+    ],
+    [
+      GearCapability.Fixed,
+      PotentialGrade.Normal,
+      0,
+      ErrorCode.AdditionalPotential_Set_Fixed,
+      false,
+    ],
+    [
+      GearCapability.Can,
+      PotentialGrade.Normal,
+      0,
+      ErrorCode.AdditionalPotential_Set_NormalGradeNotAllowed,
+      true,
+    ],
+    [
+      GearCapability.Can,
+      PotentialGrade.Rare,
+      0,
+      ErrorCode.AdditionalPotential_Set_OptionCountOutOfRange,
+      true,
+    ],
+    [
+      GearCapability.Can,
+      PotentialGrade.Rare,
+      4,
+      ErrorCode.AdditionalPotential_Set_OptionCountOutOfRange,
+      true,
+    ],
+  ])(
+    '장비 상태, 등급, 옵션 개수 순서로 검사한다 (%#).',
+    (capability, grade, count, code, canSet) => {
+      const gear = createGear({
+        attributes: { canAdditionalPotential: capability },
+      });
+      const options = Array.from({ length: count }, () =>
+        createPotentialData(),
+      );
+      const before = structuredClone(gear.data);
+      expect(canSetAdditionalPotential(gear)).toBe(canSet);
+      expect(() => setAdditionalPotential(gear, grade, options)).toThrow(
+        expect.objectContaining({
+          code,
+          context: {
+            gear,
+            grade,
+            'options.length': count,
+          },
+        }),
+      );
+      expect(gear.data).toEqual(before);
+    },
+  );
+
+  it.each([GearCapability.Cannot, GearCapability.Fixed])(
+    '설정을 지원하지 않는 장비는 초기화할 수 없다 (%d).',
+    (capability) => {
+      const gear = createGear({
+        attributes: { canAdditionalPotential: capability },
+      });
+      expect(() => resetAdditionalPotential(gear)).toThrow(
+        expect.objectContaining({
+          code: ErrorCode.AdditionalPotential_Reset_NotSupported,
+        }),
+      );
+    },
+  );
 });

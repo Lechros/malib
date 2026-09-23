@@ -1,6 +1,6 @@
 import { GearType, PotentialGrade } from '../data';
-import { GearError } from '../errors';
-import { createGear, createPotentialData, createSoulData } from '../test';
+import { ErrorCode, GearError } from '../error';
+import { createGear, createPotentialData, createSoulData } from '../testing';
 import {
   amplifySoul,
   applySoulEnchant,
@@ -13,7 +13,7 @@ import {
   setSoul,
   setSoulPotential,
   supportsSoul,
-} from './soulSlot';
+} from './soulWeapon';
 
 describe('supportsSoul', () => {
   it.each([
@@ -1253,7 +1253,7 @@ describe('setSoulPotential', () => {
     expect(gear.soulPotentialGrade).toBe(grade);
   });
 
-  it('설정하려는 잠재능력 등급이 Normal일 경우 RangeError가 발생한다.', () => {
+  it('설정하려는 잠재능력 등급이 Normal일 경우 GearError가 발생한다.', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
@@ -1271,7 +1271,7 @@ describe('setSoulPotential', () => {
 
     expect(() => {
       setSoulPotential(gear, PotentialGrade.Normal, potentials);
-    }).toThrow(RangeError);
+    }).toThrow(GearError);
   });
 
   it.each([0, 1, 2, 4])(
@@ -1290,7 +1290,153 @@ describe('setSoulPotential', () => {
 
       expect(() => {
         setSoulPotential(gear, PotentialGrade.Rare, potentials);
-      }).toThrow(GearError);
+      }).toThrow(
+        expect.objectContaining({
+          code: ErrorCode.SoulWeapon_SetPotential_OptionCountNotThree,
+          context: {
+            gear,
+            grade: PotentialGrade.Rare,
+            'options.length': length,
+          },
+          message: expect.stringContaining(length.toString()),
+        }),
+      );
+    },
+  );
+});
+
+describe('소울웨폰 오류 우선순위', () => {
+  it.each([
+    [GearType.cap, ErrorCode.SoulWeapon_Enchant_NotWeapon],
+    [GearType.thSword, ErrorCode.SoulWeapon_Enchant_AlreadyEnchanted],
+  ])('무기 여부를 중복 변환보다 먼저 검사한다 (%d).', (type, code) => {
+    const gear = createGear({ type, soulSlot: { enchanted: true } });
+    expect(canApplySoulEnchant(gear)).toBe(false);
+    expect(() => applySoulEnchant(gear)).toThrow(
+      expect.objectContaining({ code }),
+    );
+  });
+
+  it.each([
+    [false, ErrorCode.SoulWeapon_Equip_NotEnchanted],
+    [true, ErrorCode.SoulWeapon_Equip_AmplifiedSlotRequiresAmplifiableSoul],
+  ])(
+    '소울웨폰 여부를 장착할 소울보다 먼저 검사한다 (%s).',
+    (enchanted, code) => {
+      const gear = createGear({
+        soulSlot: { enchanted, amplificationLevel: 1 },
+      });
+      const soul = createSoulData({ canAmplify: false });
+      expect(canSetSoul(gear, soul)).toBe(false);
+      expect(() => setSoul(gear, soul)).toThrow(
+        expect.objectContaining({ code }),
+      );
+    },
+  );
+
+  it.each([
+    [199, false, undefined, 4, ErrorCode.SoulWeapon_Amplify_ReqLevelBelow200],
+    [200, false, undefined, 4, ErrorCode.SoulWeapon_Amplify_NotEnchanted],
+    [200, true, undefined, 4, ErrorCode.SoulWeapon_Amplify_NoSoulEquipped],
+    [
+      200,
+      true,
+      false,
+      4,
+      ErrorCode.SoulWeapon_Amplify_EquippedSoulNotAmplifiable,
+    ],
+    [200, true, true, 4, ErrorCode.SoulWeapon_Amplify_MaxLevelReached],
+  ])(
+    '레벨, 소울웨폰 여부, 소울, 증폭 단계 순서로 검사한다 (%#).',
+    (level, enchanted, canAmplify, amplificationLevel, code) => {
+      const soul =
+        canAmplify === undefined ? undefined : createSoulData({ canAmplify });
+      const gear = createGear({
+        req: { level },
+        soulSlot: { enchanted, soul, amplificationLevel },
+      });
+      const before = structuredClone(gear.data);
+      expect(canAmplifySoul(gear)).toBe(false);
+      expect(() => amplifySoul(gear)).toThrow(
+        expect.objectContaining({
+          code,
+          context: { gear },
+        }),
+      );
+      expect(gear.data).toEqual(before);
+    },
+  );
+
+  it.each([
+    [
+      false,
+      0,
+      undefined,
+      PotentialGrade.Normal,
+      ErrorCode.SoulWeapon_SetPotential_NotEnchanted,
+      false,
+    ],
+    [
+      true,
+      0,
+      undefined,
+      PotentialGrade.Normal,
+      ErrorCode.SoulWeapon_SetPotential_NotAmplified,
+      false,
+    ],
+    [
+      true,
+      1,
+      undefined,
+      PotentialGrade.Normal,
+      ErrorCode.SoulWeapon_SetPotential_NoSoulEquipped,
+      false,
+    ],
+    [
+      true,
+      1,
+      false,
+      PotentialGrade.Normal,
+      ErrorCode.SoulWeapon_SetPotential_EquippedSoulNotAmplifiable,
+      false,
+    ],
+    [
+      true,
+      1,
+      true,
+      PotentialGrade.Normal,
+      ErrorCode.SoulWeapon_SetPotential_NormalGradeNotAllowed,
+      true,
+    ],
+    [
+      true,
+      1,
+      true,
+      PotentialGrade.Rare,
+      ErrorCode.SoulWeapon_SetPotential_OptionCountNotThree,
+      true,
+    ],
+  ])(
+    '장비 상태, 등급, 옵션 개수 순서로 검사한다 (%#).',
+    (enchanted, amplificationLevel, canAmplify, grade, code, canSet) => {
+      const soul =
+        canAmplify === undefined ? undefined : createSoulData({ canAmplify });
+      const gear = createGear({
+        soulSlot: { enchanted, amplificationLevel, soul },
+      });
+      const before = structuredClone(gear.data);
+      expect(canSetSoulPotential(gear)).toBe(canSet);
+      expect(() => setSoulPotential(gear, grade, [])).toThrow(
+        expect.objectContaining({
+          code,
+          context: {
+            gear,
+            grade,
+            'options.length': 0,
+          },
+        }),
+      );
+      expect(gear.data).toEqual(before);
     },
   );
 });

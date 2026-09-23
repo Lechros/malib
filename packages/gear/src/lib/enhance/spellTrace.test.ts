@@ -1,7 +1,9 @@
-import { GearOption, GearType } from '../data';
-import { createGear } from '../test';
-import { joinEach } from '../test/util';
+import { ErrorCode } from '../error';
+import { GearCapability, GearOption, GearType } from '../data';
+import { createGear } from '../testing';
+import { joinEach } from '../testing/util';
 import {
+  applySpellTrace,
   _getAccSpellTrace,
   _getArmorSpellTrace,
   _getGloveSpellTrace,
@@ -568,4 +570,89 @@ describe('_getHeartSpellTrace', () => {
       expect(scroll.option).toEqual(expectedOption);
     },
   );
+});
+
+describe('주문의 흔적 오류 우선순위', () => {
+  it.each([
+    [
+      GearType.emblem,
+      SpellTraceType.allStat,
+      15,
+      ErrorCode.SpellTrace_CreateScroll_UnsupportedGearType,
+    ],
+    [
+      GearType.thSword,
+      SpellTraceType.allStat,
+      15,
+      ErrorCode.SpellTrace_CreateScroll_UnsupportedSpellTraceType,
+    ],
+    [
+      GearType.cap,
+      SpellTraceType.allStat,
+      100,
+      ErrorCode.SpellTrace_CreateScroll_UnsupportedTypeRateCombination,
+    ],
+    [
+      GearType.ring,
+      SpellTraceType.allStat,
+      15,
+      ErrorCode.SpellTrace_CreateScroll_UnsupportedSpellTraceRate,
+    ],
+    [
+      GearType.ring,
+      SpellTraceType.allStat,
+      70,
+      ErrorCode.SpellTrace_CreateScroll_UnsupportedTypeRateCombination,
+    ],
+    [
+      GearType.machineHeart,
+      SpellTraceType.str,
+      15,
+      ErrorCode.SpellTrace_CreateScroll_UnsupportedSpellTraceRate,
+    ],
+  ] as const)(
+    '장비 분류와 사용 가능한 종류·확률을 업그레이드 상태보다 먼저 검사한다 (%#).',
+    (gearType, type, rate, code) => {
+      const gear = createGear({
+        type: gearType,
+        attributes: { canScroll: GearCapability.Cannot },
+        scrollUpgradeableCount: 0,
+      });
+      const before = structuredClone(gear.data);
+      expect(() => getSpellTraceScroll(gear, type, rate)).toThrow(
+        expect.objectContaining({ code }),
+      );
+      expect(() => applySpellTrace(gear, type, rate)).toThrow(
+        expect.objectContaining({ code }),
+      );
+      expect(gear.data).toEqual(before);
+    },
+  );
+
+  it('종류와 확률을 중복 없이 context와 메시지에 제공한다.', () => {
+    const gear = createGear({ type: GearType.ring });
+    expect(() => getSpellTraceScroll(gear, SpellTraceType.allStat, 70)).toThrow(
+      expect.objectContaining({
+        code: ErrorCode.SpellTrace_CreateScroll_UnsupportedTypeRateCombination,
+        context: {
+          gear,
+          type: SpellTraceType.allStat,
+          rate: 70,
+        },
+        message: expect.not.stringMatching(/\{(?:type|rate)\}/),
+      }),
+    );
+  });
+
+  it('사용 가능한 주문의 흔적이면 주문서 적용 가능 여부를 검사한다.', () => {
+    const gear = createGear({
+      type: GearType.cap,
+      attributes: { canScroll: GearCapability.Cannot },
+    });
+    expect(() => applySpellTrace(gear, SpellTraceType.str, 100)).toThrow(
+      expect.objectContaining({
+        code: ErrorCode.Upgrade_ApplyScroll_NotSupported,
+      }),
+    );
+  });
 });

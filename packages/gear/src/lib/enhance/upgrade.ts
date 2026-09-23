@@ -1,5 +1,5 @@
 import { GearUpgradeOption, GearCapability } from '../data';
-import { ErrorMessage, GearError } from '../errors';
+import { ErrorCode, GearError } from '../error';
 import { Gear } from '../Gear';
 import { addOptions } from '../gearOption';
 import { ReadonlyGear } from '../ReadonlyGear';
@@ -31,7 +31,14 @@ export function supportsUpgrade(gear: ReadonlyGear): boolean {
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canFailScroll(gear: ReadonlyGear): boolean {
-  return supportsUpgrade(gear) && gear.scrollUpgradeableCount > 0;
+  return checkFailScroll(gear) === undefined;
+}
+
+function checkFailScroll(gear: ReadonlyGear) {
+  if (!supportsUpgrade(gear)) return ErrorCode.Upgrade_FailScroll_NotSupported;
+  if (gear.scrollUpgradeableCount <= 0)
+    return ErrorCode.Upgrade_FailScroll_NoRemainingUpgradeCount;
+  return undefined;
 }
 
 /**
@@ -42,11 +49,9 @@ export function canFailScroll(gear: ReadonlyGear): boolean {
  * 주문서 실패를 적용할 수 없는 상태의 장비일 경우.
  */
 export function failScroll(gear: Gear) {
-  if (!canFailScroll(gear)) {
-    throw new GearError(ErrorMessage.Upgrade_InvalidFailScrollGear, gear, {
-      'attributes.canScroll': gear.attributes.canScroll,
-      scrollUpgradeableCount: gear.scrollUpgradeableCount,
-    });
+  const code = checkFailScroll(gear);
+  if (code !== undefined) {
+    throw new GearError(code, { gear });
   }
   gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount - 1;
   gear.data.scrollResilienceCount = gear.scrollResilienceCount + 1;
@@ -58,7 +63,15 @@ export function failScroll(gear: Gear) {
  * @returns 복구할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canResileScroll(gear: ReadonlyGear): boolean {
-  return supportsUpgrade(gear) && gear.scrollResilienceCount > 0;
+  return checkResileScroll(gear) === undefined;
+}
+
+function checkResileScroll(gear: ReadonlyGear) {
+  if (!supportsUpgrade(gear))
+    return ErrorCode.Upgrade_ResileScroll_NotSupported;
+  if (gear.scrollResilienceCount <= 0)
+    return ErrorCode.Upgrade_ResileScroll_NoResilienceCount;
+  return undefined;
 }
 
 /**
@@ -69,11 +82,9 @@ export function canResileScroll(gear: ReadonlyGear): boolean {
  * 업그레이드 가능 횟수를 복구할 수 없는 상태의 장비일 경우.
  */
 export function resileScroll(gear: Gear) {
-  if (!canResileScroll(gear)) {
-    throw new GearError(ErrorMessage.Upgrade_InvalidResileScrollGear, gear, {
-      'attributes.canScroll': gear.attributes.canScroll,
-      scrollResilienceCount: gear.scrollResilienceCount,
-    });
+  const code = checkResileScroll(gear);
+  if (code !== undefined) {
+    throw new GearError(code, { gear });
   }
   gear.data.scrollResilienceCount = gear.scrollResilienceCount - 1;
   gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount + 1;
@@ -85,7 +96,12 @@ export function resileScroll(gear: Gear) {
  * @returns 초기화할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canResetUpgrade(gear: ReadonlyGear): boolean {
-  return supportsUpgrade(gear);
+  return checkResetUpgrade(gear) === undefined;
+}
+
+function checkResetUpgrade(gear: ReadonlyGear) {
+  if (!supportsUpgrade(gear)) return ErrorCode.Upgrade_Reset_NotSupported;
+  return undefined;
 }
 
 /**
@@ -96,10 +112,9 @@ export function canResetUpgrade(gear: ReadonlyGear): boolean {
  * 주문서 강화를 초기화할 수 없는 장비일 경우.
  */
 export function resetUpgrade(gear: Gear) {
-  if (!canResetUpgrade(gear)) {
-    throw new GearError(ErrorMessage.Upgrade_InvalidResetScrollGear, gear, {
-      'attributes.canScroll': gear.attributes.canScroll,
-    });
+  const code = checkResetUpgrade(gear);
+  if (code !== undefined) {
+    throw new GearError(code, { gear });
   }
   gear.data.upgradeOption = {};
   gear.data.scrollUpgradeableCount = gear.scrollTotalUpgradeableCount;
@@ -113,7 +128,14 @@ export function resetUpgrade(gear: Gear) {
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canApplyScroll(gear: ReadonlyGear): boolean {
-  return supportsUpgrade(gear) && gear.scrollUpgradeableCount > 0;
+  return checkApplyScroll(gear) === undefined;
+}
+
+function checkApplyScroll(gear: ReadonlyGear) {
+  if (!supportsUpgrade(gear)) return ErrorCode.Upgrade_ApplyScroll_NotSupported;
+  if (gear.scrollUpgradeableCount <= 0)
+    return ErrorCode.Upgrade_ApplyScroll_NoRemainingUpgradeCount;
+  return undefined;
 }
 
 /**
@@ -125,11 +147,9 @@ export function canApplyScroll(gear: ReadonlyGear): boolean {
  * 주문서를 적용할 수 없는 상태의 장비일 경우.
  */
 export function applyScroll(gear: Gear, scroll: Scroll) {
-  if (!canApplyScroll(gear)) {
-    throw new GearError(ErrorMessage.Upgrade_InvalidApplyScrollGear, gear, {
-      'attributes.canScroll': gear.attributes.canScroll,
-      scrollUpgradeableCount: gear.scrollUpgradeableCount,
-    });
+  const code = checkApplyScroll(gear);
+  if (code !== undefined) {
+    throw new GearError(code, { gear });
   }
   gear.data.upgradeOption ??= {};
   addOptions(gear.data.upgradeOption, scroll.option);

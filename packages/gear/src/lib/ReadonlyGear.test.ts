@@ -5,14 +5,50 @@ import {
   GearType,
   PotentialGrade,
 } from './data';
+import { ErrorCode } from './error';
+import { ReadonlyGear } from './ReadonlyGear';
 import {
   createGear,
   createPotentialData,
   createReadonlyGear,
   createSoulData,
-} from './test';
+} from './testing';
 
 describe('ReadonlyGear', () => {
+  describe('constructor', () => {
+    it.each([1000000, 0, undefined])(
+      '지원하지 않는 버전의 장비 ID가 %s이면 존재 여부에 따라 오류 context에 전달한다.',
+      (id) => {
+        const data = { ...createReadonlyGear().data, version: 3, id };
+
+        expect(() => {
+          // @ts-expect-error: 지원하지 않는 버전과 누락될 수 있는 ID를 검사한다.
+          new ReadonlyGear(data, { errorLanguage: 'ko' });
+        }).toThrow(
+          expect.objectContaining({
+            code: ErrorCode.Gear_Construct_UnsupportedDataVersion,
+            context: {
+              gear: { id: id ?? -1, name: data.name, errorLanguage: 'ko' },
+              expected: 4,
+              actual: 3,
+            },
+          }),
+        );
+      },
+    );
+
+    it.each(['en', 'ko'] as const)(
+      '문자열 언어 설정 %s를 사용한다.',
+      (errorLanguage) => {
+        const data = createReadonlyGear().data;
+        const gear = new ReadonlyGear(data, { errorLanguage });
+
+        expect(gear.errorLanguage).toBe(errorLanguage);
+        expect(gear.data).toBe(data);
+      },
+    );
+  });
+
   describe('version', () => {
     const gear = createReadonlyGear();
     it('4이다.', () => {

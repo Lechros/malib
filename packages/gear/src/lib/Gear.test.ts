@@ -1,6 +1,6 @@
 import { AddOptionType, PotentialGrade } from './data';
 import { SpellTraceType } from './enhance/spellTrace';
-import { GearError } from './errors';
+import { GearError } from './error';
 import { sumOptions } from './gearOption';
 import {
   createExceptional,
@@ -11,7 +11,7 @@ import {
   soulPatch,
   starforcePatch,
   upgradePatch,
-} from './test';
+} from './testing';
 
 describe('Gear', () => {
   describe('shape', () => {

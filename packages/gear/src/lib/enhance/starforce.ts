@@ -1,5 +1,5 @@
 import { GearStarforceOption, GearType, GearCapability } from '../data';
-import { ErrorMessage, GearError } from '../errors';
+import { ErrorCode, GearError } from '../error';
 import { Gear } from '../Gear';
 import { toGearOption } from '../gearOption';
 import { isAccessory, isArmor, isSubWeapon, isWeapon } from '../gearType';
@@ -31,23 +31,28 @@ export function canStarforce(
   gear: ReadonlyGear,
   exceedMaxStar = false,
 ): boolean {
-  if (!supportsStarforce(gear)) {
-    return false;
-  }
+  return checkStarforce(gear, exceedMaxStar) === undefined;
+}
+
+function checkStarforce(gear: ReadonlyGear, exceedMaxStar = false) {
+  if (gear.attributes.canStarforce === GearCapability.Fixed)
+    return ErrorCode.Starforce_Apply_Fixed;
+  if (!supportsStarforce(gear)) return ErrorCode.Starforce_Apply_NotSupported;
   if (gear.attributes.superior) {
-    return gear.star < Math.min(MAX_SUPERIOR, gear.maxStar);
+    if (gear.star >= gear.maxStar)
+      return ErrorCode.Starforce_Apply_MaxStarReached;
+    if (gear.star >= MAX_SUPERIOR)
+      return ErrorCode.Starforce_Apply_SuperiorMaxStarReached;
+    return checkStarforceReqLevel(gear);
   }
-  if (exceedMaxStar) {
-    if (gear.star >= _getBaseMaxStarWithToadsHammer(gear)) {
-      return false;
-    }
-  } else {
-    if (gear.star >= gear.maxStar) {
-      return false;
-    }
-  }
+  const maxStar = exceedMaxStar
+    ? _getBaseMaxStarWithToadsHammer(gear)
+    : gear.maxStar;
+  if (gear.star >= maxStar) return ErrorCode.Starforce_Apply_MaxStarReached;
   const limit = gear.starScroll ? MAX_STARSCROLL : MAX_STARFORCE;
-  return gear.star < limit;
+  if (gear.star >= limit)
+    return ErrorCode.Starforce_Apply_AbsoluteMaxStarReached;
+  return checkStarforceReqLevel(gear);
 }
 
 /**
@@ -61,17 +66,9 @@ export function canStarforce(
  * 스타포스 강화를 적용할 수 없는 경우.
  */
 export function starforce(gear: Gear, exceedMaxStar = false) {
-  if (!canStarforce(gear, exceedMaxStar)) {
-    throw new GearError(ErrorMessage.Starforce_InvalidStarforceGear, gear, {
-      'attributes.canStarforce': gear.attributes.canStarforce,
-      'attributes.superior': gear.attributes.superior,
-      'req.level': gear.req.level,
-      'req.levelIncrease': gear.req.levelIncrease,
-      star: gear.star,
-      maxStar: gear.maxStar,
-      starScroll: gear.starScroll,
-      input_exceedMaxStar: exceedMaxStar,
-    });
+  const code = checkStarforce(gear, exceedMaxStar);
+  if (code !== undefined) {
+    throw new GearError(code, { gear, exceedMaxStar });
   }
   gear.data.star = gear.star + 1;
 
@@ -98,19 +95,22 @@ export function canStarScroll(
   gear: ReadonlyGear,
   exceedMaxStar = false,
 ): boolean {
-  if (!supportsStarforce(gear)) {
-    return false;
-  }
-  if (gear.attributes.superior) {
-    return false;
-  }
-  if (gear.req.level > MAX_REQLEVEL_STARSCROLL) {
-    return false;
-  }
-  if (!exceedMaxStar && gear.star >= gear.maxStar) {
-    return false;
-  }
-  return gear.star < MAX_STARSCROLL;
+  return checkStarScroll(gear, exceedMaxStar) === undefined;
+}
+
+function checkStarScroll(gear: ReadonlyGear, exceedMaxStar = false) {
+  if (gear.attributes.canStarforce === GearCapability.Fixed)
+    return ErrorCode.StarScroll_Apply_Fixed;
+  if (!supportsStarforce(gear)) return ErrorCode.StarScroll_Apply_NotSupported;
+  if (gear.attributes.superior)
+    return ErrorCode.StarScroll_Apply_SuperiorNotSupported;
+  if (gear.req.level > MAX_REQLEVEL_STARSCROLL)
+    return ErrorCode.StarScroll_Apply_ReqLevelAbove150;
+  if (!exceedMaxStar && gear.star >= gear.maxStar)
+    return ErrorCode.StarScroll_Apply_MaxStarReached;
+  if (gear.star >= MAX_STARSCROLL)
+    return ErrorCode.StarScroll_Apply_AbsoluteMaxStarReached;
+  return checkStarforceReqLevel(gear);
 }
 
 /**
@@ -136,17 +136,9 @@ export function starScroll(
   bonus = false,
   exceedMaxStar = false,
 ): void {
-  if (!canStarScroll(gear, exceedMaxStar)) {
-    throw new GearError(ErrorMessage.StarScroll_InvalidStarScrollGear, gear, {
-      'attributes.canStarforce': gear.attributes.canStarforce,
-      'attributes.superior': gear.attributes.superior,
-      'req.level': gear.req.level,
-      'req.levelIncrease': gear.req.levelIncrease,
-      star: gear.star,
-      maxStar: gear.maxStar,
-      starScroll: gear.starScroll,
-      input_exceedMaxStar: exceedMaxStar,
-    });
+  const code = checkStarScroll(gear, exceedMaxStar);
+  if (code !== undefined) {
+    throw new GearError(code, { gear, exceedMaxStar });
   }
   gear.data.starScroll = true;
   gear.data.star = gear.star + 1;
@@ -194,10 +186,14 @@ export function starScroll(
  * @returns 초기화할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canResetStarforce(gear: ReadonlyGear): boolean {
-  if (!supportsStarforce(gear)) {
-    return false;
-  }
-  return true;
+  return checkResetStarforce(gear) === undefined;
+}
+
+function checkResetStarforce(gear: ReadonlyGear) {
+  if (gear.attributes.canStarforce === GearCapability.Fixed)
+    return ErrorCode.Starforce_Reset_Fixed;
+  if (!supportsStarforce(gear)) return ErrorCode.Starforce_Reset_NotSupported;
+  return undefined;
 }
 
 /**
@@ -208,10 +204,9 @@ export function canResetStarforce(gear: ReadonlyGear): boolean {
  * 스타포스 강화를 초기화할 수 없는 장비일 경우.
  */
 export function resetStarforce(gear: Gear) {
-  if (!canResetStarforce(gear)) {
-    throw new GearError(ErrorMessage.Starforce_InvalidResetGear, gear, {
-      'attributes.canStarforce': gear.attributes.canStarforce,
-    });
+  const code = checkResetStarforce(gear);
+  if (code !== undefined) {
+    throw new GearError(code, { gear });
   }
   gear.data.starforceOption = {};
   gear.data.star = undefined;
@@ -262,13 +257,21 @@ export function getHardMaxStar(gear: ReadonlyGear): number {
  * @returns 다시 계산할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
 export function canRecalculateStarforce(gear: ReadonlyGear): boolean {
-  if (gear.attributes.canStarforce === GearCapability.Cannot) {
-    return false;
-  }
-  if (gear.starScroll) {
-    return false;
-  }
-  return true;
+  return checkRecalculateStarforce(gear) === undefined;
+}
+
+function checkRecalculateStarforce(gear: ReadonlyGear) {
+  if (gear.attributes.canStarforce === GearCapability.Cannot)
+    return ErrorCode.Starforce_Recalculate_NotSupported;
+  if (gear.starScroll) return ErrorCode.Starforce_Recalculate_StarScrollApplied;
+  if (gear.star > 0) return checkStarforceReqLevel(gear);
+  return undefined;
+}
+
+function checkStarforceReqLevel(gear: ReadonlyGear) {
+  if (!(gear.req.level >= 0))
+    return ErrorCode.Starforce_Calculate_UnsupportedReqLevel;
+  return undefined;
 }
 
 /**
@@ -279,11 +282,9 @@ export function canRecalculateStarforce(gear: ReadonlyGear): boolean {
  * 스타포스 강화 옵션을 다시 계산할 수 없는 경우.
  */
 export function recalculateStarforce(gear: Gear) {
-  if (!canRecalculateStarforce(gear)) {
-    throw new GearError(ErrorMessage.Starforce_InvalidRecalculateGear, gear, {
-      'attributes.canStarforce': gear.attributes.canStarforce,
-      starScroll: gear.starScroll,
-    });
+  const code = checkRecalculateStarforce(gear);
+  if (code !== undefined) {
+    throw new GearError(code, { gear });
   }
   const canStarforce = gear.attributes.canStarforce;
   const star = gear.star;
@@ -434,8 +435,8 @@ function _getValue(data: number[][], gear: ReadonlyGear): number {
       return item[gear.star];
     }
   }
-  throw new GearError(ErrorMessage.Starforce_InvalidReqLevelGear, gear, {
-    'req.level': gear.req.level,
+  throw new GearError(ErrorCode.Starforce_Calculate_UnsupportedReqLevel, {
+    gear,
   });
 }
 
