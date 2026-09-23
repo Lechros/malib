@@ -9,7 +9,7 @@
   },
   "type": "module",
   "scripts": {
-    "all": "turbo run format && turbo run lint check test",
+    "all": "turbo run format:check lint check test",
     "build": "turbo run build",
     "format": "oxfmt",
     "format:check": "oxfmt --check",

@@ -8,7 +8,7 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  build:
+  check:
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -34,14 +34,5 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Format check
-        run: pnpm format:check
-
-      - name: Lint check
-        run: pnpm lint
-
-      - name: Check types
-        run: pnpm check
-
-      - name: Test
-        run: pnpm test
+      - name: Run all checks
+        run: pnpm all
