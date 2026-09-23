@@ -124,7 +124,7 @@ function migrateV3ToV4(data: GearDataV3): GearDataV4 {
             name: soulSlot.soul.name,
             option: soulSlot.soul.option,
             ...(soulSlot.soul.name.startsWith('위대한') && {
-              canAmplify: true,
+              magnificent: true,
             }),
           },
         }),

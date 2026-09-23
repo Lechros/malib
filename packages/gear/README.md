@@ -228,7 +228,7 @@ if (gear.canSetAdditionalPotential) {
 const godSoul = {
   name: 'God Soul',
   option: { attackPowerRate: 3 },
-  canAmplify: true,
+  magnificent: true,
 };
 
 // Soul amplification requires level >= 200

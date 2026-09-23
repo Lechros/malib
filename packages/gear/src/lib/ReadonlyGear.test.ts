@@ -624,20 +624,20 @@ describe('ReadonlyGear', () => {
   });
 
   describe('soul', () => {
-    it('증폭 가능 여부가 존재하지 않을 경우 false를 반환한다.', () => {
+    it('위대한 소울 여부가 존재하지 않을 경우 false를 반환한다.', () => {
       const gear = createReadonlyGear({
         soulSlot: { soul: createSoulData() },
       });
 
-      expect(gear.soul?.canAmplify).toBe(false);
+      expect(gear.soul?.magnificent).toBe(false);
     });
 
-    it('소울의 증폭 가능 여부를 반환한다.', () => {
+    it('위대한 소울 여부를 반환한다.', () => {
       const gear = createReadonlyGear({
-        soulSlot: { soul: createSoulData({ canAmplify: true }) },
+        soulSlot: { soul: createSoulData({ magnificent: true }) },
       });
 
-      expect(gear.soul?.canAmplify).toBe(true);
+      expect(gear.soul?.magnificent).toBe(true);
     });
 
     it('장착된 소울을 반환한다.', () => {
@@ -648,7 +648,7 @@ describe('ReadonlyGear', () => {
         },
       });
 
-      expect(gear.soul).toEqual({ ...soul, canAmplify: false });
+      expect(gear.soul).toEqual({ ...soul, magnificent: false });
     });
 
     it('소울 웨폰에 장착된 소울이 없는 경우 undefined를 반환한다.', () => {

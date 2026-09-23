@@ -61,7 +61,7 @@ export function canSetSoul(gear: ReadonlyGear, soul: SoulData): boolean {
 
 function checkSetSoul(gear: ReadonlyGear, soul: SoulData) {
   if (!gear.soulEnchanted) return ErrorCode.SoulWeapon_Equip_NotEnchanted;
-  if (gear.soulAmplificationLevel !== 0 && soul.canAmplify !== true)
+  if (gear.soulAmplificationLevel !== 0 && soul.magnificent !== true)
     return ErrorCode.SoulWeapon_Equip_AmplifiedSlotRequiresAmplifiableSoul;
   return undefined;
 }
@@ -116,7 +116,7 @@ function checkAmplifySoul(gear: ReadonlyGear) {
     return ErrorCode.SoulWeapon_Amplify_ReqLevelBelow200;
   if (!gear.soulEnchanted) return ErrorCode.SoulWeapon_Amplify_NotEnchanted;
   if (!gear.soul) return ErrorCode.SoulWeapon_Amplify_NoSoulEquipped;
-  if (!gear.soul.canAmplify)
+  if (!gear.soul.magnificent)
     return ErrorCode.SoulWeapon_Amplify_EquippedSoulNotAmplifiable;
   if ((gear.data.soulSlot?.amplificationLevel ?? 0) >= 4)
     return ErrorCode.SoulWeapon_Amplify_MaxLevelReached;
@@ -162,7 +162,7 @@ function checkSetSoulPotential(
   if ((gear.data.soulSlot?.amplificationLevel ?? 0) === 0)
     return ErrorCode.SoulWeapon_SetPotential_NotAmplified;
   if (!gear.soul) return ErrorCode.SoulWeapon_SetPotential_NoSoulEquipped;
-  if (!gear.soul.canAmplify)
+  if (!gear.soul.magnificent)
     return ErrorCode.SoulWeapon_SetPotential_EquippedSoulNotAmplifiable;
   if (grade === PotentialGrade.Normal)
     return ErrorCode.SoulWeapon_SetPotential_NormalGradeNotAllowed;

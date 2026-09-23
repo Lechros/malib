@@ -284,7 +284,7 @@ export class ReadonlyGear implements _Gear {
     return {
       ...this.data.soulSlot.soul,
       option: toGearOption(this.data.soulSlot.soul.option),
-      canAmplify: this.data.soulSlot.soul.canAmplify ?? false,
+      magnificent: this.data.soulSlot.soul.magnificent ?? false,
     };
   }
 

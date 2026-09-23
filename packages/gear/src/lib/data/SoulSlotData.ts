@@ -26,8 +26,8 @@ export interface SoulData {
   name: string;
   /** 소울 추가 능력치 */
   option: Partial<SoulOption>;
-  /** 소울 증폭 가능 여부 */
-  canAmplify?: boolean;
+  /** 위대한 소울 여부 */
+  magnificent?: boolean;
 }
 
 /**
