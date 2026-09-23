@@ -508,7 +508,7 @@ export class Gear extends ReadonlyGear {
    * 장비에 위대한 소울을 장착할 수 있는지 여부
    */
   get canSetMagnificentSoul(): boolean {
-    return canSetSoul(this, { name: '', option: {}, canAmplify: true });
+    return canSetSoul(this, { name: '', option: {}, magnificent: true });
   }
 
   /**

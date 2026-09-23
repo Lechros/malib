@@ -5,4 +5,4 @@ export * from './GearOption';
 export * from './GearType';
 export * from './PotentialData';
 export * from './PotentialGrade';
-export * from './SoulSlotData';
+export * from './SoulData';

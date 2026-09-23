@@ -182,7 +182,7 @@ describe('migrate', () => {
       type: GearTypeV4.bow,
       req: {},
       attributes: {},
-      soulSlot: {
+      soulWeapon: {
         enchanted: true,
         soul: {
           name: '테스트용 소울',
@@ -233,19 +233,19 @@ describe('migrate', () => {
         },
       } satisfies GearDataV3;
 
-      expect(migrate(data, 4).soulSlot).toEqual({
+      expect(migrate(data, 4).soulWeapon).toEqual({
         enchanted: true,
         soul: {
           name,
           option: { attackPowerRate: 3 },
-          canAmplify: true,
+          magnificent: true,
         },
       });
     },
   );
 
   it.each(['기운찬 카링의 소울', '테스트용 위대한 소울', ''])(
-    'GearDataV3의 소울 이름이 위대한으로 시작하지 않는 경우 canAmplify를 추가하지 않는다.',
+    'GearDataV3의 소울 이름이 위대한으로 시작하지 않는 경우 magnificent를 추가하지 않는다.',
     (name) => {
       const data = {
         id: 1452000,
@@ -264,7 +264,7 @@ describe('migrate', () => {
         },
       } satisfies GearDataV3;
 
-      expect(migrate(data, 4).soulSlot).toEqual({
+      expect(migrate(data, 4).soulWeapon).toEqual({
         enchanted: true,
         soul: {
           name,
@@ -286,7 +286,7 @@ describe('migrate', () => {
       soulSlot: {},
     } satisfies GearDataV3;
 
-    expect(migrate(data, 4).soulSlot).toEqual({ enchanted: true });
+    expect(migrate(data, 4).soulWeapon).toEqual({ enchanted: true });
   });
 
   it('GearDataV4를 GearDataV4로 마이그레이션한다.', () => {
@@ -298,7 +298,7 @@ describe('migrate', () => {
       type: GearTypeV4.bow,
       req: {},
       attributes: {},
-      soulSlot: { enchanted: false },
+      soulWeapon: { enchanted: false },
     } satisfies GearDataV4;
     expect(migrate(data, 4)).toEqual(data);
   });

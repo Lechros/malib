@@ -45,8 +45,8 @@ export function applySoulEnchant(gear: Gear) {
   if (code !== undefined) {
     throw new GearError(code, { gear });
   }
-  gear.data.soulSlot ??= {};
-  gear.data.soulSlot.enchanted = true;
+  gear.data.soulWeapon ??= {};
+  gear.data.soulWeapon.enchanted = true;
 }
 
 /**
@@ -61,7 +61,7 @@ export function canSetSoul(gear: ReadonlyGear, soul: SoulData): boolean {
 
 function checkSetSoul(gear: ReadonlyGear, soul: SoulData) {
   if (!gear.soulEnchanted) return ErrorCode.SoulWeapon_Equip_NotEnchanted;
-  if (gear.soulAmplificationLevel !== 0 && soul.canAmplify !== true)
+  if (gear.soulAmplificationLevel !== 0 && soul.magnificent !== true)
     return ErrorCode.SoulWeapon_Equip_AmplifiedSlotRequiresAmplifiableSoul;
   return undefined;
 }
@@ -80,7 +80,7 @@ export function setSoul(gear: Gear, soul: SoulData) {
     throw new GearError(code, { gear });
   }
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  gear.data.soulSlot!.soul = soul;
+  gear.data.soulWeapon!.soul = soul;
 }
 
 /**
@@ -116,9 +116,9 @@ function checkAmplifySoul(gear: ReadonlyGear) {
     return ErrorCode.SoulWeapon_Amplify_ReqLevelBelow200;
   if (!gear.soulEnchanted) return ErrorCode.SoulWeapon_Amplify_NotEnchanted;
   if (!gear.soul) return ErrorCode.SoulWeapon_Amplify_NoSoulEquipped;
-  if (!gear.soul.canAmplify)
+  if (!gear.soul.magnificent)
     return ErrorCode.SoulWeapon_Amplify_EquippedSoulNotAmplifiable;
-  if ((gear.data.soulSlot?.amplificationLevel ?? 0) >= 4)
+  if ((gear.data.soulWeapon?.amplificationLevel ?? 0) >= 4)
     return ErrorCode.SoulWeapon_Amplify_MaxLevelReached;
   return undefined;
 }
@@ -136,11 +136,11 @@ export function amplifySoul(gear: Gear) {
     throw new GearError(code, { gear });
   }
   if (gear.soulAmplificationLevel === 0) {
-    gear.data.soulSlot!.potentialGrade = PotentialGrade.Rare;
-    gear.data.soulSlot!.potentials = [];
+    gear.data.soulWeapon!.potentialGrade = PotentialGrade.Rare;
+    gear.data.soulWeapon!.potentials = [];
   }
-  gear.data.soulSlot!.amplificationLevel =
-    (gear.data.soulSlot!.amplificationLevel ?? 0) + 1;
+  gear.data.soulWeapon!.amplificationLevel =
+    (gear.data.soulWeapon!.amplificationLevel ?? 0) + 1;
 }
 
 /**
@@ -159,10 +159,10 @@ function checkSetSoulPotential(
 ) {
   if (!gear.soulEnchanted)
     return ErrorCode.SoulWeapon_SetPotential_NotEnchanted;
-  if ((gear.data.soulSlot?.amplificationLevel ?? 0) === 0)
+  if ((gear.data.soulWeapon?.amplificationLevel ?? 0) === 0)
     return ErrorCode.SoulWeapon_SetPotential_NotAmplified;
   if (!gear.soul) return ErrorCode.SoulWeapon_SetPotential_NoSoulEquipped;
-  if (!gear.soul.canAmplify)
+  if (!gear.soul.magnificent)
     return ErrorCode.SoulWeapon_SetPotential_EquippedSoulNotAmplifiable;
   if (grade === PotentialGrade.Normal)
     return ErrorCode.SoulWeapon_SetPotential_NormalGradeNotAllowed;
@@ -193,9 +193,9 @@ export function setSoulPotential(
     });
   }
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  gear.data.soulSlot!.potentialGrade = grade;
+  gear.data.soulWeapon!.potentialGrade = grade;
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  gear.data.soulSlot!.potentials = options;
+  gear.data.soulWeapon!.potentials = options;
 }
 
 /**
@@ -204,8 +204,8 @@ export function setSoulPotential(
  * @param gear 초기화할 장비.
  */
 export function resetSoulEnchant(gear: Gear) {
-  if (gear.data.soulSlot) {
-    gear.data.soulSlot.enchanted = false;
-    gear.data.soulSlot.soul = undefined;
+  if (gear.data.soulWeapon) {
+    gear.data.soulWeapon.enchanted = false;
+    gear.data.soulWeapon.soul = undefined;
   }
 }

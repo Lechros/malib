@@ -27,7 +27,7 @@ export {
   type SoulBaseOption,
   type SoulData,
   type SoulOption,
-  type SoulSlotData,
+  type SoulWeaponData,
 } from './lib/data';
 export {
   applyAddOption,
