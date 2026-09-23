@@ -727,7 +727,7 @@ describe('Gear', () => {
         '증폭된 소울웨폰에 magnificent가 %s인 소울을 장착하려는 경우 %p를 반환한다.',
         (magnificent, expected) => {
           const gear = createGear('아케인셰이드 샤이닝로드', {
-            soulSlot: { enchanted: true, amplificationLevel: 1 },
+            soulWeapon: { enchanted: true, amplificationLevel: 1 },
           });
           const soul = createSoulData({ magnificent });
 
@@ -776,7 +776,7 @@ describe('Gear', () => {
 
       it('증폭된 소울웨폰인 경우 false를 반환한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드', {
-          soulSlot: { enchanted: true, amplificationLevel: 1 },
+          soulWeapon: { enchanted: true, amplificationLevel: 1 },
         });
 
         expect(gear.canSetNormalSoul).toBe(false);
@@ -798,7 +798,7 @@ describe('Gear', () => {
 
       it('증폭된 소울웨폰인 경우 true를 반환한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드', {
-          soulSlot: { enchanted: true, amplificationLevel: 1 },
+          soulWeapon: { enchanted: true, amplificationLevel: 1 },
         });
 
         expect(gear.canSetMagnificentSoul).toBe(true);
@@ -850,7 +850,7 @@ describe('Gear', () => {
     describe('canSetSoulPotential', () => {
       it('증폭한 위대한 소울이 장착된 경우 true를 반환한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드', {
-          soulSlot: {
+          soulWeapon: {
             enchanted: true,
             soul: createSoulData({ magnificent: true }),
             amplificationLevel: 1,
@@ -872,7 +872,7 @@ describe('Gear', () => {
     describe('setSoulPotential', () => {
       it('소울 잠재능력 등급을 설정한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드', {
-          soulSlot: {
+          soulWeapon: {
             enchanted: true,
             soul: createSoulData({ magnificent: true }),
             amplificationLevel: 1,
@@ -890,7 +890,7 @@ describe('Gear', () => {
 
       it('소울 잠재능력 옵션을 설정한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드', {
-          soulSlot: {
+          soulWeapon: {
             enchanted: true,
             soul: createSoulData({ magnificent: true }),
             amplificationLevel: 1,
@@ -922,7 +922,7 @@ describe('Gear', () => {
     describe('resetSoulEnchant', () => {
       it('소울웨폰을 초기화한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드', {
-          soulSlot: { enchanted: true },
+          soulWeapon: { enchanted: true },
         });
 
         gear.resetSoulEnchant();

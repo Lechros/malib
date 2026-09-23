@@ -182,7 +182,7 @@ describe('migrate', () => {
       type: GearTypeV4.bow,
       req: {},
       attributes: {},
-      soulSlot: {
+      soulWeapon: {
         enchanted: true,
         soul: {
           name: '테스트용 소울',
@@ -233,7 +233,7 @@ describe('migrate', () => {
         },
       } satisfies GearDataV3;
 
-      expect(migrate(data, 4).soulSlot).toEqual({
+      expect(migrate(data, 4).soulWeapon).toEqual({
         enchanted: true,
         soul: {
           name,
@@ -264,7 +264,7 @@ describe('migrate', () => {
         },
       } satisfies GearDataV3;
 
-      expect(migrate(data, 4).soulSlot).toEqual({
+      expect(migrate(data, 4).soulWeapon).toEqual({
         enchanted: true,
         soul: {
           name,
@@ -286,7 +286,7 @@ describe('migrate', () => {
       soulSlot: {},
     } satisfies GearDataV3;
 
-    expect(migrate(data, 4).soulSlot).toEqual({ enchanted: true });
+    expect(migrate(data, 4).soulWeapon).toEqual({ enchanted: true });
   });
 
   it('GearDataV4를 GearDataV4로 마이그레이션한다.', () => {
@@ -298,7 +298,7 @@ describe('migrate', () => {
       type: GearTypeV4.bow,
       req: {},
       attributes: {},
-      soulSlot: { enchanted: false },
+      soulWeapon: { enchanted: false },
     } satisfies GearDataV4;
     expect(migrate(data, 4)).toEqual(data);
   });

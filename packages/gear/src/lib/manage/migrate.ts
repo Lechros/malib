@@ -107,8 +107,8 @@ function migrateV2ToV3(data: GearDataV2): GearDataV3 {
 }
 
 function migrateV3ToV4(data: GearDataV3): GearDataV4 {
-  const { soulSlot, ...rest } = data;
-  if (soulSlot === undefined) {
+  const { soulSlot: soulWeapon, ...rest } = data;
+  if (soulWeapon === undefined) {
     return {
       ...rest,
       version: 4,
@@ -117,13 +117,13 @@ function migrateV3ToV4(data: GearDataV3): GearDataV4 {
     return {
       ...rest,
       version: 4,
-      soulSlot: {
+      soulWeapon: {
         enchanted: true,
-        ...(soulSlot.soul && {
+        ...(soulWeapon.soul && {
           soul: {
-            name: soulSlot.soul.name,
-            option: soulSlot.soul.option,
-            ...(soulSlot.soul.name.startsWith('위대한') && {
+            name: soulWeapon.soul.name,
+            option: soulWeapon.soul.option,
+            ...(soulWeapon.soul.name.startsWith('위대한') && {
               magnificent: true,
             }),
           },

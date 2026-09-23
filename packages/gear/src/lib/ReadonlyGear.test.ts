@@ -592,9 +592,9 @@ describe('ReadonlyGear', () => {
   });
 
   describe('soulEnchanted', () => {
-    it('soulSlot.enchanted가 true인 경우 true를 반환한다.', () => {
+    it('soulWeapon.enchanted가 true인 경우 true를 반환한다.', () => {
       const gear = createReadonlyGear({
-        soulSlot: { enchanted: true },
+        soulWeapon: { enchanted: true },
       });
 
       expect(gear.soulEnchanted).toBe(true);
@@ -603,13 +603,13 @@ describe('ReadonlyGear', () => {
     it.each([undefined, false])(
       'enchanted가 %s인 경우 false를 반환한다.',
       (enchanted) => {
-        const gear = createReadonlyGear({ soulSlot: { enchanted } });
+        const gear = createReadonlyGear({ soulWeapon: { enchanted } });
 
         expect(gear.soulEnchanted).toBe(false);
       },
     );
 
-    it('soulSlot이 undefined인 경우 false를 반환한다.', () => {
+    it('soulWeapon이 undefined인 경우 false를 반환한다.', () => {
       const gear = createReadonlyGear();
 
       expect(gear.soulEnchanted).toBe(false);
@@ -626,7 +626,7 @@ describe('ReadonlyGear', () => {
   describe('soul', () => {
     it('위대한 소울 여부가 존재하지 않을 경우 false를 반환한다.', () => {
       const gear = createReadonlyGear({
-        soulSlot: { soul: createSoulData() },
+        soulWeapon: { soul: createSoulData() },
       });
 
       expect(gear.soul?.magnificent).toBe(false);
@@ -634,7 +634,7 @@ describe('ReadonlyGear', () => {
 
     it('위대한 소울 여부를 반환한다.', () => {
       const gear = createReadonlyGear({
-        soulSlot: { soul: createSoulData({ magnificent: true }) },
+        soulWeapon: { soul: createSoulData({ magnificent: true }) },
       });
 
       expect(gear.soul?.magnificent).toBe(true);
@@ -643,7 +643,7 @@ describe('ReadonlyGear', () => {
     it('장착된 소울을 반환한다.', () => {
       const soul = createSoulData();
       const gear = createReadonlyGear({
-        soulSlot: {
+        soulWeapon: {
           soul: soul,
         },
       });
@@ -653,7 +653,7 @@ describe('ReadonlyGear', () => {
 
     it('소울 웨폰에 장착된 소울이 없는 경우 undefined를 반환한다.', () => {
       const gear = createReadonlyGear({
-        soulSlot: {},
+        soulWeapon: {},
       });
 
       expect(gear.soul).toBeUndefined();
@@ -661,7 +661,7 @@ describe('ReadonlyGear', () => {
 
     it('소울 웨폰이 아닌 경우 undefined를 반환한다.', () => {
       const gear = createReadonlyGear({
-        soulSlot: {},
+        soulWeapon: {},
       });
 
       expect(gear.soul).toBeUndefined();
@@ -685,7 +685,7 @@ describe('ReadonlyGear', () => {
     it('장착된 소울의 상시 옵션을 반환한다.', () => {
       const gear = createReadonlyGear({
         baseOption: { attackPower: 170 },
-        soulSlot: { soul: createSoulData() },
+        soulWeapon: { soul: createSoulData() },
       });
 
       expect(gear.soulBaseOption).toEqual({ attackPower: 20 });
@@ -702,7 +702,7 @@ describe('ReadonlyGear', () => {
   describe('soulAmplificationLevel', () => {
     it('소울 증폭 단계를 반환한다.', () => {
       const gear = createReadonlyGear({
-        soulSlot: { amplificationLevel: 3 },
+        soulWeapon: { amplificationLevel: 3 },
       });
 
       expect(gear.soulAmplificationLevel).toBe(3);
@@ -715,7 +715,7 @@ describe('ReadonlyGear', () => {
     });
 
     it('소울 슬롯에 소울 증폭 단계가 없는 경우 0을 반환한다.', () => {
-      const gear = createReadonlyGear({ soulSlot: {} });
+      const gear = createReadonlyGear({ soulWeapon: {} });
 
       expect(gear.soulAmplificationLevel).toBe(0);
     });
@@ -731,7 +731,7 @@ describe('ReadonlyGear', () => {
   describe('soulPotentialGrade', () => {
     it('소울 잠재능력 등급를 반환한다.', () => {
       const gear = createReadonlyGear({
-        soulSlot: { potentialGrade: PotentialGrade.Unique },
+        soulWeapon: { potentialGrade: PotentialGrade.Unique },
       });
 
       expect(gear.soulPotentialGrade).toBe(PotentialGrade.Unique);
@@ -744,7 +744,7 @@ describe('ReadonlyGear', () => {
     });
 
     it('소울 슬롯에 소울 잠재능력 등급가 없는 경우 Normal을 반환한다.', () => {
-      const gear = createReadonlyGear({ soulSlot: {} });
+      const gear = createReadonlyGear({ soulWeapon: {} });
 
       expect(gear.soulPotentialGrade).toBe(PotentialGrade.Normal);
     });
@@ -765,7 +765,7 @@ describe('ReadonlyGear', () => {
         createPotentialData({ summary: '테스트용 소울 잠재능력 3' }),
       ];
       const gear = createReadonlyGear({
-        soulSlot: { potentials },
+        soulWeapon: { potentials },
       });
 
       expect(gear.soulPotentials).toEqual(potentials);
@@ -778,14 +778,14 @@ describe('ReadonlyGear', () => {
     });
 
     it('소울 슬롯에 잠재능력이 없는 경우 빈 배열을 반환한다.', () => {
-      const gear = createReadonlyGear({ soulSlot: {} });
+      const gear = createReadonlyGear({ soulWeapon: {} });
 
       expect(gear.soulPotentials).toEqual([]);
     });
 
     it('소울 잠재능력에 없는 옵션은 0을 반환한다.', () => {
       const gear = createReadonlyGear({
-        soulSlot: {
+        soulWeapon: {
           potentials: [createPotentialData({ option: { str: 12 } })],
         },
       });

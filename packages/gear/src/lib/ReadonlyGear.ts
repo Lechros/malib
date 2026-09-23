@@ -271,20 +271,20 @@ export class ReadonlyGear implements _Gear {
    * 소울 인챈트 여부
    */
   get soulEnchanted(): boolean {
-    return this.data.soulSlot?.enchanted === true;
+    return this.data.soulWeapon?.enchanted === true;
   }
 
   /**
    * 소울
    */
   get soul(): ReadonlySoulData | undefined {
-    if (!this.data.soulSlot?.soul) {
+    if (!this.data.soulWeapon?.soul) {
       return undefined;
     }
     return {
-      ...this.data.soulSlot.soul,
-      option: toGearOption(this.data.soulSlot.soul.option),
-      magnificent: this.data.soulSlot.soul.magnificent ?? false,
+      ...this.data.soulWeapon.soul,
+      option: toGearOption(this.data.soulWeapon.soul.option),
+      magnificent: this.data.soulWeapon.soul.magnificent ?? false,
     };
   }
 
@@ -299,24 +299,24 @@ export class ReadonlyGear implements _Gear {
    * 소울 증폭 단계
    */
   get soulAmplificationLevel(): number {
-    return this.data.soulSlot?.amplificationLevel ?? 0;
+    return this.data.soulWeapon?.amplificationLevel ?? 0;
   }
 
   /**
    * 소울 잠재능력 등급
    */
   get soulPotentialGrade(): PotentialGrade {
-    return this.data.soulSlot?.potentialGrade ?? PotentialGrade.Normal;
+    return this.data.soulWeapon?.potentialGrade ?? PotentialGrade.Normal;
   }
 
   /**
    * 소울 잠재능력 목록
    */
   get soulPotentials(): readonly ReadonlyPotential[] {
-    if (!this.data.soulSlot?.potentials) {
+    if (!this.data.soulWeapon?.potentials) {
       return [];
     }
-    return this.data.soulSlot.potentials.map((potential) => ({
+    return this.data.soulWeapon.potentials.map((potential) => ({
       ...potential,
       option: toGearOption(potential.option),
     }));

@@ -66,11 +66,11 @@ describe('supportsSoul', () => {
 describe('canApplySoulEnchant', () => {
   it.each([undefined, {}, { enchanted: false }])(
     '소울웨폰이 아닌 무기일 경우 true를 반환한다.',
-    (soulSlot) => {
+    (soulWeapon) => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot,
+        soulWeapon,
       });
 
       expect(canApplySoulEnchant(gear)).toBe(true);
@@ -81,7 +81,7 @@ describe('canApplySoulEnchant', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot: { enchanted: true },
+      soulWeapon: { enchanted: true },
     });
 
     expect(canApplySoulEnchant(gear)).toBe(false);
@@ -91,7 +91,7 @@ describe('canApplySoulEnchant', () => {
     const gear = createGear({
       type: GearType.cape,
       req: { level: 200 },
-      soulSlot: undefined,
+      soulWeapon: undefined,
     });
 
     expect(canApplySoulEnchant(gear)).toBe(false);
@@ -101,11 +101,11 @@ describe('canApplySoulEnchant', () => {
 describe('applySoulEnchant', () => {
   it.each([undefined, {}, { enchanted: false }])(
     '소울웨폰이 아닌 무기를 소울웨폰으로 변환한다.',
-    (soulSlot) => {
+    (soulWeapon) => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot,
+        soulWeapon,
       });
 
       applySoulEnchant(gear);
@@ -118,7 +118,7 @@ describe('applySoulEnchant', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot: { enchanted: true },
+      soulWeapon: { enchanted: true },
     });
 
     expect(() => {
@@ -130,7 +130,7 @@ describe('applySoulEnchant', () => {
     const gear = createGear({
       type: GearType.cape,
       req: { level: 200 },
-      soulSlot: undefined,
+      soulWeapon: undefined,
     });
 
     expect(() => {
@@ -144,7 +144,7 @@ describe('applySoulEnchant', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: { enchanted: false, amplificationLevel },
+        soulWeapon: { enchanted: false, amplificationLevel },
       });
 
       applySoulEnchant(gear);
@@ -157,7 +157,7 @@ describe('applySoulEnchant', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot: {
+      soulWeapon: {
         enchanted: false,
         amplificationLevel: 1,
         potentialGrade: PotentialGrade.Unique,
@@ -178,7 +178,7 @@ describe('applySoulEnchant', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot: {
+      soulWeapon: {
         enchanted: false,
         amplificationLevel: 1,
         potentials,
@@ -194,11 +194,11 @@ describe('applySoulEnchant', () => {
 describe('canSetSoul', () => {
   it.each([undefined, {}, { enchanted: false }])(
     '소울웨폰이 아닐 경우 false를 반환한다.',
-    (soulSlot) => {
+    (soulWeapon) => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot,
+        soulWeapon,
       });
       const soul = createSoulData({ magnificent: true });
 
@@ -212,7 +212,7 @@ describe('canSetSoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: { enchanted: true },
+        soulWeapon: { enchanted: true },
       });
       const soul = createSoulData({ magnificent });
 
@@ -226,7 +226,7 @@ describe('canSetSoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ name: '기존 소울' }),
         },
@@ -250,7 +250,7 @@ describe('canSetSoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -277,7 +277,7 @@ describe('canSetSoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -295,7 +295,7 @@ describe('canSetSoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -322,7 +322,7 @@ describe('canSetSoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: { enchanted: true, amplificationLevel },
+        soulWeapon: { enchanted: true, amplificationLevel },
       });
       const soul = createSoulData({ magnificent });
 
@@ -336,7 +336,7 @@ describe('canSetSoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: { enchanted: true, amplificationLevel },
+        soulWeapon: { enchanted: true, amplificationLevel },
       });
       const soul = createSoulData({ magnificent: true });
 
@@ -348,11 +348,11 @@ describe('canSetSoul', () => {
 describe('setSoul', () => {
   it.each([undefined, {}, { enchanted: false }])(
     '소울웨폰이 아닌 장비에 소울을 장착하면 GearError가 발생한다.',
-    (soulSlot) => {
+    (soulWeapon) => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot,
+        soulWeapon,
       });
       const soul = createSoulData({ magnificent: true });
 
@@ -368,13 +368,13 @@ describe('setSoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: { enchanted: true },
+        soulWeapon: { enchanted: true },
       });
       const soul = createSoulData({ magnificent });
 
       setSoul(gear, soul);
 
-      expect(gear.data.soulSlot?.soul).toEqual(soul);
+      expect(gear.data.soulWeapon?.soul).toEqual(soul);
     },
   );
 
@@ -384,7 +384,7 @@ describe('setSoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ name: '기존 소울' }),
         },
@@ -393,7 +393,7 @@ describe('setSoul', () => {
 
       setSoul(gear, soul);
 
-      expect(gear.data.soulSlot?.soul).toEqual(soul);
+      expect(gear.data.soulWeapon?.soul).toEqual(soul);
     },
   );
 
@@ -410,7 +410,7 @@ describe('setSoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -420,7 +420,7 @@ describe('setSoul', () => {
 
       setSoul(gear, soul);
 
-      expect(gear.data.soulSlot?.soul).toEqual(soul);
+      expect(gear.data.soulWeapon?.soul).toEqual(soul);
     },
   );
 
@@ -439,7 +439,7 @@ describe('setSoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -459,7 +459,7 @@ describe('setSoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -469,7 +469,7 @@ describe('setSoul', () => {
 
       setSoul(gear, soul);
 
-      expect(gear.data.soulSlot?.soul).toEqual(soul);
+      expect(gear.data.soulWeapon?.soul).toEqual(soul);
     },
   );
 
@@ -488,7 +488,7 @@ describe('setSoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: { enchanted: true, amplificationLevel },
+        soulWeapon: { enchanted: true, amplificationLevel },
       });
       const soul = createSoulData({ magnificent });
 
@@ -504,13 +504,13 @@ describe('setSoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: { enchanted: true, amplificationLevel },
+        soulWeapon: { enchanted: true, amplificationLevel },
       });
       const soul = createSoulData({ magnificent: true });
 
       setSoul(gear, soul);
 
-      expect(gear.data.soulSlot?.soul).toEqual(soul);
+      expect(gear.data.soulWeapon?.soul).toEqual(soul);
     },
   );
 
@@ -520,7 +520,7 @@ describe('setSoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -537,7 +537,7 @@ describe('setSoul', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot: {
+      soulWeapon: {
         enchanted: true,
         soul: createSoulData({ magnificent: true }),
         amplificationLevel: 1,
@@ -559,7 +559,7 @@ describe('setSoul', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot: {
+      soulWeapon: {
         enchanted: true,
         soul: createSoulData({ magnificent: true }),
         amplificationLevel: 1,
@@ -580,7 +580,7 @@ describe('resetSoulEnchant', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -597,7 +597,7 @@ describe('resetSoulEnchant', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot: {
+      soulWeapon: {
         enchanted: true,
         soul: createSoulData({ magnificent: true }),
         amplificationLevel: 1,
@@ -619,7 +619,7 @@ describe('resetSoulEnchant', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot: {
+      soulWeapon: {
         enchanted: true,
         soul: createSoulData({ magnificent: true }),
         amplificationLevel: 1,
@@ -636,7 +636,7 @@ describe('resetSoulEnchant', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot: {
+      soulWeapon: {
         enchanted: true,
         soul: createSoulData({ magnificent: true }),
         amplificationLevel: 1,
@@ -652,7 +652,7 @@ describe('resetSoulEnchant', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot: {
+      soulWeapon: {
         enchanted: true,
         soul: createSoulData({ magnificent: true }),
         amplificationLevel: 1,
@@ -676,15 +676,15 @@ describe('getSoulBaseOption', () => {
       const gear = createGear({
         type: GearType.bow,
         baseOption: { attackPower, magicPower },
-        soulSlot: { enchanted: true, soul: createSoulData() },
+        soulWeapon: { enchanted: true, soul: createSoulData() },
       });
 
       expect(getSoulBaseOption(gear)).toEqual(expected);
     },
   );
 
-  it.each([undefined, {}])('소울이 없으면 옵션이 없다: %j', (soulSlot) => {
-    const gear = createGear({ type: GearType.bow, soulSlot });
+  it.each([undefined, {}])('소울이 없으면 옵션이 없다: %j', (soulWeapon) => {
+    const gear = createGear({ type: GearType.bow, soulWeapon });
 
     expect(getSoulBaseOption(gear)).toBeUndefined();
   });
@@ -699,11 +699,11 @@ describe('canAmplifySoul', () => {
       amplificationLevel: 1,
       soul: createSoulData({ magnificent: true }),
     },
-  ])('소울웨폰이 아닐 경우 false를 반환한다.', (soulSlot) => {
+  ])('소울웨폰이 아닐 경우 false를 반환한다.', (soulWeapon) => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot,
+      soulWeapon,
     });
 
     expect(canAmplifySoul(gear)).toBe(false);
@@ -713,7 +713,7 @@ describe('canAmplifySoul', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot: { enchanted: true, amplificationLevel: 1 },
+      soulWeapon: { enchanted: true, amplificationLevel: 1 },
     });
 
     expect(canAmplifySoul(gear)).toBe(false);
@@ -725,7 +725,7 @@ describe('canAmplifySoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           amplificationLevel: 1,
           soul: createSoulData({ magnificent }),
@@ -742,7 +742,7 @@ describe('canAmplifySoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: reqLevel },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel: 0,
@@ -764,7 +764,7 @@ describe('canAmplifySoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: reqLevel },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -781,7 +781,7 @@ describe('canAmplifySoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -796,7 +796,7 @@ describe('canAmplifySoul', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot: {
+      soulWeapon: {
         enchanted: true,
         soul: createSoulData({ magnificent: true }),
         amplificationLevel: 4,
@@ -814,7 +814,7 @@ describe('amplifySoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -833,7 +833,7 @@ describe('amplifySoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -842,7 +842,7 @@ describe('amplifySoul', () => {
 
       amplifySoul(gear);
 
-      expect(gear.data.soulSlot?.potentials).toEqual([]);
+      expect(gear.data.soulWeapon?.potentials).toEqual([]);
     },
   );
 
@@ -852,7 +852,7 @@ describe('amplifySoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -877,7 +877,7 @@ describe('amplifySoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -901,11 +901,11 @@ describe('amplifySoul', () => {
     },
   ])(
     '소울웨폰이 아닌 장비의 소울을 증폭하면 GearError가 발생한다.',
-    (soulSlot) => {
+    (soulWeapon) => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot,
+        soulWeapon,
       });
 
       expect(() => {
@@ -918,7 +918,7 @@ describe('amplifySoul', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot: { enchanted: true, amplificationLevel: 1 },
+      soulWeapon: { enchanted: true, amplificationLevel: 1 },
     });
 
     expect(() => {
@@ -932,7 +932,7 @@ describe('amplifySoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           amplificationLevel: 1,
           soul: createSoulData({ magnificent }),
@@ -951,7 +951,7 @@ describe('amplifySoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: reqLevel },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel: 0,
@@ -975,7 +975,7 @@ describe('amplifySoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: reqLevel },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -998,7 +998,7 @@ describe('amplifySoul', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -1015,7 +1015,7 @@ describe('amplifySoul', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot: {
+      soulWeapon: {
         enchanted: true,
         soul: createSoulData({ magnificent: true }),
         amplificationLevel: 4,
@@ -1037,11 +1037,11 @@ describe('canSetSoulPotential', () => {
       amplificationLevel: 1,
       soul: createSoulData({ magnificent: true }),
     },
-  ])('소울웨폰이 아닐 경우 false를 반환한다.', (soulSlot) => {
+  ])('소울웨폰이 아닐 경우 false를 반환한다.', (soulWeapon) => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot,
+      soulWeapon,
     });
 
     expect(canSetSoulPotential(gear)).toBe(false);
@@ -1051,7 +1051,7 @@ describe('canSetSoulPotential', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot: { enchanted: true, amplificationLevel: 1 },
+      soulWeapon: { enchanted: true, amplificationLevel: 1 },
     });
 
     expect(canSetSoulPotential(gear)).toBe(false);
@@ -1063,7 +1063,7 @@ describe('canSetSoulPotential', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           amplificationLevel: 1,
           soul: createSoulData({ magnificent }),
@@ -1080,7 +1080,7 @@ describe('canSetSoulPotential', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -1097,7 +1097,7 @@ describe('canSetSoulPotential', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -1120,11 +1120,11 @@ describe('setSoulPotential', () => {
     },
   ])(
     '소울웨폰이 아닌 장비에 소울 잠재능력을 설정하면 GearError가 발생한다.',
-    (soulSlot) => {
+    (soulWeapon) => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot,
+        soulWeapon,
       });
       const potentials = [
         createPotentialData(),
@@ -1142,7 +1142,7 @@ describe('setSoulPotential', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot: { enchanted: true, amplificationLevel: 1 },
+      soulWeapon: { enchanted: true, amplificationLevel: 1 },
     });
     const potentials = [
       createPotentialData(),
@@ -1161,7 +1161,7 @@ describe('setSoulPotential', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           amplificationLevel: 1,
           soul: createSoulData({ magnificent }),
@@ -1185,7 +1185,7 @@ describe('setSoulPotential', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -1209,7 +1209,7 @@ describe('setSoulPotential', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel,
@@ -1236,7 +1236,7 @@ describe('setSoulPotential', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot: {
+      soulWeapon: {
         enchanted: true,
         soul: createSoulData({ magnificent: true }),
         amplificationLevel: 1,
@@ -1257,7 +1257,7 @@ describe('setSoulPotential', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
-      soulSlot: {
+      soulWeapon: {
         enchanted: true,
         soul: createSoulData({ magnificent: true }),
         amplificationLevel: 1,
@@ -1280,7 +1280,7 @@ describe('setSoulPotential', () => {
       const gear = createGear({
         type: GearType.bow,
         req: { level: 200 },
-        soulSlot: {
+        soulWeapon: {
           enchanted: true,
           soul: createSoulData({ magnificent: true }),
           amplificationLevel: 1,
@@ -1310,7 +1310,7 @@ describe('소울웨폰 오류 우선순위', () => {
     [GearType.cap, ErrorCode.SoulWeapon_Enchant_NotWeapon],
     [GearType.thSword, ErrorCode.SoulWeapon_Enchant_AlreadyEnchanted],
   ])('무기 여부를 중복 변환보다 먼저 검사한다 (%d).', (type, code) => {
-    const gear = createGear({ type, soulSlot: { enchanted: true } });
+    const gear = createGear({ type, soulWeapon: { enchanted: true } });
     expect(canApplySoulEnchant(gear)).toBe(false);
     expect(() => applySoulEnchant(gear)).toThrow(
       expect.objectContaining({ code }),
@@ -1324,7 +1324,7 @@ describe('소울웨폰 오류 우선순위', () => {
     '소울웨폰 여부를 장착할 소울보다 먼저 검사한다 (%s).',
     (enchanted, code) => {
       const gear = createGear({
-        soulSlot: { enchanted, amplificationLevel: 1 },
+        soulWeapon: { enchanted, amplificationLevel: 1 },
       });
       const soul = createSoulData({ magnificent: false });
       expect(canSetSoul(gear, soul)).toBe(false);
@@ -1353,7 +1353,7 @@ describe('소울웨폰 오류 우선순위', () => {
         magnificent === undefined ? undefined : createSoulData({ magnificent });
       const gear = createGear({
         req: { level },
-        soulSlot: { enchanted, soul, amplificationLevel },
+        soulWeapon: { enchanted, soul, amplificationLevel },
       });
       const before = structuredClone(gear.data);
       expect(canAmplifySoul(gear)).toBe(false);
@@ -1422,7 +1422,7 @@ describe('소울웨폰 오류 우선순위', () => {
       const soul =
         magnificent === undefined ? undefined : createSoulData({ magnificent });
       const gear = createGear({
-        soulSlot: { enchanted, amplificationLevel, soul },
+        soulWeapon: { enchanted, amplificationLevel, soul },
       });
       const before = structuredClone(gear.data);
       expect(canSetSoulPotential(gear)).toBe(canSet);

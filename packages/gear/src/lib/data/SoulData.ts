@@ -3,9 +3,9 @@ import { PotentialData } from './PotentialData';
 import { PotentialGrade } from './PotentialGrade';
 
 /**
- * 소울 웨폰 정보
+ * 소울웨폰 정보
  */
-export interface SoulSlotData {
+export interface SoulWeaponData {
   /** 소울웨폰 여부 */
   enchanted?: boolean;
   /** 소울 아이템 */
