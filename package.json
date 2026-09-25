@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@changesets/cli": "^3.0.0",
-    "oxfmt": "^0.68.0",
+    "oxfmt": "^0.70.0",
     "oxlint": "^1.83.0",
     "oxlint-tsgolint": "^7.0.2002",
     "turbo": "^2.11.2",
