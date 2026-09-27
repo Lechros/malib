@@ -83,4 +83,6 @@ export const enum ErrorCode {
   Gear_Migrate_InvalidGearData,
   Gear_Migrate_DataVersionTooNew,
   Gear_Migrate_UnknownDataVersion,
+
+  SoulWeapon_SetPotential_ReqLevelBelow200,
 }

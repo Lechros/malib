@@ -2,20 +2,23 @@ import { GearType, PotentialGrade } from '../data';
 import { ErrorCode, GearError } from '../error';
 import { createGear, createPotentialData, createSoulData } from '../testing';
 import {
-  amplifySoul,
+  applySoulAmplification,
   applySoulEnchant,
-  canAmplifySoul,
+  canApplySoulAmplification,
   canApplySoulEnchant,
   canSetSoul,
   canSetSoulPotential,
   getSoulBaseOption,
-  resetSoulEnchant,
+  removeSoulEnchant,
+  removeSoul,
+  resetSoulWeapon,
   setSoul,
   setSoulPotential,
-  supportsSoul,
+  supportsSoulWeapon,
+  supportsSoulAmplification,
 } from './soulWeapon';
 
-describe('supportsSoul', () => {
+describe('supportsSoulWeapon', () => {
   it.each([
     GearType.shiningRod,
     GearType.ritualFan,
@@ -27,7 +30,7 @@ describe('supportsSoul', () => {
       type,
     });
 
-    expect(supportsSoul(gear)).toBe(true);
+    expect(supportsSoulWeapon(gear)).toBe(true);
   });
 
   it.each([
@@ -43,7 +46,7 @@ describe('supportsSoul', () => {
       type,
     });
 
-    expect(supportsSoul(gear)).toBe(false);
+    expect(supportsSoulWeapon(gear)).toBe(false);
   });
 
   it.each([
@@ -59,7 +62,7 @@ describe('supportsSoul', () => {
       req: { level: reqLevel },
     });
 
-    expect(supportsSoul(gear)).toBe(expected);
+    expect(supportsSoulWeapon(gear)).toBe(expected);
   });
 });
 
@@ -149,7 +152,7 @@ describe('applySoulEnchant', () => {
 
       applySoulEnchant(gear);
 
-      expect(gear.soulAmplificationLevel).toBe(amplificationLevel);
+      expect(gear.data.soulWeapon?.amplificationLevel).toBe(amplificationLevel);
     },
   );
 
@@ -166,7 +169,7 @@ describe('applySoulEnchant', () => {
 
     applySoulEnchant(gear);
 
-    expect(gear.soulPotentialGrade).toBe(PotentialGrade.Unique);
+    expect(gear.data.soulWeapon?.potentialGrade).toBe(PotentialGrade.Unique);
   });
 
   it('소울웨폰으로 다시 변환해도 기존 소울 잠재능력 옵션을 보존한다.', () => {
@@ -187,7 +190,7 @@ describe('applySoulEnchant', () => {
 
     applySoulEnchant(gear);
 
-    expect(gear.soulPotentials).toEqual(potentials);
+    expect(gear.data.soulWeapon?.potentials).toEqual(potentials);
   });
 });
 
@@ -202,7 +205,7 @@ describe('canSetSoul', () => {
       });
       const soul = createSoulData({ magnificent: true });
 
-      expect(canSetSoul(gear, soul)).toBe(false);
+      expect(canSetSoul(gear, soul.magnificent ?? false)).toBe(false);
     },
   );
 
@@ -216,7 +219,7 @@ describe('canSetSoul', () => {
       });
       const soul = createSoulData({ magnificent });
 
-      expect(canSetSoul(gear, soul)).toBe(true);
+      expect(canSetSoul(gear, soul.magnificent ?? false)).toBe(true);
     },
   );
 
@@ -233,7 +236,7 @@ describe('canSetSoul', () => {
       });
       const soul = createSoulData({ name: '교체할 소울', magnificent });
 
-      expect(canSetSoul(gear, soul)).toBe(true);
+      expect(canSetSoul(gear, soul.magnificent ?? false)).toBe(true);
     },
   );
 
@@ -258,7 +261,7 @@ describe('canSetSoul', () => {
       });
       const soul = createSoulData({ magnificent });
 
-      expect(canSetSoul(gear, soul)).toBe(true);
+      expect(canSetSoul(gear, soul.magnificent ?? false)).toBe(true);
     },
   );
 
@@ -285,7 +288,7 @@ describe('canSetSoul', () => {
       });
       const soul = createSoulData({ magnificent });
 
-      expect(canSetSoul(gear, soul)).toBe(false);
+      expect(canSetSoul(gear, soul.magnificent ?? false)).toBe(false);
     },
   );
 
@@ -303,7 +306,7 @@ describe('canSetSoul', () => {
       });
       const soul = createSoulData({ magnificent: true });
 
-      expect(canSetSoul(gear, soul)).toBe(true);
+      expect(canSetSoul(gear, soul.magnificent ?? false)).toBe(true);
     },
   );
 
@@ -326,7 +329,7 @@ describe('canSetSoul', () => {
       });
       const soul = createSoulData({ magnificent });
 
-      expect(canSetSoul(gear, soul)).toBe(false);
+      expect(canSetSoul(gear, soul.magnificent ?? false)).toBe(false);
     },
   );
 
@@ -340,7 +343,7 @@ describe('canSetSoul', () => {
       });
       const soul = createSoulData({ magnificent: true });
 
-      expect(canSetSoul(gear, soul)).toBe(true);
+      expect(canSetSoul(gear, soul.magnificent ?? false)).toBe(true);
     },
   );
 });
@@ -573,9 +576,9 @@ describe('setSoul', () => {
   });
 });
 
-describe('resetSoulEnchant', () => {
+describe('removeSoulEnchant', () => {
   it.each([1, 2, 3, 4])(
-    '소울웨폰을 초기화해도 기존 증폭 단계를 보존한다.',
+    '인챈트를 해제해도 기존 증폭 단계를 보존한다.',
     (amplificationLevel) => {
       const gear = createGear({
         type: GearType.bow,
@@ -587,13 +590,13 @@ describe('resetSoulEnchant', () => {
         },
       });
 
-      resetSoulEnchant(gear);
+      removeSoulEnchant(gear);
 
-      expect(gear.soulAmplificationLevel).toBe(amplificationLevel);
+      expect(gear.data.soulWeapon?.amplificationLevel).toBe(amplificationLevel);
     },
   );
 
-  it('소울웨폰을 초기화해도 기존 소울 잠재능력 등급을 보존한다.', () => {
+  it('인챈트를 해제해도 기존 소울 잠재능력 등급을 보존한다.', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
@@ -605,12 +608,12 @@ describe('resetSoulEnchant', () => {
       },
     });
 
-    resetSoulEnchant(gear);
+    removeSoulEnchant(gear);
 
-    expect(gear.soulPotentialGrade).toBe(PotentialGrade.Unique);
+    expect(gear.data.soulWeapon?.potentialGrade).toBe(PotentialGrade.Unique);
   });
 
-  it('소울웨폰을 초기화해도 기존 소울 잠재능력 옵션을 보존한다.', () => {
+  it('인챈트를 해제해도 기존 소울 잠재능력 옵션을 보존한다.', () => {
     const potentials = [
       createPotentialData(),
       createPotentialData(),
@@ -627,9 +630,9 @@ describe('resetSoulEnchant', () => {
       },
     });
 
-    resetSoulEnchant(gear);
+    removeSoulEnchant(gear);
 
-    expect(gear.soulPotentials).toEqual(potentials);
+    expect(gear.data.soulWeapon?.potentials).toEqual(potentials);
   });
 
   it('소울웨폰 상태를 해제한다.', () => {
@@ -643,12 +646,12 @@ describe('resetSoulEnchant', () => {
       },
     });
 
-    resetSoulEnchant(gear);
+    removeSoulEnchant(gear);
 
     expect(gear.soulEnchanted).toBe(false);
   });
 
-  it('장착된 소울을 제거한다.', () => {
+  it('장착된 소울 데이터를 보존한다.', () => {
     const gear = createGear({
       type: GearType.bow,
       req: { level: 200 },
@@ -659,9 +662,11 @@ describe('resetSoulEnchant', () => {
       },
     });
 
-    resetSoulEnchant(gear);
+    removeSoulEnchant(gear);
 
-    expect(gear.soul).toBeUndefined();
+    expect(gear.data.soulWeapon?.soul).toEqual(
+      createSoulData({ magnificent: true }),
+    );
   });
 });
 
@@ -690,7 +695,7 @@ describe('getSoulBaseOption', () => {
   });
 });
 
-describe('canAmplifySoul', () => {
+describe('canApplySoulAmplification', () => {
   it.each([
     undefined,
     {},
@@ -706,7 +711,7 @@ describe('canAmplifySoul', () => {
       soulWeapon,
     });
 
-    expect(canAmplifySoul(gear)).toBe(false);
+    expect(canApplySoulAmplification(gear)).toBe(false);
   });
 
   it('소울웨폰이고 소울이 없는 경우 false를 반환한다.', () => {
@@ -716,7 +721,7 @@ describe('canAmplifySoul', () => {
       soulWeapon: { enchanted: true, amplificationLevel: 1 },
     });
 
-    expect(canAmplifySoul(gear)).toBe(false);
+    expect(canApplySoulAmplification(gear)).toBe(false);
   });
 
   it.each([undefined, false])(
@@ -732,7 +737,7 @@ describe('canAmplifySoul', () => {
         },
       });
 
-      expect(canAmplifySoul(gear)).toBe(false);
+      expect(canApplySoulAmplification(gear)).toBe(false);
     },
   );
 
@@ -749,7 +754,7 @@ describe('canAmplifySoul', () => {
         },
       });
 
-      expect(canAmplifySoul(gear)).toBe(false);
+      expect(canApplySoulAmplification(gear)).toBe(false);
     },
   );
 
@@ -771,7 +776,7 @@ describe('canAmplifySoul', () => {
         },
       });
 
-      expect(canAmplifySoul(gear)).toBe(true);
+      expect(canApplySoulAmplification(gear)).toBe(true);
     },
   );
 
@@ -788,7 +793,7 @@ describe('canAmplifySoul', () => {
         },
       });
 
-      expect(canAmplifySoul(gear)).toBe(true);
+      expect(canApplySoulAmplification(gear)).toBe(true);
     },
   );
 
@@ -803,11 +808,11 @@ describe('canAmplifySoul', () => {
       },
     });
 
-    expect(canAmplifySoul(gear)).toBe(false);
+    expect(canApplySoulAmplification(gear)).toBe(false);
   });
 });
 
-describe('amplifySoul', () => {
+describe('applySoulAmplification', () => {
   it.each([undefined, 0])(
     '처음 증폭하면 소울 잠재능력 등급을 Rare로 설정한다.',
     (amplificationLevel) => {
@@ -821,7 +826,7 @@ describe('amplifySoul', () => {
         },
       });
 
-      amplifySoul(gear);
+      applySoulAmplification(gear);
 
       expect(gear.soulPotentialGrade).toBe(PotentialGrade.Rare);
     },
@@ -840,7 +845,7 @@ describe('amplifySoul', () => {
         },
       });
 
-      amplifySoul(gear);
+      applySoulAmplification(gear);
 
       expect(gear.data.soulWeapon?.potentials).toEqual([]);
     },
@@ -860,7 +865,7 @@ describe('amplifySoul', () => {
         },
       });
 
-      amplifySoul(gear);
+      applySoulAmplification(gear);
 
       expect(gear.soulPotentialGrade).toBe(PotentialGrade.Unique);
     },
@@ -885,7 +890,7 @@ describe('amplifySoul', () => {
         },
       });
 
-      amplifySoul(gear);
+      applySoulAmplification(gear);
 
       expect(gear.soulPotentials).toEqual(potentials);
     },
@@ -909,7 +914,7 @@ describe('amplifySoul', () => {
       });
 
       expect(() => {
-        amplifySoul(gear);
+        applySoulAmplification(gear);
       }).toThrow(GearError);
     },
   );
@@ -922,7 +927,7 @@ describe('amplifySoul', () => {
     });
 
     expect(() => {
-      amplifySoul(gear);
+      applySoulAmplification(gear);
     }).toThrow(GearError);
   });
 
@@ -940,7 +945,7 @@ describe('amplifySoul', () => {
       });
 
       expect(() => {
-        amplifySoul(gear);
+        applySoulAmplification(gear);
       }).toThrow(GearError);
     },
   );
@@ -959,7 +964,7 @@ describe('amplifySoul', () => {
       });
 
       expect(() => {
-        amplifySoul(gear);
+        applySoulAmplification(gear);
       }).toThrow(GearError);
     },
   );
@@ -982,7 +987,7 @@ describe('amplifySoul', () => {
         },
       });
 
-      amplifySoul(gear);
+      applySoulAmplification(gear);
 
       expect(gear.soulAmplificationLevel).toBe(1);
     },
@@ -1005,7 +1010,7 @@ describe('amplifySoul', () => {
         },
       });
 
-      amplifySoul(gear);
+      applySoulAmplification(gear);
 
       expect(gear.soulAmplificationLevel).toBe(expected);
     },
@@ -1023,7 +1028,7 @@ describe('amplifySoul', () => {
     });
 
     expect(() => {
-      amplifySoul(gear);
+      applySoulAmplification(gear);
     }).toThrow(GearError);
   });
 });
@@ -1324,10 +1329,12 @@ describe('소울웨폰 오류 우선순위', () => {
     '소울웨폰 여부를 장착할 소울보다 먼저 검사한다 (%s).',
     (enchanted, code) => {
       const gear = createGear({
+        type: GearType.bow,
+        req: { level: 200 },
         soulWeapon: { enchanted, amplificationLevel: 1 },
       });
       const soul = createSoulData({ magnificent: false });
-      expect(canSetSoul(gear, soul)).toBe(false);
+      expect(canSetSoul(gear, soul.magnificent ?? false)).toBe(false);
       expect(() => setSoul(gear, soul)).toThrow(
         expect.objectContaining({ code }),
       );
@@ -1336,6 +1343,8 @@ describe('소울웨폰 오류 우선순위', () => {
 
   it.each([
     [199, false, undefined, 4, ErrorCode.SoulWeapon_Amplify_ReqLevelBelow200],
+    [199, true, undefined, 4, ErrorCode.SoulWeapon_Amplify_ReqLevelBelow200],
+    [199, true, false, 4, ErrorCode.SoulWeapon_Amplify_ReqLevelBelow200],
     [200, false, undefined, 4, ErrorCode.SoulWeapon_Amplify_NotEnchanted],
     [200, true, undefined, 4, ErrorCode.SoulWeapon_Amplify_NoSoulEquipped],
     [
@@ -1352,12 +1361,13 @@ describe('소울웨폰 오류 우선순위', () => {
       const soul =
         magnificent === undefined ? undefined : createSoulData({ magnificent });
       const gear = createGear({
+        type: GearType.bow,
         req: { level },
         soulWeapon: { enchanted, soul, amplificationLevel },
       });
       const before = structuredClone(gear.data);
-      expect(canAmplifySoul(gear)).toBe(false);
-      expect(() => amplifySoul(gear)).toThrow(
+      expect(canApplySoulAmplification(gear)).toBe(false);
+      expect(() => applySoulAmplification(gear)).toThrow(
         expect.objectContaining({
           code,
           context: { gear },
@@ -1381,7 +1391,7 @@ describe('소울웨폰 오류 우선순위', () => {
       0,
       undefined,
       PotentialGrade.Normal,
-      ErrorCode.SoulWeapon_SetPotential_NotAmplified,
+      ErrorCode.SoulWeapon_SetPotential_NoSoulEquipped,
       false,
     ],
     [
@@ -1416,12 +1426,30 @@ describe('소울웨폰 오류 우선순위', () => {
       ErrorCode.SoulWeapon_SetPotential_OptionCountNotThree,
       true,
     ],
+    [
+      true,
+      0,
+      false,
+      PotentialGrade.Normal,
+      ErrorCode.SoulWeapon_SetPotential_EquippedSoulNotAmplifiable,
+      false,
+    ],
+    [
+      true,
+      0,
+      true,
+      PotentialGrade.Normal,
+      ErrorCode.SoulWeapon_SetPotential_NotAmplified,
+      false,
+    ],
   ])(
     '장비 상태, 등급, 옵션 개수 순서로 검사한다 (%#).',
     (enchanted, amplificationLevel, magnificent, grade, code, canSet) => {
       const soul =
         magnificent === undefined ? undefined : createSoulData({ magnificent });
       const gear = createGear({
+        type: GearType.bow,
+        req: { level: 200 },
         soulWeapon: { enchanted, amplificationLevel, soul },
       });
       const before = structuredClone(gear.data);
@@ -1439,4 +1467,248 @@ describe('소울웨폰 오류 우선순위', () => {
       expect(gear.data).toEqual(before);
     },
   );
+});
+
+describe('removeSoul', () => {
+  it('인챈트와 증폭 정보를 보존하고 소울만 제거한다.', () => {
+    const soulWeapon = {
+      enchanted: true,
+      soul: createSoulData({ magnificent: true }),
+      amplificationLevel: 3,
+      potentialGrade: PotentialGrade.Unique,
+      potentials: [createPotentialData()],
+    };
+    const gear = createGear({
+      type: GearType.bow,
+      req: { level: 200 },
+      soulWeapon: structuredClone(soulWeapon),
+    });
+
+    removeSoul(gear);
+
+    expect(gear.data.soulWeapon).toEqual({ ...soulWeapon, soul: undefined });
+    expect(gear.soulEnchanted).toBe(true);
+    expect(gear.soul).toBeUndefined();
+    expect(gear.soulAmplificationActive).toBe(false);
+    expect(gear.soulAmplificationLevel).toBe(3);
+    expect(canSetSoul(gear, false)).toBe(false);
+    expect(canSetSoul(gear, true)).toBe(true);
+    const before = structuredClone(gear.data);
+    expect(() => setSoul(gear, createSoulData())).toThrow(GearError);
+    expect(gear.data).toEqual(before);
+
+    setSoul(gear, createSoulData({ magnificent: true }));
+
+    expect(gear.soulAmplificationActive).toBe(true);
+    expect(gear.soulAmplificationLevel).toBe(3);
+    expect(gear.soulPotentialGrade).toBe(PotentialGrade.Unique);
+    expect(gear.soulPotentials).toEqual(soulWeapon.potentials);
+  });
+
+  it('비활성 상태에 저장된 소울도 제거한다.', () => {
+    const gear = createGear({
+      soulWeapon: {
+        enchanted: false,
+        soul: createSoulData(),
+        amplificationLevel: 2,
+      },
+    });
+
+    removeSoul(gear);
+
+    expect(gear.data.soulWeapon).toEqual({
+      enchanted: false,
+      amplificationLevel: 2,
+    });
+  });
+});
+
+describe('resetSoulWeapon', () => {
+  it.each([false, true])('소울웨폰 정보를 완전히 제거한다.', (enchanted) => {
+    const gear = createGear({
+      type: GearType.bow,
+      req: { level: 200 },
+      soulWeapon: {
+        enchanted,
+        soul: createSoulData({ magnificent: true }),
+        amplificationLevel: 4,
+        potentialGrade: PotentialGrade.Unique,
+        potentials: [createPotentialData()],
+      },
+    });
+    const before = structuredClone(gear.data);
+    delete before.soulWeapon;
+
+    resetSoulWeapon(gear);
+
+    expect(gear.data).toEqual(before);
+    expect(gear.data).not.toHaveProperty('soulWeapon');
+    expect(gear.soulEnchanted).toBe(false);
+    expect(gear.soulAmplificationLevel).toBe(0);
+    expect(gear.soulPotentialGrade).toBe(PotentialGrade.Normal);
+    expect(gear.soulPotentials).toEqual([]);
+    applySoulEnchant(gear);
+    expect(canSetSoul(gear, false)).toBe(true);
+    setSoul(gear, createSoulData());
+    expect(gear.soul?.magnificent).toBe(false);
+  });
+});
+
+describe('소울웨폰 해제와 복원', () => {
+  it('인챈트를 다시 적용하면 보존된 소울과 증폭 정보를 복원한다.', () => {
+    const soulWeapon = {
+      enchanted: true,
+      soul: createSoulData({ magnificent: true }),
+      amplificationLevel: 3,
+      potentialGrade: PotentialGrade.Unique,
+      potentials: [createPotentialData()],
+    };
+    const gear = createGear({
+      type: GearType.bow,
+      req: { level: 200 },
+      soulWeapon: structuredClone(soulWeapon),
+    });
+
+    removeSoulEnchant(gear);
+
+    expect(gear.data.soulWeapon).toEqual({ ...soulWeapon, enchanted: false });
+    expect(gear.soul).toBeUndefined();
+    expect(gear.soulBaseOption).toEqual({});
+    expect(gear.soulAmplificationActive).toBe(false);
+    expect(gear.soulAmplificationLevel).toBe(3);
+    expect(gear.soulPotentialGrade).toBe(PotentialGrade.Unique);
+    expect(gear.soulPotentials).toEqual(soulWeapon.potentials);
+    expect(canSetSoulPotential(gear)).toBe(false);
+    applySoulEnchant(gear);
+    expect(gear.data.soulWeapon).toEqual(soulWeapon);
+    expect(gear.soul?.magnificent).toBe(true);
+    expect(gear.soulAmplificationLevel).toBe(3);
+    expect(gear.soulPotentialGrade).toBe(PotentialGrade.Unique);
+    expect(gear.soulPotentials).toEqual(soulWeapon.potentials);
+  });
+
+  it.each([removeSoulEnchant, removeSoul, resetSoulWeapon])(
+    '정보가 없는 장비에 반복 적용해도 정보를 생성하지 않는다.',
+    (remove) => {
+      const gear = createGear();
+      const before = structuredClone(gear.data);
+
+      remove(gear);
+      remove(gear);
+
+      expect(gear.data).toEqual(before);
+    },
+  );
+});
+
+describe('소울웨폰을 지원하지 않는 장비', () => {
+  it('소울웨폰 데이터가 있어도 소울 장착과 강화를 허용하지 않는다.', () => {
+    const gear = createGear({
+      type: GearType.cap,
+      req: { level: 200 },
+      soulWeapon: {
+        enchanted: true,
+        soul: createSoulData({ magnificent: true }),
+        amplificationLevel: 2,
+      },
+    });
+    const before = structuredClone(gear.data);
+
+    expect(canSetSoul(gear, false)).toBe(false);
+    expect(canSetSoul(gear, true)).toBe(false);
+    expect(canApplySoulAmplification(gear)).toBe(false);
+    expect(canSetSoulPotential(gear)).toBe(false);
+    expect(() => setSoul(gear, createSoulData({ magnificent: true }))).toThrow(
+      GearError,
+    );
+    expect(() => applySoulAmplification(gear)).toThrow(GearError);
+    expect(() =>
+      setSoulPotential(gear, PotentialGrade.Rare, [
+        createPotentialData(),
+        createPotentialData(),
+        createPotentialData(),
+      ]),
+    ).toThrow(GearError);
+    expect(gear.data).toEqual(before);
+  });
+});
+
+describe('supportsSoulAmplification', () => {
+  it.each([
+    [GearType.bow, 199, false],
+    [GearType.bow, 200, true],
+    [GearType.bow, 250, true],
+    [GearType.cap, 200, false],
+  ])(
+    '장비 종류 %d와 요구 레벨 %d로 증폭 지원 여부를 반환한다.',
+    (type, level, expected) => {
+      const gear = createGear({
+        type,
+        req: { level },
+        soulWeapon: {
+          enchanted: true,
+          soul: createSoulData({ magnificent: true }),
+        },
+      });
+      expect(supportsSoulAmplification(gear)).toBe(expected);
+    },
+  );
+
+  it.each([
+    [false, true, false],
+    [true, undefined, false],
+    [true, false, false],
+    [true, true, true],
+  ] as const)(
+    '인챈트와 부여된 소울 종류에 따라 증폭 지원 여부를 반환한다.',
+    (enchanted, magnificent, expected) => {
+      const gear = createGear({
+        type: GearType.bow,
+        req: { level: 200 },
+        soulWeapon: {
+          enchanted,
+          soul:
+            magnificent === undefined
+              ? undefined
+              : createSoulData({ magnificent }),
+          amplificationLevel: 4,
+        },
+      });
+      expect(supportsSoulAmplification(gear)).toBe(expected);
+      expect(canApplySoulAmplification(gear)).toBe(false);
+    },
+  );
+});
+
+describe('소울 잠재능력 요구 레벨', () => {
+  it.each([
+    [199, false],
+    [200, true],
+  ])('요구 레벨 %d에서 판정과 설정 결과가 일치한다.', (level, expected) => {
+    const gear = createGear({
+      type: GearType.bow,
+      req: { level },
+      soulWeapon: {
+        enchanted: true,
+        soul: createSoulData({ magnificent: true }),
+        amplificationLevel: 1,
+      },
+    });
+    const potentials = [
+      createPotentialData(),
+      createPotentialData(),
+      createPotentialData(),
+    ];
+    const before = structuredClone(gear.data);
+    expect(canSetSoulPotential(gear)).toBe(expected);
+    if (expected) {
+      setSoulPotential(gear, PotentialGrade.Rare, potentials);
+      expect(gear.soulPotentials).toEqual(potentials);
+    } else {
+      expect(() =>
+        setSoulPotential(gear, PotentialGrade.Rare, potentials),
+      ).toThrow(GearError);
+      expect(gear.data).toEqual(before);
+    }
+  });
 });

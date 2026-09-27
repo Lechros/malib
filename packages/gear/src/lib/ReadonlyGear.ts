@@ -14,7 +14,11 @@ import {
   VERSION,
 } from './data';
 import { ReadonlyPotential } from './enhance/potential';
-import { getSoulBaseOption } from './enhance/soulWeapon';
+import {
+  getSoulBaseOption,
+  supportsSoulAmplification,
+  supportsSoulWeapon,
+} from './enhance/soulWeapon';
 import { getMaxStar } from './enhance/starforce';
 import { ErrorCode, type ErrorLanguage, GearError } from './error';
 import { GearAttribute } from './GearAttribute';
@@ -271,14 +275,14 @@ export class ReadonlyGear implements _Gear {
    * 소울 인챈트 여부
    */
   get soulEnchanted(): boolean {
-    return this.data.soulWeapon?.enchanted === true;
+    return supportsSoulWeapon(this) && this.data.soulWeapon?.enchanted === true;
   }
 
   /**
-   * 소울
+   * 부여된 소울
    */
   get soul(): ReadonlySoulData | undefined {
-    if (!this.data.soulWeapon?.soul) {
+    if (!this.soulEnchanted || !this.data.soulWeapon?.soul) {
       return undefined;
     }
     return {
@@ -296,7 +300,18 @@ export class ReadonlyGear implements _Gear {
   }
 
   /**
+   * 소울 증폭 활성 여부
+   *
+   * 요구 레벨 200 이상인 소울웨폰에 위대한 소울이 부여되고 소울 증폭 단계가 1 이상이면 활성화됩니다.
+   */
+  get soulAmplificationActive(): boolean {
+    return supportsSoulAmplification(this) && this.soulAmplificationLevel > 0;
+  }
+
+  /**
    * 소울 증폭 단계
+   *
+   * 활성 여부에 관계 없이 저장된 소울 증폭 단계를 반환합니다.
    */
   get soulAmplificationLevel(): number {
     return this.data.soulWeapon?.amplificationLevel ?? 0;
@@ -304,6 +319,8 @@ export class ReadonlyGear implements _Gear {
 
   /**
    * 소울 잠재능력 등급
+   *
+   * 활성 여부에 관계 없이 저장된 소울 잠재능력 등급을 반환합니다.
    */
   get soulPotentialGrade(): PotentialGrade {
     return this.data.soulWeapon?.potentialGrade ?? PotentialGrade.Normal;
@@ -311,6 +328,8 @@ export class ReadonlyGear implements _Gear {
 
   /**
    * 소울 잠재능력 목록
+   *
+   * 활성 여부에 관계 없이 저장된 소울 잠재능력 목록을 반환합니다.
    */
   get soulPotentials(): readonly ReadonlyPotential[] {
     if (!this.data.soulWeapon?.potentials) {

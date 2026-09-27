@@ -157,6 +157,8 @@ export const errorMessages = {
       '장착된 소울이 증폭을 지원하지 않습니다. 위대한 소울만 증폭할 수 있습니다.',
     [ErrorCode.SoulWeapon_Amplify_MaxLevelReached]:
       '소울 증폭이 이미 최대 단계에 도달했습니다.',
+    [ErrorCode.SoulWeapon_SetPotential_ReqLevelBelow200]:
+      '아이템의 요구 레벨이 200 미만이므로 소울 잠재능력을 설정할 수 없습니다.',
     [ErrorCode.SoulWeapon_SetPotential_NotEnchanted]:
       '소울 잠재능력을 설정하려면 먼저 소울웨폰으로 변환해야 합니다.',
     [ErrorCode.SoulWeapon_SetPotential_NotAmplified]:
@@ -312,6 +314,8 @@ export const errorMessages = {
       'The equipped soul does not support amplification. Only Magnificent Souls can be amplified.',
     [ErrorCode.SoulWeapon_Amplify_MaxLevelReached]:
       'Soul Amplification has already reached its maximum level.',
+    [ErrorCode.SoulWeapon_SetPotential_ReqLevelBelow200]:
+      "Soul Potential cannot be set because this item's required level is below 200.",
     [ErrorCode.SoulWeapon_SetPotential_NotEnchanted]:
       'The item must be converted into a Soul Weapon before Soul Potential can be set.',
     [ErrorCode.SoulWeapon_SetPotential_NotAmplified]:

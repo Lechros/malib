@@ -692,11 +692,11 @@ describe('Gear', () => {
   });
 
   describe('소울 웨폰', () => {
-    describe('supportsSoul', () => {
+    describe('supportsSoulWeapon', () => {
       it('장비 분류가 무기일 경우 true를 반환한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드');
 
-        expect(gear.supportsSoul).toBe(true);
+        expect(gear.supportsSoulWeapon).toBe(true);
       });
     });
 
@@ -731,20 +731,20 @@ describe('Gear', () => {
           });
           const soul = createSoulData({ magnificent });
 
-          expect(gear.canSetSoul(soul)).toBe(expected);
+          expect(gear.canSetSoul(soul.magnificent ?? false)).toBe(expected);
         },
       );
 
       it('소울웨폰으로 변환된 장비는 true를 반환한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드', [soulPatch()]);
 
-        expect(gear.canSetSoul(createSoulData())).toBe(true);
+        expect(gear.canSetSoul(false)).toBe(true);
       });
 
       it('소울웨폰으로 변환되지 않은 장비는 false를 반환한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드');
 
-        expect(gear.canSetSoul(createSoulData())).toBe(false);
+        expect(gear.canSetSoul(false)).toBe(false);
       });
     });
 
@@ -811,29 +811,59 @@ describe('Gear', () => {
       });
     });
 
-    describe('canAmplifySoul', () => {
+    describe('supportsSoulAmplification', () => {
+      it.each([
+        [199, false],
+        [200, true],
+        [250, true],
+      ])('요구 레벨 %d의 증폭 지원 여부를 반환한다.', (level, expected) => {
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          req: { level },
+          soulWeapon: {
+            enchanted: true,
+            soul: createSoulData({ magnificent: true }),
+          },
+        });
+        expect(gear.supportsSoulAmplification).toBe(expected);
+      });
+
+      it('최대 단계에서도 지원 여부와 활성 상태는 유지한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          soulWeapon: {
+            enchanted: true,
+            soul: createSoulData({ magnificent: true }),
+            amplificationLevel: 4,
+          },
+        });
+        expect(gear.supportsSoulAmplification).toBe(true);
+        expect(gear.soulAmplificationActive).toBe(true);
+        expect(gear.canApplySoulAmplification).toBe(false);
+      });
+    });
+
+    describe('canApplySoulAmplification', () => {
       it('증폭 가능한 위대한 소울이 장착된 경우 true를 반환한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드', [
           soulPatch(createSoulData({ magnificent: true })),
         ]);
 
-        expect(gear.canAmplifySoul).toBe(true);
+        expect(gear.canApplySoulAmplification).toBe(true);
       });
 
       it('소울이 장착되지 않은 경우 false를 반환한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드', [soulPatch()]);
 
-        expect(gear.canAmplifySoul).toBe(false);
+        expect(gear.canApplySoulAmplification).toBe(false);
       });
     });
 
-    describe('amplifySoul', () => {
+    describe('applySoulAmplification', () => {
       it('소울 증폭 단계가 하나 증가한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드', [
           soulPatch(createSoulData({ magnificent: true })),
         ]);
 
-        gear.amplifySoul();
+        gear.applySoulAmplification();
 
         expect(gear.soulAmplificationLevel).toBe(1);
       });
@@ -842,7 +872,7 @@ describe('Gear', () => {
         const gear = createGear('아케인셰이드 샤이닝로드');
 
         expect(() => {
-          gear.amplifySoul();
+          gear.applySoulAmplification();
         }).toThrow(GearError);
       });
     });
@@ -919,13 +949,47 @@ describe('Gear', () => {
         }).toThrow(GearError);
       });
     });
-    describe('resetSoulEnchant', () => {
+    describe('removeSoulEnchant', () => {
+      it('소울 데이터를 보존하며 인챈트를 해제한다.', () => {
+        const soul = createSoulData({ magnificent: true });
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          soulWeapon: { enchanted: true, soul, amplificationLevel: 2 },
+        });
+
+        gear.removeSoulEnchant();
+
+        expect(gear.soulEnchanted).toBe(false);
+        expect(gear.data.soulWeapon).toEqual({
+          enchanted: false,
+          soul,
+          amplificationLevel: 2,
+        });
+      });
+    });
+    describe('removeSoul', () => {
+      it('인챈트를 유지하며 소울을 제거한다.', () => {
+        const gear = createGear('아케인셰이드 샤이닝로드', {
+          soulWeapon: {
+            enchanted: true,
+            soul: createSoulData(),
+            amplificationLevel: 2,
+          },
+        });
+
+        gear.removeSoul();
+
+        expect(gear.soulEnchanted).toBe(true);
+        expect(gear.data.soulWeapon?.soul).toBeUndefined();
+        expect(gear.data.soulWeapon?.amplificationLevel).toBe(2);
+      });
+    });
+    describe('resetSoulWeapon', () => {
       it('소울웨폰을 초기화한다.', () => {
         const gear = createGear('아케인셰이드 샤이닝로드', {
           soulWeapon: { enchanted: true },
         });
 
-        gear.resetSoulEnchant();
+        gear.resetSoulWeapon();
 
         expect(gear.soulEnchanted).toBe(false);
       });
