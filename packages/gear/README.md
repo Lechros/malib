@@ -237,14 +237,22 @@ gear.data.req.level = 200;
 if (gear.canApplySoulEnchant) {
   gear.applySoulEnchant();
 }
-if (gear.canSetSoul(godSoul)) {
+if (gear.canSetSoul(godSoul.magnificent)) {
   gear.setSoul(godSoul);
 }
-if (gear.canAmplifySoul) {
-  gear.amplifySoul();
+if (gear.canApplySoulAmplification) {
+  gear.applySoulAmplification();
 }
 
 console.log(gear.soulAmplificationLevel); // 1
+
+gear.removeSoulEnchant(); // 인챈트 해제. 소울·증폭·잠재 데이터 보존
+console.log(gear.soulAmplificationLevel); // 1 (저장된 단계)
+console.log(gear.soulAmplificationActive); // false
+gear.applySoulEnchant(); // 보존된 소울·증폭·잠재 활성화
+gear.removeSoul(); // 소울만 제거. 인챈트·증폭·잠재 데이터 보존
+console.log(gear.canSetSoul(false)); // false (저장된 증폭 정보로 제한)
+gear.resetSoulWeapon(); // 소울웨폰 정보 완전 제거
 ```
 
 #### 익셉셔널 강화

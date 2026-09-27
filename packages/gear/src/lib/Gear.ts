@@ -33,16 +33,19 @@ import {
   supportsPotential,
 } from './enhance/potential';
 import {
-  amplifySoul,
-  canAmplifySoul,
-  canSetSoulPotential,
-  setSoulPotential,
+  applySoulAmplification,
   applySoulEnchant,
+  canApplySoulAmplification,
   canApplySoulEnchant,
   canSetSoul,
-  resetSoulEnchant,
+  canSetSoulPotential,
+  removeSoul,
+  removeSoulEnchant,
+  resetSoulWeapon,
   setSoul,
-  supportsSoul,
+  setSoulPotential,
+  supportsSoulAmplification,
+  supportsSoulWeapon,
 } from './enhance/soulWeapon';
 import {
   applySpellTrace,
@@ -469,10 +472,10 @@ export class Gear extends ReadonlyGear {
   }
 
   /**
-   * 장비가 소울웨폰을 지원하는지 여부
+   * 장비가 소울웨폰으로의 변환을 지원하는지 여부
    */
-  get supportsSoul(): boolean {
-    return supportsSoul(this);
+  get supportsSoulWeapon(): boolean {
+    return supportsSoulWeapon(this);
   }
 
   /**
@@ -491,24 +494,24 @@ export class Gear extends ReadonlyGear {
 
   /**
    * 장비에 해당 소울을 장착할 수 있는지 여부를 반환합니다.
-   * @param soul 확인할 소울 아이템.
+   * @param magnificent 장착할 소울의 위대한 소울 여부.
    */
-  canSetSoul(soul: SoulData): boolean {
-    return canSetSoul(this, soul);
+  canSetSoul(magnificent: boolean): boolean {
+    return canSetSoul(this, magnificent);
   }
 
   /**
    * 장비에 일반 소울을 장착할 수 있는지 여부
    */
   get canSetNormalSoul(): boolean {
-    return canSetSoul(this, { name: '', option: {} });
+    return canSetSoul(this, false);
   }
 
   /**
    * 장비에 위대한 소울을 장착할 수 있는지 여부
    */
   get canSetMagnificentSoul(): boolean {
-    return canSetSoul(this, { name: '', option: {}, magnificent: true });
+    return canSetSoul(this, true);
   }
 
   /**
@@ -523,10 +526,17 @@ export class Gear extends ReadonlyGear {
   }
 
   /**
+   * 장비에 부여된 소울이 증폭을 지원하는지 여부
+   */
+  get supportsSoulAmplification(): boolean {
+    return supportsSoulAmplification(this);
+  }
+
+  /**
    * 장비에 소울 증폭을 진행할 수 있는지 여부
    */
-  get canAmplifySoul(): boolean {
-    return canAmplifySoul(this);
+  get canApplySoulAmplification(): boolean {
+    return canApplySoulAmplification(this);
   }
 
   /**
@@ -535,8 +545,8 @@ export class Gear extends ReadonlyGear {
    * @throws {@link GearError}
    * 소울 증폭을 진행할 수 없는 경우.
    */
-  amplifySoul() {
-    amplifySoul(this);
+  applySoulAmplification() {
+    applySoulAmplification(this);
   }
 
   /**
@@ -565,10 +575,24 @@ export class Gear extends ReadonlyGear {
   }
 
   /**
-   * 장비의 소울웨폰을 초기화합니다.
+   * 소울 인챈트를 해제합니다. 소울, 증폭 단계 및 잠재능력 데이터는 보존됩니다.
    */
-  resetSoulEnchant() {
-    resetSoulEnchant(this);
+  removeSoulEnchant() {
+    removeSoulEnchant(this);
+  }
+
+  /**
+   * 소울만 제거합니다. 인챈트, 증폭 단계 및 잠재능력 데이터는 보존됩니다.
+   */
+  removeSoul() {
+    removeSoul(this);
+  }
+
+  /**
+   * 소울웨폰 정보를 초기화합니다. 활성 여부와 관계없이 모든 소울웨폰 데이터가 제거됩니다.
+   */
+  resetSoulWeapon() {
+    resetSoulWeapon(this);
   }
 
   /**

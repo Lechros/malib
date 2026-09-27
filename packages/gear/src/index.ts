@@ -58,17 +58,20 @@ export {
   type ReadonlyPotential,
 } from './lib/enhance/potential';
 export {
-  amplifySoul,
+  applySoulAmplification,
   applySoulEnchant,
-  canAmplifySoul,
+  canApplySoulAmplification,
   canApplySoulEnchant,
   canSetSoul,
   canSetSoulPotential,
   getSoulBaseOption,
-  resetSoulEnchant,
+  removeSoulEnchant,
+  removeSoul,
+  resetSoulWeapon,
   setSoul,
   setSoulPotential,
-  supportsSoul,
+  supportsSoulWeapon,
+  supportsSoulAmplification,
 } from './lib/enhance/soulWeapon';
 export {
   applySpellTrace,
