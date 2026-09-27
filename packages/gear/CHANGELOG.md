@@ -1,5 +1,11 @@
 # @malib/gear
 
+## 2.2.0
+
+### Minor Changes
+
+- 572bf88: feat(gear): redesign soul weapon APIs and conditions
+
 ## 2.1.0
 
 ### Minor Changes
