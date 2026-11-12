@@ -83,6 +83,7 @@ import {
   Scroll,
   supportsUpgrade,
 } from './enhance/upgrade';
+import { canApplyYggdrasil } from './enhance/yggdrasil';
 import { ErrorCode, GearError } from './error';
 import { ReadonlyGear } from './ReadonlyGear';
 
@@ -340,6 +341,14 @@ export class Gear extends ReadonlyGear {
     if (canRecalculateStarforce(this)) {
       recalculateStarforce(this);
     }
+  }
+
+  /**
+   * 장비에 이그드라실의 축복을 적용할 수 있는 상태인지 여부를 반환합니다.
+   * @param advanced 고급 이그드라실의 축복 여부. 기본값은 `false`입니다.
+   */
+  canApplyYggdrasil(advanced = false): boolean {
+    return canApplyYggdrasil(this, advanced);
   }
 
   /**

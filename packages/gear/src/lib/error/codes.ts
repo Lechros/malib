@@ -19,6 +19,7 @@ export const enum ErrorCode {
 
   Upgrade_ApplyScroll_NotSupported,
   Upgrade_ApplyScroll_NoRemainingUpgradeCount,
+  Upgrade_ApplyScroll_AlreadyGrowing,
   Upgrade_FailScroll_NotSupported,
   Upgrade_FailScroll_NoRemainingUpgradeCount,
   Upgrade_ResileScroll_NotSupported,
@@ -28,6 +29,7 @@ export const enum ErrorCode {
   SpellTrace_CreateScroll_UnsupportedSpellTraceType,
   SpellTrace_CreateScroll_UnsupportedSpellTraceRate,
   SpellTrace_CreateScroll_UnsupportedTypeRateCombination,
+  Yggdrasil_CreateScroll_ReqLevelOutOfRange,
 
   Starforce_Apply_NotSupported,
   Starforce_Apply_Fixed,

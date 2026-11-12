@@ -1,4 +1,4 @@
-import { GearUpgradeOption, GearCapability } from '../data';
+import { GearUpgradeOption, GearCapability, GearGrowthData } from '../data';
 import { ErrorCode, GearError } from '../error';
 import { Gear } from '../Gear';
 import { addOptions } from '../gearOption';
@@ -14,6 +14,8 @@ export interface Scroll {
   icon?: string;
   /** 주문서 옵션 */
   option: Partial<GearUpgradeOption>;
+  /** 이그드라실 주문서로 부여하는 성장 정보 */
+  growth?: GearGrowthData & { source: 'scroll' };
 }
 
 /**
@@ -131,16 +133,19 @@ export function resetUpgrade(gear: Gear) {
 /**
  * 장비에 주문서를 적용할 수 있는 상태인지 여부를 확인합니다.
  * @param gear 확인할 장비.
+ * @param scroll 적용할 주문서. 생략할 경우 일반적인 주문서 적용 가능 여부만 확인합니다.
  * @returns 적용할 수 있을 경우 `true`; 아닐 경우 `false`.
  */
-export function canApplyScroll(gear: ReadonlyGear): boolean {
-  return checkApplyScroll(gear) === undefined;
+export function canApplyScroll(gear: ReadonlyGear, scroll?: Scroll): boolean {
+  return checkApplyScroll(gear, scroll) === undefined;
 }
 
-function checkApplyScroll(gear: ReadonlyGear) {
+function checkApplyScroll(gear: ReadonlyGear, scroll?: Scroll) {
   if (!supportsUpgrade(gear)) return ErrorCode.Upgrade_ApplyScroll_NotSupported;
   if (gear.scrollUpgradeableCount <= 0)
     return ErrorCode.Upgrade_ApplyScroll_NoRemainingUpgradeCount;
+  if (scroll?.growth && gear.growth)
+    return ErrorCode.Upgrade_ApplyScroll_AlreadyGrowing;
   return undefined;
 }
 
@@ -153,7 +158,7 @@ function checkApplyScroll(gear: ReadonlyGear) {
  * 주문서를 적용할 수 없는 상태의 장비일 경우.
  */
 export function applyScroll(gear: Gear, scroll: Scroll) {
-  const code = checkApplyScroll(gear);
+  const code = checkApplyScroll(gear, scroll);
   if (code !== undefined) {
     throw new GearError(code, { gear });
   }
@@ -161,4 +166,10 @@ export function applyScroll(gear: Gear, scroll: Scroll) {
   addOptions(gear.data.upgradeOption, scroll.option);
   gear.data.scrollUpgradeableCount = gear.scrollUpgradeableCount - 1;
   gear.data.scrollUpgradeCount = gear.scrollUpgradeCount + 1;
+  if (scroll.growth) {
+    gear.data.growth = scroll.growth;
+    gear.data.growthOption = undefined;
+    gear.attributes.growthLevel = 1;
+    gear.attributes.growthExp = 0;
+  }
 }

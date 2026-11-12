@@ -116,6 +116,11 @@ export {
   supportsUpgrade,
   type Scroll,
 } from './lib/enhance/upgrade';
+export {
+  canApplyYggdrasil,
+  getYggdrasilScroll,
+  YggdrasilType,
+} from './lib/enhance/yggdrasil';
 export { GearError, type ErrorLanguage } from './lib/error';
 export { Gear } from './lib/Gear';
 export { GearAttribute } from './lib/GearAttribute';

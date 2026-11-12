@@ -75,6 +75,8 @@ export const errorMessages = {
       '아이템이 주문서 강화를 지원하지 않습니다.',
     [ErrorCode.Upgrade_ApplyScroll_NoRemainingUpgradeCount]:
       '아이템에 남은 주문서 강화 횟수가 없습니다.',
+    [ErrorCode.Upgrade_ApplyScroll_AlreadyGrowing]:
+      '이미 성장 정보가 있는 아이템에는 성장 주문서를 적용할 수 없습니다.',
     [ErrorCode.Upgrade_FailScroll_NotSupported]:
       '아이템이 주문서 강화 실패 적용을 지원하지 않습니다.',
     [ErrorCode.Upgrade_FailScroll_NoRemainingUpgradeCount]:
@@ -93,6 +95,8 @@ export const errorMessages = {
       '아이템의 주문의 흔적 강화에 성공률 {rate}%인 주문서가 없습니다.',
     [ErrorCode.SpellTrace_CreateScroll_UnsupportedTypeRateCombination]:
       '아이템의 주문의 흔적 강화에 {rate}% {type} 주문서가 없습니다.',
+    [ErrorCode.Yggdrasil_CreateScroll_ReqLevelOutOfRange]:
+      '아이템의 착용 레벨이 이그드라실의 축복 적용 범위를 벗어났습니다.',
 
     [ErrorCode.Starforce_Apply_NotSupported]:
       '아이템이 스타포스 강화를 지원하지 않습니다.',
@@ -242,6 +246,8 @@ export const errorMessages = {
       'This item does not support scroll enhancement.',
     [ErrorCode.Upgrade_ApplyScroll_NoRemainingUpgradeCount]:
       'This item has no remaining scroll upgrade slots.',
+    [ErrorCode.Upgrade_ApplyScroll_AlreadyGrowing]:
+      'Growth scrolls cannot be applied to items that already have growth information.',
     [ErrorCode.Upgrade_FailScroll_NotSupported]:
       'This item does not support applying failed scroll enhancements.',
     [ErrorCode.Upgrade_FailScroll_NoRemainingUpgradeCount]:
@@ -260,6 +266,8 @@ export const errorMessages = {
       "No scroll with a {rate}% success rate is available for this item's Spell Trace enhancement.",
     [ErrorCode.SpellTrace_CreateScroll_UnsupportedTypeRateCombination]:
       "No {rate}% {type} scroll is available for this item's Spell Trace enhancement.",
+    [ErrorCode.Yggdrasil_CreateScroll_ReqLevelOutOfRange]:
+      "This item's required level is outside the range for Yggdrasil's Blessing.",
 
     [ErrorCode.Starforce_Apply_NotSupported]:
       'This item does not support Star Force enhancement.',
