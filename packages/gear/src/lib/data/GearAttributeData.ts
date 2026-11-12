@@ -52,7 +52,7 @@ export interface GearAttributeData {
   /** 사용 가능 스킬 */
   skills?: string[];
 
-  /** 성장 경험치 */
+  /** 성장 경험치 %, 0~100 */
   growthExp?: number;
   /** 성장 레벨 */
   growthLevel?: number;

@@ -5,6 +5,7 @@
 현재 제공되는 기능은 다음과 같습니다.
 
 - 추가 옵션
+- 장비 성장
 - 주문서 및 주문의 흔적
 - 스타포스 및 놀라운 장비 강화 주문서
 - 잠재능력
@@ -64,6 +65,8 @@ const data: GearData = {
   type: GearType.bow,
   req: { level: 100 },
   attributes: {
+    growthLevel: 1,
+    growthExp: 0,
     canAddOption: GearCapability.Can,
     canScroll: GearCapability.Can,
     canStarforce: GearCapability.Can,
@@ -72,6 +75,13 @@ const data: GearData = {
   },
   baseOption: { dex: 1, attackPower: 100 },
   scrollUpgradeableCount: 2,
+  growth: {
+    source: 'growth',
+    levels: {
+      1: { exp: 80, option: { dex: [1, 2], attackPower: [0, 2] } },
+      2: { exp: 90, option: { dex: [2, 2], attackPower: [1, 1] } },
+    },
+  },
 };
 ```
 
@@ -159,6 +169,26 @@ console.log(gear.addOption.str); // 49
 gear.applyAddOption(AddOptionType.str_dex, /* grade */ 7);
 
 console.log(gear.addOption.str); // 77
+```
+
+#### 장비 성장 적용
+
+```ts
+if (gear.canApplyGrowth) {
+  gear.applyGrowth({ dex: 2, attackPower: 1 });
+}
+
+console.log(gear.attributes.growthLevel); // 2
+console.log(gear.attributes.growthExp); // 0
+console.log(gear.growthOption.dex); // 2
+
+gear.applyGrowth({ dex: 2, attackPower: 1 });
+console.log(gear.growthMax); // true
+console.log(gear.canApplyGrowth); // false
+
+gear.resetGrowth();
+console.log(gear.attributes.growthLevel); // 1
+console.log(gear.growthOption.dex); // 0
 ```
 
 #### 주문서 강화 적용

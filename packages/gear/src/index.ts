@@ -14,6 +14,9 @@ export {
   type GearBaseOption,
   type GearData,
   type GearExceptionalOption,
+  type GearGrowthData,
+  type GearGrowthLevelData,
+  type GearGrowthOption,
   type GearIncline,
   type GearOption,
   type GearReqData,
@@ -23,6 +26,8 @@ export {
   type GearUpgradeOption,
   type PotentialData,
   type PotentialOption,
+  type ReadonlyGearGrowthData,
+  type ReadonlyGearGrowthLevelData,
   type ReadonlySoulData,
   type SoulBaseOption,
   type SoulData,
@@ -47,6 +52,14 @@ export {
   type ExceptionalHammer,
 } from './lib/enhance/exceptional';
 export {
+  applyGrowth,
+  canApplyGrowth,
+  canResetGrowth,
+  getGrowthLevelData,
+  resetGrowth,
+  supportsGrowth,
+} from './lib/enhance/growth';
+export {
   canSetAdditionalPotential,
   canSetPotential,
   resetAdditionalPotential,
@@ -65,13 +78,13 @@ export {
   canSetSoul,
   canSetSoulPotential,
   getSoulBaseOption,
-  removeSoulEnchant,
   removeSoul,
+  removeSoulEnchant,
   resetSoulWeapon,
   setSoul,
   setSoulPotential,
-  supportsSoulWeapon,
   supportsSoulAmplification,
+  supportsSoulWeapon,
 } from './lib/enhance/soulWeapon';
 export {
   applySpellTrace,

@@ -329,13 +329,16 @@ function _weaponStarforce(gear: Gear) {
       _getStarforceOption(gear)[type] += stat;
     } else if (
       gear.star > 15 &&
-      (gear.baseOption[type] > 0 || gear.upgradeOption[type] > 0)
+      (gear.baseOption[type] > 0 ||
+        gear.upgradeOption[type] + gear.growthOption[type] > 0)
     ) {
       _getStarforceOption(gear)[type] += stat;
     }
   }
   // power
-  const isMagic = gear.req.job.magician() || gear.upgradeOption.magicPower > 0;
+  const isMagic =
+    gear.req.job.magician() ||
+    gear.upgradeOption.magicPower + gear.growthOption.magicPower > 0;
   if (gear.star > 15) {
     _getStarforceOption(gear).attackPower += power;
     if (isMagic) {
@@ -365,7 +368,8 @@ function _otherStarforce(gear: Gear) {
       _getStarforceOption(gear)[type] += stat;
     } else if (
       gear.star > 15 &&
-      (gear.baseOption[type] > 0 || gear.upgradeOption[type] > 0)
+      (gear.baseOption[type] > 0 ||
+        gear.upgradeOption[type] + gear.growthOption[type] > 0)
     ) {
       _getStarforceOption(gear)[type] += stat;
     }
@@ -452,6 +456,7 @@ function _getStarforceBaseValue(
   return (
     gear.baseOption[type] +
     gear.upgradeOption[type] +
+    gear.growthOption[type] +
     gear.starforceOption[type]
   );
 }
@@ -464,6 +469,7 @@ function _getStarScrollBaseValue(
     gear.baseOption[type] +
     gear.addOption[type] +
     gear.upgradeOption[type] +
+    gear.growthOption[type] +
     gear.starforceOption[type]
   );
 }

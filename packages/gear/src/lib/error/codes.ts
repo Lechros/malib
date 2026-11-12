@@ -85,4 +85,10 @@ export const enum ErrorCode {
   Gear_Migrate_UnknownDataVersion,
 
   SoulWeapon_SetPotential_ReqLevelBelow200,
+
+  Growth_Apply_NotSupported,
+  Growth_Apply_LevelNotFound,
+  Growth_Apply_MaxLevelReached,
+  Growth_Apply_OptionOutOfRange,
+  Growth_Reset_NotSupported,
 }

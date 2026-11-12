@@ -1,5 +1,6 @@
 import { AddOptionData } from './AddOptionData';
 import { GearAttributeData } from './GearAttributeData';
+import { GearGrowthData, GearGrowthOption } from './GearGrowthData';
 import { GearOption } from './GearOption';
 import { GearType } from './GearType';
 import { PotentialData } from './PotentialData';
@@ -32,6 +33,8 @@ export interface GearData {
   req: GearReqData;
   /** 장비 속성 */
   attributes: GearAttributeData;
+  /** 장비 성장 정보 */
+  growth?: GearGrowthData;
 
   /** 장비 기본 옵션 */
   baseOption?: Partial<GearBaseOption>;
@@ -41,6 +44,8 @@ export interface GearData {
   upgradeOption?: Partial<GearUpgradeOption>;
   /** 장비 스타포스 옵션 */
   starforceOption?: Partial<GearStarforceOption>;
+  /** 장비 성장 옵션 */
+  growthOption?: Partial<GearGrowthOption>;
 
   /** 추가 옵션 목록 */
   addOptions?: AddOptionData[];

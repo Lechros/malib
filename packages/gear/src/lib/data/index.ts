@@ -1,6 +1,7 @@
 export * from './AddOptionData';
 export * from './GearAttributeData';
 export * from './GearData';
+export * from './GearGrowthData';
 export * from './GearOption';
 export * from './GearType';
 export * from './PotentialData';

@@ -35,6 +35,15 @@ export interface ErrorContextFields {
 export const errorMessages = {
   ko: {
     [ErrorCode.DEFAULT]: '알 수 없는 오류입니다.',
+    [ErrorCode.Growth_Apply_NotSupported]: '아이템이 성장을 지원하지 않습니다.',
+    [ErrorCode.Growth_Apply_LevelNotFound]:
+      '아이템의 성장 단계 정보가 없습니다.',
+    [ErrorCode.Growth_Apply_MaxLevelReached]:
+      '아이템이 최대 성장 단계에 도달했습니다.',
+    [ErrorCode.Growth_Apply_OptionOutOfRange]:
+      '성장 옵션 증가량은 해당 단계의 범위에 포함되는 정수여야 합니다.',
+    [ErrorCode.Growth_Reset_NotSupported]:
+      '아이템이 성장 초기화를 지원하지 않습니다.',
     [ErrorCode.AddOption_Apply_NotSupported]:
       '아이템이 추가옵션 부여를 지원하지 않습니다.',
     [ErrorCode.AddOption_Apply_MaxCountOf4Reached]:
@@ -192,6 +201,15 @@ export const errorMessages = {
   },
 
   en: {
+    [ErrorCode.Growth_Apply_NotSupported]: 'This item does not support growth.',
+    [ErrorCode.Growth_Apply_LevelNotFound]:
+      'The current or next growth level is not defined for this item.',
+    [ErrorCode.Growth_Apply_MaxLevelReached]:
+      'This item has reached its maximum growth level.',
+    [ErrorCode.Growth_Apply_OptionOutOfRange]:
+      'Growth option increases must be integers within the range for this level.',
+    [ErrorCode.Growth_Reset_NotSupported]:
+      'This item does not support resetting growth.',
     [ErrorCode.DEFAULT]: 'An unknown error has occurred.',
     [ErrorCode.AddOption_Apply_NotSupported]:
       'This item does not support bonus stats.',

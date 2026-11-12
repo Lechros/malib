@@ -4,11 +4,13 @@ import {
   GearBaseOption,
   GearData,
   GearExceptionalOption,
+  GearGrowthOption,
   GearShapeData,
   GearStarforceOption,
   GearType,
   GearUpgradeOption,
   PotentialGrade,
+  ReadonlyGearGrowthData,
   ReadonlySoulData,
   SoulBaseOption,
   VERSION,
@@ -27,8 +29,9 @@ import { GearReq } from './GearReq';
 
 type _Gear = Omit<
   GearData,
-  'attributes' | 'potentials' | 'additionalPotentials' | 'addOptions'
+  'attributes' | 'potentials' | 'additionalPotentials' | 'addOptions' | 'growth'
 > & {
+  growth?: ReadonlyGearGrowthData;
   attributes: GearAttribute;
   addOptions: readonly Readonly<AddOptionData>[];
   potentials: readonly ReadonlyPotential[];
@@ -160,14 +163,36 @@ export class ReadonlyGear implements _Gear {
   }
 
   /**
+   * 장비 성장 정보
+   */
+  get growth(): ReadonlyGearGrowthData | undefined {
+    if (!this.data.growth) {
+      return undefined;
+    }
+    return {
+      ...this.data.growth,
+      levels: Object.fromEntries(
+        Object.entries(this.data.growth.levels).map(([level, data]) => [
+          level,
+          { ...data, exp: data.exp ?? 0 },
+        ]),
+      ),
+    };
+  }
+
+  /**
    * 장비 최종 옵션
    *
-   * 기본 옵션, 추가 옵션, 주문서 옵션, 스타포스 옵션의 합.
+   * 기본 옵션, 추가 옵션, 주문서 옵션, 성장 옵션, 스타포스 옵션의 합.
    *
    * 익셉셔널 옵션은 미포함.
    */
   get totalOption(): Readonly<
-    GearBaseOption & GearAddOption & GearUpgradeOption & GearStarforceOption
+    GearBaseOption &
+      GearAddOption &
+      GearUpgradeOption &
+      GearGrowthOption &
+      GearStarforceOption
   > {
     return toGearOption(
       sumOptions(
@@ -175,6 +200,7 @@ export class ReadonlyGear implements _Gear {
         this.addOption,
         this.upgradeOption,
         this.starforceOption,
+        this.growthOption,
       ),
     );
   }
@@ -205,6 +231,24 @@ export class ReadonlyGear implements _Gear {
    */
   get starforceOption(): Readonly<GearStarforceOption> {
     return toGearOption(this.data.starforceOption ?? {});
+  }
+
+  /**
+   * 장비 성장 옵션
+   */
+  get growthOption(): Readonly<GearGrowthOption> {
+    return toGearOption(this.data.growthOption ?? {});
+  }
+
+  /**
+   * 장비가 최대 성장 단계에 도달했는지 여부
+   */
+  get growthMax(): boolean {
+    return (
+      this.growth !== undefined &&
+      this.attributes.growthLevel ===
+        Math.max(...Object.keys(this.growth.levels).map(Number)) + 1
+    );
   }
 
   /**

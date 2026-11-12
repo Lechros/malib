@@ -2,6 +2,7 @@ import {
   AddOptionGrade,
   AddOptionType,
   GearData,
+  GearGrowthOption,
   GearShapeData,
   PotentialData,
   PotentialGrade,
@@ -22,6 +23,13 @@ import {
   resetExceptional,
   supportsExceptional,
 } from './enhance/exceptional';
+import {
+  applyGrowth,
+  canApplyGrowth,
+  canResetGrowth,
+  resetGrowth,
+  supportsGrowth,
+} from './enhance/growth';
 import {
   canSetAdditionalPotential,
   canSetPotential,
@@ -184,6 +192,54 @@ export class Gear extends ReadonlyGear {
    */
   resetAddOption() {
     resetAddOption(this);
+  }
+
+  /**
+   * 장비가 성장을 지원하는지 여부
+   */
+  get supportsGrowth(): boolean {
+    return supportsGrowth(this);
+  }
+
+  /**
+   * 장비에 성장을 적용할 수 있는 상태인지 여부
+   */
+  get canApplyGrowth(): boolean {
+    return canApplyGrowth(this);
+  }
+
+  /**
+   * 장비에 성장을 1회 적용합니다.
+   * @param option 적용할 성장 옵션 증가량.
+   *
+   * @throws {@link GearError}
+   * 성장을 적용할 수 없는 상태이거나 증가량이 성장 범위를 벗어난 경우.
+   */
+  applyGrowth(option: Partial<GearGrowthOption>) {
+    applyGrowth(this, option);
+    if (canRecalculateStarforce(this)) {
+      recalculateStarforce(this);
+    }
+  }
+
+  /**
+   * 장비의 성장을 초기화할 수 있는지 여부
+   */
+  get canResetGrowth(): boolean {
+    return canResetGrowth(this);
+  }
+
+  /**
+   * 장비의 성장을 초기화합니다.
+   *
+   * @throws {@link GearError}
+   * 성장을 초기화할 수 없는 장비일 경우.
+   */
+  resetGrowth() {
+    resetGrowth(this);
+    if (canRecalculateStarforce(this)) {
+      recalculateStarforce(this);
+    }
   }
 
   /**

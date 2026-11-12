@@ -120,6 +120,12 @@ export function resetUpgrade(gear: Gear) {
   gear.data.scrollUpgradeableCount = gear.scrollTotalUpgradeableCount;
   gear.data.scrollUpgradeCount = undefined;
   gear.data.scrollResilienceCount = undefined;
+  if (gear.data.growth?.source === 'scroll') {
+    gear.data.growth = undefined;
+    gear.data.growthOption = undefined;
+    gear.attributes.growthLevel = undefined;
+    gear.attributes.growthExp = undefined;
+  }
 }
 
 /**
