@@ -33,7 +33,7 @@ jobs:
       - name: Setup Node.js, pnpm, and install dependencies
         uses: pnpm/setup@v1
         with:
-          runtime: node@24
+          runtime: node@26
           cache: true
 
       - name: Build
