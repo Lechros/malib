@@ -241,14 +241,24 @@ export class ReadonlyGear implements _Gear {
   }
 
   /**
+   * 장비의 최대 성장 레벨
+   */
+  get maxGrowthLevel(): number | undefined {
+    const growth = this.data.growth;
+    if (!growth) return undefined;
+
+    const levels = Object.keys(growth.levels);
+    if (levels.length === 0) return undefined;
+
+    return Math.max(...levels.map(Number)) + 1;
+  }
+
+  /**
    * 장비가 최대 성장 단계에 도달했는지 여부
    */
   get growthMax(): boolean {
-    return (
-      this.growth !== undefined &&
-      this.attributes.growthLevel ===
-        Math.max(...Object.keys(this.growth.levels).map(Number)) + 1
-    );
+    const maxLevel = this.maxGrowthLevel;
+    return maxLevel !== undefined && this.attributes.growthLevel === maxLevel;
   }
 
   /**

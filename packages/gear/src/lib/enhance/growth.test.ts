@@ -118,6 +118,7 @@ describe('canApplyGrowth', () => {
     const gear = createGrowingGear();
     gear.attributes.growthLevel = 2;
 
+    expect(gear.maxGrowthLevel).toBe(3);
     expect(gear.growthMax).toBe(false);
     expect(canApplyGrowth(gear)).toBe(true);
     applyGrowth(gear, { str: 2, magicPower: 1 });
@@ -148,6 +149,10 @@ describe('canApplyGrowth', () => {
     gear.attributes.growthLevel = 3;
     expect(gear.growthMax).toBe(true);
     expect(canApplyGrowth(gear)).toBe(false);
+  });
+
+  it('성장 규칙이 없으면 최대 성장 레벨도 없다.', () => {
+    expect(createGear().maxGrowthLevel).toBeUndefined();
   });
 
   it('성장 규칙이 없으면 지원 여부 오류가 우선한다.', () => {
