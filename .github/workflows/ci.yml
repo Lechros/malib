@@ -27,7 +27,7 @@ jobs:
             ${{ runner.os }}-turbo-
 
       - name: Setup pnpm and install dependencies
-        uses: pnpm/setup@v1
+        uses: pnpm/setup@v3
         with:
           cache: true
 

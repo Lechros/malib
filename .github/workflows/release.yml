@@ -31,7 +31,7 @@ jobs:
             ${{ runner.os }}-turbo-
 
       - name: Setup Node.js, pnpm, and install dependencies
-        uses: pnpm/setup@v1
+        uses: pnpm/setup@v3
         with:
           runtime: node@24
           cache: true
