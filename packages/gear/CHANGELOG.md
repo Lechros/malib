@@ -1,5 +1,12 @@
 # @malib/gear
 
+## 2.3.0
+
+### Minor Changes
+
+- 6c2bcfc: feat(gear): add support for equipment growth
+- d953c02: feat(gear): add support for Yggdrasil scrolls
+
 ## 2.2.0
 
 ### Minor Changes
